@@ -643,13 +643,13 @@ Add CARDMADNESS Mode.
 
 # 23. Current Phase
 
-CURRENT PHASE: 3
+CURRENT PHASE: 4
 
-Phases 1 (documentation/architecture) and 2 (Cardmarket data investigation) are closed — findings and schema proposal are in `fase2-cardmarket-hallazgos-y-schema.md`.
+Phases 1 (documentation/architecture), 2 (Cardmarket data investigation) and 3 (database schema) are closed — findings/schema proposal in `fase2-cardmarket-hallazgos-y-schema.md`, schema implementation in `backend/db/`.
 
-We are currently creating the database schema: `backend/db/schema.sql`, `backend/db/seed.sql`, `backend/db/init_db.py`, `backend/db/test_schema.py`, applying the 10 tables exactly as specified in `fase2-cardmarket-hallazgos-y-schema.md` section 3.
+Phase 4 (Cardmarket data importer, `fase4-importer-sprint-contract.md`) is implemented and verified against real data: `backend/importer/` downloads the 6 Cardmarket JSON files, loads `cardmarket_products`/`cards`/`cardmarket_product_mappings` in scope (One Piece full catalog, Magic LOTR only), self-heals `expansions`, and classifies variant groups. Real run: 12,867 products in scope, 12,167 mapped cleanly, 700 flagged `ambiguous` (genuine `UNIQUE` collisions on `cards`, reported not silenced), 143 new expansions pending a name.
 
-The next task (Phase 4) is implementing the Cardmarket data importer.
+The next task (Phase 5) is manual collection management.
 
 DO NOT start building the complete dashboard yet.
 

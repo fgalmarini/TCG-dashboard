@@ -2,3 +2,4 @@ backend/db/*.db
 __pycache__/
 *.pyc
 .venv/
+price-history/

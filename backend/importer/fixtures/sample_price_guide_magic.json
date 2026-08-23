@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "createdAt": "2026-08-22T02:48:19+0200",
+  "priceGuides": [
+    {"idProduct": 1001, "idCategory": 1, "avg": 0.31, "low": 0.03, "trend": 0.31, "avg1": 0.26, "avg7": 0.39, "avg30": 0.34, "avg-foil": 0.61, "low-foil": 0.2, "trend-foil": 0.79, "avg1-foil": 1, "avg7-foil": 0.65, "avg30-foil": 0.7},
+    {"idProduct": 1002, "idCategory": 1, "avg": 0.5, "low": 0.1, "trend": 1.0, "avg1": 0.4, "avg7": 0.6, "avg30": 0.5},
+    {"idProduct": 1003, "idCategory": 1, "avg": 2.0, "low": 1.5, "trend": 5.0, "avg1": 1.9, "avg7": 2.1, "avg30": 2.0},
+    {"idProduct": 1004, "idCategory": 1, "avg": 0.2, "low": 0.05, "trend": 0.2, "avg1": 0.15, "avg7": 0.25, "avg30": 0.2},
+    {"idProduct": 1005, "idCategory": 2, "avg": 40.0, "low": 35.0, "trend": 40.0, "avg1": 38.0, "avg7": 41.0, "avg30": 39.0}
+  ]
+}

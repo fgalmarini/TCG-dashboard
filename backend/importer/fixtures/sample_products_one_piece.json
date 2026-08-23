@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "createdAt": "2026-08-22T10:00:00+0200",
+  "products": [
+    {"idProduct": 2001, "name": "Monkey.D.Luffy (OP01-001)", "idCategory": 1, "categoryName": "One Piece Single", "idExpansion": 1, "idMetacard": 7001, "dateAdded": "2022-01-01 00:00:00"},
+    {"idProduct": 2002, "name": "DON!!", "idCategory": 1, "categoryName": "One Piece Single", "idExpansion": 1, "idMetacard": 7002, "dateAdded": "2022-01-01 00:00:00"},
+    {"idProduct": 2003, "name": "Monkey.D.Luffy", "idCategory": 1, "categoryName": "One Piece Single", "idExpansion": 1, "idMetacard": 7003, "dateAdded": "0000-00-00 00:00:00"},
+    {"idProduct": 2004, "name": "Non Single Item", "idCategory": 99, "categoryName": "One Piece Booster", "idExpansion": 1, "idMetacard": null, "dateAdded": "2022-01-01 00:00:00"}
+  ]
+}

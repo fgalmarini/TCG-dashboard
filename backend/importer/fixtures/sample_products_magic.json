@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "createdAt": "2026-08-22T10:58:20+0200",
+  "products": [
+    {"idProduct": 1001, "name": "Gandalf the Grey", "idCategory": 1, "categoryName": "Magic Single", "idExpansion": 5285, "idMetacard": 5001, "dateAdded": "2023-03-14 09:32:42"},
+    {"idProduct": 1002, "name": "Treasure Token", "idCategory": 1, "categoryName": "Magic Single", "idExpansion": 5285, "idMetacard": 5002, "dateAdded": "2022-04-19 22:24:46"},
+    {"idProduct": 1003, "name": "Treasure Token (V.4)", "idCategory": 1, "categoryName": "Magic Single", "idExpansion": 5285, "idMetacard": 5002, "dateAdded": "2022-05-05 15:14:24"},
+    {"idProduct": 1004, "name": "Out Of Scope Card", "idCategory": 1, "categoryName": "Magic Single", "idExpansion": 9999, "idMetacard": 6001, "dateAdded": "2022-01-01 00:00:00"},
+    {"idProduct": 1005, "name": "Some Booster Box", "idCategory": 2, "categoryName": "Magic Booster Box", "idExpansion": 5285, "idMetacard": null, "dateAdded": "2022-01-01 00:00:00"}
+  ]
+}

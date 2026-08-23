@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "createdAt": "2026-08-22T02:00:00+0200",
+  "priceGuides": [
+    {"idProduct": 2001, "idCategory": 1, "avg": 1.0, "low": 0.5, "trend": 1.1, "avg1": 0.9, "avg7": 1.2, "avg30": 1.0},
+    {"idProduct": 2002, "idCategory": 1, "avg": 0.1, "low": 0.05, "trend": 0.1, "avg1": 0.08, "avg7": 0.12, "avg30": 0.1},
+    {"idProduct": 2003, "idCategory": 1, "avg": 3.0, "low": 2.5, "trend": 3.2, "avg1": 2.9, "avg7": 3.1, "avg30": 3.0},
+    {"idProduct": 2004, "idCategory": 99, "avg": 25.0, "low": 20.0, "trend": 25.0, "avg1": 24.0, "avg7": 26.0, "avg30": 25.0}
+  ]
+}
