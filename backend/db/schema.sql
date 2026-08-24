@@ -1,6 +1,8 @@
 -- TCG Dashboard — Fase 3: schema SQLite
 -- Traducción literal de fase2-cardmarket-hallazgos-y-schema.md, sección 3.
 -- No agregar campos ni índices no listados en ese documento.
+-- Excepción Fase 5: cards.data_source / cards.scryfall_raw agregados por
+-- fase5-scryfall-magic-backfill-sprint-contract.md sección 2.1 (TCG-DEC-002).
 
 CREATE TABLE IF NOT EXISTS games (
     id   INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,6 +44,8 @@ CREATE TABLE IF NOT EXISTS cards (
     cardmarket_id_metacard  INTEGER,
     image_url               TEXT,
     image_source            TEXT CHECK (image_source IS NULL OR image_source IN ('scryfall', 'onepiece_official', 'manual')),
+    data_source             TEXT CHECK (data_source IS NULL OR data_source IN ('scryfall', 'cardmarket_heuristic', 'manual')),
+    scryfall_raw            TEXT,
     UNIQUE (expansion_id, card_number, printing_variant)
 );
 
