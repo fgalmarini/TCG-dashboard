@@ -1,0 +1,41 @@
+{
+  "project": "TCG Dashboard",
+  "task_id_prefix": "TCG",
+  "schema_version": "1.0",
+  "last_updated": "2026-08-24",
+  "decision_log": {
+    "description": "Registro de decisiones estructurales/de schema para TCG Dashboard, separado de los docs de fase narrativos (fase2-*.md, fase4-*.md). Este proyecto NO usa progress.json (tracking personal/experimental) — este archivo cubre solo task_id_prefix + decision_log, no el template completo de Kundo Projects Agents.",
+    "entry_types": ["schema_decision", "architecture_decision", "scope_decision"],
+    "entries": [
+      {
+        "id": "TCG-DEC-001",
+        "type": "architecture_decision",
+        "date": "2026-08-24",
+        "title": "Magic/LOTR pivota a Scryfall como fuente autoritativa de catálogo; One Piece y Pokémon mantienen self-healing sin cambios",
+        "summary": "Para Magic, Scryfall (GET /cards/cardmarket/:id) resuelve name/set/collector_number/variantes con lookup directo por idProduct de Cardmarket, gratis y estable. Para One Piece no existe un equivalente verificado con el mismo nivel de confianza, y el problema real de Fase 4 (700 ambiguous) es de precios empatados entre variantes, no de falta de catálogo — una fuente externa no lo resuelve. Para Pokémon (~8 cartas), pokemontcg.io no tiene lookup por idProduct y el matching por nombre+set no se justifica con ese volumen.",
+        "details": "Ver Revisión-fases 2-4 — Catálogo externo .md, secciones 0-3. Cardmarket no se reemplaza en ningún caso — sigue siendo la única fuente de precios; Scryfall es exclusivamente metadata de catálogo. Revisitar One Piece si aparece una fuente que confirme lookup por idProduct; revisitar Pokémon si la colección crece a >50 cartas.",
+        "related_tasks": []
+      },
+      {
+        "id": "TCG-DEC-002",
+        "type": "schema_decision",
+        "date": "2026-08-24",
+        "title": "Agregar cards.data_source y cards.scryfall_raw (nullable, aditivo)",
+        "summary": "cards.data_source (NULLABLE: 'scryfall' | 'cardmarket_heuristic' | 'manual') da trazabilidad de qué tan confiable es un dato de card. cards.scryfall_raw (NULLABLE, texto JSON) guarda el objeto Scryfall crudo cuando variant_label no alcanza para representar la combinación real de frame_effects+border_color+finishes.",
+        "details": "Implementado y corrido contra la DB real. Migración idempotente vía PRAGMA table_info + ALTER TABLE, más CREATE TABLE cards de schema.sql actualizado para instalaciones nuevas. 757/757 productos procesados, 550 resueltos OK (206 sin match — Art Series/tokens no indexados por Scryfall, 1 colisión UNIQUE reportada sin resolver). Regla de printing_variant ajustada respecto al diseño original tras detectar en datos reales que finishes/promo_types de Scryfall no distinguen la impresión puntual del producto de Cardmarket (ver fase5-scryfall-magic-backfill-sprint-contract.md §5 para la regla final y el detalle completo). Distribución: normal=193, other=317, suggested_parallel=40 (protegidas). No se tocaron cardmarket_products, cardmarket_product_mappings, market_price_history, collection_items, want_list_items — quedan como en Fase 3. Efecto colateral aprobado en el mismo pase: fix de bug de headers faltantes en backend/importer/images.py (mismo endpoint de Scryfall, mismo bug) y fix de precedencia no-token/token al escribir expansions.name/set_code para cardmarket_id_expansion=5308.",
+        "related_tasks": [],
+        "status": "implementado"
+      },
+      {
+        "id": "TCG-DEC-003",
+        "type": "scope_decision",
+        "date": "2026-08-24",
+        "title": "Supabase queda fuera de este sprint",
+        "summary": "La migración a Supabase es una decisión de storage engine separada e independiente del enriquecimiento de catálogo de Magic. No bloquea ni se bloquea con el trabajo de Scryfall.",
+        "details": "Ver Revisión-fases 2-4 — Catálogo externo .md sección 4. Cuando se decida arrancarla, tratarla como su propia fase, numerada explícitamente, con al menos 1-2 semanas de colchón antes de CARDMADNESS Düsseldorf (fines de septiembre 2026) y con SQLite como fallback funcional.",
+        "related_tasks": [],
+        "status": "diferido"
+      }
+    ]
+  }
+}
