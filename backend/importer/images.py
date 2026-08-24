@@ -22,10 +22,22 @@ def resolve_magic_image_url(cardmarket_id_product: int) -> str | None:
 
     Devuelve None si Scryfall no tiene el producto mapeado o la llamada falla --
     no silenciosamente: quien llame a esta funcion es responsable de reportarlo.
+
+    Scryfall exige explicitamente headers User-Agent y Accept en cada request -- sin
+    ellos devuelve 400 bad_request aunque el id sea valido (verificado contra la API
+    real; bug descubierto y fixeado primero en backend/scripts/scryfall_backfill.py,
+    mismo fix aca).
     """
     url = f"https://api.scryfall.com/cards/cardmarket/{cardmarket_id_product}"
+    request = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "TCGDashboard/1.0 (personal collection tool; images.py)",
+            "Accept": "application/json",
+        },
+    )
     try:
-        with urllib.request.urlopen(url, timeout=SCRYFALL_TIMEOUT_SECONDS) as resp:
+        with urllib.request.urlopen(request, timeout=SCRYFALL_TIMEOUT_SECONDS) as resp:
             data = json.loads(resp.read())
     except (urllib.error.URLError, OSError, json.JSONDecodeError):
         return None
