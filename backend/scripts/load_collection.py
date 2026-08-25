@@ -508,7 +508,15 @@ def run_initial_load() -> ImportReport:
                             }
                         )
                     report.review_queue.append((idx, card_name, len(candidates)))
-                    new_hashes.add(h)
+                    # NO se agrega el hash a new_hashes aca -- la fila queda encolada en
+                    # collection-ambiguous-review.csv, todavia no se inserto nada en
+                    # collection_items. Marcarla "importada" en este punto bloqueaba
+                    # --apply-review despues (idempotencia por row_hash confundia "fila
+                    # ya procesada/encolada" con "fila ya insertada" -- bug encontrado y
+                    # corregido en la corrida de aplicacion de la cola de revision,
+                    # 2026-08-25). El hash se agrega recien en run_apply_review() cuando
+                    # el insert real ocurre (linea con new_hashes.add(h) dentro del loop
+                    # de --apply-review).
 
             elif game == "one_piece":
                 # No se ejercita en esta corrida (CSV de prueba es 100% magic) -- implementado
@@ -552,7 +560,8 @@ def run_initial_load() -> ImportReport:
                             }
                         )
                     report.review_queue.append((idx, card_name, len(ambiguous)))
-                    new_hashes.add(h)
+                    # Ver comentario equivalente en la rama magic mas arriba: no marcar
+                    # "importada" una fila que solo quedo encolada para revision.
                 else:
                     reason = "sin match en catalogo One Piece (no deberia pasar, AGENTS.md §20)"
                     note = build_manual_entry_note(reason, row)
