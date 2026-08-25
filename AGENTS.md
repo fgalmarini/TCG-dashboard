@@ -643,7 +643,7 @@ Add CARDMADNESS Mode.
 
 # 23. Current Phase
 
-CURRENT PHASE: 5 (starting — catalog enrichment sub-step closed, manual collection management next)
+CURRENT PHASE: 6 (starting — Fase 5 closed, basic dashboard next)
 
 Phases 1 (documentation/architecture), 2 (Cardmarket data investigation) and 3 (database schema) are closed — findings/schema proposal in `fase2-cardmarket-hallazgos-y-schema.md`, schema implementation in `backend/db/`.
 
@@ -655,9 +655,11 @@ Phase 4 (Cardmarket data importer, `fase4-importer-sprint-contract.md`) is imple
 - Same-pass fixes, approved before applying: missing-headers bug in `backend/importer/images.py` (same Scryfall endpoint, same bug the backfill script hit first), and token/non-token precedence when writing `expansions.name`/`set_code` for expansion 5308 (was overwriting real-card set names with token metadata).
 - Do not re-open this decision without new evidence — see `conventions.json` for what was already verified against real data before deciding.
 
-The next task (Phase 5, main work) is manual collection management. This includes the add-card flow from `fase2-cardmarket-hallazgos-y-schema.md` §5, and — new, given Phase 4's real results — a **batch** confirmation UI for the ~700 One Piece cards flagged `ambiguous` (real volume, cannot be reviewed one by one; see `fase4-importer-sprint-contract.md` §5). Supabase migration (`TCG-DEC-003` in `conventions.json`) stays deferred and independent of Phase 5 — do not bundle it in.
+Phase 5 (manual collection management) is closed — real result in `claude/fase5-alta-manual-coleccion-sprint-contract.md` §9 (98/98 rows of the real CSV processed, 0 pending). The ~700 One Piece `ambiguous` batch-confirmation UI mentioned in the original Phase 5 scope was not needed: the real collection is 100% Magic today, so the review queue only ever had Magic rows (see `fase5-alta-manual-coleccion-sprint-contract.md` §3/§9). Revisit if One Piece cards actually get added to the collection.
 
-DO NOT start building the complete dashboard yet.
+The next task (Phase 6) is a basic dashboard: Overview + read-only Collection browsing only — see `claude/fase6-dashboard-basico-sprint-contract.md` for exact scope, endpoints and the market-value-metric decision (Trend Price, confirmed with Facundo 2026-08-25). Supabase migration (`TCG-DEC-003` in `conventions.json`) stays deferred and independent of Phase 6 — do not bundle it in.
+
+DO NOT build Market price-trend charts, Trading (Trade Binder/Want List/Trade Calculator), Analytics, or CARDMADNESS Mode yet — those are Phases 7-10. DO NOT add collection-item editing from the web yet (still done via `load_collection.py`/CSV) — see `fase6-dashboard-basico-sprint-contract.md` §1 for the full in/out-of-scope list.
 
 DO NOT create a scraper yet.
 

@@ -618,6 +618,8 @@ def run_apply_review() -> ImportReport:
     new_hashes: set[str] = set()
 
     conn = connect()
+    unresolved: list[tuple[int, str, str]] = []
+
     try:
         for source_row, group_lines in groups.items():
             base = group_lines[0]
@@ -625,14 +627,35 @@ def run_apply_review() -> ImportReport:
             chosen = next((ln["chosen_card_id"].strip() for ln in group_lines if ln["chosen_card_id"].strip()), "")
 
             if not chosen:
-                report.manual_entries.append((int(source_row), card_name, "chosen_card_id vacio, sin aplicar (--apply-review)"))
+                note = (int(source_row), card_name, "chosen_card_id vacio, sin aplicar (--apply-review)")
+                report.manual_entries.append(note)
+                unresolved.append(note)
+                continue
+
+            # Sentinel "MANUAL" (case-insensitive): ninguna de las candidatas listadas
+            # corresponde a la edicion real (ej. Surge Foil que no existe en el catalogo
+            # importado, ver notes/cardmarket_link de la fila) -- mismo patron que la
+            # rama "0 candidatas" de run_initial_load (card_id=NULL, manual_entry=true),
+            # pero disparado a mano desde la cola de revision en vez de automatico.
+            if chosen.upper() == "MANUAL":
+                row = {f: base.get(f, "") for f in CSV_FIELDS}
+                h = row_hash(row)
+                if h in state or h in new_hashes:
+                    report.already_imported.append((int(source_row), card_name))
+                    continue
+
+                reason = "candidatas de catalogo no corresponden a la edicion real (chosen_card_id=MANUAL en --apply-review)"
+                note_text = build_manual_entry_note(reason, row)
+                insert_collection_item(conn, row, None, None, True, note_text)
+                report.manual_entries.append((int(source_row), card_name, reason))
+                new_hashes.add(h)
                 continue
 
             valid_ids = {ln["candidate_card_id"] for ln in group_lines}
             if chosen not in valid_ids:
-                report.manual_entries.append(
-                    (int(source_row), card_name, f"chosen_card_id={chosen} no es una de las candidatas listadas")
-                )
+                note = (int(source_row), card_name, f"chosen_card_id={chosen} no es una de las candidatas listadas")
+                report.manual_entries.append(note)
+                unresolved.append(note)
                 continue
 
             card_id = int(chosen)
@@ -653,7 +676,7 @@ def run_apply_review() -> ImportReport:
 
     save_state(state | new_hashes)
 
-    if not report.manual_entries:
+    if not unresolved:
         REVIEW_CSV_PATH.rename(REVIEW_DONE_CSV_PATH)
         print(f"Renombrado a {REVIEW_DONE_CSV_PATH.relative_to(REPO_ROOT)} (todas las filas aplicadas).")
     else:
