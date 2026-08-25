@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 .venv/
 price-history/
+backend/scripts/.collection_import_state.json
+backend/scripts/collection-ambiguous-review*.csv

@@ -643,13 +643,19 @@ Add CARDMADNESS Mode.
 
 # 23. Current Phase
 
-CURRENT PHASE: 4
+CURRENT PHASE: 5 (starting — catalog enrichment sub-step closed, manual collection management next)
 
 Phases 1 (documentation/architecture), 2 (Cardmarket data investigation) and 3 (database schema) are closed — findings/schema proposal in `fase2-cardmarket-hallazgos-y-schema.md`, schema implementation in `backend/db/`.
 
 Phase 4 (Cardmarket data importer, `fase4-importer-sprint-contract.md`) is implemented and verified against real data: `backend/importer/` downloads the 6 Cardmarket JSON files, loads `cardmarket_products`/`cards`/`cardmarket_product_mappings` in scope (One Piece full catalog, Magic LOTR only), self-heals `expansions`, and classifies variant groups. Real run: 12,867 products in scope, 12,167 mapped cleanly, 700 flagged `ambiguous` (genuine `UNIQUE` collisions on `cards`, reported not silenced), 143 new expansions pending a name.
 
-The next task (Phase 5) is manual collection management.
+**Additive revision, closed (not a new numbered phase — revises how Magic catalog data gets populated, Phases 3-4 stay closed):** Magic/LOTR catalog population pivoted from self-healing to an authoritative backfill via Scryfall (`GET /cards/cardmarket/:id`, free, stable, direct lookup by Cardmarket `idProduct`). One Piece and Pokémon keep self-healing/manual entry unchanged — no equivalent authoritative source was found for either (see rationale below). Cardmarket is not replaced in any case — it remains the only price source; Scryfall is catalog metadata only.
+- Decision + rationale: `Revisión-fases 2-4 — Catálogo externo .md`. Implementation contract: `fase5-scryfall-magic-backfill-sprint-contract.md`. Structural decisions logged in `conventions.json` (`TCG-DEC-001`/`002`/`003`).
+- Real result: `backend/scripts/scryfall_backfill.py` added `cards.data_source`/`cards.scryfall_raw` (additive, nothing else in the schema changed) and ran against the real DB — 550/757 in-scope Magic products resolved (`printing_variant`: `normal`=193, `other`=317, `suggested_parallel`=40 protected/untouched), 206 unmatched (Scryfall doesn't index Art Series/tokens from expansion 5308 by `idProduct`), 1 unresolved `UNIQUE` collision (two tokens, same `collector_number` — deferred, single case).
+- Same-pass fixes, approved before applying: missing-headers bug in `backend/importer/images.py` (same Scryfall endpoint, same bug the backfill script hit first), and token/non-token precedence when writing `expansions.name`/`set_code` for expansion 5308 (was overwriting real-card set names with token metadata).
+- Do not re-open this decision without new evidence — see `conventions.json` for what was already verified against real data before deciding.
+
+The next task (Phase 5, main work) is manual collection management. This includes the add-card flow from `fase2-cardmarket-hallazgos-y-schema.md` §5, and — new, given Phase 4's real results — a **batch** confirmation UI for the ~700 One Piece cards flagged `ambiguous` (real volume, cannot be reviewed one by one; see `fase4-importer-sprint-contract.md` §5). Supabase migration (`TCG-DEC-003` in `conventions.json`) stays deferred and independent of Phase 5 — do not bundle it in.
 
 DO NOT start building the complete dashboard yet.
 
