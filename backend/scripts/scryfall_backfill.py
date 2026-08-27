@@ -33,8 +33,8 @@ SCHEMA_PATH = Path(__file__).resolve().parent.parent / "db" / "schema.sql"
 SCRYFALL_TIMEOUT_SECONDS = 10
 SCRYFALL_COURTESY_DELAY_SECONDS = 0.12  # ~100-150ms pedido por Scryfall entre requests
 
-# Mismo scope de expansiones que backend/importer/config.py SCOPE["magic"] (Fase 2/4).
-SCOPE_EXPANSIONS = (5285, 5308, 5396)
+# Mismo scope de expansiones que backend/importer/config.py SCOPE["magic"].
+SCOPE_EXPANSIONS = (5285, 5308, 5387, 5396, 5489)
 
 # printing_variant es un estado del flujo de self-healing de precios de Fase 4, no de
 # catalogo -- este backfill nunca lo pisa (regla confirmada, sprint contract seccion 2.4).

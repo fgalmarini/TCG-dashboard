@@ -16,8 +16,9 @@ EXPECTED_TABLES = {
     "cardmarket_products",
     "cardmarket_product_mappings",
     "market_price_history",
+    "card_images",
     "collection_items",
-    "want_list_items",
+    "wishlist_items",
 }
 
 
@@ -38,15 +39,53 @@ class SchemaTest(unittest.TestCase):
         table_names = {r[0] for r in rows}
         self.assertTrue(EXPECTED_TABLES.issubset(table_names))
 
-    def test_cards_unique_index(self):
+    def test_cards_have_legacy_and_catalog_identity_indexes(self):
         indexes = self.conn.execute("PRAGMA index_list(cards)").fetchall()
-        unique_cols = None
-        for idx in indexes:
-            if idx[2] == 1:  # unique flag
-                cols = [r[2] for r in self.conn.execute(f"PRAGMA index_info({idx[1]})")]
-                if set(cols) == {"expansion_id", "card_number", "printing_variant"}:
-                    unique_cols = cols
-        self.assertIsNotNone(unique_cols, "falta UNIQUE(expansion_id, card_number, printing_variant) en cards")
+        names = {idx[1] for idx in indexes if idx[2] == 1}
+        self.assertIn("idx_cards_legacy_identity", names)
+        self.assertIn("idx_cards_catalog_identity", names)
+        self.assertIn("idx_cards_scryfall_finish_identity", names)
+
+    def test_catalog_identity_allows_real_finish_variants(self):
+        self.conn.execute(
+            "INSERT INTO expansions (game_id, cardmarket_id_expansion, name, set_code) "
+            "VALUES (3, 5285, 'LTR', 'ltr')"
+        )
+        expansion_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        for finish in ("nonfoil", "foil"):
+            self.conn.execute(
+                """INSERT INTO cards
+                   (game_id, expansion_id, card_number, name, printing_variant,
+                    set_code, normalized_name, finish, language_id)
+                   VALUES (3, ?, '1', 'The One Ring', 'normal', 'ltr',
+                           'the one ring', ?, 1)""",
+                (expansion_id, finish),
+            )
+        self.conn.commit()
+
+    def test_catalog_identity_rejects_duplicate_same_finish(self):
+        self.conn.execute(
+            "INSERT INTO expansions (game_id, cardmarket_id_expansion, name, set_code) "
+            "VALUES (3, 5285, 'LTR', 'ltr')"
+        )
+        expansion_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        self.conn.execute(
+            """INSERT INTO cards
+               (game_id, expansion_id, card_number, name, printing_variant,
+                set_code, normalized_name, finish, language_id)
+               VALUES (3, ?, '1', 'The One Ring', 'normal', 'ltr',
+                       'the one ring', 'foil', 1)""",
+            (expansion_id,),
+        )
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.conn.execute(
+                """INSERT INTO cards
+                   (game_id, expansion_id, card_number, name, printing_variant,
+                    set_code, normalized_name, finish, language_id)
+                   VALUES (3, ?, '1', 'The One Ring', 'normal', 'ltr',
+                           'the one ring', 'foil', 1)""",
+                (expansion_id,),
+            )
 
     def test_market_price_history_unique_index(self):
         indexes = self.conn.execute("PRAGMA index_list(market_price_history)").fetchall()
@@ -93,6 +132,35 @@ class SchemaTest(unittest.TestCase):
     def test_games_code_check_constraint(self):
         with self.assertRaises(sqlite3.IntegrityError):
             self.conn.execute("INSERT INTO games (code, name) VALUES ('yugioh', 'Yu-Gi-Oh!')")
+
+    def test_card_images_accepts_cardtrader_and_keeps_unique_key(self):
+        self.conn.execute(
+            "INSERT INTO expansions (game_id, cardmarket_id_expansion, name) "
+            "VALUES (3, 9999, 'CardTrader fixture')"
+        )
+        expansion_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        self.conn.execute(
+            "INSERT INTO cards (game_id, expansion_id, name, printing_variant) "
+            "VALUES (3, ?, 'CardTrader fixture', 'normal')",
+            (expansion_id,),
+        )
+        card_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        self.conn.execute(
+            "INSERT INTO card_images (card_id, source, source_card_id, source_variant, "
+            "source_collector_number, language, face_index, image_url_large, "
+            "match_quality, status, last_checked_at) "
+            "VALUES (?, 'cardtrader', '123', 'Gold-Stamped', 'A01g', 'en', 0, "
+            "'https://cardtrader.com/image.jpg', 'exact', 'resolved', '2026-01-01T00:00:00Z')",
+            (card_id,),
+        )
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.conn.execute(
+                "INSERT INTO card_images (card_id, source, source_card_id, language, face_index, "
+                "image_url_large, match_quality, status, last_checked_at) VALUES "
+                "(?, 'cardtrader', '456', 'en', 0, 'https://cardtrader.com/other.jpg', "
+                "'exact', 'resolved', '2026-01-01T00:00:00Z')",
+                (card_id,),
+            )
 
 
 if __name__ == "__main__":

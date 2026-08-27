@@ -1,7 +1,7 @@
 """Insert de market_price_history solo para productos referenciados desde collection_items
-o want_list_items (regla de scope de fase2-cardmarket-hallazgos-y-schema.md).
+o wishlist_items (regla de scope de fase2-cardmarket-hallazgos-y-schema.md).
 
-want_list_items no tiene columna cardmarket_product_id (solo card_id) -- hay que llegar
+wishlist_items no tiene columna cardmarket_product_id (solo card_id) -- hay que llegar
 a cardmarket_product_id via cardmarket_product_mappings.
 """
 
@@ -16,7 +16,7 @@ _REFERENCED_PRODUCTS_SQL = """
         SELECT cardmarket_product_id FROM collection_items WHERE cardmarket_product_id IS NOT NULL
         UNION
         SELECT cpm.cardmarket_product_id
-        FROM want_list_items wli
+        FROM wishlist_items wli
         JOIN cardmarket_product_mappings cpm ON cpm.card_id = wli.card_id
         WHERE wli.card_id IS NOT NULL
     )
@@ -39,7 +39,7 @@ def insert_for_referenced_products(
         if entry is None:
             continue  # no pertenece al price_guide de este juego
         mapped = map_price_guide_entry(entry, alt_suffix)
-        conn.execute(
+        cursor = conn.execute(
             """INSERT INTO market_price_history
                  (cardmarket_product_id, observed_at, low, avg, trend, avg1, avg7, avg30,
                   low_alt, avg_alt, trend_alt, avg1_alt, avg7_alt, avg30_alt, imported_at)
@@ -54,6 +54,6 @@ def insert_for_referenced_products(
                 imported_at,
             ),
         )
-        inserted += 1
+        inserted += cursor.rowcount
     report.price_history_inserted[game_key] = report.price_history_inserted.get(game_key, 0) + inserted
     return inserted

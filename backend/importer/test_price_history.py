@@ -39,7 +39,7 @@ class PriceHistoryTest(unittest.TestCase):
         ).fetchone()
         self.assertEqual(row, (0.03, 0.31, "2026-01-01T00:00:00"))
 
-    def test_referenced_from_want_list_via_mapping(self):
+    def test_referenced_from_wishlist_via_mapping(self):
         self.conn.execute("INSERT INTO expansions (id, game_id, cardmarket_id_expansion) VALUES (1, 3, 5285)")
         self.conn.execute(
             "INSERT INTO cards (id, game_id, expansion_id, name, printing_variant) "
@@ -48,7 +48,7 @@ class PriceHistoryTest(unittest.TestCase):
         self.conn.execute(
             "INSERT INTO cardmarket_product_mappings (cardmarket_product_id, card_id, status) VALUES (1, 1, 'mapped')"
         )
-        self.conn.execute("INSERT INTO want_list_items (card_id, priority) VALUES (1, 'MEDIUM')")
+        self.conn.execute("INSERT INTO wishlist_items (card_id, priority) VALUES (1, 'medium')")
         count = insert_for_referenced_products(
             self.conn, self.price_index, "-foil", "2026-01-01T00:00:00", "2026-01-02T00:00:00", "magic", self.report
         )
@@ -60,6 +60,7 @@ class PriceHistoryTest(unittest.TestCase):
         insert_for_referenced_products(self.conn, self.price_index, "-foil", "2026-01-01T00:00:00", "t2", "magic", self.report)
         count = self.conn.execute("SELECT COUNT(*) FROM market_price_history").fetchone()[0]
         self.assertEqual(count, 1)
+        self.assertEqual(self.report.price_history_inserted["magic"], 1)
 
 
 if __name__ == "__main__":

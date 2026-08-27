@@ -21,7 +21,7 @@ ALT_SUFFIX = {"magic": "-foil", "one_piece": "-foil", "pokemon": "-holo"}
 # Scope de carga a la DB por juego: None = todo el catálogo de singles;
 # set[int] = solo esos idExpansion; "skip" = no cargar catálogo/precios (se descarga igual).
 SCOPE = {
-    "magic": {5285, 5308, 5396},
+    "magic": {5285, 5308, 5387, 5396, 5489},
     "one_piece": None,
     "pokemon": "skip",
 }

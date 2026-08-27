@@ -1,0 +1,44 @@
+"""FastAPI app -- backend/api/, dashboard, catalog and wishlist.
+
+Arranque: `uvicorn api.main:app --reload --port 8000` desde `backend/`.
+Collection editing sigue siendo via backend/scripts/load_collection.py/CSV; Wishlist
+write endpoints son el único dominio de escritura de esta fase.
+"""
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from .routers import catalog, collection, overview, wishlist
+
+app = FastAPI(
+    title="TCG Dashboard API",
+    description="Dashboard personal de colección TCG con catálogo y wishlist LOTR.",
+    version="0.7.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+)
+
+app.include_router(overview.router)
+app.include_router(collection.router)
+app.include_router(catalog.router)
+app.include_router(wishlist.router)
+
+
+@app.get("/health")
+def health() -> dict:
+    return {"status": "ok"}
+
+
+if __name__ == "__main__":
+    # Fallback para `python -m backend.api.main` desde la raiz del repo (mantiene el
+    # import relativo valido). El comando documentado en README.md es la CLI de
+    # uvicorn (con --reload), no esta ejecucion directa.
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,8 +1,7 @@
--- TCG Dashboard — Fase 3: schema SQLite
+-- TCG Dashboard — schema SQLite
 -- Traducción literal de fase2-cardmarket-hallazgos-y-schema.md, sección 3.
--- No agregar campos ni índices no listados en ese documento.
--- Excepción Fase 5: cards.data_source / cards.scryfall_raw agregados por
--- fase5-scryfall-magic-backfill-sprint-contract.md sección 2.1 (TCG-DEC-002).
+-- `cards` is the canonical card/printing catalog. Legacy collection references
+-- continue to use cards.id as `collection_items.card_id`.
 
 CREATE TABLE IF NOT EXISTS games (
     id   INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,8 +45,39 @@ CREATE TABLE IF NOT EXISTS cards (
     image_source            TEXT CHECK (image_source IS NULL OR image_source IN ('scryfall', 'onepiece_official', 'manual')),
     data_source             TEXT CHECK (data_source IS NULL OR data_source IN ('scryfall', 'cardmarket_heuristic', 'manual')),
     scryfall_raw            TEXT,
-    UNIQUE (expansion_id, card_number, printing_variant)
+    set_code                TEXT,
+    normalized_name         TEXT,
+    rarity                  TEXT,
+    finish                  TEXT CHECK (finish IS NULL OR finish IN ('nonfoil', 'foil', 'etched')),
+    treatment               TEXT,
+    language_id             INTEGER REFERENCES languages (id),
+    scryfall_id             TEXT,
+    scryfall_oracle_id      TEXT,
+    created_at              TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at              TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Preserve the old importer identity for legacy rows, while allowing catalog rows
+-- to differ by language and real finish.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_cards_legacy_identity
+    ON cards (expansion_id, card_number, printing_variant)
+    WHERE finish IS NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_cards_catalog_identity
+    ON cards (game_id, set_code, card_number, language_id, finish)
+    WHERE set_code IS NOT NULL
+      AND card_number IS NOT NULL
+      AND language_id IS NOT NULL
+      AND finish IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_cards_scryfall_finish_identity
+    ON cards (scryfall_id, language_id, finish)
+    WHERE scryfall_id IS NOT NULL
+      AND language_id IS NOT NULL
+      AND finish IS NOT NULL;
+
+CREATE INDEX IF NOT EXISTS idx_cards_catalog_search
+    ON cards (game_id, set_code, normalized_name);
 
 CREATE TABLE IF NOT EXISTS cardmarket_products (
     id                      INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -91,6 +121,25 @@ CREATE TABLE IF NOT EXISTS market_price_history (
 CREATE INDEX IF NOT EXISTS idx_market_price_history_product_observed
     ON market_price_history (cardmarket_product_id, observed_at DESC);
 
+CREATE TABLE IF NOT EXISTS card_images (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    card_id         INTEGER NOT NULL REFERENCES cards (id),
+    source          TEXT NOT NULL CHECK (source IN ('scryfall', 'cardtrader', 'manual')),
+    source_card_id  TEXT,
+    source_variant  TEXT,
+    source_collector_number TEXT,
+    language        TEXT NOT NULL,
+    face_index      INTEGER NOT NULL CHECK (face_index >= 0),
+    image_url_small TEXT,
+    image_url_large TEXT,
+    match_quality   TEXT NOT NULL CHECK (match_quality IN ('exact', 'representative', 'manual')),
+    status          TEXT NOT NULL CHECK (status IN ('resolved', 'ambiguous', 'missing', 'error')),
+    last_checked_at TEXT NOT NULL,
+    created_at      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (card_id, source, language, face_index)
+);
+
 CREATE TABLE IF NOT EXISTS collection_items (
     id                  INTEGER PRIMARY KEY AUTOINCREMENT,
     card_id             INTEGER REFERENCES cards (id),
@@ -110,14 +159,27 @@ CREATE TABLE IF NOT EXISTS collection_items (
     notes               TEXT
 );
 
-CREATE TABLE IF NOT EXISTS want_list_items (
-    id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    card_id      INTEGER REFERENCES cards (id),
-    language_id  INTEGER REFERENCES languages (id),
-    condition    TEXT CHECK (condition IS NULL OR condition IN ('NM', 'EX', 'GD', 'LP', 'PL', 'PO')),
-    grade_min    REAL,
-    target_price REAL,
-    max_price    REAL,
-    priority     TEXT NOT NULL CHECK (priority IN ('LOW', 'MEDIUM', 'HIGH')),
-    notes        TEXT
+CREATE TABLE IF NOT EXISTS wishlist_items (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    card_id         INTEGER NOT NULL REFERENCES cards (id),
+    quantity_wanted INTEGER NOT NULL DEFAULT 1 CHECK (quantity_wanted > 0),
+    priority        TEXT NOT NULL DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high')),
+    max_price       REAL,
+    currency        TEXT,
+    notes           TEXT,
+    status          TEXT NOT NULL DEFAULT 'wanted' CHECK (status IN ('wanted', 'acquired', 'removed')),
+    created_at      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    -- Legacy want-list fields remain nullable for a lossless additive migration.
+    language_id     INTEGER REFERENCES languages (id),
+    condition       TEXT CHECK (condition IS NULL OR condition IN ('NM', 'EX', 'GD', 'LP', 'PL', 'PO')),
+    grade_min       REAL,
+    target_price    REAL
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_wishlist_active_card
+    ON wishlist_items (card_id)
+    WHERE status = 'wanted';
+
+CREATE INDEX IF NOT EXISTS idx_wishlist_status_updated
+    ON wishlist_items (status, updated_at DESC, id DESC);

@@ -103,7 +103,7 @@ REVIEW_DONE_CSV_PATH = Path(__file__).resolve().parent / "collection-ambiguous-r
 STATE_PATH = Path(__file__).resolve().parent / ".collection_import_state.json"
 
 # Mismo scope que scryfall_backfill.py / backend/importer/config.py SCOPE["magic"].
-MAGIC_SCOPE_EXPANSIONS = (5285, 5308, 5396)
+MAGIC_SCOPE_EXPANSIONS = (5285, 5308, 5387, 5396, 5489)
 
 CSV_FIELDS = [
     "game", "card_name", "variant", "set_hint", "card_number", "language", "condition",
