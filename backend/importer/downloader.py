@@ -43,10 +43,17 @@ def download_file(url: str, dest: Path, timeout: int = TIMEOUT_SECONDS) -> Downl
         return DownloadResult(url, url, dest, False, 0, str(exc))
 
 
-def download_all() -> dict[str, DownloadResult]:
-    """Descarga los 6 archivos (price_guide + products, x3 juegos) a price-history/{juego}/."""
+def download_all(games=None) -> dict[str, DownloadResult]:
+    """Descarga fuentes Cardmarket para los juegos solicitados.
+
+    ``games=None`` conserva el comportamiento histórico de descargar los tres
+    juegos. Los comandos de mantenimiento pueden limitar la descarga a los juegos
+    que realmente van a procesar.
+    """
     results: dict[str, DownloadResult] = {}
-    for game_key, game_cfg in GAMES.items():
+    selected_games = tuple(games) if games is not None else tuple(GAMES)
+    for game_key in selected_games:
+        game_cfg = GAMES[game_key]
         folder = PRICE_HISTORY_DIR / game_cfg["folder"]
         cardmarket_game_id = game_cfg["cardmarket_game_id"]
         for file_kind, url_segment, filename_prefix in FILE_KINDS:
