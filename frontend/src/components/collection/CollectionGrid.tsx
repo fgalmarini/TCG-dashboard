@@ -4,8 +4,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import { CardArt } from '@/components/collection/CardImage'
 import { MarketPrice } from '@/components/shared/MarketPrice'
 import type { CollectionItem } from '@/lib/types'
+import { Button } from '@/components/ui/button'
 
-export function CollectionGrid({ items }: { items: CollectionItem[] }) {
+export function CollectionGrid({ items, onRemove }: { items: CollectionItem[]; onRemove: (id: number) => void }) {
   const navigate = useNavigate()
 
   if (items.length === 0) {
@@ -31,7 +32,7 @@ export function CollectionGrid({ items }: { items: CollectionItem[] }) {
               <div>
                 <h2 className="line-clamp-2 text-sm font-medium leading-snug">{item.display_name}</h2>
                 <p className="mt-1 truncate text-xs text-muted-foreground">
-                  {[item.expansion_set_code, item.card_number].filter(Boolean).join(' · ') || '—'}
+                  {[item.expansion_set_code, item.card_number, item.language?.toUpperCase()].filter(Boolean).join(' · ') || '—'}
                 </p>
               </div>
               <div className="flex flex-wrap items-center justify-between gap-2">
@@ -39,8 +40,10 @@ export function CollectionGrid({ items }: { items: CollectionItem[] }) {
                 <Badge variant="outline" className="text-[10px]">
                   {item.status}
                 </Badge>
+                {item.reprint_count > 0 && <Badge variant="secondary" className="text-[10px]">Reprints: {item.reprint_count}</Badge>}
               </div>
               {item.variant_label && <p className="truncate text-xs text-muted-foreground">{item.variant_label}</p>}
+              <Button type="button" size="sm" variant="ghost" className="w-full text-destructive" onClick={(event) => { event.stopPropagation(); onRemove(item.id) }}>Remove from Collection</Button>
             </div>
           </CardContent>
         </Card>

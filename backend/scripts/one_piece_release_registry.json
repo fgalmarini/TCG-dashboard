@@ -1,0 +1,43 @@
+{
+  "checked_at": "2026-08-27",
+  "default_policy": "released_when_present_in_current_cardmarket_catalog",
+  "bandai_en": "https://en.onepiece-cardgame.com/cardlist/",
+  "bandai_jp": "https://www.onepiece-cardgame.com/cardlist/",
+  "overrides": {
+    "op17": {
+      "status": "unreleased",
+      "release_date": "2026-08-28",
+      "source": "https://en.onepiece-cardgame.com/cardlist/"
+    },
+    "op-17p": {
+      "status": "unreleased",
+      "release_date": null,
+      "source": "https://en.onepiece-cardgame.com/cardlist/"
+    },
+    "op18": {
+      "status": "unreleased",
+      "release_date": null,
+      "source": "https://en.onepiece-cardgame.com/cardlist/"
+    },
+    "eb-05": {
+      "status": "unreleased",
+      "release_date": null,
+      "source": "https://en.onepiece-cardgame.com/cardlist/"
+    },
+    "st37": {
+      "status": "unreleased",
+      "release_date": null,
+      "source": "https://en.onepiece-cardgame.com/cardlist/"
+    },
+    "st38": {
+      "status": "unreleased",
+      "release_date": null,
+      "source": "https://en.onepiece-cardgame.com/cardlist/"
+    },
+    "sd01": {
+      "status": "unreleased",
+      "release_date": null,
+      "source": "https://en.onepiece-cardgame.com/cardlist/"
+    }
+  }
+}

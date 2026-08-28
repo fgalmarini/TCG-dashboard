@@ -32,6 +32,9 @@ class ImageResolution:
     reason: str | None = None
     source_variant: str | None = None
     source_collector_number: str | None = None
+    actual_image_language: str | None = None
+    requested_language: str | None = None
+    is_language_fallback: bool = False
 
 
 def validate_remote_image_url(url: str | None, allowed_hosts: set[str] | None = None) -> str | None:

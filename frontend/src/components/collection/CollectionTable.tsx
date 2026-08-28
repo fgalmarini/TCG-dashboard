@@ -12,8 +12,9 @@ import { CardThumbnail } from '@/components/collection/CardImage'
 import { MarketPrice } from '@/components/shared/MarketPrice'
 import { formatCurrency } from '@/lib/format'
 import type { CollectionItem } from '@/lib/types'
+import { Button } from '@/components/ui/button'
 
-export function CollectionTable({ items }: { items: CollectionItem[] }) {
+export function CollectionTable({ items, onRemove }: { items: CollectionItem[]; onRemove: (id: number) => void }) {
   const navigate = useNavigate()
 
   if (items.length === 0) {
@@ -34,6 +35,7 @@ export function CollectionTable({ items }: { items: CollectionItem[] }) {
             <TableHead className="text-right">Costo</TableHead>
             <TableHead className="text-right">Valor de mercado</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -54,10 +56,11 @@ export function CollectionTable({ items }: { items: CollectionItem[] }) {
                       Alta manual
                     </Badge>
                   )}
+                  {item.reprint_count > 0 && <Badge variant="secondary" className="shrink-0">Reprints: {item.reprint_count}</Badge>}
                 </div>
               </TableCell>
               <TableCell className="text-muted-foreground">{item.expansion_name ?? '—'}</TableCell>
-              <TableCell className="text-muted-foreground">{item.card_number ?? '—'}</TableCell>
+              <TableCell className="text-muted-foreground">{[item.card_number, item.language?.toUpperCase()].filter(Boolean).join(' · ') || '—'}</TableCell>
               <TableCell className="text-muted-foreground">{item.condition ?? '—'}</TableCell>
               <TableCell className="text-right tabular-nums">{item.quantity}</TableCell>
               <TableCell className="text-right tabular-nums">{formatCurrency(item.purchase_price)}</TableCell>
@@ -66,6 +69,9 @@ export function CollectionTable({ items }: { items: CollectionItem[] }) {
               </TableCell>
               <TableCell>
                 <Badge variant="outline">{item.status}</Badge>
+              </TableCell>
+              <TableCell>
+                <Button type="button" size="sm" variant="ghost" className="text-destructive" onClick={(event) => { event.stopPropagation(); onRemove(item.id) }}>Remove</Button>
               </TableCell>
             </TableRow>
           ))}

@@ -3,9 +3,9 @@
 
 import { formatCurrency } from '@/lib/format'
 
-export function MarketPrice({ value, className }: { value: number | null; className?: string }) {
+export function MarketPrice({ value, currency = 'EUR', className }: { value: number | null; currency?: string | null; className?: string }) {
   if (value === null) {
     return <span className={`text-muted-foreground ${className ?? ''}`}>— sin precio</span>
   }
-  return <span className={className}>{formatCurrency(value)}</span>
+  return <span className={className}>{formatCurrency(value, currency || 'EUR')}</span>
 }

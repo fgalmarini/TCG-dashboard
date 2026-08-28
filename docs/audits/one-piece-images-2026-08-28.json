@@ -1,0 +1,901 @@
+{
+  "blueprint_breakdown": [
+    {
+      "count": 0,
+      "language": "en",
+      "metric": "image_url_present"
+    },
+    {
+      "count": 6850,
+      "language": "en",
+      "metric": "present"
+    },
+    {
+      "count": 0,
+      "language": "jp",
+      "metric": "image_url_present"
+    },
+    {
+      "count": 6872,
+      "language": "jp",
+      "metric": "present"
+    }
+  ],
+  "blueprint_export_supplied": false,
+  "catalog_status_breakdown": [
+    {
+      "ambiguous_images": 0,
+      "catalog_status": "active",
+      "exact_coverage_pct": 98.9,
+      "exact_images": 6763,
+      "fallback_images": 0,
+      "language": "en",
+      "missing_coverage_pct": 1.1,
+      "missing_images": 75,
+      "total_printings": 6838,
+      "visual_coverage_pct": 98.9
+    },
+    {
+      "ambiguous_images": 0,
+      "catalog_status": "ambiguous",
+      "exact_images": 12,
+      "fallback_images": 0,
+      "language": "en",
+      "missing_images": 0,
+      "total_printings": 12
+    },
+    {
+      "ambiguous_images": 0,
+      "catalog_status": "legacy",
+      "exact_images": 0,
+      "fallback_images": 0,
+      "language": "en",
+      "missing_images": 8361,
+      "total_printings": 8361
+    },
+    {
+      "ambiguous_images": 0,
+      "catalog_status": "active",
+      "exact_coverage_pct": 4.97,
+      "exact_images": 340,
+      "fallback_images": 6487,
+      "language": "jp",
+      "missing_coverage_pct": 0.28,
+      "missing_images": 19,
+      "total_printings": 6846,
+      "visual_coverage_pct": 99.72
+    },
+    {
+      "ambiguous_images": 0,
+      "catalog_status": "ambiguous",
+      "exact_images": 14,
+      "fallback_images": 0,
+      "language": "jp",
+      "missing_images": 12,
+      "total_printings": 26
+    }
+  ],
+  "counts_by_language": {
+    "en": {
+      "ambiguous_images": 0,
+      "exact_coverage_pct": 98.9,
+      "exact_images": 6763,
+      "fallback_images": 0,
+      "missing_coverage_pct": 1.1,
+      "missing_images": 75,
+      "total_printings": 6838,
+      "visual_coverage_pct": 98.9
+    },
+    "jp": {
+      "ambiguous_images": 0,
+      "exact_coverage_pct": 4.97,
+      "exact_images": 340,
+      "fallback_images": 6487,
+      "missing_coverage_pct": 0.28,
+      "missing_images": 19,
+      "total_printings": 6846,
+      "visual_coverage_pct": 99.72
+    }
+  },
+  "counts_by_language_all_statuses": {
+    "en": {
+      "ambiguous_images": 0,
+      "exact_coverage_pct": 44.54,
+      "exact_images": 6775,
+      "fallback_images": 0,
+      "missing_coverage_pct": 55.46,
+      "missing_images": 8436,
+      "total_printings": 15211,
+      "visual_coverage_pct": 44.54
+    },
+    "jp": {
+      "ambiguous_images": 0,
+      "exact_coverage_pct": 5.15,
+      "exact_images": 354,
+      "fallback_images": 6487,
+      "missing_coverage_pct": 0.45,
+      "missing_images": 31,
+      "total_printings": 6872,
+      "visual_coverage_pct": 99.55
+    }
+  },
+  "db": "backend/db/tcg_dashboard.db",
+  "fallback_summary": {
+    "ambiguous_jp_printings": 19,
+    "blueprint_image_url_status": "unknown_without_raw_blueprint_export",
+    "safe_fallback_images_active_jp": 6487,
+    "unresolved_decisions": [
+      {
+        "jp_card_id": 14590,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19234,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19235,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19236,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19237,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19238,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19239,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19240,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19241,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19242,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19243,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19244,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19245,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19246,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19247,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19248,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19249,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 19250,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      {
+        "jp_card_id": 20714,
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      }
+    ],
+    "unresolved_jp_printings_with_blueprint": 19
+  },
+  "match_breakdown": [
+    {
+      "count": 75,
+      "language": "en",
+      "match_quality": "exact",
+      "status": "missing"
+    },
+    {
+      "count": 6775,
+      "language": "en",
+      "match_quality": "exact",
+      "status": "resolved"
+    },
+    {
+      "count": 31,
+      "language": "jp",
+      "match_quality": "exact",
+      "status": "missing"
+    },
+    {
+      "count": 6841,
+      "language": "jp",
+      "match_quality": "exact",
+      "status": "resolved"
+    }
+  ],
+  "read_only": true,
+  "sample_categories_available": {
+    "alternate_art": 4,
+    "base": 4,
+    "manga_special": 4,
+    "parallel": 0,
+    "promo": 4,
+    "reprint": 4
+  },
+  "source_breakdown": [
+    {
+      "actual_image_language": "en",
+      "catalog_status": "active",
+      "count": 75,
+      "is_language_fallback": false,
+      "language": "en",
+      "source": "cardtrader",
+      "status": "missing"
+    },
+    {
+      "actual_image_language": "en",
+      "catalog_status": "active",
+      "count": 6763,
+      "is_language_fallback": false,
+      "language": "en",
+      "source": "cardtrader",
+      "status": "resolved"
+    },
+    {
+      "actual_image_language": "en",
+      "catalog_status": "ambiguous",
+      "count": 12,
+      "is_language_fallback": false,
+      "language": "en",
+      "source": "cardtrader",
+      "status": "resolved"
+    },
+    {
+      "actual_image_language": "jp",
+      "catalog_status": "active",
+      "count": 19,
+      "is_language_fallback": false,
+      "language": "jp",
+      "source": "cardtrader",
+      "status": "missing"
+    },
+    {
+      "actual_image_language": "en",
+      "catalog_status": "active",
+      "count": 6487,
+      "is_language_fallback": true,
+      "language": "jp",
+      "source": "cardtrader",
+      "status": "resolved"
+    },
+    {
+      "actual_image_language": "jp",
+      "catalog_status": "active",
+      "count": 340,
+      "is_language_fallback": false,
+      "language": "jp",
+      "source": "cardtrader",
+      "status": "resolved"
+    },
+    {
+      "actual_image_language": "jp",
+      "catalog_status": "ambiguous",
+      "count": 12,
+      "is_language_fallback": false,
+      "language": "jp",
+      "source": "cardtrader",
+      "status": "missing"
+    },
+    {
+      "actual_image_language": "jp",
+      "catalog_status": "ambiguous",
+      "count": 14,
+      "is_language_fallback": false,
+      "language": "jp",
+      "source": "cardtrader",
+      "status": "resolved"
+    }
+  ],
+  "validation_examples": [
+    {
+      "api_image_present": true,
+      "art_kind": "base",
+      "blueprint_ids": [
+        "256652"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14624,
+      "card_number": "P-037",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Monkey.D.Luffy",
+      "release_kind": "promo",
+      "sample_categories": [
+        "base"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Anime Expo Exclusive | Non-Foil",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "base",
+      "blueprint_ids": [
+        "256657"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14625,
+      "card_number": "P-038",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Trafalgar Law",
+      "release_kind": "promo",
+      "sample_categories": [
+        "base"
+      ],
+      "selected_image": {
+        "actual_image_language": "jp",
+        "is_language_fallback": false,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Base",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "base",
+      "blueprint_ids": [
+        "256662"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14626,
+      "card_number": "P-039",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Bellamy",
+      "release_kind": "promo",
+      "sample_categories": [
+        "base"
+      ],
+      "selected_image": {
+        "actual_image_language": "jp",
+        "is_language_fallback": false,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Base",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "base",
+      "blueprint_ids": [
+        "264895"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14638,
+      "card_number": "OP02-059",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Boa Hancock",
+      "release_kind": "promo",
+      "sample_categories": [
+        "base"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Foil | Gift Collection 2023",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "alternate_art",
+      "blueprint_ids": [
+        "256666"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14629,
+      "card_number": "P-041",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Monkey.D.Luffy",
+      "release_kind": "promo",
+      "sample_categories": [
+        "alternate_art"
+      ],
+      "selected_image": {
+        "actual_image_language": "jp",
+        "is_language_fallback": false,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Alternate Art | \"Not For Sale\" Promo",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "alternate_art",
+      "blueprint_ids": [
+        "351200"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14770,
+      "card_number": "OP07-051",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Boa Hancock",
+      "release_kind": "promo",
+      "sample_categories": [
+        "alternate_art"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Seven Warlords of the Sea Binder Set | Alternate Art",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "alternate_art",
+      "blueprint_ids": [
+        "351204"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14776,
+      "card_number": "P-030",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Jinbe",
+      "release_kind": "promo",
+      "sample_categories": [
+        "alternate_art"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Seven Warlords of the Sea Binder Set | Alternate Art",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "alternate_art",
+      "blueprint_ids": [
+        "351205"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14777,
+      "card_number": "OP07-047",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Trafalgar Law",
+      "release_kind": "promo",
+      "sample_categories": [
+        "alternate_art"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Seven Warlords of the Sea Binder Set | Alternate Art",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "unknown",
+      "blueprint_ids": [
+        "245406"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14584,
+      "card_number": "ST03-008",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Trafalgar Law",
+      "release_kind": "promo",
+      "sample_categories": [
+        "promo"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Event Pack Vol. 3",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "unknown",
+      "blueprint_ids": [
+        "250646"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14586,
+      "card_number": "P-001P1",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Monkey.D.Luffy",
+      "release_kind": "promo",
+      "sample_categories": [
+        "promo"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Pre-Errata Card | Missing \".\" after \"[Rush]\" | Promotion Pack 2022",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "unknown",
+      "blueprint_ids": [
+        "250647"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14588,
+      "card_number": "P-001P2",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Monkey.D.Luffy",
+      "release_kind": "promo",
+      "sample_categories": [
+        "promo"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Super Pre-Release",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "unknown",
+      "blueprint_ids": [
+        "250648"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14589,
+      "card_number": "P-001",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Monkey.D.Luffy",
+      "release_kind": "promo",
+      "sample_categories": [
+        "promo"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "Super Pre-Release WINNER",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "base",
+      "blueprint_ids": [
+        "318404"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 15258,
+      "card_number": "ST01-001",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Monkey.D.Luffy",
+      "release_kind": "reprint",
+      "sample_categories": [
+        "reprint"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "st01",
+      "source_variant": "Foil Reprint | Fixed text \"... up to 1 rested DON!! card.\"",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "alternate_art",
+      "blueprint_ids": [
+        "244449"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 15263,
+      "card_number": "OP01-064",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Alvida",
+      "release_kind": "reprint",
+      "sample_categories": [
+        "reprint"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "op01",
+      "source_variant": "Alternate Art | Fixed Reprint",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "base",
+      "blueprint_ids": [
+        "244461"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 15273,
+      "card_number": "OP01-002",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Trafalgar Law",
+      "release_kind": "reprint",
+      "sample_categories": [
+        "reprint"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "op01",
+      "source_variant": "Fixed Reprint",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "alternate_art",
+      "blueprint_ids": [
+        "244463"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 15275,
+      "card_number": "OP01-002",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Trafalgar Law",
+      "release_kind": "reprint",
+      "sample_categories": [
+        "reprint"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "op01",
+      "source_variant": "Alternate Art | Fixed Reprint",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "special",
+      "blueprint_ids": [
+        "345164"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14763,
+      "card_number": "P-043",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Monkey.D.Luffy",
+      "release_kind": "promo",
+      "sample_categories": [
+        "manga_special"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "promo",
+      "source_variant": "2nd Anniversary Stamp",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "unknown",
+      "blueprint_ids": [
+        "295262"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 15044,
+      "card_number": "ST01-011",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Brook",
+      "release_kind": "special",
+      "sample_categories": [
+        "manga_special"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "bandai",
+      "source_variant": "1st Anniversary Set",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "unknown",
+      "blueprint_ids": [
+        "295264"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 15046,
+      "card_number": "ST01-010",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Franky",
+      "release_kind": "special",
+      "sample_categories": [
+        "manga_special"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "bandai",
+      "source_variant": "1st Anniversary Set",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": true,
+      "art_kind": "unknown",
+      "blueprint_ids": [
+        "295265"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 15047,
+      "card_number": "ST10-005",
+      "catalog_status": "active",
+      "frontend_image_present": true,
+      "language": "jp",
+      "name": "Jinbe",
+      "release_kind": "special",
+      "sample_categories": [
+        "manga_special"
+      ],
+      "selected_image": {
+        "actual_image_language": "en",
+        "is_language_fallback": true,
+        "source": "cardtrader"
+      },
+      "set_code": "bandai",
+      "source_variant": "1st Anniversary Set",
+      "stored_image_record": true
+    },
+    {
+      "api_image_present": false,
+      "art_kind": "unknown",
+      "blueprint_ids": [
+        "250650"
+      ],
+      "blueprint_image_url_present": null,
+      "blueprint_present": true,
+      "card_id": 14590,
+      "card_number": "P-001",
+      "catalog_status": "active",
+      "fallback_decision": {
+        "reason": "composite printing identity is not unique",
+        "status": "missing"
+      },
+      "frontend_image_present": false,
+      "language": "jp",
+      "name": "Monkey.D.Luffy",
+      "release_kind": "promo",
+      "selected_image": null,
+      "set_code": "promo",
+      "source_variant": "New Year Red Packet",
+      "stored_image_record": true
+    }
+  ]
+}

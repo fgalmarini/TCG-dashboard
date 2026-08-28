@@ -51,17 +51,25 @@ CREATE TABLE wishlist_items (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     card_id INTEGER NOT NULL REFERENCES cards (id),
     quantity_wanted INTEGER NOT NULL DEFAULT 1 CHECK (quantity_wanted > 0),
-    priority TEXT NOT NULL DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high')),
+    priority TEXT NOT NULL DEFAULT 'medium' CHECK (priority IN ('low', 'medium', 'high', 'none')),
     max_price REAL,
     currency TEXT,
     notes TEXT,
     status TEXT NOT NULL DEFAULT 'wanted' CHECK (status IN ('wanted', 'acquired', 'removed')),
+    acquired_at TEXT,
+    removed_at TEXT,
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     language_id INTEGER REFERENCES languages (id),
     condition TEXT CHECK (condition IS NULL OR condition IN ('NM', 'EX', 'GD', 'LP', 'PL', 'PO')),
     grade_min REAL,
-    target_price REAL
+    target_price REAL,
+    CHECK (target_price IS NULL OR max_price IS NULL OR target_price <= max_price),
+    CHECK (
+        (status = 'wanted' AND acquired_at IS NULL AND removed_at IS NULL)
+        OR (status = 'acquired' AND acquired_at IS NOT NULL AND removed_at IS NULL)
+        OR (status = 'removed' AND acquired_at IS NULL AND removed_at IS NOT NULL)
+    )
 )
 """
 
@@ -73,6 +81,8 @@ class MigrationReport:
     cards: int = 0
     wishlist_items: int = 0
     legacy_null_wishlist_cards: int = 0
+    wishlist_rebuilt: bool = False
+    invalid_wishlist_prices: int = 0
 
 
 def utc_now() -> str:
@@ -87,6 +97,13 @@ def table_exists(conn: sqlite3.Connection, table: str) -> bool:
     return conn.execute(
         "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)
     ).fetchone() is not None
+
+
+def table_sql(conn: sqlite3.Connection, table: str) -> str:
+    row = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type='table' AND name=?", (table,)
+    ).fetchone()
+    return (row[0] or "").lower() if row else ""
 
 
 def raw_scryfall_values(raw: str | None) -> tuple[str | None, str | None]:
@@ -163,9 +180,80 @@ def rebuild_cards(conn: sqlite3.Connection, report: MigrationReport, apply: bool
     conn.execute(f'DROP TABLE "{legacy}"')
 
 
+def rebuild_wishlist(conn: sqlite3.Connection, report: MigrationReport, apply: bool) -> None:
+    existing = columns(conn, "wishlist_items")
+    report.wishlist_items = conn.execute("SELECT COUNT(*) FROM wishlist_items").fetchone()[0]
+    report.wishlist_rebuilt = True
+    if "target_price" in existing and "max_price" in existing:
+        report.invalid_wishlist_prices = conn.execute(
+            "SELECT COUNT(*) FROM wishlist_items "
+            "WHERE target_price IS NOT NULL AND max_price IS NOT NULL "
+            "AND target_price > max_price"
+        ).fetchone()[0]
+    if report.invalid_wishlist_prices:
+        raise RuntimeError(
+            "wishlist contiene target_price mayor que max_price; resolver los datos "
+            "antes de --apply"
+        )
+    if not apply:
+        return
+
+    legacy = "wishlist_items__planning_migration_legacy"
+    if table_exists(conn, legacy):
+        raise RuntimeError(f"temporary table already exists: {legacy}")
+    conn.execute(f'ALTER TABLE "wishlist_items" RENAME TO "{legacy}"')
+    conn.execute(WISHLIST_SQL)
+
+    def value(column: str, fallback: str) -> str:
+        return f'w."{column}"' if column in existing else fallback
+
+    status_column = value("status", "'wanted'")
+    status_value = f"LOWER({status_column})"
+    updated_value = value("updated_at", "CURRENT_TIMESTAMP")
+
+    conn.execute(
+        f"""INSERT INTO wishlist_items
+           (id, card_id, quantity_wanted, priority, max_price, currency, notes, status,
+            acquired_at, removed_at, created_at, updated_at, language_id, condition,
+            grade_min, target_price)
+           SELECT w.id, w.card_id, {value('quantity_wanted', '1')},
+                  CASE LOWER({value('priority', "'medium'")})
+                       WHEN 'high' THEN 'high'
+                       WHEN 'low' THEN 'low'
+                       WHEN 'none' THEN 'none'
+                       ELSE 'medium' END,
+                  {value('max_price', 'NULL')}, {value('currency', 'NULL')},
+                  {value('notes', 'NULL')},
+                  CASE WHEN {status_value} IN ('acquired', 'removed') THEN {status_value} ELSE 'wanted' END,
+                  CASE WHEN {status_value} = 'acquired'
+                       THEN COALESCE({value('acquired_at', 'NULL')}, {updated_value}) ELSE NULL END,
+                  CASE WHEN {status_value} = 'removed'
+                       THEN COALESCE({value('removed_at', 'NULL')}, {updated_value}) ELSE NULL END,
+                  {value('created_at', 'CURRENT_TIMESTAMP')},
+                  {updated_value},
+                  {value('language_id', 'NULL')}, {value('condition', 'NULL')},
+                  {value('grade_min', 'NULL')}, {value('target_price', 'NULL')}
+             FROM [{legacy}] w"""
+    )
+    conn.execute(f'DROP TABLE "{legacy}"')
+
+
 def migrate_wishlist(conn: sqlite3.Connection, report: MigrationReport, apply: bool) -> None:
     if table_exists(conn, "wishlist_items"):
-        report.wishlist_items = conn.execute("SELECT COUNT(*) FROM wishlist_items").fetchone()[0]
+        required = {
+            "acquired_at", "removed_at", "target_price", "max_price", "status",
+        }
+        sql = table_sql(conn, "wishlist_items")
+        needs_rebuild = (
+            not required.issubset(columns(conn, "wishlist_items"))
+            or "'none'" not in sql
+            or "target_price <= max_price" not in sql
+            or "status = 'wanted'" not in sql
+        )
+        if needs_rebuild:
+            rebuild_wishlist(conn, report, apply)
+        else:
+            report.wishlist_items = conn.execute("SELECT COUNT(*) FROM wishlist_items").fetchone()[0]
         return
     if not table_exists(conn, "want_list_items"):
         return
@@ -190,12 +278,13 @@ def migrate_wishlist(conn: sqlite3.Connection, report: MigrationReport, apply: b
     conn.execute(
         f"""INSERT INTO wishlist_items
            (id, card_id, quantity_wanted, priority, max_price, currency, notes, status,
-            created_at, updated_at, language_id, condition, grade_min, target_price)
+            acquired_at, removed_at, created_at, updated_at, language_id, condition,
+            grade_min, target_price)
            SELECT id, card_id, 1,
                   CASE UPPER(priority) WHEN 'HIGH' THEN 'high'
-                       WHEN 'LOW' THEN 'low' ELSE 'medium' END,
-                  max_price, NULL, notes, 'wanted', ?, ?, language_id, condition,
-                  grade_min, target_price
+                       WHEN 'LOW' THEN 'low' WHEN 'NONE' THEN 'none' ELSE 'medium' END,
+                  max_price, NULL, notes, 'wanted', NULL, NULL, ?, ?, language_id,
+                  condition, grade_min, target_price
              FROM [{legacy}]""",
         (utc_now(), utc_now()),
     )
@@ -269,6 +358,8 @@ def main() -> None:
     print(f"Cards: {report.cards}")
     print(f"Cards rebuilt: {'yes' if report.cards_rebuilt else 'no'}")
     print(f"Wishlist migrated: {'yes' if report.wishlist_migrated else 'no'}")
+    print(f"Wishlist rebuilt: {'yes' if report.wishlist_rebuilt else 'no'}")
+    print(f"Invalid wishlist prices: {report.invalid_wishlist_prices}")
     print(f"Wishlist items: {report.wishlist_items}")
 
 

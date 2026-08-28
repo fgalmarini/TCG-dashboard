@@ -7,3 +7,11 @@ logs/pricing/
 backups/pricing/
 backend/scripts/.collection_import_state.json
 backend/scripts/collection-ambiguous-review*.csv
+backend/scripts/.scryfall-cache/
+
+# Fase 6 -- frontend (Vite + React)
+frontend/node_modules/
+frontend/dist/
+.env
+.env.local
+.DS_Store

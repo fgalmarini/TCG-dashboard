@@ -14,3 +14,4 @@ ADRs are the primary human index.
 | [TCG-DEC-005](TCG-DEC-005-dashboard-basic-scope.md) | Phase 6 basic dashboard scope and Trend Price market metric | Implemented |
 | [TCG-DEC-006](TCG-DEC-006-remote-card-images.md) | Scryfall primary images with exact CardTrader fallback | Implemented |
 | [TCG-DEC-007](TCG-DEC-007-magic-lotr-catalog-wishlist.md) | Magic LOTR catalog and wishlist | Implemented |
+| [TCG-DEC-008](TCG-DEC-008-multi-tcg-one-piece-foundation.md) | Multi-TCG foundation and One Piece provider policy | Implemented |

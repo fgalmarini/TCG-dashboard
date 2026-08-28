@@ -69,3 +69,9 @@ export function CardArt({
     />
   )
 }
+
+export function ImageReferenceNote({ image }: { image: CardImageData | null }) {
+  if (!image?.is_language_fallback) return null
+  const language = image.actual_image_language?.toUpperCase() ?? 'OTHER'
+  return <p className="text-xs text-muted-foreground">Reference image: {language}</p>
+}

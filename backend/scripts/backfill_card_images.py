@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS card_images (
     face_index              INTEGER NOT NULL CHECK (face_index >= 0),
     image_url_small         TEXT,
     image_url_large         TEXT,
+    image_language_scope    TEXT NOT NULL DEFAULT 'unknown',
+    is_language_fallback    INTEGER NOT NULL DEFAULT 0 CHECK (is_language_fallback IN (0, 1)),
     match_quality           TEXT NOT NULL CHECK (match_quality IN ('exact', 'representative', 'manual')),
     status                  TEXT NOT NULL CHECK (status IN ('resolved', 'ambiguous', 'missing', 'error')),
     last_checked_at         TEXT NOT NULL,
@@ -190,7 +192,8 @@ def _rebuild_card_images(conn: sqlite3.Connection, old_columns: tuple[str, ...])
 
     common_columns = tuple(column for column in old_columns if column in {
         "id", "card_id", "source", "source_card_id", "language", "face_index",
-        "image_url_small", "image_url_large", "match_quality", "status",
+        "image_url_small", "image_url_large", "image_language_scope", "is_language_fallback",
+        "match_quality", "status",
         "last_checked_at", "created_at", "updated_at",
     })
     quoted = ", ".join(f'"{column}"' for column in common_columns)
@@ -221,6 +224,10 @@ def ensure_schema(conn: sqlite3.Connection) -> None:
         conn.execute("ALTER TABLE card_images ADD COLUMN source_variant TEXT")
     if "source_collector_number" not in existing_columns:
         conn.execute("ALTER TABLE card_images ADD COLUMN source_collector_number TEXT")
+    if "image_language_scope" not in existing_columns:
+        conn.execute("ALTER TABLE card_images ADD COLUMN image_language_scope TEXT NOT NULL DEFAULT 'unknown'")
+    if "is_language_fallback" not in existing_columns:
+        conn.execute("ALTER TABLE card_images ADD COLUMN is_language_fallback INTEGER NOT NULL DEFAULT 0")
 
 
 def fetch_scope(conn: sqlite3.Connection) -> list[CardScope]:
@@ -317,14 +324,16 @@ def upsert_resolution(conn: sqlite3.Connection, card_id: int, resolution: ImageR
             """INSERT INTO card_images
                    (card_id, source, source_card_id, source_variant, source_collector_number,
                     language, face_index, image_url_small, image_url_large,
-                    match_quality, status, last_checked_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    image_language_scope, is_language_fallback, match_quality, status, last_checked_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                ON CONFLICT(card_id, source, language, face_index) DO UPDATE SET
                    source_card_id = excluded.source_card_id,
                    source_variant = excluded.source_variant,
                    source_collector_number = excluded.source_collector_number,
                    image_url_small = excluded.image_url_small,
                    image_url_large = excluded.image_url_large,
+                   image_language_scope = excluded.image_language_scope,
+                   is_language_fallback = excluded.is_language_fallback,
                    match_quality = excluded.match_quality,
                    status = excluded.status,
                    last_checked_at = excluded.last_checked_at,
@@ -332,7 +341,10 @@ def upsert_resolution(conn: sqlite3.Connection, card_id: int, resolution: ImageR
             (
                 card_id, resolution.source, resolution.source_card_id, resolution.source_variant,
                 resolution.source_collector_number, resolution.language, face.face_index,
-                face.small_url, face.large_url, resolution.match_quality, resolution.status, checked_at,
+                face.small_url, face.large_url,
+                resolution.actual_image_language or resolution.language,
+                int(resolution.is_language_fallback), resolution.match_quality,
+                resolution.status, checked_at,
             ),
         )
 

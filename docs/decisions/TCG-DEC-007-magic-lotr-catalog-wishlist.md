@@ -17,8 +17,20 @@ in identity.
 ## Wishlist
 
 Use `wishlist_items` with active wanted-card uniqueness. Removing an item sets
-`status=removed`; moving it to Collection increments or creates a collection item and
-sets the wishlist row to `acquired`.
+`status=removed` and records `removed_at`. Marking an item acquired sets
+`status=acquired` and records `acquired_at`; it never creates or modifies a Collection
+row. Historical acquired/removed rows can be explicitly restored to `wanted`, clearing
+both transition timestamps.
+
+Wishlist planning fields include optional `target_price` and `max_price`, with
+`target_price <= max_price` enforced when both exist. The global wishlist summary
+counts wanted/acquired rows, counts wanted rows missing prices or canonical matches,
+and estimates only wanted rows using `current_price * quantity_wanted`.
+
+Unmatched wishlist rows are not supported: `wishlist_items.card_id` remains NOT NULL.
+Manual catalog resolution is supported for unmatched Collection rows and updates a
+shared Cardmarket mapping only when that mapping is demonstrably legacy and unused by
+other Collection rows; otherwise it only relinks the Collection row.
 
 ## Price and source rules
 

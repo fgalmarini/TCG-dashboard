@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
-import { CardArt } from '@/components/collection/CardImage'
+import { CardArt, CardThumbnail, ImageReferenceNote } from '@/components/collection/CardImage'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
-import { fetchCollectionItem } from '@/lib/api'
+import { fetchCollectionItem, fetchMatchCandidates, resolveCollectionMatch } from '@/lib/api'
 import { formatCurrency, formatDate, formatDateTime, formatPercent } from '@/lib/format'
+import { Input } from '@/components/ui/input'
 import { useApi } from '@/lib/useApi'
 
 function Field({ label, value }: { label: string; value: string }) {
@@ -18,6 +19,69 @@ function Field({ label, value }: { label: string; value: string }) {
       <dt className="text-xs uppercase tracking-wide text-muted-foreground">{label}</dt>
       <dd className="mt-0.5 text-sm">{value}</dd>
     </div>
+  )
+}
+
+function MatchResolver({ itemId, onResolved }: { itemId: number; onResolved: () => void }) {
+  const [search, setSearch] = useState('')
+  const [selected, setSelected] = useState<number | null>(null)
+  const [pending, setPending] = useState(false)
+  const [actionError, setActionError] = useState<string | null>(null)
+  const { data, error, loading } = useApi(() => fetchMatchCandidates(itemId, search || undefined), [itemId, search])
+
+  async function resolve() {
+    if (selected === null || pending) return
+    setPending(true)
+    setActionError(null)
+    try {
+      await resolveCollectionMatch(itemId, selected)
+      onResolved()
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : 'No se pudo resolver el match.')
+    } finally {
+      setPending(false)
+    }
+  }
+
+  return (
+    <Card>
+      <CardHeader><CardTitle>Resolver match de catálogo</CardTitle></CardHeader>
+      <CardContent className="space-y-4">
+        <p className="text-sm text-muted-foreground">Esta fila no tiene una identidad física canónica. Selecciona explícitamente una candidata del catálogo local.</p>
+        {data && (
+          <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+            <Field label="Nombre" value={data.name || '—'} />
+            <Field label="Set" value={data.set_code ?? '—'} />
+            <Field label="Collector number" value={data.card_number ?? '—'} />
+            <Field label="Source" value={data.source} />
+          </div>
+        )}
+        <Input placeholder="Buscar candidatos..." value={search} onChange={(event) => setSearch(event.target.value)} />
+        {loading && <LoadingState label="Buscando candidatos" />}
+        {error && <p className="text-sm text-destructive">{error}</p>}
+        {data && !loading && (
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {data.candidates.map((candidate) => (
+              <button
+                key={candidate.id}
+                type="button"
+                className={`flex items-center gap-3 rounded-lg border p-2 text-left transition-colors ${selected === candidate.id ? 'border-primary bg-primary/10' : 'hover:bg-muted'}`}
+                aria-pressed={selected === candidate.id}
+                onClick={() => setSelected(candidate.id)}
+              >
+                <CardThumbnail image={candidate.image} alt={candidate.name} />
+                <span className="min-w-0 text-sm">
+                  <span className="block truncate font-medium">{candidate.name}</span>
+                  <span className="block text-xs text-muted-foreground">{[candidate.set_code?.toUpperCase(), candidate.card_number, candidate.finish, candidate.treatment].filter(Boolean).join(' · ')}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+        {actionError && <p className="text-sm text-destructive">{actionError}</p>}
+        <Button type="button" disabled={selected === null || pending} onClick={resolve}>{pending ? 'Resolviendo…' : 'Confirmar match'}</Button>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -47,8 +111,12 @@ export function CardDetailPage() {
           <div className="flex flex-wrap items-center gap-2">
             <h1 className="text-xl font-semibold">{data.display_name}</h1>
             {data.manual_entry && <Badge variant="secondary">Alta manual</Badge>}
+            {!data.catalog_matched && <Badge variant="destructive">Unmatched</Badge>}
             <Badge variant="outline">{data.status}</Badge>
+            {data.reprint_count > 0 && <Badge variant="secondary">Reprints: {data.reprint_count}</Badge>}
           </div>
+
+          {!data.catalog_matched && <MatchResolver itemId={itemId} onResolved={reload} />}
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(260px,360px)_1fr]">
             <Card>
@@ -57,6 +125,7 @@ export function CardDetailPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <CardArt image={data.image} alt={data.display_name} faceIndex={activeFace} />
+                <ImageReferenceNote image={data.image} />
                 {faces.length > 1 && (
                   <div className="inline-flex rounded-md border bg-background p-1">
                     {faces.map((face, index) => (
@@ -85,6 +154,11 @@ export function CardDetailPage() {
                   <Field label="Set code" value={data.expansion_set_code ?? '—'} />
                   <Field label="Numero" value={data.card_number ?? '—'} />
                   <Field label="TCG" value={data.game_name ?? '—'} />
+                  <Field label="Idioma" value={data.language?.toUpperCase() ?? '—'} />
+                  <Field label="Release kind" value={data.release_kind ?? '—'} />
+                  <Field label="Art kind" value={data.art_kind ?? '—'} />
+                  <Field label="Printings" value={String(data.printing_count)} />
+                  <Field label="Reprints" value={String(data.reprint_count)} />
                   <Field label="Variante" value={data.variant_label ?? data.printing_variant ?? '—'} />
                   <Field label="Condicion" value={data.condition ?? '—'} />
                   <Field label="Grading" value={data.grading_company ? `${data.grading_company} ${data.grade ?? ''}`.trim() : '—'} />
@@ -132,16 +206,16 @@ export function CardDetailPage() {
                 {data.market_price ? (
                   <div className="space-y-2">
                     <p className="text-sm font-medium">
-                      Trend Price de Cardmarket · snapshot del {formatDateTime(data.market_price.observed_at)}
+                      Precio de {data.market_price.source} · snapshot del {formatDateTime(data.market_price.observed_at)}
                     </p>
-                    <p className="text-2xl font-semibold tabular-nums">{formatCurrency(data.market_price.trend)}</p>
+                    <p className="text-2xl font-semibold tabular-nums">{formatCurrency(data.market_price.trend, data.market_price.currency)}</p>
                     <dl className="grid grid-cols-3 gap-3 text-sm">
-                      <Field label="Avg" value={formatCurrency(data.market_price.avg)} />
-                      <Field label="Low" value={formatCurrency(data.market_price.low)} />
-                      <Field label="Avg 30d" value={formatCurrency(data.market_price.avg30)} />
+                      <Field label="Avg" value={formatCurrency(data.market_price.avg, data.market_price.currency)} />
+                      <Field label="Low" value={formatCurrency(data.market_price.low, data.market_price.currency)} />
+                      <Field label="Avg 30d" value={formatCurrency(data.market_price.avg30, data.market_price.currency)} />
                     </dl>
                     <p className="text-xs text-muted-foreground">
-                      Estimacion de mercado (Cardmarket), no un precio de venta garantizado.
+                      {data.market_price.resolution_method ?? 'Resolución exacta'} · estimación de mercado, no un precio de venta garantizado.
                     </p>
                   </div>
                 ) : (

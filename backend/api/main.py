@@ -1,8 +1,8 @@
 """FastAPI app -- backend/api/, dashboard, catalog and wishlist.
 
 Arranque: `uvicorn api.main:app --reload --port 8000` desde `backend/`.
-Collection editing sigue siendo via backend/scripts/load_collection.py/CSV; Wishlist
-write endpoints son el único dominio de escritura de esta fase.
+Collection editing sigue siendo via backend/scripts/load_collection.py/CSV; la única
+excepción adicional es el resolver manual de matches de catálogo.
 """
 
 from fastapi import FastAPI
@@ -12,8 +12,8 @@ from .routers import catalog, collection, overview, wishlist
 
 app = FastAPI(
     title="TCG Dashboard API",
-    description="Dashboard personal de colección TCG con catálogo y wishlist LOTR.",
-    version="0.7.0",
+    description="Dashboard personal Multi-TCG con catálogo Magic/One Piece y wishlist por printing.",
+    version="0.9.0",
 )
 
 app.add_middleware(

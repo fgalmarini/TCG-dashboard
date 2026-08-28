@@ -14,3 +14,7 @@ have one stable location for implementation plans.
 - `fase5-alta-manual-coleccion-sprint-contract.md` — manual collection loading and CSV review flow.
 - `fase6-dashboard-basico-sprint-contract.md` — basic dashboard contract and closure.
 - `restructure-project-docs-sprint-contract.md` — documentation restructure contract.
+- `Sprint Contract — Wishlist Planning Mode.md` — wishlist purchase-planning flow,
+  filters, Buying Mode, CSV and manual Collection matching.
+- `Sprint Contract — Multi-TCG Foundation + One Piece Catalog.md` — additive neutral
+  model, One Piece exact-language catalog/pricing and preserved legacy baseline.

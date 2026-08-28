@@ -123,6 +123,47 @@ class MigrationTest(unittest.TestCase):
         finally:
             tmp.cleanup()
 
+    def test_existing_wishlist_upgrade_preserves_rows_and_is_idempotent(self):
+        tmp = tempfile.TemporaryDirectory()
+        try:
+            db = Path(tmp.name) / "existing.db"
+            conn = sqlite3.connect(db)
+            conn.execute("PRAGMA foreign_keys=OFF")
+            conn.executescript((Path(__file__).parent.parent / "db/schema.sql").read_text())
+            conn.executescript((Path(__file__).parent.parent / "db/seed.sql").read_text())
+            conn.execute("DROP TABLE wishlist_items")
+            conn.execute("""CREATE TABLE wishlist_items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, card_id INTEGER NOT NULL,
+                quantity_wanted INTEGER NOT NULL DEFAULT 1, priority TEXT NOT NULL,
+                max_price REAL, currency TEXT, notes TEXT,
+                status TEXT NOT NULL DEFAULT 'wanted', created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL, language_id INTEGER, condition TEXT,
+                grade_min REAL, target_price REAL
+            )""")
+            conn.execute("INSERT INTO expansions (id,game_id,cardmarket_id_expansion,set_code) VALUES (1,3,5285,'ltr')")
+            conn.execute("INSERT INTO cards (id,game_id,expansion_id,name,printing_variant) VALUES (7,3,1,'Test','normal')")
+            conn.execute(
+                """INSERT INTO wishlist_items
+                   (id,card_id,quantity_wanted,priority,max_price,target_price,currency,notes,status,created_at,updated_at)
+                   VALUES (5,7,2,'high',10,8,'USD','keep','wanted','created','updated')"""
+            )
+            conn.commit(); conn.close()
+
+            report = migration.run(db, apply=True)
+            self.assertTrue(report.wishlist_rebuilt)
+            conn = sqlite3.connect(db)
+            row = conn.execute(
+                "SELECT id,card_id,quantity_wanted,priority,target_price,max_price,status,acquired_at,removed_at FROM wishlist_items"
+            ).fetchone()
+            self.assertEqual(row, (5, 7, 2, "high", 8, 10, "wanted", None, None))
+            self.assertEqual(conn.execute("PRAGMA foreign_key_check").fetchall(), [])
+            conn.close()
+
+            second = migration.run(db, apply=True)
+            self.assertFalse(second.wishlist_rebuilt)
+        finally:
+            tmp.cleanup()
+
 
 if __name__ == "__main__":
     unittest.main()

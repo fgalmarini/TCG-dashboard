@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { GAME_OPTIONS, STATUS_OPTIONS, type SortOption } from '@/lib/types'
+import { GAME_OPTIONS, LANGUAGE_OPTIONS, STATUS_OPTIONS, type SortOption } from '@/lib/types'
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: 'nombre', label: 'Nombre' },
@@ -13,10 +13,12 @@ const ALL_VALUE = '__all__'
 
 interface CollectionFiltersProps {
   game: string
+  language: string
   status: string
   search: string
   sort: SortOption
   onGameChange: (value: string) => void
+  onLanguageChange: (value: string) => void
   onStatusChange: (value: string) => void
   onSearchChange: (value: string) => void
   onSortChange: (value: SortOption) => void
@@ -24,10 +26,12 @@ interface CollectionFiltersProps {
 
 export function CollectionFilters({
   game,
+  language,
   status,
   search,
   sort,
   onGameChange,
+  onLanguageChange,
   onStatusChange,
   onSearchChange,
   onSortChange,
@@ -66,6 +70,16 @@ export function CollectionFilters({
             <SelectItem key={option.value} value={option.value}>
               {option.label}
             </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <Select value={language || ALL_VALUE} onValueChange={(v) => onLanguageChange(v === ALL_VALUE ? '' : v)}>
+        <SelectTrigger className="sm:w-40"><SelectValue placeholder="Idioma" /></SelectTrigger>
+        <SelectContent>
+          <SelectItem value={ALL_VALUE}>Todos los idiomas</SelectItem>
+          {LANGUAGE_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
           ))}
         </SelectContent>
       </Select>

@@ -8,8 +8,8 @@ The product must be an interactive dashboard, not an Excel replacement.
 
 ## Supported TCGs
 
-- Pokemon TCG
-- One Piece Card Game
+- Pokemon TCG (inactive; future catalog)
+- One Piece Card Game (active catalog; personal collection deferred)
 - Magic: The Gathering, currently focused on The Lord of the Rings related cards
 
 The architecture should allow additional TCGs later without a major rewrite.
@@ -50,17 +50,21 @@ Do not assume every card has a purchase price, Cardmarket mapping or raw conditi
 
 ## Catalog And Wishlist
 
-Magic LOTR uses a catalog-first model. `cards` is the canonical card/printing catalog;
-`collection_items.card_id` and `wishlist_items.card_id` reference it instead of
-duplicating card metadata.
+Magic LOTR and One Piece use a catalog-first model. `cards` is the physical printing
+catalog with stable internal IDs; `canonical_cards` groups logical cards. Collection
+and Wishlist reference printings instead of duplicating metadata.
 
-The current catalog scope is physical LTR and LTC printings. Finish is part of the
+Magic scope is physical LTR and LTC printings. Finish is part of the
 printing identity. Treatment labels such as Showcase, Borderless, Scene and Surge Foil
 are descriptive metadata only and are never used as identity.
 
+One Piece separates EN and JP printings, release kind and art kind. Collection and
+Wishlist show `Reprints: N` when applicable; detail shows printing/reprint counts and
+all known related printings. One Piece Collection entry is not part of this sprint.
+
 The wishlist supports wanted quantity, priority, maximum price, currency, notes and
-status. Moving an item to Collection increments or creates a collection item and keeps
-the wishlist row as `acquired` for traceability. Removed rows remain as `removed`.
+status. Marking an item acquired keeps the wishlist row as `acquired` for traceability
+and does not modify Collection. Removed rows remain as `removed`.
 
 ## Condition And Grading
 
@@ -93,6 +97,10 @@ price snapshots so the user can answer:
 - Which cards appreciated or lost value?
 - Which TCGs and sets are trending?
 - How has the portfolio evolved?
+
+The official manual update workflow is `./update-prices --dry-run` followed by
+`./update-prices --apply`. It preserves source currency and repeated snapshots,
+rejects mixed-language prices from valuation, and keeps missing prices nullable.
 
 ## Display Currency
 
@@ -136,9 +144,8 @@ Do not label a trade good or bad without showing the calculation.
 
 ## Want List
 
-Wanted cards currently use the Magic LOTR wishlist flow. Future wanted cards may add
-TCG, condition, grade and target price fields without changing the catalog reference
-model.
+Wanted cards use the Multi-TCG printing reference, with mandatory language for One
+Piece. Game/language filters, Buying Mode, CSV and state transitions share one flow.
 
 ## UI Principles
 

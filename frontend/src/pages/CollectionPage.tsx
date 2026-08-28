@@ -7,7 +7,7 @@ import { Pagination } from '@/components/collection/Pagination'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
 import { Button } from '@/components/ui/button'
-import { fetchCollection } from '@/lib/api'
+import { fetchCollection, removeFromCollection } from '@/lib/api'
 import type { SortOption } from '@/lib/types'
 import { useApi } from '@/lib/useApi'
 
@@ -15,6 +15,7 @@ type ViewMode = 'table' | 'grid'
 
 export function CollectionPage() {
   const [game, setGame] = useState('')
+  const [language, setLanguage] = useState('')
   const [status, setStatus] = useState('')
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState<SortOption>('nombre')
@@ -23,9 +24,16 @@ export function CollectionPage() {
   const [viewMode, setViewMode] = useState<ViewMode>('table')
 
   const { data, error, loading, reload } = useApi(
-    () => fetchCollection({ game, status, search, sort, page, page_size: pageSize }),
-    [game, status, search, sort, page, pageSize],
+    () => fetchCollection({ game, language, status, search, sort, page, page_size: pageSize }),
+    [game, language, status, search, sort, page, pageSize],
   )
+
+  async function removeItem(itemId: number) {
+    const confirmed = window.confirm('Remove this card from your collection?\n\nThis will remove the card and its quantity from Collection.\nThe catalog entry will not be affected.')
+    if (!confirmed) return
+    await removeFromCollection(itemId)
+    reload()
+  }
 
   function resetToFirstPage<T>(setter: (value: T) => void) {
     return (value: T) => {
@@ -64,10 +72,12 @@ export function CollectionPage() {
 
       <CollectionFilters
         game={game}
+        language={language}
         status={status}
         search={search}
         sort={sort}
         onGameChange={resetToFirstPage(setGame)}
+        onLanguageChange={resetToFirstPage(setLanguage)}
         onStatusChange={resetToFirstPage(setStatus)}
         onSearchChange={resetToFirstPage(setSearch)}
         onSortChange={resetToFirstPage(setSort)}
@@ -78,7 +88,7 @@ export function CollectionPage() {
 
       {data && !loading && !error && (
         <>
-          {viewMode === 'table' ? <CollectionTable items={data.items} /> : <CollectionGrid items={data.items} />}
+          {viewMode === 'table' ? <CollectionTable items={data.items} onRemove={removeItem} /> : <CollectionGrid items={data.items} onRemove={removeItem} />}
           <Pagination
             page={data.page}
             pageSize={data.page_size}

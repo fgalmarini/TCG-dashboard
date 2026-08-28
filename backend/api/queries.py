@@ -29,6 +29,17 @@ WITH latest_price AS (
         SELECT MAX(h2.observed_at) FROM market_price_history h2
         WHERE h2.cardmarket_product_id = h.cardmarket_product_id
     )
+), latest_printing_resolution AS (
+    SELECT r.card_id, r.language_id, r.current_price, r.currency,
+           r.source, r.resolution_method, r.resolved_at
+      FROM printing_price_resolutions r
+     WHERE r.id = (
+         SELECT r2.id FROM printing_price_resolutions r2
+          WHERE r2.card_id = r.card_id
+            AND COALESCE(r2.language_id, -1) = COALESCE(r.language_id, -1)
+          ORDER BY r2.resolved_at DESC, r2.id DESC
+          LIMIT 1
+     )
 )
 """
 
@@ -40,20 +51,43 @@ _COLLECTION_COLUMNS = """
     ci.id, ci.card_id, ci.cardmarket_product_id, ci.language_id, ci.condition,
     ci.grading_company, ci.grade, ci.quantity, ci.purchase_price, ci.purchase_currency,
     ci.purchase_date, ci.trade_value, ci.status, ci.manual_entry, ci.manual_entry_note,
-    ci.notes,
+    ci.notes, ci.match_status, ci.match_quality, ci.match_reason,
+    ci.finish AS collection_finish, ci.treatment AS collection_treatment,
     c.name AS card_name, c.card_number, c.printing_variant, c.variant_label,
-    e.name AS expansion_name, e.set_code AS expansion_set_code,
+    c.canonical_card_id, c.release_kind, c.art_kind,
+    COALESCE(s.name, e.name) AS expansion_name,
+    COALESCE(s.code, c.set_code, e.set_code) AS expansion_set_code,
     g.code AS game_code, g.name AS game_name,
-    lp.trend AS market_trend, lp.avg AS market_avg, lp.low AS market_low,
-    lp.avg30 AS market_avg30, lp.observed_at AS price_observed_at
+    cl.code AS language,
+    CASE WHEN c.catalog_status = 'active' OR (g.code = 'magic'
+              AND lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc')
+              AND c.card_number IS NOT NULL AND c.finish IS NOT NULL)
+         THEN 1 ELSE 0 END AS catalog_matched,
+    CASE WHEN g.code = 'one_piece' THEN pr.current_price ELSE lp.trend END AS market_trend,
+    CASE WHEN g.code = 'one_piece' THEN NULL ELSE lp.avg END AS market_avg,
+    CASE WHEN g.code = 'one_piece' THEN NULL ELSE lp.low END AS market_low,
+    CASE WHEN g.code = 'one_piece' THEN NULL ELSE lp.avg30 END AS market_avg30,
+    CASE WHEN g.code = 'one_piece' THEN pr.resolved_at ELSE lp.observed_at END AS price_observed_at,
+    CASE WHEN g.code = 'one_piece' THEN pr.source ELSE 'cardmarket' END AS price_source,
+    CASE WHEN g.code = 'one_piece' THEN pr.currency ELSE 'EUR' END AS price_currency,
+    CASE WHEN g.code = 'one_piece' THEN pr.resolution_method ELSE 'cardmarket_exact_language' END AS resolution_method,
+    (SELECT COUNT(*) FROM cards pc
+      WHERE pc.canonical_card_id = c.canonical_card_id AND pc.catalog_status = 'active') AS printing_count,
+    (SELECT COUNT(*) FROM cards rc
+      WHERE rc.canonical_card_id = c.canonical_card_id AND rc.catalog_status = 'active'
+        AND rc.release_kind = 'reprint') AS reprint_count
 """
 
 _FROM_JOINS = """
     FROM collection_items ci
     LEFT JOIN cards c        ON c.id = ci.card_id
     LEFT JOIN expansions e   ON e.id = c.expansion_id
+    LEFT JOIN sets s         ON s.id = c.set_id
     LEFT JOIN games g        ON g.id = c.game_id
+    LEFT JOIN languages cl   ON cl.id = c.language_id
     LEFT JOIN latest_price lp ON lp.cardmarket_product_id = ci.cardmarket_product_id
+    LEFT JOIN latest_printing_resolution pr
+           ON pr.card_id = c.id AND COALESCE(pr.language_id, -1) = COALESCE(c.language_id, -1)
 """
 
 
@@ -86,6 +120,9 @@ class CardImageFaceData:
 class CardImageData:
     source: str
     match_quality: str
+    actual_image_language: str | None = None
+    requested_language: str | None = None
+    is_language_fallback: bool = False
     faces: list[CardImageFaceData] = field(default_factory=list)
 
 
@@ -107,19 +144,32 @@ class CollectionRow:
     manual_entry: bool
     manual_entry_note: str | None
     notes: str | None
+    match_status: str
+    match_quality: str | None
+    match_reason: str | None
     card_name: str | None
     card_number: str | None
     printing_variant: str | None
     variant_label: str | None
+    canonical_card_id: int | None
+    release_kind: str | None
+    art_kind: str | None
     expansion_name: str | None
     expansion_set_code: str | None
     game_code: str | None
     game_name: str | None
+    language: str | None
+    catalog_matched: bool
     market_trend: float | None
     market_avg: float | None
     market_low: float | None
     market_avg30: float | None
     price_observed_at: str | None
+    price_source: str | None
+    price_currency: str | None
+    resolution_method: str | None
+    printing_count: int
+    reprint_count: int
     image: CardImageData | None = None
 
     @property
@@ -154,19 +204,32 @@ def _row_to_collection_row(row: sqlite3.Row) -> CollectionRow:
         manual_entry=bool(row["manual_entry"]),
         manual_entry_note=row["manual_entry_note"],
         notes=row["notes"],
+        match_status=row["match_status"],
+        match_quality=row["match_quality"],
+        match_reason=row["match_reason"],
         card_name=row["card_name"],
         card_number=row["card_number"],
         printing_variant=row["printing_variant"],
         variant_label=row["variant_label"],
+        canonical_card_id=row["canonical_card_id"],
+        release_kind=row["release_kind"],
+        art_kind=row["art_kind"],
         expansion_name=row["expansion_name"],
         expansion_set_code=row["expansion_set_code"],
         game_code=row["game_code"],
         game_name=row["game_name"],
+        language=row["language"],
+        catalog_matched=bool(row["catalog_matched"]),
         market_trend=row["market_trend"],
         market_avg=row["market_avg"],
         market_low=row["market_low"],
         market_avg30=row["market_avg30"],
         price_observed_at=row["price_observed_at"],
+        price_source=row["price_source"],
+        price_currency=row["price_currency"],
+        resolution_method=row["resolution_method"],
+        printing_count=row["printing_count"],
+        reprint_count=row["reprint_count"],
     )
 
 
@@ -204,19 +267,38 @@ def attach_exact_images(conn: sqlite3.Connection, rows: list[CollectionRow]) -> 
 
 
 def fetch_exact_images(conn: sqlite3.Connection, card_ids: list[int]) -> dict[int, CardImageData]:
-    """Return exact images with the existing Scryfall > CardTrader precedence."""
+    """Return display images without crossing a printing's requested language.
+
+    One Piece fallback rows keep the card's requested language in ``ci.language``
+    and store the actual asset language separately. Exact requested-language rows
+    always win over visual fallbacks. Magic keeps its Scryfall > CardTrader order.
+    """
     placeholders = ",".join("?" for _ in card_ids)
     image_rows = conn.execute(
-        f"""SELECT card_id, source, match_quality, face_index, image_url_small, image_url_large
-              FROM card_images
-             WHERE card_id IN ({placeholders})
+        f"""SELECT ci.card_id, ci.source, ci.match_quality, ci.face_index,
+                      ci.image_url_small, ci.image_url_large, ci.language,
+                      ci.image_language_scope, ci.is_language_fallback,
+                      l.code AS requested_language
+              FROM card_images ci
+              JOIN cards c ON c.id = ci.card_id
+              LEFT JOIN languages l ON l.id = c.language_id
+             WHERE ci.card_id IN ({placeholders})
                AND source IN ('scryfall', 'cardtrader')
-               AND status = 'resolved'
-               AND match_quality = 'exact'
-               AND (image_url_small IS NOT NULL OR image_url_large IS NOT NULL)
-             ORDER BY card_id,
-                      CASE source WHEN 'scryfall' THEN 0 ELSE 1 END,
-                      face_index""",
+               AND ci.status = 'resolved'
+               AND ci.match_quality = 'exact'
+               AND (ci.image_url_small IS NOT NULL OR ci.image_url_large IS NOT NULL)
+               AND (l.code IS NULL OR ci.language = l.code OR ci.is_language_fallback = 1)
+             ORDER BY ci.card_id,
+                      CASE
+                        WHEN ci.is_language_fallback = 0
+                         AND (ci.image_language_scope = l.code OR
+                              (ci.image_language_scope = 'unknown' AND ci.language = l.code))
+                        THEN 0
+                        WHEN ci.is_language_fallback = 1 THEN 1
+                        ELSE 2
+                      END,
+                      CASE ci.source WHEN 'scryfall' THEN 0 ELSE 1 END,
+                      ci.face_index""",
         card_ids,
     ).fetchall()
 
@@ -224,11 +306,24 @@ def fetch_exact_images(conn: sqlite3.Connection, card_ids: list[int]) -> dict[in
     for image_row in image_rows:
         card_id = image_row["card_id"]
         selected = by_card_id.get(card_id)
-        if selected is not None and selected.source != image_row["source"]:
+        if selected is not None and (
+            selected.source != image_row["source"]
+            or selected.is_language_fallback != bool(image_row["is_language_fallback"])
+        ):
             continue
         image = by_card_id.setdefault(
             card_id,
-            CardImageData(source=image_row["source"], match_quality=image_row["match_quality"]),
+            CardImageData(
+                source=image_row["source"],
+                match_quality=image_row["match_quality"],
+                actual_image_language=(
+                    image_row["image_language_scope"]
+                    if image_row["image_language_scope"] not in (None, "unknown")
+                    else image_row["language"]
+                ),
+                requested_language=image_row["requested_language"] or image_row["language"],
+                is_language_fallback=bool(image_row["is_language_fallback"]),
+            ),
         )
         image.faces.append(
             CardImageFaceData(
@@ -273,7 +368,7 @@ def fetch_collection_row_by_id(
 # intercaladas al ordenar ascendente -- siempre quedan al final del resultado.
 SORT_COLUMNS: dict[str, str] = {
     "nombre": "COALESCE(c.name, ci.manual_entry_note, ci.notes)",
-    "valor": "(lp.trend IS NULL), lp.trend",
+    "valor": "(market_trend IS NULL), market_trend",
     "fecha": "ci.purchase_date",
 }
 
@@ -287,6 +382,7 @@ def build_order_by(sort: str | None) -> str:
 
 def build_collection_filters(
     game: str | None = None,
+    language: str | None = None,
     status: str | None = None,
     search: str | None = None,
 ) -> tuple[str, list]:
@@ -299,6 +395,9 @@ def build_collection_filters(
     if game:
         clauses.append("g.code = ?")
         params.append(game)
+    if language:
+        clauses.append("cl.code = ?")
+        params.append(language.casefold())
     if status:
         clauses.append("ci.status = ?")
         params.append(status)
@@ -412,11 +511,41 @@ WITH latest_price AS (
      WHERE cpm.status = 'mapped'
      GROUP BY cpm.card_id
     HAVING COUNT(DISTINCT cpm.cardmarket_product_id) = 1
-), card_price AS (
-    SELECT sp.card_id, lp.trend AS current_price, lp.observed_at
+), legacy_card_price AS (
+    SELECT sp.card_id, lp.trend AS current_price, lp.observed_at,
+           'cardmarket' AS source, 'cardmarket_exact_language' AS resolution_method
       FROM single_product sp
       JOIN latest_price lp ON lp.cardmarket_product_id = sp.cardmarket_product_id
      WHERE lp.trend IS NOT NULL
+), latest_resolution AS (
+    SELECT r.card_id, r.language_id, r.current_price, r.currency,
+           r.resolved_at AS observed_at, r.source, r.resolution_method,
+           r.external_id, r.sample_size, r.lowest_price, r.median_price,
+           r.price_confidence
+      FROM printing_price_resolutions r
+     WHERE r.id = (
+         SELECT r2.id FROM printing_price_resolutions r2
+          WHERE r2.card_id = r.card_id
+            AND COALESCE(r2.language_id, -1) = COALESCE(r.language_id, -1)
+          ORDER BY r2.resolved_at DESC, r2.id DESC LIMIT 1
+     )
+), card_price AS (
+    SELECT c.id AS card_id,
+           CASE WHEN g.code = 'one_piece' THEN r.current_price ELSE l.current_price END AS current_price,
+           CASE WHEN g.code = 'one_piece' THEN r.observed_at ELSE l.observed_at END AS observed_at,
+           CASE WHEN g.code = 'one_piece' THEN r.source ELSE l.source END AS source,
+           CASE WHEN g.code = 'one_piece' THEN r.resolution_method ELSE l.resolution_method END AS resolution_method,
+           CASE WHEN g.code = 'one_piece' THEN r.currency ELSE 'EUR' END AS currency,
+           CASE WHEN g.code = 'one_piece' THEN r.external_id ELSE NULL END AS external_id,
+           COALESCE(CASE WHEN g.code = 'one_piece' THEN r.sample_size ELSE 0 END, 0) AS sample_size,
+           CASE WHEN g.code = 'one_piece' THEN r.lowest_price ELSE NULL END AS lowest_price,
+           CASE WHEN g.code = 'one_piece' THEN r.median_price ELSE NULL END AS median_price,
+           CASE WHEN g.code = 'one_piece' THEN r.price_confidence ELSE NULL END AS price_confidence
+      FROM cards c
+      JOIN games g ON g.id = c.game_id
+      LEFT JOIN legacy_card_price l ON l.card_id = c.id
+      LEFT JOIN latest_resolution r
+             ON r.card_id = c.id AND COALESCE(r.language_id, -1) = COALESCE(c.language_id, -1)
 )
 """
 
@@ -424,6 +553,8 @@ WITH latest_price AS (
 @dataclass
 class CatalogRow:
     id: int
+    canonical_card_id: int | None
+    game_code: str
     name: str
     set_code: str | None
     expansion_name: str | None
@@ -432,8 +563,20 @@ class CatalogRow:
     finish: str | None
     treatment: str | None
     language: str | None
+    release_kind: str | None
+    art_kind: str | None
+    printing_count: int
+    reprint_count: int
     current_price: float | None
     price_observed_at: str | None
+    price_source: str | None
+    resolution_method: str | None
+    price_currency: str | None
+    price_external_id: str | None
+    price_sample_size: int
+    lowest_price: float | None
+    median_price: float | None
+    price_confidence: str | None
     owned: bool
     wishlist: bool
     wishlist_item_id: int | None
@@ -454,8 +597,11 @@ class CatalogRow:
 class WishlistRow:
     id: int
     card_id: int
+    canonical_card_id: int | None
+    game_code: str
     quantity_wanted: int
     priority: str
+    target_price: float | None
     max_price: float | None
     currency: str | None
     notes: str | None
@@ -469,23 +615,41 @@ class WishlistRow:
     rarity: str | None
     finish: str | None
     treatment: str | None
+    language: str | None
+    release_kind: str | None
+    art_kind: str | None
+    printing_count: int
+    reprint_count: int
     current_price: float | None
+    source: str | None
+    resolution_method: str | None
+    price_currency: str | None
+    matched: bool
+    acquired_at: str | None
+    removed_at: str | None
     image: CardImageData | None = None
 
 
 def _catalog_row(row: sqlite3.Row) -> CatalogRow:
     return CatalogRow(
-        id=row["id"], name=row["name"], set_code=row["set_code"],
+        id=row["id"], canonical_card_id=row["canonical_card_id"], game_code=row["game_code"],
+        name=row["name"], set_code=row["set_code"],
         expansion_name=row["expansion_name"], card_number=row["card_number"],
         rarity=row["rarity"], finish=row["finish"], treatment=row["treatment"],
-        language=row["language"], current_price=row["current_price"],
-        price_observed_at=row["price_observed_at"], owned=bool(row["owned"]),
+        language=row["language"], release_kind=row["release_kind"], art_kind=row["art_kind"],
+        printing_count=row["printing_count"], reprint_count=row["reprint_count"],
+        current_price=row["current_price"], price_observed_at=row["price_observed_at"],
+        price_source=row["price_source"], resolution_method=row["resolution_method"], owned=bool(row["owned"]),
+        price_currency=row["price_currency"], price_external_id=row["price_external_id"],
+        price_sample_size=row["price_sample_size"], lowest_price=row["lowest_price"],
+        median_price=row["median_price"], price_confidence=row["price_confidence"],
         wishlist=bool(row["wishlist"]), wishlist_item_id=row["wishlist_item_id"],
     )
 
 
 def build_catalog_filters(
     game: str = "magic",
+    language: str | None = None,
     sets: list[str] | None = None,
     search: str | None = None,
     ownership: str | None = None,
@@ -493,16 +657,22 @@ def build_catalog_filters(
     finish: str | None = None,
     treatment: str | None = None,
 ) -> tuple[str, list]:
-    clauses = ["g.code = ?", "lower(c.set_code) IN ('ltr', 'ltc')", "c.finish IS NOT NULL"]
+    clauses = [
+        "g.code = ?",
+        "(c.catalog_status = 'active' OR (g.code = 'magic' AND lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc') AND c.finish IS NOT NULL))",
+    ]
     params: list = [game]
     if sets:
         placeholders = ",".join("?" for _ in sets)
-        clauses.append(f"lower(c.set_code) IN ({placeholders})")
+        clauses.append(f"lower(COALESCE(s.code, c.set_code, e.set_code)) IN ({placeholders})")
         params.extend(value.casefold() for value in sets)
     if search:
         like = f"%{search}%"
-        clauses.append("(c.name LIKE ? COLLATE NOCASE OR c.normalized_name LIKE ? COLLATE NOCASE)")
-        params.extend([like, like])
+        clauses.append("(c.name LIKE ? COLLATE NOCASE OR c.normalized_name LIKE ? COLLATE NOCASE OR c.card_number LIKE ? COLLATE NOCASE)")
+        params.extend([like, like, like])
+    if language:
+        clauses.append("l.code = ?")
+        params.append(language.casefold())
     if ownership == "owned":
         clauses.append("EXISTS (SELECT 1 FROM collection_items ci WHERE ci.card_id = c.id)")
     elif ownership == "not_owned":
@@ -529,19 +699,29 @@ def fetch_catalog_rows(
     offset: int,
 ) -> list[CatalogRow]:
     sql = _CARD_PRICE_CTE + f"""
-        SELECT c.id, c.name, c.set_code, e.name AS expansion_name, c.card_number,
+        SELECT c.id, c.canonical_card_id, g.code AS game_code, c.name,
+               COALESCE(s.code, c.set_code, e.set_code) AS set_code,
+               COALESCE(s.name, e.name) AS expansion_name, c.card_number,
                c.rarity, c.finish, c.treatment, l.code AS language,
+               c.release_kind, c.art_kind,
+               (SELECT COUNT(*) FROM cards pc WHERE pc.canonical_card_id=c.canonical_card_id AND pc.catalog_status='active') AS printing_count,
+               (SELECT COUNT(*) FROM cards rc WHERE rc.canonical_card_id=c.canonical_card_id AND rc.catalog_status='active' AND rc.release_kind='reprint') AS reprint_count,
                cp.current_price, cp.observed_at AS price_observed_at,
+               cp.source AS price_source, cp.resolution_method,
+               cp.currency AS price_currency, cp.external_id AS price_external_id,
+               cp.sample_size AS price_sample_size, cp.lowest_price,
+               cp.median_price, cp.price_confidence,
                EXISTS (SELECT 1 FROM collection_items ci WHERE ci.card_id = c.id) AS owned,
                EXISTS (SELECT 1 FROM wishlist_items wi WHERE wi.card_id = c.id AND wi.status = 'wanted') AS wishlist,
                (SELECT wi.id FROM wishlist_items wi WHERE wi.card_id = c.id AND wi.status = 'wanted' ORDER BY wi.id LIMIT 1) AS wishlist_item_id
           FROM cards c
           JOIN expansions e ON e.id = c.expansion_id
           JOIN games g ON g.id = c.game_id
+          LEFT JOIN sets s ON s.id = c.set_id
           LEFT JOIN languages l ON l.id = c.language_id
           LEFT JOIN card_price cp ON cp.card_id = c.id
           {where_sql}
-         ORDER BY c.name COLLATE NOCASE, c.set_code, c.card_number, c.finish, c.id
+         ORDER BY c.name COLLATE NOCASE, COALESCE(s.code, c.set_code), c.card_number, c.finish, c.id
          LIMIT ? OFFSET ?"""
     rows = conn.execute(sql, [*where_params, limit, offset]).fetchall()
     result = [_catalog_row(row) for row in rows]
@@ -553,39 +733,192 @@ def fetch_catalog_rows(
 
 def count_catalog_rows(conn: sqlite3.Connection, where_sql: str, where_params: list) -> int:
     row = conn.execute(
-        _CARD_PRICE_CTE + f"SELECT COUNT(*) FROM cards c JOIN expansions e ON e.id=c.expansion_id JOIN games g ON g.id=c.game_id {where_sql}",
+        _CARD_PRICE_CTE + f"SELECT COUNT(*) FROM cards c JOIN expansions e ON e.id=c.expansion_id JOIN games g ON g.id=c.game_id LEFT JOIN sets s ON s.id=c.set_id LEFT JOIN languages l ON l.id=c.language_id {where_sql}",
         where_params,
     ).fetchone()
     return row[0]
 
 
+def fetch_catalog_detail(conn: sqlite3.Connection, card_id: int) -> tuple[CatalogRow, list[CatalogRow]] | None:
+    selected = fetch_catalog_rows(conn, " WHERE c.id = ?", [card_id], 1, 0)
+    if not selected:
+        return None
+    printing = selected[0]
+    if printing.canonical_card_id is None:
+        return printing, [printing]
+    related = fetch_catalog_rows(
+        conn,
+        " WHERE c.canonical_card_id = ? AND c.catalog_status = 'active'",
+        [printing.canonical_card_id],
+        500,
+        0,
+    )
+    return printing, related
+
+
+def fetch_catalog_options(conn: sqlite3.Connection, game: str | None = None) -> dict[str, list[dict[str, str]]]:
+    games = [
+        {"value": row["code"], "label": row["name"]}
+        for row in conn.execute(
+            "SELECT code, name FROM games WHERE catalog_is_active=1 ORDER BY name"
+        ).fetchall()
+    ]
+    language_rows = conn.execute(
+        """SELECT DISTINCT l.code, l.name
+             FROM cards c JOIN languages l ON l.id=c.language_id JOIN games g ON g.id=c.game_id
+            WHERE c.catalog_status='active' AND (? IS NULL OR g.code=?)
+            ORDER BY l.name""",
+        (game, game),
+    ).fetchall()
+    set_rows = conn.execute(
+        """SELECT DISTINCT s.code, s.name
+             FROM sets s JOIN games g ON g.id=s.game_id JOIN cards c ON c.set_id=s.id
+            WHERE c.catalog_status='active' AND (? IS NULL OR g.code=?)
+            ORDER BY s.release_date, s.code""",
+        (game, game),
+    ).fetchall()
+    return {
+        "games": games,
+        "languages": [{"value": row["code"], "label": row["name"]} for row in language_rows],
+        "sets": [{"value": row["code"], "label": row["name"]} for row in set_rows],
+    }
+
+
 def _wishlist_row(row: sqlite3.Row) -> WishlistRow:
     return WishlistRow(
-        id=row["id"], card_id=row["card_id"], quantity_wanted=row["quantity_wanted"],
-        priority=row["priority"], max_price=row["max_price"], currency=row["currency"],
+        id=row["id"], card_id=row["card_id"], canonical_card_id=row["canonical_card_id"],
+        game_code=row["game_code"], quantity_wanted=row["quantity_wanted"],
+        priority=row["priority"], target_price=row["target_price"], max_price=row["max_price"], currency=row["currency"],
         notes=row["notes"], status=row["status"], created_at=row["created_at"],
         updated_at=row["updated_at"], name=row["name"], set_code=row["set_code"],
         expansion_name=row["expansion_name"], card_number=row["card_number"],
         rarity=row["rarity"], finish=row["finish"], treatment=row["treatment"],
-        current_price=row["current_price"],
+        language=row["language"], release_kind=row["release_kind"], art_kind=row["art_kind"],
+        printing_count=row["printing_count"], reprint_count=row["reprint_count"],
+        current_price=row["current_price"], source=row["source"],
+        resolution_method=row["resolution_method"],
+        price_currency=row["price_currency"],
+        matched=bool(row["matched"]), acquired_at=row["acquired_at"],
+        removed_at=row["removed_at"],
     )
+
+
+_WISHLIST_MATCHED_SQL = """(
+    c.catalog_status = 'active' OR (
+        g.code = 'magic'
+        AND lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc')
+        AND c.card_number IS NOT NULL
+        AND c.finish IS NOT NULL
+    )
+)"""
+
+_WISHLIST_FROM = """
+          FROM wishlist_items wi
+          JOIN cards c ON c.id = wi.card_id
+          JOIN expansions e ON e.id = c.expansion_id
+          JOIN games g ON g.id = c.game_id
+          LEFT JOIN sets s ON s.id = c.set_id
+          LEFT JOIN languages l ON l.id = c.language_id
+          LEFT JOIN card_price cp ON cp.card_id = c.id
+"""
+
+
+def build_wishlist_filters(
+    status: str | None = "wanted",
+    priorities: list[str] | None = None,
+    sets: list[str] | None = None,
+    finish: str | None = None,
+    has_price: bool | None = None,
+    matched: bool | None = None,
+    game: str | None = None,
+    language: str | None = None,
+) -> tuple[str, list]:
+    clauses: list[str] = []
+    params: list = []
+    if status and status != "all":
+        clauses.append("wi.status = ?")
+        params.append(status)
+    if game:
+        clauses.append("g.code = ?")
+        params.append(game)
+    if language:
+        clauses.append("l.code = ?")
+        params.append(language.casefold())
+    if priorities:
+        placeholders = ",".join("?" for _ in priorities)
+        clauses.append(f"wi.priority IN ({placeholders})")
+        params.extend(value.casefold() for value in priorities)
+    if sets:
+        placeholders = ",".join("?" for _ in sets)
+        clauses.append(f"lower(COALESCE(s.code, c.set_code, e.set_code)) IN ({placeholders})")
+        params.extend(value.casefold() for value in sets)
+    if finish:
+        clauses.append("c.finish = ?")
+        params.append(finish.casefold())
+    if has_price is True:
+        clauses.append("cp.current_price IS NOT NULL")
+    elif has_price is False:
+        clauses.append("cp.current_price IS NULL")
+    if matched is True:
+        clauses.append(_WISHLIST_MATCHED_SQL)
+    elif matched is False:
+        clauses.append(f"NOT {_WISHLIST_MATCHED_SQL}")
+    return (" WHERE " + " AND ".join(clauses)) if clauses else "", params
+
+
+def _wishlist_order(sort: str) -> str:
+    order_by = {
+        "priority": "CASE wi.priority WHEN 'high' THEN 0 WHEN 'medium' THEN 1 WHEN 'low' THEN 2 ELSE 3 END, wi.updated_at DESC, wi.id DESC",
+        "name": "c.name COLLATE NOCASE, wi.id DESC",
+        "current_price": "cp.current_price IS NULL, cp.current_price, c.name COLLATE NOCASE, wi.id DESC",
+        "target_price": "wi.target_price IS NULL, wi.target_price, c.name COLLATE NOCASE, wi.id DESC",
+        "max_price": "wi.max_price IS NULL, wi.max_price, c.name COLLATE NOCASE, wi.id DESC",
+    }
+    return order_by.get(sort, order_by["priority"])
+
+
+def _wishlist_select_body(where_sql: str = "", order_by_sql: str = "") -> str:
+    return f"""
+        SELECT wi.id, wi.card_id, wi.quantity_wanted, wi.priority, wi.target_price,
+               wi.max_price, wi.currency, wi.notes, wi.status, wi.acquired_at,
+               wi.removed_at, wi.created_at, wi.updated_at, wi.language_id,
+               c.canonical_card_id, g.code AS game_code, c.name,
+               COALESCE(s.code, c.set_code, e.set_code) AS set_code,
+               COALESCE(s.name, e.name) AS expansion_name, c.card_number,
+               c.rarity, c.finish, c.treatment, l.code AS language,
+               c.release_kind, c.art_kind,
+               (SELECT COUNT(*) FROM cards pc WHERE pc.canonical_card_id=c.canonical_card_id AND pc.catalog_status='active') AS printing_count,
+               (SELECT COUNT(*) FROM cards rc WHERE rc.canonical_card_id=c.canonical_card_id AND rc.catalog_status='active' AND rc.release_kind='reprint') AS reprint_count,
+               cp.current_price,
+               cp.source, cp.resolution_method, cp.currency AS price_currency,
+               {_WISHLIST_MATCHED_SQL} AS matched
+          {_WISHLIST_FROM}
+          {where_sql}
+          {order_by_sql}"""
+
+
+def _wishlist_select_sql(where_sql: str = "", order_by_sql: str = "") -> str:
+    return _CARD_PRICE_CTE + _wishlist_select_body(where_sql, order_by_sql)
 
 
 def fetch_wishlist_rows(
     conn: sqlite3.Connection,
     status: str | None = "wanted",
+    priorities: list[str] | None = None,
+    sets: list[str] | None = None,
+    finish: str | None = None,
+    has_price: bool | None = None,
+    matched: bool | None = None,
+    game: str | None = None,
+    language: str | None = None,
+    sort: str = "priority",
 ) -> list[WishlistRow]:
-    sql = _CARD_PRICE_CTE + """
-        SELECT wi.*, c.name, c.set_code, e.name AS expansion_name, c.card_number,
-               c.rarity, c.finish, c.treatment, cp.current_price
-          FROM wishlist_items wi
-          JOIN cards c ON c.id = wi.card_id
-          JOIN expansions e ON e.id = c.expansion_id
-          LEFT JOIN card_price cp ON cp.card_id = c.id
-         WHERE (? IS NULL OR wi.status = ?)
-         ORDER BY CASE wi.priority WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,
-                  wi.updated_at DESC, wi.id DESC"""
-    result = [_wishlist_row(row) for row in conn.execute(sql, (status, status)).fetchall()]
+    where_sql, params = build_wishlist_filters(
+        status=status, priorities=priorities, sets=sets, finish=finish,
+        has_price=has_price, matched=matched, game=game, language=language,
+    )
+    sql = _wishlist_select_sql(where_sql, f" ORDER BY {_wishlist_order(sort)}")
+    result = [_wishlist_row(row) for row in conn.execute(sql, params).fetchall()]
     images = fetch_exact_images(conn, sorted({row.card_id for row in result}))
     for row in result:
         row.image = images.get(row.card_id)
@@ -595,3 +928,123 @@ def fetch_wishlist_rows(
 def fetch_wishlist_row(conn: sqlite3.Connection, item_id: int) -> WishlistRow | None:
     rows = fetch_wishlist_rows(conn, status=None)
     return next((row for row in rows if row.id == item_id), None)
+
+
+@dataclass
+class WishlistSummary:
+    wanted: int
+    acquired: int
+    missing_price: int
+    unmatched: int
+    estimated_total: float
+
+
+@dataclass
+class MatchCandidateRow:
+    id: int
+    name: str
+    set_code: str | None
+    expansion_name: str | None
+    card_number: str | None
+    finish: str | None
+    treatment: str | None
+    language: str | None
+    image: CardImageData | None = None
+
+
+@dataclass
+class CollectionMatchContext:
+    item_id: int
+    name: str
+    set_code: str | None
+    card_number: str | None
+    finish: str | None
+    treatment: str | None
+    language: str | None
+    source: str
+    source_note: str | None
+    candidates: list[MatchCandidateRow] = field(default_factory=list)
+
+
+def fetch_collection_match_context(
+    conn: sqlite3.Connection,
+    item_id: int,
+    search: str | None = None,
+) -> CollectionMatchContext | None:
+    source = conn.execute(
+        """SELECT ci.id, c.name, c.set_code, c.card_number, c.finish, c.treatment,
+                  l.code AS language, ci.manual_entry_note, ci.notes,
+                  ci.cardmarket_product_id
+             FROM collection_items ci
+             LEFT JOIN cards c ON c.id = ci.card_id
+             LEFT JOIN languages l ON l.id = COALESCE(c.language_id, ci.language_id)
+            WHERE ci.id=?""",
+        (item_id,),
+    ).fetchone()
+    if source is None:
+        return None
+    name = source["name"] or source["manual_entry_note"] or source["notes"] or ""
+    query = (search or name).strip()
+    clauses = [
+        "g.code='magic'",
+        "lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc')",
+        "c.card_number IS NOT NULL",
+        "c.finish IS NOT NULL",
+    ]
+    params: list = []
+    if query:
+        like = f"%{query}%"
+        clauses.append("(c.name LIKE ? COLLATE NOCASE OR c.normalized_name LIKE ? COLLATE NOCASE)")
+        params.extend([like, like])
+    if source["set_code"]:
+        clauses.append("lower(COALESCE(c.set_code, e.set_code)) = ?")
+        params.append(source["set_code"].casefold())
+    candidates = conn.execute(
+        f"""SELECT c.id, c.name, COALESCE(c.set_code, e.set_code) AS set_code,
+                      e.name AS expansion_name, c.card_number, c.finish, c.treatment,
+                      l.code AS language
+                 FROM cards c
+                 JOIN expansions e ON e.id = c.expansion_id
+                 JOIN games g ON g.id = c.game_id
+                 LEFT JOIN languages l ON l.id = c.language_id
+                WHERE {' AND '.join(clauses)}
+                ORDER BY c.name COLLATE NOCASE, c.card_number, c.finish, c.id""",
+        params,
+    ).fetchall()
+    result = [
+        MatchCandidateRow(
+            id=row["id"], name=row["name"], set_code=row["set_code"],
+            expansion_name=row["expansion_name"], card_number=row["card_number"],
+            finish=row["finish"], treatment=row["treatment"], language=row["language"],
+        )
+        for row in candidates
+    ]
+    images = fetch_exact_images(conn, [candidate.id for candidate in result])
+    for candidate in result:
+        candidate.image = images.get(candidate.id)
+    return CollectionMatchContext(
+        item_id=item_id, name=name, set_code=source["set_code"],
+        card_number=source["card_number"], finish=source["finish"],
+        treatment=source["treatment"], language=source["language"],
+        source="cardmarket" if source["cardmarket_product_id"] is not None else "manual",
+        source_note=source["manual_entry_note"] or source["notes"], candidates=result,
+    )
+
+
+def fetch_wishlist_summary(conn: sqlite3.Connection) -> WishlistSummary:
+    row = conn.execute(
+        _CARD_PRICE_CTE + """
+        SELECT
+            COALESCE(SUM(CASE WHEN status = 'wanted' THEN 1 ELSE 0 END), 0) AS wanted,
+            COALESCE(SUM(CASE WHEN status = 'acquired' THEN 1 ELSE 0 END), 0) AS acquired,
+            COALESCE(SUM(CASE WHEN status = 'wanted' AND current_price IS NULL THEN 1 ELSE 0 END), 0) AS missing_price,
+            COALESCE(SUM(CASE WHEN status = 'wanted' AND matched = 0 THEN 1 ELSE 0 END), 0) AS unmatched,
+            COALESCE(SUM(CASE WHEN status = 'wanted' AND current_price IS NOT NULL
+                              THEN current_price * quantity_wanted ELSE 0 END), 0) AS estimated_total
+        FROM (""" + _wishlist_select_body() + ") AS wishlist_summary"
+    ).fetchone()
+    return WishlistSummary(
+        wanted=row["wanted"], acquired=row["acquired"],
+        missing_price=row["missing_price"], unmatched=row["unmatched"],
+        estimated_total=round(float(row["estimated_total"]), 2),
+    )

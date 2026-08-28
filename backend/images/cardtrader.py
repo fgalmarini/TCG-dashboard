@@ -140,3 +140,60 @@ class CardTraderClient:
         if not isinstance(payload, list):
             raise RuntimeError("CardTrader Blueprint export devolvió un payload inesperado")
         return CardTraderCatalog.from_blueprints(payload)
+
+    def _get_json(self, path: str, params: dict | None = None):
+        query = f"?{urllib.parse.urlencode(params)}" if params else ""
+        request = urllib.request.Request(
+            f"{CARDTRADER_BASE_URL}{path}{query}",
+            headers={
+                "Authorization": f"Bearer {self.token}",
+                "Accept": "application/json",
+                "User-Agent": "TCGDashboard/1.0 (backend provider import)",
+            },
+            method="GET",
+        )
+        try:
+            response = self.opener(request, timeout=CARDTRADER_TIMEOUT_SECONDS)
+            with response as opened:
+                payload = json.loads(opened.read())
+        except urllib.error.HTTPError as exc:
+            if exc.code in {401, 403}:
+                raise CardTraderConfigurationError(
+                    f"CardTrader rechazó la autenticación con HTTP {exc.code}"
+                ) from exc
+            raise RuntimeError(f"CardTrader {path} HTTP {exc.code}") from exc
+        except (OSError, json.JSONDecodeError) as exc:
+            raise RuntimeError(f"CardTrader {path} failed: {exc}") from exc
+        return payload.get("array", payload) if isinstance(payload, dict) and "array" in payload else payload
+
+    def fetch_expansions(self, game_id: int | None = None) -> list[dict]:
+        payload = self._get_json("/expansions")
+        if not isinstance(payload, list):
+            raise RuntimeError("CardTrader expansions devolvió un payload inesperado")
+        return [row for row in payload if game_id is None or row.get("game_id") == game_id]
+
+    def fetch_marketplace_products(self, blueprint_id: int, language: str) -> list[dict]:
+        payload = self._get_json(
+            "/marketplace/products",
+            {"blueprint_id": blueprint_id, "language": language},
+        )
+        if isinstance(payload, dict):
+            payload = payload.get(str(blueprint_id), [])
+        if not isinstance(payload, list):
+            raise RuntimeError("CardTrader marketplace devolvió un payload inesperado")
+        return payload
+
+    def fetch_marketplace_expansion(self, expansion_id: int, language: str) -> list[dict]:
+        payload = self._get_json(
+            "/marketplace/products",
+            {"expansion_id": expansion_id, "language": language},
+        )
+        if isinstance(payload, dict):
+            rows: list[dict] = []
+            for value in payload.values():
+                if isinstance(value, list):
+                    rows.extend(value)
+            payload = rows
+        if not isinstance(payload, list):
+            raise RuntimeError("CardTrader marketplace expansion devolvió un payload inesperado")
+        return payload

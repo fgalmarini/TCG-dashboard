@@ -1,12 +1,21 @@
 """Modelos Pydantic de backend/api/.
 
-Collection remains read-only; Catalog/Wishlist expose the explicitly scoped write
-operations for this sprint.
+Collection remains read-only except for the explicit catalog match resolver; Wishlist
+exposes the planning operations for this sprint.
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
-from .queries import CardImageData, CardImageFaceData, CatalogRow, CollectionRow, TcgBucketData, WishlistRow
+from .queries import (
+    CardImageData,
+    CardImageFaceData,
+    CatalogRow,
+    CollectionMatchContext,
+    CollectionRow,
+    MatchCandidateRow,
+    TcgBucketData,
+    WishlistRow,
+)
 
 # --- /api/overview ---------------------------------------------------------------
 
@@ -65,6 +74,9 @@ class CardImageFaceOut(BaseModel):
 
 class CardImageOut(BaseModel):
     source: str
+    actual_image_language: str | None
+    requested_language: str | None
+    is_language_fallback: bool
     match_quality: str
     faces: list[CardImageFaceOut]
 
@@ -74,6 +86,9 @@ class CardImageOut(BaseModel):
             return None
         return cls(
             source=data.source,
+            actual_image_language=data.actual_image_language,
+            requested_language=data.requested_language,
+            is_language_fallback=data.is_language_fallback,
             match_quality=data.match_quality,
             faces=[CardImageFaceOut.from_data(face) for face in data.faces],
         )
@@ -87,16 +102,25 @@ class CollectionItemOut(BaseModel):
     card_number: str | None
     variant_label: str | None
     game_code: str | None
+    language: str | None
+    release_kind: str | None
+    art_kind: str | None
+    printing_count: int
+    reprint_count: int
     condition: str | None
     quantity: int
     purchase_price: float | None
     market_value: float | None = Field(None, description="Trend Price de Cardmarket, snapshot mas reciente. None = sin precio de mercado (nunca 0).")
     manual_entry: bool = Field(..., description="Como entro la carta a la coleccion -- senal independiente de si tiene precio de mercado hoy.")
+    catalog_matched: bool
+    match_status: str = "unmatched"
+    match_quality: str | None = None
+    match_reason: str | None = None
     status: str
     purchase_date: str | None
     image: CardImageOut | None = Field(
         None,
-        description="Imagen exacta normalizada desde card_images. None = sin imagen exacta visible.",
+        description="Imagen normalizada desde card_images; puede ser fallback visual de otro idioma sin cambiar el idioma del printing.",
     )
 
     @classmethod
@@ -109,11 +133,20 @@ class CollectionItemOut(BaseModel):
             card_number=row.card_number,
             variant_label=row.variant_label,
             game_code=row.game_code,
+            language=row.language,
+            release_kind=row.release_kind,
+            art_kind=row.art_kind,
+            printing_count=row.printing_count,
+            reprint_count=row.reprint_count,
             condition=row.condition,
             quantity=row.quantity,
             purchase_price=row.purchase_price,
             market_value=row.market_trend,
             manual_entry=row.manual_entry,
+            catalog_matched=row.catalog_matched,
+            match_status=row.match_status,
+            match_quality=row.match_quality,
+            match_reason=row.match_reason,
             status=row.status,
             purchase_date=row.purchase_date,
             image=CardImageOut.from_data(row.image),
@@ -134,6 +167,8 @@ class MarketPriceOut(BaseModel):
     avg30: float | None
     observed_at: str
     source: str = "cardmarket"
+    currency: str = "EUR"
+    resolution_method: str | None = None
 
 
 class CollectionItemDetailOut(BaseModel):
@@ -147,6 +182,12 @@ class CollectionItemDetailOut(BaseModel):
     expansion_set_code: str | None
     game_code: str | None
     game_name: str | None
+    language: str | None
+    canonical_card_id: int | None
+    release_kind: str | None
+    art_kind: str | None
+    printing_count: int
+    reprint_count: int
     condition: str | None
     grading_company: str | None
     grade: float | None
@@ -157,6 +198,7 @@ class CollectionItemDetailOut(BaseModel):
     trade_value: float | None
     status: str
     manual_entry: bool
+    catalog_matched: bool
     manual_entry_note: str | None
     notes: str | None
     market_price: MarketPriceOut | None = Field(
@@ -167,7 +209,7 @@ class CollectionItemDetailOut(BaseModel):
     roi: float | None = Field(None, description="unrealized_pl / (purchase_price * quantity), o None si falta costo/precio o costo es 0.")
     image: CardImageOut | None = Field(
         None,
-        description="Imagen exacta normalizada desde card_images. Representative no se muestra como imagen visible en este sprint.",
+        description="Imagen normalizada desde card_images; el metadata indica si es fallback visual.",
     )
 
     @classmethod
@@ -180,6 +222,9 @@ class CollectionItemDetailOut(BaseModel):
                 low=row.market_low,
                 avg30=row.market_avg30,
                 observed_at=row.price_observed_at,
+                source=row.price_source or "cardmarket",
+                currency=row.price_currency or "EUR",
+                resolution_method=row.resolution_method,
             )
         unrealized_pl = None
         roi = None
@@ -198,6 +243,12 @@ class CollectionItemDetailOut(BaseModel):
             expansion_set_code=row.expansion_set_code,
             game_code=row.game_code,
             game_name=row.game_name,
+            language=row.language,
+            canonical_card_id=row.canonical_card_id,
+            release_kind=row.release_kind,
+            art_kind=row.art_kind,
+            printing_count=row.printing_count,
+            reprint_count=row.reprint_count,
             condition=row.condition,
             grading_company=row.grading_company,
             grade=row.grade,
@@ -208,6 +259,7 @@ class CollectionItemDetailOut(BaseModel):
             trade_value=row.trade_value,
             status=row.status,
             manual_entry=row.manual_entry,
+            catalog_matched=row.catalog_matched,
             manual_entry_note=row.manual_entry_note,
             notes=row.notes,
             market_price=market_price,
@@ -222,6 +274,8 @@ class CollectionItemDetailOut(BaseModel):
 
 class CatalogItemOut(BaseModel):
     id: int
+    canonical_card_id: int | None
+    game_code: str
     name: str
     set_code: str | None
     expansion_name: str | None
@@ -230,7 +284,19 @@ class CatalogItemOut(BaseModel):
     finish: str | None
     treatment: str | None
     language: str | None
+    release_kind: str | None
+    art_kind: str | None
+    printing_count: int
+    reprint_count: int
     current_price: float | None
+    price_source: str | None
+    resolution_method: str | None
+    price_currency: str | None
+    price_external_id: str | None
+    price_sample_size: int
+    lowest_price: float | None
+    median_price: float | None
+    price_confidence: str | None
     ownership_status: str
     owned: bool
     wishlist: bool
@@ -240,10 +306,17 @@ class CatalogItemOut(BaseModel):
     @classmethod
     def from_row(cls, row: CatalogRow) -> "CatalogItemOut":
         return cls(
-            id=row.id, name=row.name, set_code=row.set_code,
+            id=row.id, canonical_card_id=row.canonical_card_id, game_code=row.game_code,
+            name=row.name, set_code=row.set_code,
             expansion_name=row.expansion_name, card_number=row.card_number,
             rarity=row.rarity, finish=row.finish, treatment=row.treatment,
-            language=row.language, current_price=row.current_price,
+            language=row.language, release_kind=row.release_kind, art_kind=row.art_kind,
+            printing_count=row.printing_count, reprint_count=row.reprint_count,
+            current_price=row.current_price, price_source=row.price_source,
+            resolution_method=row.resolution_method,
+            price_currency=row.price_currency, price_external_id=row.price_external_id,
+            price_sample_size=row.price_sample_size, lowest_price=row.lowest_price,
+            median_price=row.median_price, price_confidence=row.price_confidence,
             ownership_status=row.ownership_status, owned=row.owned,
             wishlist=row.wishlist, wishlist_item_id=row.wishlist_item_id,
             image=CardImageOut.from_data(row.image),
@@ -257,12 +330,30 @@ class CatalogListResponse(BaseModel):
     page_size: int
 
 
+class CatalogDetailResponse(BaseModel):
+    printing: CatalogItemOut
+    printings: list[CatalogItemOut]
+
+
+class CatalogOptionOut(BaseModel):
+    value: str
+    label: str
+
+
+class CatalogOptionsResponse(BaseModel):
+    games: list[CatalogOptionOut]
+    languages: list[CatalogOptionOut]
+    sets: list[CatalogOptionOut]
+
+
 # --- /api/wishlist ------------------------------------------------------------------
 
 
 class WishlistItemOut(BaseModel):
     id: int
     card_id: int
+    canonical_card_id: int | None
+    game_code: str
     name: str
     set_code: str | None
     expansion_name: str | None
@@ -272,42 +363,135 @@ class WishlistItemOut(BaseModel):
     treatment: str | None
     quantity_wanted: int
     priority: str
+    target_price: float | None
     max_price: float | None
     currency: str | None
     notes: str | None
     status: str
+    acquired_at: str | None
+    removed_at: str | None
     current_price: float | None
+    language: str | None
+    release_kind: str | None
+    art_kind: str | None
+    printing_count: int
+    reprint_count: int
+    source: str | None
+    resolution_method: str | None
+    price_currency: str | None
+    matched: bool
     image: CardImageOut | None
 
     @classmethod
     def from_row(cls, row: WishlistRow) -> "WishlistItemOut":
         return cls(
-            id=row.id, card_id=row.card_id, name=row.name, set_code=row.set_code,
+            id=row.id, card_id=row.card_id, canonical_card_id=row.canonical_card_id,
+            game_code=row.game_code, name=row.name, set_code=row.set_code,
             expansion_name=row.expansion_name, card_number=row.card_number,
             rarity=row.rarity, finish=row.finish, treatment=row.treatment,
             quantity_wanted=row.quantity_wanted, priority=row.priority,
+            target_price=row.target_price,
             max_price=row.max_price, currency=row.currency, notes=row.notes,
-            status=row.status, current_price=row.current_price,
+            status=row.status, acquired_at=row.acquired_at, removed_at=row.removed_at,
+            current_price=row.current_price, language=row.language,
+            release_kind=row.release_kind, art_kind=row.art_kind,
+            printing_count=row.printing_count, reprint_count=row.reprint_count,
+            source=row.source, resolution_method=row.resolution_method,
+            price_currency=row.price_currency,
+            matched=row.matched,
             image=CardImageOut.from_data(row.image),
         )
 
 
+class WishlistSummaryOut(BaseModel):
+    wanted: int
+    acquired: int
+    missing_price: int
+    unmatched: int
+    estimated_total: float
+
+
 class WishlistListResponse(BaseModel):
     items: list[WishlistItemOut]
+    total: int
+    summary: WishlistSummaryOut
 
 
 class WishlistCreateIn(BaseModel):
     card_id: int
     quantity_wanted: int = Field(1, gt=0)
-    priority: str = Field("medium", pattern="^(low|medium|high)$")
+    priority: str = Field("medium", pattern="^(low|medium|high|none)$")
+    target_price: float | None = Field(None, ge=0)
     max_price: float | None = Field(None, ge=0)
-    currency: str | None = "USD"
+    currency: str | None = "EUR"
     notes: str | None = None
+
+    @model_validator(mode="after")
+    def validate_price_order(self):
+        if self.target_price is not None and self.max_price is not None and self.target_price > self.max_price:
+            raise ValueError("target_price no puede ser mayor que max_price")
+        return self
 
 
 class WishlistUpdateIn(BaseModel):
     quantity_wanted: int | None = Field(None, gt=0)
-    priority: str | None = Field(None, pattern="^(low|medium|high)$")
+    priority: str | None = Field(None, pattern="^(low|medium|high|none)$")
+    target_price: float | None = Field(None, ge=0)
     max_price: float | None = Field(None, ge=0)
     currency: str | None = None
     notes: str | None = None
+
+
+class MatchCandidateOut(BaseModel):
+    id: int
+    name: str
+    set_code: str | None
+    expansion_name: str | None
+    card_number: str | None
+    finish: str | None
+    treatment: str | None
+    language: str | None
+    image: CardImageOut | None
+
+    @classmethod
+    def from_row(cls, row: MatchCandidateRow) -> "MatchCandidateOut":
+        return cls(
+            id=row.id, name=row.name, set_code=row.set_code,
+            expansion_name=row.expansion_name, card_number=row.card_number,
+            finish=row.finish, treatment=row.treatment, language=row.language,
+            image=CardImageOut.from_data(row.image),
+        )
+
+
+class CollectionMatchContextOut(BaseModel):
+    item_id: int
+    name: str
+    set_code: str | None
+    card_number: str | None
+    finish: str | None
+    treatment: str | None
+    language: str | None
+    source: str
+    source_note: str | None
+    candidates: list[MatchCandidateOut]
+
+    @classmethod
+    def from_data(cls, data: CollectionMatchContext) -> "CollectionMatchContextOut":
+        return cls(
+            item_id=data.item_id, name=data.name, set_code=data.set_code,
+            card_number=data.card_number, finish=data.finish, treatment=data.treatment,
+            language=data.language, source=data.source, source_note=data.source_note,
+            candidates=[MatchCandidateOut.from_row(row) for row in data.candidates],
+        )
+
+
+class ResolveMatchIn(BaseModel):
+    card_id: int
+    finish: str | None = None
+    treatment: str | None = None
+
+class AddToCollectionIn(BaseModel):
+    card_id: int
+    quantity: int = Field(1, ge=1)
+    finish: str | None = None
+    treatment: str | None = None

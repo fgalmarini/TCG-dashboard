@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { CardArt } from '@/components/collection/CardImage'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
@@ -8,22 +9,26 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { addToWishlist, fetchCatalog, moveWishlistToCollection, removeFromWishlist } from '@/lib/api'
+import { addToCollection, addToWishlist, fetchCatalog, fetchCatalogOptions, removeFromWishlist } from '@/lib/api'
+import { GAME_OPTIONS, LANGUAGE_OPTIONS } from '@/lib/types'
 import type { CatalogQueryParams } from '@/lib/types'
 import { useApi } from '@/lib/useApi'
 
 const ALL = '__all__'
 
 export function CatalogPage() {
+  const [game, setGame] = useState('magic')
+  const [language, setLanguage] = useState('')
   const [search, setSearch] = useState('')
   const [sets, setSets] = useState('')
   const [ownership, setOwnership] = useState<CatalogQueryParams['ownership']>()
   const [page, setPage] = useState(1)
   const [actionError, setActionError] = useState<string | null>(null)
   const { data, error, loading, reload } = useApi(
-    () => fetchCatalog({ sets: sets || undefined, search: search || undefined, ownership, page, page_size: 24 }),
-    [sets, search, ownership, page],
+    () => fetchCatalog({ game, language: language || undefined, sets: sets || undefined, search: search || undefined, ownership, page, page_size: 24 }),
+    [game, language, sets, search, ownership, page],
   )
+  const { data: options } = useApi(() => fetchCatalogOptions(game), [game])
 
   async function changeWishlist(cardId: number, wished: boolean) {
     setActionError(null)
@@ -40,18 +45,10 @@ export function CatalogPage() {
     }
   }
 
-  async function moveToCollection(cardId: number) {
-    const item = data?.items.find((candidate) => candidate.id === cardId)
-    if (!item) return
+  async function changeCollection(cardId: number) {
     setActionError(null)
-    try {
-      // Catalog only exposes Move when the card is already wished. The wishlist
-      // endpoint owns the transition and preserves the acquired history.
-      if (item.wishlist_item_id) await moveWishlistToCollection(item.wishlist_item_id)
-      reload()
-    } catch (err) {
-      setActionError(err instanceof Error ? err.message : 'No se pudo mover la carta.')
-    }
+    try { await addToCollection(cardId); reload() }
+    catch (err) { setActionError(err instanceof Error ? err.message : 'No se pudo agregar a Collection.') }
   }
 
   function resetPage<T>(setter: (value: T) => void) {
@@ -65,17 +62,27 @@ export function CatalogPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold">Catalog</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Magic · The Lord of the Rings · LTR + LTC</p>
+        <p className="mt-1 text-sm text-muted-foreground">Printings físicos por juego, release, variante e idioma</p>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <Input placeholder="Buscar por nombre..." value={search} onChange={(event) => resetPage(setSearch)(event.target.value)} className="sm:w-64" />
+        <Input placeholder="Buscar por nombre o número..." value={search} onChange={(event) => resetPage(setSearch)(event.target.value)} className="sm:w-64" />
+        <Select value={game} onValueChange={(value) => { setGame(value); setSets(''); setLanguage(''); setPage(1) }}>
+          <SelectTrigger className="sm:w-40"><SelectValue placeholder="Juego" /></SelectTrigger>
+          <SelectContent>{GAME_OPTIONS.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectContent>
+        </Select>
+        <Select value={language || ALL} onValueChange={(value) => resetPage(setLanguage)(value === ALL ? '' : value)}>
+          <SelectTrigger className="sm:w-40"><SelectValue placeholder="Idioma" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL}>Todos los idiomas</SelectItem>
+            {(options?.languages.length ? options.languages : LANGUAGE_OPTIONS).map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}
+          </SelectContent>
+        </Select>
         <Select value={sets || ALL} onValueChange={(value) => resetPage(setSets)(value === ALL ? '' : value)}>
           <SelectTrigger className="sm:w-40"><SelectValue placeholder="Set" /></SelectTrigger>
           <SelectContent>
             <SelectItem value={ALL}>Todos los sets</SelectItem>
-            <SelectItem value="ltr">LTR</SelectItem>
-            <SelectItem value="ltc">LTC</SelectItem>
+            {(options?.sets ?? []).map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={ownership ?? ALL} onValueChange={(value) => resetPage(setOwnership)(value === ALL ? undefined : value as CatalogQueryParams['ownership'])}>
@@ -103,19 +110,23 @@ export function CatalogPage() {
                   <CardContent className="space-y-3 p-3">
                     <CardArt image={item.image} alt={item.name} faceIndex={0} />
                     <div className="space-y-2">
-                      <h2 className="line-clamp-2 text-sm font-medium">{item.name}</h2>
-                      <p className="text-xs text-muted-foreground">{[item.set_code?.toUpperCase(), item.card_number].filter(Boolean).join(' · ') || '—'}</p>
+                      <Link to={`/catalog/${item.id}`} className="line-clamp-2 text-sm font-medium hover:underline">{item.name}</Link>
+                      <p className="text-xs text-muted-foreground">{[item.set_code?.toUpperCase(), item.card_number, item.language?.toUpperCase()].filter(Boolean).join(' · ') || '—'}</p>
                       <div className="flex flex-wrap gap-1">
                         {item.treatment && <Badge variant="secondary" className="text-[10px]">{item.treatment}</Badge>}
                         {item.finish && <Badge variant="outline" className="text-[10px]">{item.finish}</Badge>}
+                        {item.art_kind && <Badge variant="secondary" className="text-[10px]">{item.art_kind}</Badge>}
+                        {item.reprint_count > 0 && <Badge variant="secondary" className="text-[10px]">Reprints: {item.reprint_count}</Badge>}
                         <Badge variant="outline" className="text-[10px]">{item.ownership_status}</Badge>
                       </div>
-                      <MarketPrice value={item.current_price} />
+                      <MarketPrice value={item.current_price} currency={item.price_currency} />
                       <div className="flex flex-col gap-1">
+                        <Button type="button" size="sm" variant={item.owned ? 'secondary' : 'outline'} onClick={() => changeCollection(item.id)}>
+                          {item.owned ? 'Add copy to Collection' : 'Add to Collection'}
+                        </Button>
                         <Button type="button" size="sm" variant={item.wishlist ? 'secondary' : 'outline'} onClick={() => changeWishlist(item.id, item.wishlist)}>
                           {item.wishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
                         </Button>
-                        {item.wishlist && <Button type="button" size="sm" onClick={() => moveToCollection(item.id)}>Move to Collection</Button>}
                       </div>
                     </div>
                   </CardContent>

@@ -1,0 +1,70 @@
+{
+  "cutoff_date": "2026-08-27",
+  "before": {
+    "total_rows": 11502,
+    "distinct_card_numbers": 2847,
+    "distinct_cardtrader_blueprints": 0,
+    "rows_with_language": 11502,
+    "rows_without_language": 0,
+    "rows_with_exact_images": 0,
+    "rows_with_external_ids": 0,
+    "duplicate_blueprint_language_groups": 0,
+    "duplicate_legacy_natural_identity_groups": 26,
+    "unknown_or_ambiguous_variants": 2315,
+    "mapping_counts": {
+      "mapped": 11502,
+      "ambiguous": 683
+    }
+  },
+  "import": {
+    "provider_releases_seen": 98,
+    "releases_imported": 90,
+    "releases_excluded": 8,
+    "blueprints_seen": 7755,
+    "blueprints_imported": 7148,
+    "printings_inserted": 10581,
+    "legacy_rows_reused_exactly": 3141,
+    "en_external_id_printings": 6850,
+    "jp_external_id_printings": 6872,
+    "canonical_cards": 3210,
+    "reprint_printings_classified": 1558,
+    "alternate_art_printings_classified": 1613,
+    "commercial_identity_conflict_groups": 19,
+    "ambiguous_commercial_printings": 38,
+    "second_import_inserts": 0
+  },
+  "after": {
+    "total_rows": 22083,
+    "catalog_status": {
+      "active": 13684,
+      "ambiguous": 38,
+      "legacy": 8361
+    },
+    "distinct_card_numbers": 3316,
+    "distinct_cardtrader_blueprints": 7148,
+    "rows_with_language": 22083,
+    "rows_without_language": 0,
+    "rows_with_external_ids": 13722,
+    "rows_with_exact_images": 7129,
+    "duplicate_blueprint_language_groups": 0,
+    "duplicate_commercial_identity_groups": 19,
+    "legacy_rows_preserved": 11502,
+    "pricing": {
+      "cardmarket_exact_language": 0,
+      "cardtrader_marketplace_low_median_5": 10997,
+      "mixed_price_rejected": 2432,
+      "no_exact_language_price": 293,
+      "confidence_high": 9230,
+      "confidence_medium": 740,
+      "confidence_low": 1027,
+      "non_null_zero_prices": 0
+    },
+    "magic_regression": {
+      "ltr": 1544,
+      "ltc": 761,
+      "total": 2305
+    },
+    "sqlite_integrity_check": "ok",
+    "sqlite_foreign_key_violations": 0
+  }
+}
