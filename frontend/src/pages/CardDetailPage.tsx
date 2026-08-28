@@ -159,7 +159,7 @@ export function CardDetailPage() {
                   <Field label="Art kind" value={data.art_kind ?? '—'} />
                   <Field label="Printings" value={String(data.printing_count)} />
                   <Field label="Reprints" value={String(data.reprint_count)} />
-                  <Field label="Variante" value={data.variant_label ?? data.printing_variant ?? '—'} />
+                  <Field label="Tratamiento" value={data.treatment ?? data.variant_label ?? data.printing_variant ?? '—'} />
                   <Field label="Condicion" value={data.condition ?? '—'} />
                   <Field label="Grading" value={data.grading_company ? `${data.grading_company} ${data.grade ?? ''}`.trim() : '—'} />
                   <Field label="Cantidad" value={String(data.quantity)} />
@@ -196,7 +196,7 @@ export function CardDetailPage() {
                 <dl className="grid grid-cols-2 gap-4">
                   <Field label="Precio de compra" value={formatCurrency(data.purchase_price)} />
                   <Field label="Fecha de compra" value={formatDate(data.purchase_date)} />
-                  <Field label="Trade value" value={formatCurrency(data.trade_value)} />
+                  <Field label="Precio de mercado" value={formatCurrency(data.market_price?.trend, data.market_price?.currency)} />
                   <Field label="P/L" value={formatCurrency(data.unrealized_pl)} />
                   <Field label="ROI" value={formatPercent(data.roi)} />
                 </dl>

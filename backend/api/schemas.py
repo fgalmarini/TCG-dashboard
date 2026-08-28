@@ -178,6 +178,9 @@ class CollectionItemDetailOut(BaseModel):
     card_number: str | None
     printing_variant: str | None
     variant_label: str | None
+    treatment: str | None = None
+    source_variant: str | None = None
+    finish: str | None = None
     expansion_name: str | None
     expansion_set_code: str | None
     game_code: str | None
@@ -239,6 +242,9 @@ class CollectionItemDetailOut(BaseModel):
             card_number=row.card_number,
             printing_variant=row.printing_variant,
             variant_label=row.variant_label,
+            treatment=row.treatment,
+            source_variant=row.source_variant,
+            finish=row.finish,
             expansion_name=row.expansion_name,
             expansion_set_code=row.expansion_set_code,
             game_code=row.game_code,

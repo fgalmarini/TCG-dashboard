@@ -214,8 +214,8 @@ class CatalogWishlistApiTest(unittest.TestCase):
         ).lastrowid
         candidate = conn.execute(
             """INSERT INTO cards (game_id, expansion_id, card_number, name, printing_variant,
-                                   set_code, normalized_name, finish, language_id)
-               VALUES (3, ?, '40', 'The Bath Song', 'normal', 'ltr', 'the bath song', 'nonfoil', 1)""",
+                                   set_code, normalized_name, finish, language_id, catalog_status)
+               VALUES (3, ?, '40', 'The Bath Song', 'normal', 'ltr', 'the bath song', 'nonfoil', 1, 'active')""",
             (expansion_id,),
         ).lastrowid
         product = conn.execute(
@@ -258,8 +258,8 @@ class CatalogWishlistApiTest(unittest.TestCase):
             (expansion_id,),
         ).lastrowid
         candidate = conn.execute(
-            """INSERT INTO cards (game_id, expansion_id, card_number, name, printing_variant, set_code, normalized_name, finish, language_id)
-               VALUES (3, ?, '99', 'Shared Legacy', 'normal', 'ltr', 'shared legacy', 'foil', 1)""",
+            """INSERT INTO cards (game_id, expansion_id, card_number, name, printing_variant, set_code, normalized_name, finish, language_id, catalog_status)
+               VALUES (3, ?, '99', 'Shared Legacy', 'normal', 'ltr', 'shared legacy', 'foil', 1, 'active')""",
             (expansion_id,),
         ).lastrowid
         product = conn.execute(
@@ -288,6 +288,122 @@ class CatalogWishlistApiTest(unittest.TestCase):
         self.assertEqual(conn.execute("SELECT card_id FROM collection_items WHERE id=?", (other,)).fetchone()[0], legacy)
         self.assertEqual(conn.execute("SELECT card_id FROM cardmarket_product_mappings WHERE cardmarket_product_id=?", (product,)).fetchone()[0], legacy)
         conn.close()
+
+    def test_art_series_uses_exact_product_and_excludes_playable_same_name(self):
+        conn = connect(self.db_path)
+        expansion_id = self.ids["expansion_id"]
+        legacy = conn.execute(
+            "INSERT INTO cards (game_id, expansion_id, card_number, name, printing_variant, set_code) VALUES (3, ?, 'ART-2', 'Art Series: Fog on the Barrow-Downs', 'normal', 'ltr')",
+            (expansion_id,),
+        ).lastrowid
+        art = conn.execute(
+            """INSERT INTO cards
+               (game_id, expansion_id, card_number, name, printing_variant, set_code, normalized_name,
+                finish, treatment, source_variant, catalog_status, language_id)
+               VALUES (3, ?, 'ART-2', 'Art Series: Fog on the Barrow-Downs', 'normal', 'ltr',
+                       'art series: fog on the barrow-downs', 'nonfoil', 'Art Series Gold-Stamped',
+                       'art_series_gold_stamped', 'active', 1)""",
+            (expansion_id,),
+        ).lastrowid
+        playable = conn.execute(
+            """INSERT INTO cards
+               (game_id, expansion_id, card_number, name, printing_variant, set_code, normalized_name,
+                finish, catalog_status, language_id)
+               VALUES (3, ?, '16', 'Fog on the Barrow-Downs', 'normal', 'ltr',
+                       'fog on the barrow-downs', 'nonfoil', 'active', 1)""",
+            (expansion_id,),
+        ).lastrowid
+        legacy_duplicate = conn.execute(
+            "INSERT INTO cards (game_id, expansion_id, card_number, name, printing_variant, set_code) VALUES (3, ?, 'ART-2', 'Art Series: Fog on the Barrow-Downs', 'suggested_parallel', 'ltr')",
+            (expansion_id,),
+        ).lastrowid
+        product = conn.execute(
+            """INSERT INTO cardmarket_products
+               (cardmarket_id_product, raw_name, cardmarket_id_category, cardmarket_id_expansion, date_added, last_seen_at)
+               VALUES (900001, 'Art Series: Fog on the Barrow-Downs', 1, 5308, 'x', 'x')"""
+        ).lastrowid
+        conn.execute(
+            "INSERT INTO cardmarket_product_mappings (cardmarket_product_id, card_id, status) VALUES (?, ?, 'mapped')",
+            (product, art),
+        )
+        item = conn.execute(
+            """INSERT INTO collection_items
+               (card_id, cardmarket_product_id, language_id, quantity, purchase_price, status)
+               VALUES (?, ?, 1, 2, 9.5, 'KEEP')""",
+            (legacy, product),
+        ).lastrowid
+        conn.commit(); conn.close()
+
+        response = self.client.get(f"/api/collection/{item}/match-candidates")
+        self.assertEqual(response.status_code, 200)
+        candidates = response.json()["candidates"]
+        self.assertEqual([row["id"] for row in candidates], [art])
+        self.assertEqual(candidates[0]["treatment"], "Art Series Gold-Stamped")
+        self.assertNotIn(playable, [row["id"] for row in candidates])
+        self.assertNotIn(legacy_duplicate, [row["id"] for row in candidates])
+        self.assertEqual(
+            self.client.post(f"/api/collection/{item}/resolve-match", json={"card_id": legacy_duplicate}).status_code,
+            404,
+        )
+
+        resolved = self.client.post(f"/api/collection/{item}/resolve-match", json={"card_id": art})
+        self.assertEqual(resolved.status_code, 200)
+        self.assertTrue(resolved.json()["catalog_matched"])
+        self.assertEqual(resolved.json()["treatment"], "Art Series Gold-Stamped")
+        self.assertEqual(resolved.json()["source_variant"], "art_series_gold_stamped")
+        self.assertEqual(resolved.json()["finish"], "nonfoil")
+        conn = connect(self.db_path)
+        self.assertEqual(tuple(conn.execute("SELECT card_id, quantity, purchase_price FROM collection_items WHERE id=?", (item,)).fetchone()), (art, 2, 9.5))
+        conn.close()
+
+    def test_art_series_resolve_rejects_playable_candidate(self):
+        conn = connect(self.db_path)
+        expansion_id = self.ids["expansion_id"]
+        legacy = conn.execute(
+            "INSERT INTO cards (game_id, expansion_id, card_number, name, printing_variant, set_code) VALUES (3, ?, 'ART-9', 'Art Series: A Test', 'normal', 'ltr')",
+            (expansion_id,),
+        ).lastrowid
+        playable = conn.execute(
+            """INSERT INTO cards
+               (game_id, expansion_id, card_number, name, printing_variant, set_code, finish, catalog_status, language_id)
+               VALUES (3, ?, '9', 'A Test', 'normal', 'ltr', 'nonfoil', 'active', 1)""",
+            (expansion_id,),
+        ).lastrowid
+        item = conn.execute("INSERT INTO collection_items (card_id, language_id, quantity, status) VALUES (?, 1, 1, 'KEEP')", (legacy,)).lastrowid
+        conn.commit(); conn.close()
+        response = self.client.post(f"/api/collection/{item}/resolve-match", json={"card_id": playable})
+        self.assertEqual(response.status_code, 422)
+
+    def test_art_series_fallback_matches_set_name_and_art_number(self):
+        conn = connect(self.db_path)
+        expansion_id = self.ids["expansion_id"]
+        legacy = conn.execute(
+            "INSERT INTO cards (game_id, expansion_id, card_number, name, printing_variant, set_code) VALUES (3, ?, 'ART-7', 'Art Series: Exact Fallback', 'normal', 'ltr')",
+            (expansion_id,),
+        ).lastrowid
+        art = conn.execute(
+            """INSERT INTO cards
+               (game_id, expansion_id, card_number, name, printing_variant, set_code, normalized_name,
+                finish, catalog_status, language_id)
+               VALUES (3, ?, 'ART-7', 'Art Series: Exact Fallback', 'normal', 'ltr',
+                       'art series: exact fallback', 'nonfoil', 'active', 1)""",
+            (expansion_id,),
+        ).lastrowid
+        playable = conn.execute(
+            """INSERT INTO cards
+               (game_id, expansion_id, card_number, name, printing_variant, set_code, normalized_name,
+                finish, catalog_status, language_id)
+               VALUES (3, ?, '7', 'Exact Fallback', 'normal', 'ltr',
+                       'exact fallback', 'nonfoil', 'active', 1)""",
+            (expansion_id,),
+        ).lastrowid
+        item = conn.execute("INSERT INTO collection_items (card_id, language_id, quantity, status) VALUES (?, 1, 1, 'KEEP')", (legacy,)).lastrowid
+        conn.commit(); conn.close()
+
+        response = self.client.get(f"/api/collection/{item}/match-candidates")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([row["id"] for row in response.json()["candidates"]], [art])
+        self.assertNotIn(playable, [row["id"] for row in response.json()["candidates"]])
 
 
 if __name__ == "__main__":

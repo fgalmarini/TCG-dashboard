@@ -31,6 +31,20 @@ class QueriesTest(unittest.TestCase):
         row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])
         self.assertIsNone(row.market_trend)
         self.assertFalse(row.manual_entry)
+        self.assertIsNone(row.treatment)
+        self.assertIsNone(row.source_variant)
+        self.assertIsNone(row.finish)
+
+    def test_collection_row_exposes_card_treatment_variant_and_finish(self):
+        self.conn.execute(
+            "UPDATE cards SET treatment='Art Series Gold-Stamped', source_variant='art_series_gold_stamped', finish='nonfoil' WHERE id=?",
+            (self.ids["card_a_id"],),
+        )
+        self.conn.commit()
+        row = queries.fetch_collection_row_by_id(self.conn, self.ids["row1_id"])
+        self.assertEqual(row.treatment, "Art Series Gold-Stamped")
+        self.assertEqual(row.source_variant, "art_series_gold_stamped")
+        self.assertEqual(row.finish, "nonfoil")
 
     def test_foil_price_falls_back_to_alt_metric_when_base_trend_is_zero(self):
         product_id = 2003

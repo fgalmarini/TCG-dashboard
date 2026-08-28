@@ -82,7 +82,9 @@ def resolve_match(
 ) -> CollectionItemDetailOut:
     current = conn.execute(
         """SELECT ci.id, ci.card_id, ci.cardmarket_product_id,
-                  CASE WHEN g.code='magic'
+                  c.name, c.set_code, c.card_number, c.catalog_status,
+                  CASE WHEN c.catalog_status='active'
+                            AND g.code='magic'
                             AND lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc')
                             AND c.card_number IS NOT NULL AND c.finish IS NOT NULL
                        THEN 1 ELSE 0 END AS catalog_matched
@@ -99,10 +101,10 @@ def resolve_match(
         raise HTTPException(status_code=409, detail="La fila ya está asociada a una card canónica")
 
     candidate = conn.execute(
-        """SELECT c.id FROM cards c
+        """SELECT c.id, c.name, c.set_code, c.card_number, c.catalog_status FROM cards c
              JOIN expansions e ON e.id=c.expansion_id
              JOIN games g ON g.id=c.game_id
-            WHERE c.id=? AND g.code='magic'
+            WHERE c.id=? AND c.catalog_status='active' AND g.code='magic'
               AND lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc')
               AND c.card_number IS NOT NULL AND c.finish IS NOT NULL""",
         (payload.card_id,),
@@ -122,6 +124,21 @@ def resolve_match(
             "SELECT COUNT(*) FROM collection_items WHERE cardmarket_product_id=? AND id<>?",
             (product_id, item_id),
         ).fetchone()[0]
+
+    source_is_art_series = (current["name"] or "").casefold().startswith("art series:")
+    if source_is_art_series:
+        candidate_is_art_series = (candidate["name"] or "").casefold().startswith("art series:")
+        same_number = (
+            current["card_number"] is None
+            or candidate["card_number"] is not None
+            and candidate["card_number"].casefold() == current["card_number"].casefold()
+        )
+        if not candidate_is_art_series or not same_number:
+            raise HTTPException(status_code=422, detail="Una Art Series solo puede resolverse contra otra Art Series compatible")
+        if product_id is not None and (
+            mapping is None or mapping["status"] != "mapped" or mapping["card_id"] != payload.card_id
+        ):
+            raise HTTPException(status_code=409, detail="La Art Series exige el mapping Cardmarket exacto")
 
     try:
         conn.execute("BEGIN")

@@ -197,3 +197,26 @@ avoid changing Trading/Analytics/CARDMADNESS scope during this phase.
 - Repeated identical source snapshots are deduplicated by source timestamp/fingerprint.
 - JSON audit logs are written to local `logs/pricing/` and backups to
   `backups/pricing/`; both paths are ignored by Git.
+
+## Magic LOTR Art Series Catalog (`2026-08-28`)
+
+- The existing 162 Cardmarket Art Series products (expansion `5308`) remain
+  one-to-one with existing legacy `cards.id` rows; the backfill creates no cards.
+- Verified rows are promoted in place with `catalog_status=active`,
+  `finish=nonfoil`, `release_kind=special`, `art_kind=special` and
+  `catalog_source=cardmarket`. `data_source`, `scryfall_id` and `scryfall_raw`
+  remain unchanged.
+- Variant evidence is read from a local CardTrader export first and exact
+  CardTrader image metadata second. Gold-Stamped uses `treatment` and
+  `source_variant`; both variants keep technical finish `nonfoil`.
+- The 45 Art Series currently owned by the user were physically confirmed as
+  Gold-Stamped and are now represented as `treatment='Art Series Gold-Stamped'`
+  and `source_variant='art_series_gold_stamped'`. The remaining 117 product rows
+  stay legacy and are not promoted automatically.
+- This Collection-only correction does not change `card_id`, mappings, snapshots,
+  images, quantities, purchase prices, Wishlist or `match_status`.
+- Manual candidates use the exact Cardmarket product mapping first and otherwise
+  an exact Art Series name/set/`ART-n` fallback. Candidates are always active;
+  Art Series names cannot resolve to playable cards with similar names.
+- Apply runs operate on a temporary SQLite copy, validate integrity and foreign
+  keys, save a recoverable backup, and only then copy the validated DB back.

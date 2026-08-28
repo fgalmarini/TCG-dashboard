@@ -54,6 +54,7 @@ _COLLECTION_COLUMNS = """
     ci.notes, ci.match_status, ci.match_quality, ci.match_reason,
     ci.finish AS collection_finish, ci.treatment AS collection_treatment,
     c.name AS card_name, c.card_number, c.printing_variant, c.variant_label,
+    c.treatment, c.source_variant, c.finish,
     c.canonical_card_id, c.release_kind, c.art_kind,
     COALESCE(s.name, e.name) AS expansion_name,
     COALESCE(s.code, c.set_code, e.set_code) AS expansion_set_code,
@@ -151,6 +152,9 @@ class CollectionRow:
     card_number: str | None
     printing_variant: str | None
     variant_label: str | None
+    treatment: str | None
+    source_variant: str | None
+    finish: str | None
     canonical_card_id: int | None
     release_kind: str | None
     art_kind: str | None
@@ -211,6 +215,9 @@ def _row_to_collection_row(row: sqlite3.Row) -> CollectionRow:
         card_number=row["card_number"],
         printing_variant=row["printing_variant"],
         variant_label=row["variant_label"],
+        treatment=row["treatment"],
+        source_variant=row["source_variant"],
+        finish=row["finish"],
         canonical_card_id=row["canonical_card_id"],
         release_kind=row["release_kind"],
         art_kind=row["art_kind"],
@@ -985,32 +992,70 @@ def fetch_collection_match_context(
         return None
     name = source["name"] or source["manual_entry_note"] or source["notes"] or ""
     query = (search or name).strip()
-    clauses = [
-        "g.code='magic'",
-        "lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc')",
-        "c.card_number IS NOT NULL",
-        "c.finish IS NOT NULL",
-    ]
-    params: list = []
-    if query:
-        like = f"%{query}%"
-        clauses.append("(c.name LIKE ? COLLATE NOCASE OR c.normalized_name LIKE ? COLLATE NOCASE)")
-        params.extend([like, like])
-    if source["set_code"]:
-        clauses.append("lower(COALESCE(c.set_code, e.set_code)) = ?")
-        params.append(source["set_code"].casefold())
-    candidates = conn.execute(
-        f"""SELECT c.id, c.name, COALESCE(c.set_code, e.set_code) AS set_code,
+    is_art_series = name.casefold().startswith("art series:")
+    candidate_select = """SELECT c.id, c.name, COALESCE(c.set_code, e.set_code) AS set_code,
                       e.name AS expansion_name, c.card_number, c.finish, c.treatment,
                       l.code AS language
                  FROM cards c
                  JOIN expansions e ON e.id = c.expansion_id
                  JOIN games g ON g.id = c.game_id
                  LEFT JOIN languages l ON l.id = c.language_id
-                WHERE {' AND '.join(clauses)}
-                ORDER BY c.name COLLATE NOCASE, c.card_number, c.finish, c.id""",
-        params,
-    ).fetchall()
+                WHERE {where}
+                ORDER BY c.name COLLATE NOCASE, c.card_number, c.finish, c.id"""
+
+    # Product mapping is the strongest identity.  It also prevents an Art
+    # Series product from falling through to a playable card with the same name.
+    candidates = []
+    if source["cardmarket_product_id"] is not None:
+        exact_clauses = [
+            "m.cardmarket_product_id = ?",
+            "m.status = 'mapped'",
+            "c.catalog_status = 'active'",
+            "g.code = 'magic'",
+            "lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc')",
+            "c.finish IS NOT NULL",
+        ]
+        exact_params: list = [source["cardmarket_product_id"]]
+        if is_art_series:
+            exact_clauses.append("c.name LIKE 'Art Series:%'")
+        candidates = conn.execute(
+            candidate_select.format(where=" AND ".join(exact_clauses)).replace(
+                "JOIN expansions e ON e.id = c.expansion_id",
+                "JOIN expansions e ON e.id = c.expansion_id\n                 JOIN cardmarket_product_mappings m ON m.card_id = c.id",
+            ),
+            exact_params,
+        ).fetchall()
+
+    if not candidates:
+        clauses = [
+            "c.catalog_status = 'active'",
+            "g.code='magic'",
+            "lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc')",
+            "c.finish IS NOT NULL",
+        ]
+        params: list = []
+        if is_art_series:
+            # Art Series fallback is intentionally exact and never searches
+            # playable cards with a similar name.
+            clauses.append("c.name LIKE 'Art Series:%'")
+            clauses.append("(lower(c.name) = lower(?) OR c.normalized_name = ?)")
+            params.extend([name, " ".join(name.casefold().split())])
+            if source["card_number"]:
+                clauses.append("upper(c.card_number) = upper(?)")
+                params.append(source["card_number"])
+        else:
+            clauses.append("c.card_number IS NOT NULL")
+            if query:
+                like = f"%{query}%"
+                clauses.append("(c.name LIKE ? COLLATE NOCASE OR c.normalized_name LIKE ? COLLATE NOCASE)")
+                params.extend([like, like])
+        if source["set_code"]:
+            clauses.append("lower(COALESCE(c.set_code, e.set_code)) = ?")
+            params.append(source["set_code"].casefold())
+        candidates = conn.execute(
+            candidate_select.format(where=" AND ".join(clauses)),
+            params,
+        ).fetchall()
     result = [
         MatchCandidateRow(
             id=row["id"], name=row["name"], set_code=row["set_code"],

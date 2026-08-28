@@ -91,6 +91,9 @@ export interface CollectionItemDetail {
   card_number: string | null
   printing_variant: string | null
   variant_label: string | null
+  treatment?: string | null
+  source_variant?: string | null
+  finish?: string | null
   expansion_name: string | null
   expansion_set_code: string | null
   game_code: string | null
