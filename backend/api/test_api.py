@@ -48,6 +48,10 @@ class ApiTest(unittest.TestCase):
         self.assertIn(self.ids["row3_id"], data["cards_without_market_value"]["ids"])
         self.assertIsNotNone(data["roi"])
         self.assertIn("sin_catalogar", data["value_by_tcg"])
+        self.assertLessEqual(len(data["top_cards"]), 10)
+        self.assertEqual(data["top_cards"][0]["collection_item_id"], self.ids["row1_id"])
+        self.assertEqual(data["top_cards"][0]["price_variation"], 0.25)
+        self.assertEqual(data["top_cards"][0]["image"]["source"], "scryfall")
 
     def test_collection_endpoint_no_filters_returns_all_rows(self):
         resp = self.client.get("/api/collection")

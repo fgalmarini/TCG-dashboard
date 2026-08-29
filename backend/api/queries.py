@@ -23,7 +23,19 @@ WITH latest_price AS (
         COALESCE(NULLIF(h.avg, 0), NULLIF(h.avg_alt, 0)) AS avg,
         COALESCE(NULLIF(h.low, 0), NULLIF(h.low_alt, 0)) AS low,
         COALESCE(NULLIF(h.avg30, 0), NULLIF(h.avg30_alt, 0)) AS avg30,
-        h.observed_at
+        h.observed_at,
+        (
+            SELECT COALESCE(NULLIF(h2.trend, 0), NULLIF(h2.trend_alt, 0))
+              FROM market_price_history h2
+             WHERE h2.cardmarket_product_id = h.cardmarket_product_id
+               AND (
+                    h2.observed_at < h.observed_at
+                    OR (h2.observed_at = h.observed_at AND h2.id < h.id)
+               )
+               AND COALESCE(NULLIF(h2.trend, 0), NULLIF(h2.trend_alt, 0)) IS NOT NULL
+             ORDER BY h2.observed_at DESC, h2.id DESC
+             LIMIT 1
+        ) AS previous_trend
     FROM market_price_history h
     WHERE h.observed_at = (
         SELECT MAX(h2.observed_at) FROM market_price_history h2
@@ -31,7 +43,20 @@ WITH latest_price AS (
     )
 ), latest_printing_resolution AS (
     SELECT r.card_id, r.language_id, r.current_price, r.currency,
-           r.source, r.resolution_method, r.resolved_at
+           r.source, r.resolution_method, r.resolved_at,
+           (
+               SELECT r2.current_price
+                 FROM printing_price_resolutions r2
+                WHERE r2.card_id = r.card_id
+                  AND r2.language_id = r.language_id
+                  AND r2.current_price IS NOT NULL
+                  AND (
+                       r2.resolved_at < r.resolved_at
+                       OR (r2.resolved_at = r.resolved_at AND r2.id < r.id)
+                  )
+                ORDER BY r2.resolved_at DESC, r2.id DESC
+                LIMIT 1
+           ) AS previous_current_price
       FROM printing_price_resolutions r
      WHERE r.id = (
          SELECT r2.id FROM printing_price_resolutions r2
@@ -65,6 +90,7 @@ _COLLECTION_COLUMNS = """
               AND c.card_number IS NOT NULL AND c.finish IS NOT NULL)
          THEN 1 ELSE 0 END AS catalog_matched,
     CASE WHEN g.code = 'one_piece' THEN pr.current_price ELSE lp.trend END AS market_trend,
+    CASE WHEN g.code = 'one_piece' THEN pr.previous_current_price ELSE lp.previous_trend END AS previous_market_trend,
     CASE WHEN g.code = 'one_piece' THEN NULL ELSE lp.avg END AS market_avg,
     CASE WHEN g.code = 'one_piece' THEN NULL ELSE lp.low END AS market_low,
     CASE WHEN g.code = 'one_piece' THEN NULL ELSE lp.avg30 END AS market_avg30,
@@ -165,6 +191,7 @@ class CollectionRow:
     language: str | None
     catalog_matched: bool
     market_trend: float | None
+    previous_market_trend: float | None
     market_avg: float | None
     market_low: float | None
     market_avg30: float | None
@@ -188,6 +215,12 @@ class CollectionRow:
     @property
     def has_market_value(self) -> bool:
         return self.market_trend is not None
+
+    @property
+    def price_variation(self) -> float | None:
+        if self.market_trend is None or self.previous_market_trend in (None, 0):
+            return None
+        return (self.market_trend - self.previous_market_trend) / self.previous_market_trend
 
 
 def _row_to_collection_row(row: sqlite3.Row) -> CollectionRow:
@@ -228,6 +261,7 @@ def _row_to_collection_row(row: sqlite3.Row) -> CollectionRow:
         language=row["language"],
         catalog_matched=bool(row["catalog_matched"]),
         market_trend=row["market_trend"],
+        previous_market_trend=row["previous_market_trend"],
         market_avg=row["market_avg"],
         market_low=row["market_low"],
         market_avg30=row["market_avg30"],
@@ -444,12 +478,13 @@ class OverviewData:
     cards_without_market_value_count: int
     cards_without_market_value_ids: list[int]
     value_by_tcg: dict[str, TcgBucketData] = field(default_factory=dict)
+    top_cards: list[CollectionRow] = field(default_factory=list)
 
 
 def compute_overview(conn: sqlite3.Connection) -> OverviewData:
     """Una sola llamada a la query base sin WHERE, agregacion en Python -- dataset
     ~100 filas no justifica 6 queries SUM/GROUP BY separadas (AGENTS.md seccion 24)."""
-    rows = fetch_collection_rows(conn)
+    rows = fetch_collection_rows(conn, include_images=True)
 
     total_cost = 0.0
     cost_basis_row_count = 0
@@ -497,6 +532,10 @@ def compute_overview(conn: sqlite3.Connection) -> OverviewData:
         cards_without_market_value_count=len(without_market_ids),
         cards_without_market_value_ids=without_market_ids,
         value_by_tcg=tcg_buckets,
+        top_cards=sorted(
+            (row for row in rows if row.market_trend is not None),
+            key=lambda row: (-row.market_trend, row.id),
+        )[:10],
     )
 
 

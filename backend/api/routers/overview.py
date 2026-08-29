@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends
 
 from ..db import get_db
 from ..queries import compute_overview
-from ..schemas import CardsWithoutMarketValue, OverviewResponse, TcgBucket
+from ..schemas import CardsWithoutMarketValue, OverviewResponse, TcgBucket, TopCardOut
 
 router = APIRouter(prefix="/api", tags=["overview"])
 
@@ -29,4 +29,5 @@ def get_overview(conn: sqlite3.Connection = Depends(get_db)) -> OverviewResponse
             ids=data.cards_without_market_value_ids,
         ),
         value_by_tcg={key: TcgBucket.from_data(bucket) for key, bucket in data.value_by_tcg.items()},
+        top_cards=[TopCardOut.from_row(row) for row in data.top_cards],
     )

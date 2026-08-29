@@ -4,6 +4,8 @@ Collection remains read-only except for the explicit catalog match resolver; Wis
 exposes the planning operations for this sprint.
 """
 
+from __future__ import annotations
+
 from pydantic import BaseModel, Field, model_validator
 
 from .queries import (
@@ -57,6 +59,7 @@ class OverviewResponse(BaseModel):
         ...,
         description="Agrupado por games.code. Bucket 'sin_catalogar' para filas sin game_id resoluble (card_id IS NULL) -- nunca descartado silenciosamente.",
     )
+    top_cards: list[TopCardOut] = Field(..., max_length=10)
 
 
 # --- /api/collection ---------------------------------------------------------------
@@ -91,6 +94,46 @@ class CardImageOut(BaseModel):
             is_language_fallback=data.is_language_fallback,
             match_quality=data.match_quality,
             faces=[CardImageFaceOut.from_data(face) for face in data.faces],
+        )
+
+
+class TopCardOut(BaseModel):
+    collection_item_id: int
+    card_id: int | None
+    name: str
+    game_code: str | None
+    expansion_name: str | None
+    set_code: str | None
+    card_number: str | None
+    variant_label: str | None
+    treatment: str | None
+    source_variant: str | None
+    finish: str | None
+    language: str | None
+    market_value: float
+    price_currency: str | None
+    price_variation: float | None
+    image: CardImageOut | None
+
+    @classmethod
+    def from_row(cls, row: CollectionRow) -> "TopCardOut":
+        return cls(
+            collection_item_id=row.id,
+            card_id=row.card_id,
+            name=row.display_name,
+            game_code=row.game_code,
+            expansion_name=row.expansion_name,
+            set_code=row.expansion_set_code,
+            card_number=row.card_number,
+            variant_label=row.variant_label,
+            treatment=row.treatment,
+            source_variant=row.source_variant,
+            finish=row.finish,
+            language=row.language,
+            market_value=row.market_trend,
+            price_currency=row.price_currency,
+            price_variation=row.price_variation,
+            image=CardImageOut.from_data(row.image),
         )
 
 
@@ -501,3 +544,6 @@ class AddToCollectionIn(BaseModel):
     quantity: int = Field(1, ge=1)
     finish: str | None = None
     treatment: str | None = None
+
+
+OverviewResponse.model_rebuild()

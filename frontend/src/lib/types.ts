@@ -11,6 +11,25 @@ export interface TcgBucket {
   total_cards: number
 }
 
+export interface TopCard {
+  collection_item_id: number
+  card_id: number | null
+  name: string
+  game_code: string | null
+  expansion_name: string | null
+  set_code: string | null
+  card_number: string | null
+  variant_label: string | null
+  treatment: string | null
+  source_variant: string | null
+  finish: string | null
+  language: string | null
+  market_value: number
+  price_currency: string | null
+  price_variation: number | null
+  image: CardImage | null
+}
+
 export interface OverviewResponse {
   total_cost: number
   cost_basis_row_count: number
@@ -24,6 +43,7 @@ export interface OverviewResponse {
   unique_cards: number
   cards_without_market_value: CardsWithoutMarketValue
   value_by_tcg: Record<string, TcgBucket>
+  top_cards: TopCard[]
 }
 
 export interface CollectionItem {

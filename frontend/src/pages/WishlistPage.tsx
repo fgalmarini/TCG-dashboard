@@ -9,7 +9,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { exportWishlist, fetchCatalogOptions, fetchWishlist, markWishlistAcquired, removeFromWishlist, restoreWishlist, updateWishlist } from '@/lib/api'
-import { formatCurrency } from '@/lib/format'
+import { formatCurrency, formatSetCode } from '@/lib/format'
 import { GAME_OPTIONS, LANGUAGE_OPTIONS, type WishlistItem, type WishlistQueryParams } from '@/lib/types'
 import { useApi } from '@/lib/useApi'
 
@@ -78,7 +78,7 @@ function WishlistCard({
           <div>
             <h2 className="truncate font-medium">{item.name}</h2>
             <p className="text-xs text-muted-foreground">
-              {[item.set_code?.toUpperCase(), item.card_number, item.language?.toUpperCase(), item.treatment, item.finish].filter(Boolean).join(' · ') || '—'}
+              {[formatSetCode(item.set_code), item.card_number, item.language?.toUpperCase(), item.treatment, item.finish].filter(Boolean).join(' · ') || '—'}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-sm">

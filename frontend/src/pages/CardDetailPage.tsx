@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
 import { fetchCollectionItem, fetchMatchCandidates, resolveCollectionMatch } from '@/lib/api'
-import { formatCurrency, formatDate, formatDateTime, formatPercent } from '@/lib/format'
+import { formatCurrency, formatDate, formatDateTime, formatPercent, formatSetCode } from '@/lib/format'
 import { Input } from '@/components/ui/input'
 import { useApi } from '@/lib/useApi'
 
@@ -51,7 +51,7 @@ function MatchResolver({ itemId, onResolved }: { itemId: number; onResolved: () 
         {data && (
           <div className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
             <Field label="Nombre" value={data.name || '—'} />
-            <Field label="Set" value={data.set_code ?? '—'} />
+            <Field label="Set" value={formatSetCode(data.set_code) ?? '—'} />
             <Field label="Collector number" value={data.card_number ?? '—'} />
             <Field label="Source" value={data.source} />
           </div>
@@ -72,7 +72,7 @@ function MatchResolver({ itemId, onResolved }: { itemId: number; onResolved: () 
                 <CardThumbnail image={candidate.image} alt={candidate.name} />
                 <span className="min-w-0 text-sm">
                   <span className="block truncate font-medium">{candidate.name}</span>
-                  <span className="block text-xs text-muted-foreground">{[candidate.set_code?.toUpperCase(), candidate.card_number, candidate.finish, candidate.treatment].filter(Boolean).join(' · ')}</span>
+                  <span className="block text-xs text-muted-foreground">{[formatSetCode(candidate.set_code), candidate.card_number, candidate.finish, candidate.treatment].filter(Boolean).join(' · ')}</span>
                 </span>
               </button>
             ))}
@@ -151,7 +151,7 @@ export function CardDetailPage() {
               <CardContent>
                 <dl className="grid grid-cols-2 gap-4">
                   <Field label="Set" value={data.expansion_name ?? '—'} />
-                  <Field label="Set code" value={data.expansion_set_code ?? '—'} />
+                  <Field label="Set code" value={formatSetCode(data.expansion_set_code) ?? '—'} />
                   <Field label="Numero" value={data.card_number ?? '—'} />
                   <Field label="TCG" value={data.game_name ?? '—'} />
                   <Field label="Idioma" value={data.language?.toUpperCase() ?? '—'} />

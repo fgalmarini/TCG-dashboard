@@ -69,6 +69,24 @@ Card Images / CardTrader fallback:
 - Existing collection, pricing, mapping and historical-price counts remained unchanged.
 - Dashboard API reads `card_images` only and never performs provider network calls.
 
+Overview / Collection / Catalog visual adjustments (`2026-08-28`):
+
+- Overview no longer renders P/L, ROI or the value-by-TCG chart; existing backend
+  calculations remain available for other consumers and detail views.
+- `GET /api/overview` now returns up to 10 `top_cards`, ranked by current price per
+  Collection row without multiplying by quantity. Each entry includes image metadata
+  and variation against the immediately previous valid snapshot for the same pricing
+  identity; insufficient history remains `null`.
+- Collection and Catalog grids share a fixed-height card shell with aligned identity,
+  metadata, price and action zones. Image-based hover decoration is frontend-only,
+  limited to real hover devices and disabled motion where requested.
+- Set codes use a centralized frontend formatter and display in uppercase across the
+  requested views without changing persisted values.
+- Verification: 128 backend tests passed; frontend build passed; lint passed with two
+  existing Fast Refresh warnings in UI primitives; `git diff --check` passed. Manual
+  browser checks passed at 1280px and 375px with no horizontal overflow and uniform
+  grid card heights.
+
 One Piece JP image fallback (`2026-08-28`):
 
 - Root cause confirmed: 6,506 active JP rows had CardTrader image records marked

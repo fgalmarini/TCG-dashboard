@@ -6,6 +6,7 @@ import { MarketPrice } from '@/components/shared/MarketPrice'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { fetchCatalogItem } from '@/lib/api'
+import { formatSetCode } from '@/lib/format'
 import { useApi } from '@/lib/useApi'
 
 export function CatalogDetailPage() {
@@ -23,7 +24,7 @@ export function CatalogDetailPage() {
         <Link to="/catalog" className="text-sm text-muted-foreground hover:underline">← Catalog</Link>
         <h1 className="mt-2 text-xl font-semibold">{item.name}</h1>
         <p className="text-sm text-muted-foreground">
-          {[item.set_code?.toUpperCase(), item.card_number, item.language?.toUpperCase()].filter(Boolean).join(' · ')}
+          {[formatSetCode(item.set_code), item.card_number, item.language?.toUpperCase()].filter(Boolean).join(' · ')}
         </p>
       </div>
 
@@ -32,8 +33,8 @@ export function CatalogDetailPage() {
         <Card>
           <CardContent className="grid gap-4 p-5 sm:grid-cols-2">
             <Field label="Game" value={item.game_code} />
-            <Field label="Release" value={item.expansion_name ?? item.set_code} />
-            <Field label="Original release" value={original?.expansion_name ?? original?.set_code ?? 'Sin validar'} />
+            <Field label="Release" value={item.expansion_name ?? formatSetCode(item.set_code)} />
+            <Field label="Original release" value={original?.expansion_name ?? formatSetCode(original?.set_code) ?? 'Sin validar'} />
             <Field label="Language" value={item.language?.toUpperCase()} />
             <Field label="Release kind" value={item.release_kind} />
             <Field label="Art kind" value={item.art_kind} />
@@ -61,9 +62,9 @@ export function CatalogDetailPage() {
             <Link key={printing.id} to={`/catalog/${printing.id}`}>
               <Card className={printing.id === item.id ? 'border-primary' : ''}>
                 <CardContent className="space-y-2 p-4">
-                  <p className="font-medium">{printing.expansion_name ?? printing.set_code}</p>
+                  <p className="font-medium">{printing.expansion_name ?? formatSetCode(printing.set_code)}</p>
                   <p className="text-xs text-muted-foreground">
-                    {[printing.card_number, printing.language?.toUpperCase()].filter(Boolean).join(' · ')}
+                    {[formatSetCode(printing.set_code), printing.card_number, printing.language?.toUpperCase()].filter(Boolean).join(' · ')}
                   </p>
                   <div className="flex flex-wrap gap-1">
                     {printing.release_kind && <Badge variant="outline">{printing.release_kind}</Badge>}

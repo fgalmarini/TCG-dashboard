@@ -126,5 +126,54 @@
     }
   html {
     @apply font-sans;
-    }
+  }
+}
+
+.card-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 34.625rem;
+}
+
+.card-shell__background {
+  position: absolute;
+  inset: -1rem;
+  z-index: 0;
+  background-image: var(--card-image);
+  background-position: center;
+  background-size: cover;
+  filter: blur(1.25rem);
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.card-shell__background::after {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--card) 68%, transparent);
+  content: '';
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-shell--image-hover:hover .card-shell__background {
+    opacity: 0.28;
+    transform: scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-shell__background {
+    transition: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .card-shell .card-shell__background {
+    filter: blur(0.9rem);
+  }
+
+  .card-shell {
+    min-height: 30.625rem;
+  }
 }

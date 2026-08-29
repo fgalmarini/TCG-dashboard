@@ -6,13 +6,15 @@ import { LoadingState } from '@/components/shared/LoadingState'
 import { MarketPrice } from '@/components/shared/MarketPrice'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { addToCollection, addToWishlist, fetchCatalog, fetchCatalogOptions, removeFromWishlist } from '@/lib/api'
 import { GAME_OPTIONS, LANGUAGE_OPTIONS } from '@/lib/types'
 import type { CatalogQueryParams } from '@/lib/types'
 import { useApi } from '@/lib/useApi'
+import { CardActions, CardIdentity, CardMetadata, CardPrice, TradingCard } from '@/components/shared/TradingCard'
+import { cardImageUrl, formatSetCode } from '@/lib/format'
 
 const ALL = '__all__'
 
@@ -106,12 +108,15 @@ export function CatalogPage() {
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {data.items.map((item) => (
-                <Card key={item.id} className="overflow-hidden">
-                  <CardContent className="space-y-3 p-3">
+                <TradingCard key={item.id} imageUrl={cardImageUrl(item.image)}>
+                  <CardContent className="flex h-full flex-col gap-3 p-3">
                     <CardArt image={item.image} alt={item.name} faceIndex={0} />
-                    <div className="space-y-2">
-                      <Link to={`/catalog/${item.id}`} className="line-clamp-2 text-sm font-medium hover:underline">{item.name}</Link>
-                      <p className="text-xs text-muted-foreground">{[item.set_code?.toUpperCase(), item.card_number, item.language?.toUpperCase()].filter(Boolean).join(' · ') || '—'}</p>
+                    <div className="flex min-h-0 flex-1 flex-col">
+                      <CardIdentity>
+                        <Link to={`/catalog/${item.id}`} className="line-clamp-2 text-sm font-medium hover:underline">{item.name}</Link>
+                        <p className="mt-1 truncate text-xs text-muted-foreground">{[formatSetCode(item.set_code), item.card_number, item.language?.toUpperCase()].filter(Boolean).join(' · ') || '—'}</p>
+                      </CardIdentity>
+                      <CardMetadata>
                       <div className="flex flex-wrap gap-1">
                         {item.treatment && <Badge variant="secondary" className="text-[10px]">{item.treatment}</Badge>}
                         {item.finish && <Badge variant="outline" className="text-[10px]">{item.finish}</Badge>}
@@ -119,18 +124,21 @@ export function CatalogPage() {
                         {item.reprint_count > 0 && <Badge variant="secondary" className="text-[10px]">Reprints: {item.reprint_count}</Badge>}
                         <Badge variant="outline" className="text-[10px]">{item.ownership_status}</Badge>
                       </div>
-                      <MarketPrice value={item.current_price} currency={item.price_currency} />
-                      <div className="flex flex-col gap-1">
+                      </CardMetadata>
+                      <CardPrice><MarketPrice value={item.current_price} currency={item.price_currency} /></CardPrice>
+                      <CardActions>
+                        <div className="flex flex-col gap-1">
                         <Button type="button" size="sm" variant={item.owned ? 'secondary' : 'outline'} onClick={() => changeCollection(item.id)}>
                           {item.owned ? 'Add copy to Collection' : 'Add to Collection'}
                         </Button>
                         <Button type="button" size="sm" variant={item.wishlist ? 'secondary' : 'outline'} onClick={() => changeWishlist(item.id, item.wishlist)}>
                           {item.wishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
                         </Button>
-                      </div>
+                        </div>
+                      </CardActions>
                     </div>
                   </CardContent>
-                </Card>
+                </TradingCard>
               ))}
             </div>
           )}

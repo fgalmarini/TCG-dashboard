@@ -139,6 +139,105 @@ class QueriesTest(unittest.TestCase):
         self.assertIn(self.ids["row2_id"], data.cards_without_market_value_ids)
         self.assertIn(self.ids["row3_id"], data.cards_without_market_value_ids)
 
+    def test_compute_overview_top_cards_uses_copy_price_and_previous_snapshot(self):
+        self.conn.execute(
+            "UPDATE collection_items SET quantity=100 WHERE id=?",
+            (self.ids["row2_id"],),
+        )
+        self.conn.execute(
+            """INSERT INTO market_price_history
+                   (cardmarket_product_id, observed_at, trend, imported_at)
+               VALUES (?, '2026-01-08T00:00:00', 11.0, '2026-01-08T00:00:00')""",
+            (self.ids["product_b_id"],),
+        )
+        self.conn.commit()
+
+        data = queries.compute_overview(self.conn)
+
+        self.assertEqual([row.id for row in data.top_cards], [self.ids["row1_id"], self.ids["row4_id"], self.ids["row2_id"]])
+        self.assertEqual(data.top_cards[0].market_trend, 12.5)
+        self.assertAlmostEqual(data.top_cards[0].price_variation, 0.25)
+        self.assertIsNone(data.top_cards[2].price_variation)
+        self.assertIsNotNone(data.top_cards[0].image)
+
+    def test_top_cards_ignores_zero_previous_snapshot(self):
+        self.conn.execute(
+            """INSERT INTO market_price_history
+                   (cardmarket_product_id, observed_at, trend, imported_at)
+               VALUES (?, '2026-01-01T00:00:00', 0, '2026-01-01T00:00:00')""",
+            (self.ids["product_b_id"],),
+        )
+        self.conn.execute(
+            """INSERT INTO market_price_history
+                   (cardmarket_product_id, observed_at, trend, imported_at)
+               VALUES (?, '2026-01-08T00:00:00', 11.0, '2026-01-08T00:00:00')""",
+            (self.ids["product_b_id"],),
+        )
+        self.conn.commit()
+
+        row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])
+
+        assert row is not None
+        self.assertEqual(row.market_trend, 11.0)
+        self.assertIsNone(row.previous_market_trend)
+        self.assertIsNone(row.price_variation)
+
+    def test_top_cards_calculates_negative_variation(self):
+        self.conn.execute(
+            """INSERT INTO market_price_history
+                   (cardmarket_product_id, observed_at, trend, imported_at)
+               VALUES (?, '2026-01-01T00:00:00', 20.0, '2026-01-01T00:00:00')""",
+            (self.ids["product_b_id"],),
+        )
+        self.conn.execute(
+            """INSERT INTO market_price_history
+                   (cardmarket_product_id, observed_at, trend, imported_at)
+               VALUES (?, '2026-01-08T00:00:00', 10.0, '2026-01-08T00:00:00')""",
+            (self.ids["product_b_id"],),
+        )
+        self.conn.commit()
+
+        row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])
+
+        assert row is not None
+        self.assertAlmostEqual(row.price_variation, -0.5)
+
+    def test_top_cards_calculates_zero_variation_after_intermediate_invalid_snapshot(self):
+        for observed_at, trend in (
+            ("2026-01-01T00:00:00", 10.0),
+            ("2026-01-04T00:00:00", 0.0),
+            ("2026-01-08T00:00:00", 10.0),
+        ):
+            self.conn.execute(
+                """INSERT INTO market_price_history
+                       (cardmarket_product_id, observed_at, trend, imported_at)
+                   VALUES (?, ?, ?, ?)""",
+                (self.ids["product_b_id"], observed_at, trend, observed_at),
+            )
+        self.conn.commit()
+
+        row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])
+
+        assert row is not None
+        self.assertEqual(row.market_trend, 10.0)
+        self.assertEqual(row.previous_market_trend, 10.0)
+        self.assertEqual(row.price_variation, 0.0)
+
+    def test_top_cards_with_only_one_valid_snapshot_has_null_variation(self):
+        self.conn.execute(
+            """INSERT INTO market_price_history
+                   (cardmarket_product_id, observed_at, trend, imported_at)
+               VALUES (?, '2026-01-08T00:00:00', 10.0, '2026-01-08T00:00:00')""",
+            (self.ids["product_b_id"],),
+        )
+        self.conn.commit()
+
+        row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])
+
+        assert row is not None
+        self.assertIsNone(row.previous_market_trend)
+        self.assertIsNone(row.price_variation)
+
     def test_compute_overview_roi_none_when_total_cost_zero(self):
         tmp_dir2 = tempfile.TemporaryDirectory()
         try:
