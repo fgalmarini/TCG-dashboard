@@ -24,8 +24,97 @@ class QueriesTest(unittest.TestCase):
 
     def test_latest_price_snapshot_picks_max_observed_at(self):
         row = queries.fetch_collection_row_by_id(self.conn, self.ids["row1_id"])
-        self.assertEqual(row.market_trend, 12.5)
+        self.assertEqual(row.market_trend, 11.0)
         self.assertEqual(row.price_observed_at, "2026-01-08T00:00:00")
+
+    def _insert_resolution(self, *, card_id, resolved_at, current_price, is_current, source="cardmarket"):
+        self.conn.execute(
+            """INSERT INTO printing_price_resolutions
+               (card_id, language_id, resolved_at, current_price, currency, source,
+                resolution_method, match_status, is_current)
+               VALUES (?, 1, ?, ?, 'EUR', ?, 'cardmarket_exact_language', 'EXACT', ?)""",
+            (card_id, resolved_at, current_price, source, is_current),
+        )
+        self.conn.commit()
+
+    def test_collection_one_row_with_multiple_historical_resolutions(self):
+        card_id = self.ids["card_a_id"]
+        self._insert_resolution(card_id=card_id, resolved_at="2026-01-01T00:00:00", current_price=8.0, is_current=0)
+        self._insert_resolution(card_id=card_id, resolved_at="2026-01-07T00:00:00", current_price=9.0, is_current=0)
+        self._insert_resolution(card_id=card_id, resolved_at="2026-01-09T00:00:00", current_price=10.0, is_current=1)
+        rows = queries.fetch_collection_rows(self.conn)
+        matching = [row for row in rows if row.id == self.ids["row1_id"]]
+        self.assertEqual(len(matching), 1)
+        self.assertEqual(matching[0].quantity, 2)
+        self.assertEqual(matching[0].market_trend, 10.0)
+
+    def test_collection_current_null_resolution_is_one_row_and_wins_history(self):
+        card_id = self.ids["card_a_id"]
+        self._insert_resolution(card_id=card_id, resolved_at="2026-01-01T00:00:00", current_price=8.0, is_current=0)
+        self._insert_resolution(card_id=card_id, resolved_at="2026-01-09T00:00:00", current_price=None, is_current=1)
+        rows = queries.fetch_collection_rows(self.conn)
+        matching = [row for row in rows if row.id == self.ids["row1_id"]]
+        self.assertEqual(len(matching), 1)
+        self.assertIsNone(matching[0].market_trend)
+
+    def test_legacy_schema_chooses_one_latest_resolution_instead_of_all_history(self):
+        legacy_path = Path(self.tmp_dir.name) / "legacy.db"
+        test_support.make_test_db(legacy_path)
+        legacy_conn = connect(legacy_path)
+        ids = test_support.insert_fixtures(legacy_conn)
+        for index, price in enumerate((8.0, 9.0, 10.0), start=1):
+            legacy_conn.execute(
+                """INSERT INTO printing_price_resolutions
+                   (card_id, language_id, resolved_at, current_price, currency,
+                    source, resolution_method)
+                   VALUES (?, 1, ?, ?, 'EUR', 'cardmarket',
+                           'cardmarket_exact_language')""",
+                (ids["card_a_id"], f"2026-01-0{index}T00:00:00", price),
+            )
+        legacy_conn.execute("DROP INDEX idx_printing_price_current_identity")
+        for column in (
+            "provenance", "source_manifest_id", "source_snapshot_sha256",
+            "source_snapshot_created_at", "source_currency", "cardmarket_foil_avg30",
+            "cardmarket_foil_avg7", "cardmarket_foil_avg1", "cardmarket_foil_trend",
+            "cardmarket_foil_low", "cardmarket_avg30", "cardmarket_avg7",
+            "cardmarket_avg1", "cardmarket_trend", "cardmarket_low", "selected_metric",
+            "is_current", "match_status", "cardmarket_product_id",
+        ):
+            legacy_conn.execute(f"ALTER TABLE printing_price_resolutions DROP COLUMN {column}")
+        legacy_conn.commit()
+        legacy_conn.close()
+
+        reopened = connect(legacy_path)
+        rows = queries.fetch_collection_rows(reopened)
+        matching = [row for row in rows if row.id == ids["row1_id"]]
+        self.assertEqual(len(matching), 1)
+        self.assertEqual(matching[0].market_trend, 10.0)
+        reopened.close()
+
+    def test_collection_catalog_and_wishlist_have_no_pricing_join_multiplication(self):
+        card_id = self.ids["card_a_id"]
+        self.conn.execute("UPDATE cards SET finish='nonfoil' WHERE id=?", (card_id,))
+        self.conn.commit()
+        for index, price in enumerate((8.0, 9.0, 10.0), start=1):
+            self._insert_resolution(
+                card_id=card_id,
+                resolved_at=f"2026-01-0{index}T00:00:00",
+                current_price=price,
+                is_current=1 if index == 3 else 0,
+            )
+        self.conn.execute(
+            "INSERT INTO wishlist_items (card_id, language_id, quantity_wanted, status) VALUES (?, 1, 1, 'wanted')",
+            (card_id,),
+        )
+        self.conn.commit()
+
+        collection_rows = queries.fetch_collection_rows(self.conn)
+        where, params = queries.build_catalog_filters(game="magic")
+        catalog_rows = queries.fetch_catalog_rows(self.conn, where, params, 1000, 0)
+        wishlist_rows = queries.fetch_wishlist_rows(self.conn, status="wanted", game="magic")
+        self.assertEqual(sum(row.id == self.ids["row1_id"] for row in collection_rows), 1)
+        self.assertEqual(sum(row.id == card_id for row in catalog_rows), 1)
+        self.assertEqual(sum(row.card_id == card_id for row in wishlist_rows), 1)
 
     def test_product_without_snapshot_has_null_market_trend_and_is_not_manual(self):
         row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])
@@ -70,7 +159,7 @@ class QueriesTest(unittest.TestCase):
         row_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
 
         row = queries.fetch_collection_row_by_id(self.conn, row_id)
-        self.assertEqual(row.market_trend, 7.25)
+        self.assertIsNone(row.market_trend)
         self.assertEqual(row.market_avg30, 7.0)
 
     def test_manual_row_has_null_market_trend_and_display_name_from_note(self):
@@ -83,7 +172,7 @@ class QueriesTest(unittest.TestCase):
     def test_row_missing_purchase_price_but_with_market_value(self):
         row = queries.fetch_collection_row_by_id(self.conn, self.ids["row4_id"])
         self.assertIsNone(row.purchase_price)
-        self.assertEqual(row.market_trend, 12.5)
+        self.assertEqual(row.market_trend, 11.0)
 
     def test_fetch_collection_row_by_id_returns_none_for_missing_id(self):
         self.assertIsNone(queries.fetch_collection_row_by_id(self.conn, 999999))
@@ -128,10 +217,10 @@ class QueriesTest(unittest.TestCase):
         self.assertAlmostEqual(data.total_cost, 10.0 + 3.0 + 20.0)  # row4 sin purchase_price
         self.assertEqual(data.cost_basis_row_count, 3)
         self.assertEqual(data.rows_without_cost, 1)
-        self.assertAlmostEqual(data.total_market_value, 2 * 12.5 + 1 * 12.5)  # row1 + row4
+        self.assertAlmostEqual(data.total_market_value, 2 * 11.0 + 1 * 11.0)  # row1 + row4
         self.assertEqual(data.market_value_row_count, 2)
-        self.assertAlmostEqual(data.unrealized_pl, (2 * 12.5 + 12.5) - 33.0)
-        self.assertAlmostEqual(data.roi, ((2 * 12.5 + 12.5) - 33.0) / 33.0)
+        self.assertAlmostEqual(data.unrealized_pl, (2 * 11.0 + 11.0) - 33.0)
+        self.assertAlmostEqual(data.roi, ((2 * 11.0 + 11.0) - 33.0) / 33.0)
 
     def test_compute_overview_cards_without_market_value_includes_no_snapshot_and_manual(self):
         data = queries.compute_overview(self.conn)
@@ -154,10 +243,9 @@ class QueriesTest(unittest.TestCase):
 
         data = queries.compute_overview(self.conn)
 
-        self.assertEqual([row.id for row in data.top_cards], [self.ids["row1_id"], self.ids["row4_id"], self.ids["row2_id"]])
-        self.assertEqual(data.top_cards[0].market_trend, 12.5)
-        self.assertAlmostEqual(data.top_cards[0].price_variation, 0.25)
-        self.assertIsNone(data.top_cards[2].price_variation)
+        self.assertEqual([row.id for row in data.top_cards], [self.ids["row1_id"], self.ids["row4_id"]])
+        self.assertEqual(data.top_cards[0].market_trend, 11.0)
+        self.assertAlmostEqual(data.top_cards[0].price_variation, 0.1)
         self.assertIsNotNone(data.top_cards[0].image)
 
     def test_top_cards_ignores_zero_previous_snapshot(self):
@@ -178,7 +266,7 @@ class QueriesTest(unittest.TestCase):
         row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])
 
         assert row is not None
-        self.assertEqual(row.market_trend, 11.0)
+        self.assertIsNone(row.market_trend)
         self.assertIsNone(row.previous_market_trend)
         self.assertIsNone(row.price_variation)
 
@@ -200,7 +288,7 @@ class QueriesTest(unittest.TestCase):
         row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])
 
         assert row is not None
-        self.assertAlmostEqual(row.price_variation, -0.5)
+        self.assertIsNone(row.price_variation)
 
     def test_top_cards_calculates_zero_variation_after_intermediate_invalid_snapshot(self):
         for observed_at, trend in (
@@ -219,9 +307,9 @@ class QueriesTest(unittest.TestCase):
         row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])
 
         assert row is not None
-        self.assertEqual(row.market_trend, 10.0)
+        self.assertIsNone(row.market_trend)
         self.assertEqual(row.previous_market_trend, 10.0)
-        self.assertEqual(row.price_variation, 0.0)
+        self.assertIsNone(row.price_variation)
 
     def test_top_cards_with_only_one_valid_snapshot_has_null_variation(self):
         self.conn.execute(

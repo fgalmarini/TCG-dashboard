@@ -215,6 +215,12 @@ CREATE TABLE IF NOT EXISTS market_price_history (
     avg7_alt                REAL,
     avg30_alt               REAL,
     imported_at             TEXT NOT NULL,
+    source                  TEXT NOT NULL DEFAULT 'cardmarket',
+    source_currency         TEXT NOT NULL DEFAULT 'EUR',
+    source_snapshot_created_at TEXT,
+    source_snapshot_sha256  TEXT,
+    source_manifest_id      TEXT,
+    provenance              TEXT,
     UNIQUE (cardmarket_product_id, observed_at)
 );
 
@@ -224,6 +230,9 @@ CREATE INDEX IF NOT EXISTS idx_market_price_history_product_observed
 CREATE TABLE IF NOT EXISTS printing_price_resolutions (
     id                INTEGER PRIMARY KEY AUTOINCREMENT,
     card_id           INTEGER NOT NULL REFERENCES cards (id),
+    collection_item_id INTEGER REFERENCES collection_items (id),
+    resolution_scope  TEXT NOT NULL DEFAULT 'global'
+        CHECK (resolution_scope IN ('global', 'collection', 'wishlist')),
     language_id       INTEGER NOT NULL REFERENCES languages (id),
     resolved_at       TEXT NOT NULL,
     current_price     REAL,
@@ -244,12 +253,57 @@ CREATE TABLE IF NOT EXISTS printing_price_resolutions (
     language_scope    TEXT NOT NULL DEFAULT 'exact'
         CHECK (language_scope IN ('exact', 'mixed', 'unknown')),
     metadata          TEXT,
+    cardmarket_product_id INTEGER REFERENCES cardmarket_products (id),
+    match_status      TEXT
+        CHECK (match_status IS NULL OR match_status IN ('EXACT', 'AMBIGUOUS', 'MISMATCH', 'MISSING', 'UNPRICED')),
+    is_current        INTEGER NOT NULL DEFAULT 0 CHECK (is_current IN (0, 1)),
+    selected_metric   TEXT,
+    cardmarket_low   REAL,
+    cardmarket_trend REAL,
+    cardmarket_avg1  REAL,
+    cardmarket_avg7  REAL,
+    cardmarket_avg30 REAL,
+    cardmarket_foil_low   REAL,
+    cardmarket_foil_trend REAL,
+    cardmarket_foil_avg1  REAL,
+    cardmarket_foil_avg7  REAL,
+    cardmarket_foil_avg30 REAL,
+    source_currency  TEXT,
+    source_snapshot_created_at TEXT,
+    source_snapshot_sha256 TEXT,
+    source_manifest_id TEXT,
+    provenance       TEXT,
     created_at        TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (card_id, language_id, resolved_at, resolution_method)
 );
 
 CREATE INDEX IF NOT EXISTS idx_printing_price_latest
     ON printing_price_resolutions (card_id, language_id, resolved_at DESC);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_printing_price_current_identity
+    ON printing_price_resolutions (card_id, language_id, COALESCE(source, 'cardmarket'))
+    WHERE is_current = 1 AND collection_item_id IS NULL;
+
+CREATE TABLE IF NOT EXISTS collection_price_overrides (
+    id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+    collection_item_id    INTEGER NOT NULL REFERENCES collection_items (id),
+    card_id               INTEGER NOT NULL REFERENCES cards (id),
+    language_id           INTEGER NOT NULL REFERENCES languages (id),
+    cardmarket_product_id INTEGER NOT NULL REFERENCES cardmarket_products (id),
+    match_status          TEXT NOT NULL CHECK (match_status = 'EXACT'),
+    approved               INTEGER NOT NULL CHECK (approved IN (0, 1)),
+    row_hash              TEXT NOT NULL,
+    source_manifest_id    TEXT NOT NULL,
+    evidence              TEXT NOT NULL,
+    provenance            TEXT NOT NULL,
+    is_current            INTEGER NOT NULL DEFAULT 1 CHECK (is_current IN (0, 1)),
+    created_at            TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (collection_item_id, row_hash)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_collection_override_current
+    ON collection_price_overrides (collection_item_id)
+    WHERE is_current = 1 AND approved = 1;
 
 CREATE TABLE IF NOT EXISTS card_images (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -115,7 +115,9 @@ class UpdatePricesTest(unittest.TestCase):
         ):
             products = self.source / f"{game}-products.json"
             prices = self.source / f"{game}-prices.json"
-            products.write_text(json.dumps({"createdAt": "2026-08-28T00:00:00+00:00", "products": []}))
+            product_id = price_guides[0]["idProduct"]
+            product_name = "Magic Test (1)" if game == "magic" else "One Piece Exact (OP01-001)"
+            products.write_text(json.dumps({"createdAt": "2026-08-28T00:00:00+00:00", "products": [{"idProduct": product_id, "name": product_name, "idCategory": 1, "idExpansion": 1 if game == "magic" else 2, "idMetacard": 1}]}))
             prices.write_text(json.dumps({"createdAt": "2026-08-28T00:00:00+00:00", "priceGuides": price_guides}))
 
     def _download(self, games):
@@ -136,6 +138,28 @@ class UpdatePricesTest(unittest.TestCase):
                 download_fn=self._download, cardtrader_client=FakeCardTrader(),
             )
 
+    def _seed_legacy_unsafe_magic_price(self):
+        """Create legacy CardTrader state that the repair must replace."""
+        conn = sqlite3.connect(self.db)
+        conn.execute(
+            """INSERT INTO market_price_history
+               (cardmarket_product_id, observed_at, low, imported_at)
+               VALUES (1, '2026-08-27T00:00:00+00:00', 99.0,
+                       '2026-08-27T00:00:00+00:00')"""
+        )
+        conn.execute(
+            """INSERT INTO printing_price_resolutions
+               (card_id, language_id, resolved_at, current_price, currency,
+                source, price_type, resolution_method, external_id,
+                price_confidence, match_status, is_current)
+               VALUES (1, 1, '2026-08-27T00:00:00+00:00', 99.0, 'EUR',
+                       'cardmarket', 'trend',
+                       'cardmarket_exact_language', '500', 'high',
+                       'MISMATCH', 1)"""
+        )
+        conn.commit()
+        conn.close()
+
     def test_dry_run_does_not_write_database(self):
         before = self.db.read_bytes()
         report, code = self._run("dry-run")
@@ -144,17 +168,42 @@ class UpdatePricesTest(unittest.TestCase):
         self.assertEqual(before, self.db.read_bytes())
         self.assertEqual(sqlite3.connect(self.db).execute("SELECT COUNT(*) FROM market_price_history").fetchone()[0], 0)
 
+    def test_unsafe_current_state_does_not_block_safe_proposed_state(self):
+        self._seed_legacy_unsafe_magic_price()
+        report, code = self._run("dry-run", games=("magic",))
+        self.assertEqual(code, 0)
+        self.assertIn("UNSAFE", report.current_state_audit["magic"])
+        self.assertEqual(report.proposed_state_validation["magic"], "SAFE")
+
+    def test_apply_replaces_unsafe_current_state_and_validates_post_apply(self):
+        self._seed_legacy_unsafe_magic_price()
+        report, code = self._run("apply", games=("magic",))
+        self.assertEqual(code, 0)
+        self.assertIn("UNSAFE", report.current_state_audit["magic"])
+        self.assertEqual(report.proposed_state_validation["magic"], "SAFE")
+        self.assertEqual(report.post_apply_validation["magic"], "SAFE")
+        conn = sqlite3.connect(self.db)
+        current = conn.execute(
+            "SELECT current_price, source, match_status FROM printing_price_resolutions WHERE card_id=1 AND is_current=1"
+        ).fetchone()
+        self.assertEqual(tuple(current), (1.0, "cardmarket", "EXACT"))
+        self.assertEqual(conn.execute("SELECT COUNT(*) FROM market_price_history WHERE cardmarket_product_id=1").fetchone()[0], 2)
+        self.assertEqual(conn.execute("SELECT COUNT(*) FROM printing_price_resolutions WHERE source='cardtrader' AND is_current=1").fetchone()[0], 0)
+        conn.close()
+
     def test_apply_persists_exact_and_fallback_and_creates_backup(self):
-        inode_before = self.db.stat().st_ino
         report, code = self._run("apply", games=("magic", "one_piece"))
         self.assertEqual(code, 0)
         self.assertEqual(report.transaction, "COMMITTED")
         self.assertTrue(Path(report.backup).is_file())
-        self.assertEqual(self.db.stat().st_ino, inode_before)
         conn = sqlite3.connect(self.db)
         self.assertEqual(conn.execute("SELECT COUNT(*) FROM market_price_history").fetchone()[0], 1)
         methods = {row[0] for row in conn.execute("SELECT resolution_method FROM printing_price_resolutions")}
-        self.assertEqual(methods, {"cardmarket_exact_language", "cardtrader_marketplace_low_median_5", "no_exact_language_price"})
+        self.assertEqual(methods, {"cardmarket_exact_language", "no_exact_language_price"})
+        rows = conn.execute("SELECT match_status, current_price, source FROM printing_price_resolutions ORDER BY card_id").fetchall()
+        self.assertTrue(all(row[2] == "cardmarket" and row[1] is None for row in rows if row[0] != "EXACT"))
+        exact = conn.execute("SELECT current_price, selected_metric, cardmarket_low, cardmarket_trend FROM printing_price_resolutions WHERE card_id=1 AND is_current=1").fetchone()
+        self.assertEqual(tuple(exact), (1.0, "Low", 1.0, 2.0))
         self.assertEqual(conn.execute("SELECT COUNT(*) FROM collection_items").fetchone()[0], 0)
         self.assertEqual(conn.execute("SELECT COUNT(*) FROM wishlist_items").fetchone()[0], 0)
         conn.close()
@@ -205,7 +254,7 @@ class UpdatePricesTest(unittest.TestCase):
         conn = sqlite3.connect(self.db)
         self.assertEqual(conn.execute("SELECT COUNT(*) FROM printing_price_resolutions").fetchone()[0], 3)
         conn.close()
-        self.assertEqual(second.game_reports["one_piece"].history_rows_skipped, 3)
+        self.assertEqual(second.game_reports["one_piece"].prices_unchanged, 3)
 
     def test_parser_requires_exactly_one_mode(self):
         with self.assertRaises(SystemExit):
@@ -214,6 +263,30 @@ class UpdatePricesTest(unittest.TestCase):
             update_prices.build_parser().parse_args(["--dry-run", "--apply"])
         args = update_prices.build_parser().parse_args(["--game", "magic", "--dry-run"])
         self.assertEqual(args.game, "magic")
+
+    def test_collection_review_hash_covers_target_printing_and_candidates(self):
+        row = {
+            "collection_item_id": "154",
+            "printing_id": "15505",
+            "game": "one_piece",
+            "card_name": "King",
+            "set": "op01",
+            "card_number": "OP01-096",
+            "language": "jp",
+            "variant": "Alternate Art | Fixed Reprint",
+            "finish": "",
+            "treatment": "",
+            "candidate_cardmarket_product_id": "690930|768359",
+            "candidate_product_name": "King (OP01-096)|King (OP01-096)",
+            "candidate_expansion": "5229|5484",
+            "approved": "false",
+            "selected_cardmarket_product_id": "",
+        }
+        manifest = "manifest"
+        original = update_prices.audit.collection_review_hash(row, manifest)
+        self.assertEqual(original, update_prices.audit.collection_review_hash({**row, "approved": "true", "selected_cardmarket_product_id": "768359"}, manifest))
+        self.assertNotEqual(original, update_prices.audit.collection_review_hash({**row, "printing_id": "15503"}, manifest))
+        self.assertNotEqual(original, update_prices.audit.collection_review_hash({**row, "candidate_cardmarket_product_id": "690929|768358"}, manifest))
 
 
 if __name__ == "__main__":

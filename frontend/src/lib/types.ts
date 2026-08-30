@@ -62,8 +62,11 @@ export interface CollectionItem {
   condition: string | null
   quantity: number
   purchase_price: number | null
-  /** Trend Price de Cardmarket, snapshot mas reciente. null = sin precio (nunca 0). */
+  /** Cardmarket Low vigente. null = sin resolución vigente (nunca 0). */
   market_value: number | null
+  cardmarket_low?: number | null
+  cardmarket_trend?: number | null
+  source_currency?: string | null
   manual_entry: boolean
   catalog_matched: boolean
   status: string
@@ -79,14 +82,25 @@ export interface CollectionListResponse {
 }
 
 export interface MarketPriceValue {
-  trend: number
+  trend: number | null
   avg: number | null
   low: number | null
   avg30: number | null
-  observed_at: string
+  avg1?: number | null
+  avg7?: number | null
+  cardmarket_low?: number | null
+  cardmarket_trend?: number | null
+  source_currency?: string | null
+  observed_at: string | null
   source: string
   currency: string
   resolution_method: string | null
+  estimated_dealer_cash?: number | null
+  estimated_dealer_cash_min?: number | null
+  estimated_dealer_cash_max?: number | null
+  estimated_trade_value?: number | null
+  estimated_trade_value_min?: number | null
+  estimated_trade_value_max?: number | null
 }
 
 export interface CardImageFace {
@@ -172,6 +186,18 @@ export interface CatalogItem {
   printing_count: number
   reprint_count: number
   current_price: number | null
+  cardmarket_low?: number | null
+  cardmarket_trend?: number | null
+  cardmarket_avg1?: number | null
+  cardmarket_avg7?: number | null
+  cardmarket_avg30?: number | null
+  source_currency?: string | null
+  estimated_dealer_cash?: number | null
+  estimated_dealer_cash_min?: number | null
+  estimated_dealer_cash_max?: number | null
+  estimated_trade_value?: number | null
+  estimated_trade_value_min?: number | null
+  estimated_trade_value_max?: number | null
   price_source: string | null
   resolution_method: string | null
   price_currency: string | null
@@ -229,6 +255,12 @@ export interface WishlistItem {
   acquired_at: string | null
   removed_at: string | null
   current_price: number | null
+  cardmarket_low?: number | null
+  cardmarket_trend?: number | null
+  cardmarket_avg1?: number | null
+  cardmarket_avg7?: number | null
+  cardmarket_avg30?: number | null
+  source_currency?: string | null
   language: string | null
   release_kind: string | null
   art_kind: string | null

@@ -172,7 +172,10 @@ Multi-TCG Foundation + One Piece Catalog (`2026-08-27`):
   Collection row is represented by an artificial zero price.
 - `purchase_currency` is currently `NULL` in the real collection; this stored field is
   unchanged and remains separate from the display currency.
-- Market Value currently uses Cardmarket Trend Price.
+- Market Value uses Cardmarket Low. Cardmarket Trend remains exposed separately as
+  an informational market reference; unresolved or unsafe current prices are NULL.
+- The first repair invocation is explicitly `./update-prices --apply --scope collection`;
+  catalog and wishlist remain outside that transaction until separately selected.
 
 ## FUSE/SQLite Incident
 
@@ -238,3 +241,24 @@ avoid changing Trading/Analytics/CARDMADNESS scope during this phase.
   Art Series names cannot resolve to playable cards with similar names.
 - Apply runs operate on a temporary SQLite copy, validate integrity and foreign
   keys, save a recoverable backup, and only then copy the validated DB back.
+
+## Collection-first Pricing Checkpoint (`2026-08-30`)
+
+- Collection-first pricing is **COMPLETE**: 120 Collection items, with Magic `97/97`
+  and One Piece `23/23` exact Cardmarket identities.
+- Pricing outcome: `119` items priced from the selected Cardmarket Low metric and `1`
+  item UNPRICED. Item 65 remains an exact foil identity with `current_price=NULL`
+  because its Foil Low is unavailable; the base Low is never used as a fallback.
+- One Piece resolved Cardmarket Low value is **EUR 58.55** (`23` exact rows, quantity
+  applied). The generic aggregate is `SUM(selected Cardmarket Low * quantity)` over
+  exact rows only; missing selected Low contributes zero to the aggregate while its
+  persisted current price remains NULL.
+- Reporting fix: manual Collection approvals now refresh contributions before
+  aggregation, and reporting distinguishes exact-but-unpriced rows from identity
+  status. Cardmarket Trend, AVG7, CardTrader, legacy prices, other finishes and
+  language variants are excluded from Resolved Low.
+- Dry-run and post-apply validation are read-only with respect to Collection/Wishlist;
+  no new apply is part of this checkpoint. DB SHA-256 before/after remains
+  `38959ecb8224c9c4e06c00dbc7ccda37d17660c828b72be0418f1419c1437aff`.
+- Next recommended scope is Wishlist; this checkpoint does not claim Wishlist pricing
+  is resolved.

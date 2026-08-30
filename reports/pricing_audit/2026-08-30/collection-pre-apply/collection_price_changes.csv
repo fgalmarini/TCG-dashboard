@@ -1,0 +1,121 @@
+collection_item_id,game,card_name,selected_cardmarket_product_id,source,metric,old_current_price,new_cardmarket_low,new_cardmarket_trend,proposed_status,cardtrader_fallback
+33,Magic,Frodo Baggins,737031,cardmarket,Low,,0.1,,EXACT,NO
+34,Magic,"Frodo, Sauron's Bane",701765,cardmarket,Foil Low,,0.2,0.8,EXACT,NO
+35,Magic,Samwise Gamgee,716026,cardmarket,Low,,0.35,1.49,EXACT,NO
+36,Magic,Samwise the Stouthearted,736847,cardmarket,Low,,0.02,,EXACT,NO
+37,Magic,"Merry, Esquire of Rohan",716061,cardmarket,Low,,0.1,1.01,EXACT,NO
+38,Magic,Meriadoc Brandybuck,737025,cardmarket,Low,,0.08,,EXACT,NO
+39,Magic,Peregrin Took,716070,cardmarket,Low,,0.02,0.22,EXACT,NO
+40,Magic,"Pippin, Guard of the Citadel",737037,cardmarket,Low,,5.5,,EXACT,NO
+41,Magic,"Aragorn, Company Leader",717763,cardmarket,Foil Low,,0.26,1.22,EXACT,NO
+42,Magic,"Aragorn, the Uniter",716022,cardmarket,Foil Low,,4.45,15.12,EXACT,NO
+43,Magic,"Legolas, Counter of Kills",737035,cardmarket,Low,,0.09,,EXACT,NO
+44,Magic,"Legolas, Master Archer",716051,cardmarket,Low,,0.15,0.77,EXACT,NO
+45,Magic,"Gimli, Counter of Kills",737023,cardmarket,Low,,0.1,0.35,EXACT,NO
+46,Magic,"Gimli, Mournful Avenger",737034,cardmarket,Foil Low,,2.5,2.82,EXACT,NO
+47,Magic,"Boromir, Warden of the Tower",716042,cardmarket,Foil Low,,3.99,6.97,EXACT,NO
+48,Magic,Gandalf the Grey,737033,cardmarket,Low,,6.94,,EXACT,NO
+49,Magic,Gandalf the White,716023,cardmarket,Low,,4,19.45,EXACT,NO
+50,Magic,"Gandalf, Friend of the Shire",736849,cardmarket,Low,,0.04,,EXACT,NO
+51,Magic,"Elrond, Lord of Rivendell",717750,cardmarket,Low,,0.02,0.1,EXACT,NO
+52,Magic,"Elrond, Master of Healing",737029,cardmarket,Low,,2.75,,EXACT,NO
+53,Magic,"Faramir, Field Commander",736844,cardmarket,Low,,0.04,,EXACT,NO
+54,Magic,"Faramir, Prince of Ithilien",717727,cardmarket,Low,,0.1,0.52,EXACT,NO
+55,Magic,Galadriel of Lothlórien,717753,cardmarket,Low,,0.2,0.8,EXACT,NO
+56,Magic,"Gollum, Patient Plotter",736850,cardmarket,Low,,0.15,,EXACT,NO
+57,Magic,Saruman of Many Colors,716077,cardmarket,Low,,1,3.09,EXACT,NO
+58,Magic,"Sauron, the Dark Lord",716072,cardmarket,Low,,7.99,18.26,EXACT,NO
+59,Magic,"Sauron, the Necromancer",716069,cardmarket,Low,,0.08,0.53,EXACT,NO
+60,Magic,"Sméagol, Helpful Guide",717775,cardmarket,Low,,0.05,0.52,EXACT,NO
+61,Magic,Tom Bombadil,701768,cardmarket,Low,,0.99,3.39,EXACT,NO
+62,Magic,Rohirrim Chargers,736524,cardmarket,Low,,0.06,0.33,EXACT,NO
+63,Magic,Sword of the Animist,717998,cardmarket,Low,,27.69,,EXACT,NO
+64,Magic,Gandalf of the Secret Fire,736555,cardmarket,Low,,0.73,1.77,EXACT,NO
+65,Magic,Shortcut to Mushrooms,738134,cardmarket,Foil Low,,,,EXACT,NO
+66,Magic,"Shadowfax, Lord of Horses",716135,cardmarket,Low,,0.02,0.07,EXACT,NO
+67,Magic,Fall of Gil-galad,716004,cardmarket,Foil Low,,0.02,0.63,EXACT,NO
+68,Magic,Book of Mazarbul,716003,cardmarket,Foil Low,,0.02,0.17,EXACT,NO
+69,Magic,Long List of the Ents,738108,cardmarket,Low,,0.09,0.2,EXACT,NO
+70,Magic,The Bath Song,737571,cardmarket,Foil Low,,0.15,0.32,EXACT,NO
+71,Magic,One Ring to Rule Them All,715916,cardmarket,Foil Low,,0.72,2.53,EXACT,NO
+73,Magic,Oath of the Grey Host,717047,cardmarket,Foil Low,,0.02,0.17,EXACT,NO
+74,Magic,Tale of Tinúviel,716129,cardmarket,Foil Low,,0.02,0.23,EXACT,NO
+75,Magic,War of the Last Alliance,716133,cardmarket,Foil Low,,0.19,1.31,EXACT,NO
+76,Magic,"Frodo, Sauron's Bane",716081,cardmarket,Low,,0.08,0.42,EXACT,NO
+77,Magic,Pippin's Bravery,716056,cardmarket,Low,,0.02,0.09,EXACT,NO
+78,Magic,Gandalf the White,716063,cardmarket,Low,,7.95,17.72,EXACT,NO
+79,Magic,"Gandalf, Friend of the Shire",719346,cardmarket,Low,,0.6,,EXACT,NO
+80,Magic,Prince Imrahil the Fair,716025,cardmarket,Low,,0.02,0.15,EXACT,NO
+81,Magic,Knights of Dol Amroth,716066,cardmarket,Low,,0.02,0.07,EXACT,NO
+82,Magic,"Gimli, Mournful Avenger",716059,cardmarket,Foil Low,,1.2,3.3,EXACT,NO
+83,Magic,The One Ring,716083,cardmarket,Low,,75,81.8,EXACT,NO
+84,Magic,Art Series: Fog on the Barrow-Downs,718546,cardmarket,Low,,0.02,0.11,EXACT,NO
+86,Magic,"Art Series: Goldberry, River-Daughter",718554,cardmarket,Low,,0.02,0.15,EXACT,NO
+87,Magic,Art Series: The Watcher in the Water,718555,cardmarket,Low,,0.02,0.14,EXACT,NO
+88,Magic,Art Series: Éomer of the Riddermark,718559,cardmarket,Low,,0.02,0.09,EXACT,NO
+89,Magic,"Art Series: Gimli, Counter of Kills",718561,cardmarket,Low,,0.27,0.97,EXACT,NO
+90,Magic,Art Series: Generous Ent,718563,cardmarket,Low,,0.02,0.08,EXACT,NO
+91,Magic,Art Series: Mirrormere Guardian,718565,cardmarket,Low,,0.1,1.24,EXACT,NO
+92,Magic,"Art Series: Bilbo, Retired Burglar",718575,cardmarket,Low,,0.02,0.14,EXACT,NO
+93,Magic,"Art Series: Legolas, Counter of Kills",718582,cardmarket,Low,,0.02,0.12,EXACT,NO
+94,Magic,Art Series: Saruman of Many Colors,718601,cardmarket,Low,,0.02,0.15,EXACT,NO
+95,Magic,"Art Series: Sharkey, Tyrant of the Shire",718605,cardmarket,Low,,0.02,0.17,EXACT,NO
+96,Magic,"Art Series: Shelob, Child of Ungoliant",718606,cardmarket,Low,,0.02,0.14,EXACT,NO
+97,Magic,"Art Series: Théoden, King of Rohan",718610,cardmarket,Low,,0.02,0.13,EXACT,NO
+98,Magic,Art Series: Tom Bombadil,718613,cardmarket,Low,,0.02,0.13,EXACT,NO
+99,Magic,Art Series: Uglúk of the White Hand,718614,cardmarket,Low,,0.02,0.15,EXACT,NO
+100,Magic,Art Series: Plains,718621,cardmarket,Low,,0.02,0.12,EXACT,NO
+101,Magic,Art Series: Mountain,718622,cardmarket,Low,,0.02,0.14,EXACT,NO
+102,Magic,Art Series: Elanor Gardner,718625,cardmarket,Low,,0.02,0.11,EXACT,NO
+103,Magic,"Art Series: Aragorn and Arwen, Wed",718626,cardmarket,Low,,0.02,0.17,EXACT,NO
+104,Magic,Art Series: Bilbo's Ring,718640,cardmarket,Low,,0.02,0.13,EXACT,NO
+105,Magic,"Art Series: Faramir, Field Commander",718643,cardmarket,Low,,0.02,0.12,EXACT,NO
+106,Magic,"Art Series: Elrond, Lord of Rivendell",718646,cardmarket,Low,,0.02,0.18,EXACT,NO
+107,Magic,Art Series: Witch-king of Angmar,718652,cardmarket,Low,,1.5,2.87,EXACT,NO
+108,Magic,Art Series: Frodo Baggins,718580,cardmarket,Low,,0.2,0.58,EXACT,NO
+109,Magic,Art Series: Galadriel of Lothlórien,718662,cardmarket,Low,,0.02,0.13,EXACT,NO
+110,Magic,"Art Series: Merry, Esquire of Rohan",718666,cardmarket,Low,,0.02,0.13,EXACT,NO
+111,Magic,"Art Series: Pippin, Guard of the Citadel",718669,cardmarket,Low,,0.02,0.14,EXACT,NO
+112,Magic,Art Series: Mines of Moria,718683,cardmarket,Low,,0.02,0.19,EXACT,NO
+113,Magic,"Art Series: Aragorn, King of Gondor",718685,cardmarket,Low,,0.03,0.17,EXACT,NO
+114,Magic,"Art Series: Gwaihir, Greatest of the Eagles",718693,cardmarket,Low,,0.02,0.12,EXACT,NO
+115,Magic,Art Series: Call for Aid,718694,cardmarket,Low,,0.02,0.14,EXACT,NO
+116,Magic,Art Series: Cavern-Hoard Dragon,718700,cardmarket,Low,,0.02,0.17,EXACT,NO
+117,Magic,"Art Series: Gríma, Saruman's Footman",718708,cardmarket,Low,,0.02,0.16,EXACT,NO
+118,Magic,"Art Series: Merry, Warden of Isengard",718715,cardmarket,Low,,0.02,0.14,EXACT,NO
+119,Magic,"Art Series: Treebeard, Gracious Host",718719,cardmarket,Low,,0.25,0.02,EXACT,NO
+120,Magic,Art Series: Asceticism,718740,cardmarket,Low,,0.02,0.12,EXACT,NO
+121,Magic,Art Series: Realm Seekers,718747,cardmarket,Low,,0.4,0.64,EXACT,NO
+122,Magic,Art Series: Ghost Quarter,718757,cardmarket,Low,,0.02,0.12,EXACT,NO
+123,Magic,Art Series: Valley of Gorgoroth,718763,cardmarket,Low,,0.02,0.18,EXACT,NO
+124,Magic,"Art Series: Faramir, Steward of Gondor",718704,cardmarket,Low,,0.02,0.12,EXACT,NO
+125,Magic,Art Series: Nazgûl,718672,cardmarket,Low,,0.02,0.15,EXACT,NO
+126,Magic,"Art Series: Sauron, the Dark Lord",718602,cardmarket,Low,,0.02,0.19,EXACT,NO
+127,Magic,"Art Series: Éowyn, Fearless Knight",718577,cardmarket,Low,,0.02,0.1,EXACT,NO
+128,Magic,Art Series: Samwise Gamgee,718671,cardmarket,Low,,0.02,0.02,EXACT,NO
+129,Magic,King of the Oathbreakers,738025,cardmarket,Low,,0.2,,EXACT,NO
+130,Magic,Radagast the Brown,738021,cardmarket,Low,,2,,EXACT,NO
+131,Magic,Art Series: Gandalf the White,718547,cardmarket,Low,,0.02,0.13,EXACT,NO
+133,One Piece,Borsalino,733344,cardmarket,Low,,0.08,0.39,EXACT,NO
+134,One Piece,Dracule Mihawk,768325,cardmarket,Low,,14,17.23,EXACT,NO
+135,One Piece,Dracule Mihawk,768324,cardmarket,Low,,0.02,1.1,EXACT,NO
+136,One Piece,Yamato,857251,cardmarket,Low,,0.05,0.58,EXACT,NO
+137,One Piece,Lilith,857331,cardmarket,Low,,5.5,7.29,EXACT,NO
+138,One Piece,Monkey.D.Luffy,808172,cardmarket,Low,,28,44.59,EXACT,NO
+139,One Piece,Rob Lucci,733430,cardmarket,Low,,2.95,4.23,EXACT,NO
+140,One Piece,X.Drake,733352,cardmarket,Low,,1.89,4.28,EXACT,NO
+141,One Piece,Cavendish,768247,cardmarket,Low,,0.5,0.92,EXACT,NO
+142,One Piece,Gol.D.Roger,857262,cardmarket,Low,,0.02,0.25,EXACT,NO
+143,One Piece,Nefeltari Vivi,808127,cardmarket,Low,,0.1,0.47,EXACT,NO
+144,One Piece,S-Snake,771756,cardmarket,Low,,0.05,0.29,EXACT,NO
+145,One Piece,Koala,733281,cardmarket,Low,,0.02,0.11,EXACT,NO
+146,One Piece,Monkey.D.Luffy,768265,cardmarket,Low,,0.02,0.32,EXACT,NO
+147,One Piece,Yamato,808101,cardmarket,Low,,0.48,1.27,EXACT,NO
+148,One Piece,Pica,733317,cardmarket,Low,,0.02,0.36,EXACT,NO
+149,One Piece,Kin'emon,768285,cardmarket,Low,,0.05,0.42,EXACT,NO
+150,One Piece,Trafalgar Law,808150,cardmarket,Low,,0.02,0.48,EXACT,NO
+151,One Piece,Uta,857215,cardmarket,Low,,0.02,0.2,EXACT,NO
+152,One Piece,Trafalgar Law,722798,cardmarket,Low,,1.8,2.45,EXACT,NO
+153,One Piece,Stussy,857326,cardmarket,Low,,0.02,0.29,EXACT,NO
+154,One Piece,King,768359,cardmarket,Low,,2.89,6.57,EXACT,NO
+155,One Piece,Rebecca,733426,cardmarket,Low,,0.05,0.17,EXACT,NO

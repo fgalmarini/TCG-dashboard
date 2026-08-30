@@ -1,0 +1,79 @@
+{
+  "audit_timestamp": "2026-08-29T15:54:20.413448+00:00",
+  "database": {
+    "foreign_key_check": "ok",
+    "integrity_check": "ok",
+    "path": "/Users/facundogalmarini/Desktop/TCG DASHBOARD/backend/db/tcg_dashboard.db",
+    "query_only": 1,
+    "sha256_after": "e155b0776922ac72e191a98b30b6bb44427664cf2ef0ead4f9c6d5e7c53ec225",
+    "sha256_before": "e155b0776922ac72e191a98b30b6bb44427664cf2ef0ead4f9c6d5e7c53ec225",
+    "unchanged": true
+  },
+  "manifest_id": "54189435f777e9746d116ff2e4e83ab5071dc63465a645a923edce2b1307fb2c",
+  "safe_to_run_update_prices_apply": "NO",
+  "scope": "collection",
+  "sources": [
+    {
+      "audit_timestamp": "2026-08-29T15:54:20.413448+00:00",
+      "createdAt": "2026-08-29T11:47:05+0200",
+      "file_size": 2209849,
+      "filename": "products_singles_18.json",
+      "game": "one_piece",
+      "path": "/Users/facundogalmarini/Desktop/TCG DASHBOARD/price-history/one-piece/products_singles_18.json",
+      "record_count": 12416,
+      "schema_version": 1,
+      "sha256": "78b59beb1d32535a6c38f3a807d32475822706df83b0acabed5be824796bde97",
+      "source_type": "products",
+      "url": "https://downloads.s3.cardmarket.com/productCatalog/productList/products_singles_18.json"
+    },
+    {
+      "audit_timestamp": "2026-08-29T15:54:20.413448+00:00",
+      "createdAt": "2026-08-29T02:42:18+0200",
+      "file_size": 2701646,
+      "filename": "price_guide_18.json",
+      "game": "one_piece",
+      "path": "/Users/facundogalmarini/Desktop/TCG DASHBOARD/price-history/one-piece/price_guide_18.json",
+      "record_count": 13172,
+      "schema_version": 1,
+      "sha256": "7d3fa5eadfd7793ac55f1f76bb7d5e4f1527aaf370f9440e0047422fe6216301",
+      "source_type": "price_guide",
+      "url": "https://downloads.s3.cardmarket.com/productCatalog/priceGuide/price_guide_18.json"
+    },
+    {
+      "audit_timestamp": "2026-08-29T15:54:20.413448+00:00",
+      "createdAt": "2026-08-29T11:46:58+0200",
+      "file_size": 20146301,
+      "filename": "products_singles_1.json",
+      "game": "magic",
+      "path": "/Users/facundogalmarini/Desktop/TCG DASHBOARD/price-history/magic/products_singles_1.json",
+      "record_count": 121201,
+      "schema_version": 1,
+      "sha256": "a1d875ef26bb659db2c111da73111ac4402b64fe293165813c46d5201a004061",
+      "source_type": "products",
+      "url": "https://downloads.s3.cardmarket.com/productCatalog/productList/products_singles_1.json"
+    },
+    {
+      "audit_timestamp": "2026-08-29T15:54:20.413448+00:00",
+      "createdAt": "2026-08-29T02:41:58+0200",
+      "file_size": 25860967,
+      "filename": "price_guide_1.json",
+      "game": "magic",
+      "path": "/Users/facundogalmarini/Desktop/TCG DASHBOARD/price-history/magic/price_guide_1.json",
+      "record_count": 126241,
+      "schema_version": 1,
+      "sha256": "f7ac41368d394e810d7d4eaf2cd8e4bc0e2e29d70dc76c6c92495ad325b1f47b",
+      "source_type": "price_guide",
+      "url": "https://downloads.s3.cardmarket.com/productCatalog/priceGuide/price_guide_1.json"
+    }
+  ],
+  "verdict": {
+    "magic": {
+      "identity": "UNSAFE",
+      "pricing_parity": "UNSAFE"
+    },
+    "one_piece": {
+      "identity": "UNSAFE",
+      "pricing_parity": "UNSAFE"
+    }
+  }
+}

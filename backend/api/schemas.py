@@ -153,7 +153,19 @@ class CollectionItemOut(BaseModel):
     condition: str | None
     quantity: int
     purchase_price: float | None
-    market_value: float | None = Field(None, description="Trend Price de Cardmarket, snapshot mas reciente. None = sin precio de mercado (nunca 0).")
+    market_value: float | None = Field(None, description="Cardmarket Low vigente. None = sin resolución vigente/precio (nunca 0).")
+    cardmarket_low: float | None = None
+    cardmarket_trend: float | None = None
+    cardmarket_avg1: float | None = None
+    cardmarket_avg7: float | None = None
+    cardmarket_avg30: float | None = None
+    source_currency: str | None = None
+    estimated_dealer_cash: float | None = None
+    estimated_dealer_cash_min: float | None = None
+    estimated_dealer_cash_max: float | None = None
+    estimated_trade_value: float | None = None
+    estimated_trade_value_min: float | None = None
+    estimated_trade_value_max: float | None = None
     manual_entry: bool = Field(..., description="Como entro la carta a la coleccion -- senal independiente de si tiene precio de mercado hoy.")
     catalog_matched: bool
     match_status: str = "unmatched"
@@ -185,6 +197,15 @@ class CollectionItemOut(BaseModel):
             quantity=row.quantity,
             purchase_price=row.purchase_price,
             market_value=row.market_trend,
+            cardmarket_low=row.cardmarket_low,
+            cardmarket_trend=row.cardmarket_trend,
+            source_currency=row.source_currency,
+            estimated_dealer_cash=round(row.market_trend * .70, 2) if row.market_trend is not None else None,
+            estimated_dealer_cash_min=round(row.market_trend * .60, 2) if row.market_trend is not None else None,
+            estimated_dealer_cash_max=round(row.market_trend * .75, 2) if row.market_trend is not None else None,
+            estimated_trade_value=round(row.market_trend * .80, 2) if row.market_trend is not None else None,
+            estimated_trade_value_min=round(row.market_trend * .70, 2) if row.market_trend is not None else None,
+            estimated_trade_value_max=round(row.market_trend * .85, 2) if row.market_trend is not None else None,
             manual_entry=row.manual_entry,
             catalog_matched=row.catalog_matched,
             match_status=row.match_status,
@@ -204,14 +225,25 @@ class CollectionListResponse(BaseModel):
 
 
 class MarketPriceOut(BaseModel):
-    trend: float
+    trend: float | None
     avg: float | None
     low: float | None
     avg30: float | None
-    observed_at: str
+    avg1: float | None = None
+    avg7: float | None = None
+    cardmarket_low: float | None = None
+    cardmarket_trend: float | None = None
+    source_currency: str | None = None
+    observed_at: str | None
     source: str = "cardmarket"
     currency: str = "EUR"
     resolution_method: str | None = None
+    estimated_dealer_cash: float | None = None
+    estimated_dealer_cash_min: float | None = None
+    estimated_dealer_cash_max: float | None = None
+    estimated_trade_value: float | None = None
+    estimated_trade_value_min: float | None = None
+    estimated_trade_value_max: float | None = None
 
 
 class CollectionItemDetailOut(BaseModel):
@@ -263,14 +295,25 @@ class CollectionItemDetailOut(BaseModel):
         market_price = None
         if row.has_market_value and row.price_observed_at is not None:
             market_price = MarketPriceOut(
-                trend=row.market_trend,
+                trend=row.cardmarket_trend,
                 avg=row.market_avg,
                 low=row.market_low,
                 avg30=row.market_avg30,
+                avg1=row.cardmarket_avg1,
+                avg7=row.cardmarket_avg7,
+                cardmarket_low=row.cardmarket_low,
+                cardmarket_trend=row.cardmarket_trend,
+                source_currency=row.source_currency,
                 observed_at=row.price_observed_at,
                 source=row.price_source or "cardmarket",
                 currency=row.price_currency or "EUR",
                 resolution_method=row.resolution_method,
+                estimated_dealer_cash=round(row.market_trend * .70, 2) if row.market_trend is not None else None,
+                estimated_dealer_cash_min=round(row.market_trend * .60, 2) if row.market_trend is not None else None,
+                estimated_dealer_cash_max=round(row.market_trend * .75, 2) if row.market_trend is not None else None,
+                estimated_trade_value=round(row.market_trend * .80, 2) if row.market_trend is not None else None,
+                estimated_trade_value_min=round(row.market_trend * .70, 2) if row.market_trend is not None else None,
+                estimated_trade_value_max=round(row.market_trend * .85, 2) if row.market_trend is not None else None,
             )
         unrealized_pl = None
         roi = None
@@ -338,6 +381,18 @@ class CatalogItemOut(BaseModel):
     printing_count: int
     reprint_count: int
     current_price: float | None
+    cardmarket_low: float | None = None
+    cardmarket_trend: float | None = None
+    cardmarket_avg1: float | None = None
+    cardmarket_avg7: float | None = None
+    cardmarket_avg30: float | None = None
+    source_currency: str | None = None
+    estimated_dealer_cash: float | None = None
+    estimated_dealer_cash_min: float | None = None
+    estimated_dealer_cash_max: float | None = None
+    estimated_trade_value: float | None = None
+    estimated_trade_value_min: float | None = None
+    estimated_trade_value_max: float | None = None
     price_source: str | None
     resolution_method: str | None
     price_currency: str | None
@@ -362,6 +417,15 @@ class CatalogItemOut(BaseModel):
             language=row.language, release_kind=row.release_kind, art_kind=row.art_kind,
             printing_count=row.printing_count, reprint_count=row.reprint_count,
             current_price=row.current_price, price_source=row.price_source,
+            cardmarket_low=row.cardmarket_low, cardmarket_trend=row.cardmarket_trend,
+            cardmarket_avg1=row.cardmarket_avg1, cardmarket_avg7=row.cardmarket_avg7,
+            cardmarket_avg30=row.cardmarket_avg30, source_currency=row.source_currency,
+            estimated_dealer_cash=round(row.current_price * .70, 2) if row.current_price is not None else None,
+            estimated_dealer_cash_min=round(row.current_price * .60, 2) if row.current_price is not None else None,
+            estimated_dealer_cash_max=round(row.current_price * .75, 2) if row.current_price is not None else None,
+            estimated_trade_value=round(row.current_price * .80, 2) if row.current_price is not None else None,
+            estimated_trade_value_min=round(row.current_price * .70, 2) if row.current_price is not None else None,
+            estimated_trade_value_max=round(row.current_price * .85, 2) if row.current_price is not None else None,
             resolution_method=row.resolution_method,
             price_currency=row.price_currency, price_external_id=row.price_external_id,
             price_sample_size=row.price_sample_size, lowest_price=row.lowest_price,
@@ -420,6 +484,18 @@ class WishlistItemOut(BaseModel):
     acquired_at: str | None
     removed_at: str | None
     current_price: float | None
+    cardmarket_low: float | None = None
+    cardmarket_trend: float | None = None
+    cardmarket_avg1: float | None = None
+    cardmarket_avg7: float | None = None
+    cardmarket_avg30: float | None = None
+    source_currency: str | None = None
+    estimated_dealer_cash: float | None = None
+    estimated_dealer_cash_min: float | None = None
+    estimated_dealer_cash_max: float | None = None
+    estimated_trade_value: float | None = None
+    estimated_trade_value_min: float | None = None
+    estimated_trade_value_max: float | None = None
     language: str | None
     release_kind: str | None
     art_kind: str | None
@@ -443,6 +519,16 @@ class WishlistItemOut(BaseModel):
             max_price=row.max_price, currency=row.currency, notes=row.notes,
             status=row.status, acquired_at=row.acquired_at, removed_at=row.removed_at,
             current_price=row.current_price, language=row.language,
+            cardmarket_low=row.cardmarket_low, cardmarket_trend=row.cardmarket_trend,
+            cardmarket_avg1=row.cardmarket_avg1, cardmarket_avg7=row.cardmarket_avg7,
+            cardmarket_avg30=row.cardmarket_avg30,
+            source_currency=row.source_currency,
+            estimated_dealer_cash=round(row.current_price * .70, 2) if row.current_price is not None else None,
+            estimated_dealer_cash_min=round(row.current_price * .60, 2) if row.current_price is not None else None,
+            estimated_dealer_cash_max=round(row.current_price * .75, 2) if row.current_price is not None else None,
+            estimated_trade_value=round(row.current_price * .80, 2) if row.current_price is not None else None,
+            estimated_trade_value_min=round(row.current_price * .70, 2) if row.current_price is not None else None,
+            estimated_trade_value_max=round(row.current_price * .85, 2) if row.current_price is not None else None,
             release_kind=row.release_kind, art_kind=row.art_kind,
             printing_count=row.printing_count, reprint_count=row.reprint_count,
             source=row.source, resolution_method=row.resolution_method,

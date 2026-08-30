@@ -196,7 +196,7 @@ export function CardDetailPage() {
                 <dl className="grid grid-cols-2 gap-4">
                   <Field label="Precio de compra" value={formatCurrency(data.purchase_price)} />
                   <Field label="Fecha de compra" value={formatDate(data.purchase_date)} />
-                  <Field label="Precio de mercado" value={formatCurrency(data.market_price?.trend, data.market_price?.currency)} />
+                  <Field label="Cardmarket Low" value={formatCurrency(data.market_price?.cardmarket_low ?? data.market_price?.low, data.market_price?.source_currency ?? data.market_price?.currency)} />
                   <Field label="P/L" value={formatCurrency(data.unrealized_pl)} />
                   <Field label="ROI" value={formatPercent(data.roi)} />
                 </dl>
@@ -208,11 +208,11 @@ export function CardDetailPage() {
                     <p className="text-sm font-medium">
                       Precio de {data.market_price.source} · snapshot del {formatDateTime(data.market_price.observed_at)}
                     </p>
-                    <p className="text-2xl font-semibold tabular-nums">{formatCurrency(data.market_price.trend, data.market_price.currency)}</p>
+                    <p className="text-2xl font-semibold tabular-nums">{formatCurrency(data.market_price.cardmarket_low ?? data.market_price.low, data.market_price.source_currency ?? data.market_price.currency)}</p>
                     <dl className="grid grid-cols-3 gap-3 text-sm">
-                      <Field label="Avg" value={formatCurrency(data.market_price.avg, data.market_price.currency)} />
-                      <Field label="Low" value={formatCurrency(data.market_price.low, data.market_price.currency)} />
-                      <Field label="Avg 30d" value={formatCurrency(data.market_price.avg30, data.market_price.currency)} />
+                      <Field label="Trend" value={formatCurrency(data.market_price.cardmarket_trend ?? data.market_price.trend, data.market_price.source_currency ?? data.market_price.currency)} />
+                      <Field label="AVG7" value={formatCurrency(data.market_price.avg7, data.market_price.source_currency ?? data.market_price.currency)} />
+                      <Field label="AVG30" value={formatCurrency(data.market_price.avg30, data.market_price.source_currency ?? data.market_price.currency)} />
                     </dl>
                     <p className="text-xs text-muted-foreground">
                       {data.market_price.resolution_method ?? 'Resolución exacta'} · estimación de mercado, no un precio de venta garantizado.

@@ -44,7 +44,7 @@ class CatalogWishlistApiTest(unittest.TestCase):
         self.assertEqual(response.json()["total"], 1)
         item = response.json()["items"][0]
         self.assertEqual(item["ownership_status"], "owned")
-        self.assertEqual(item["current_price"], 12.5)
+        self.assertEqual(item["current_price"], 11.0)
 
     def test_wishlist_lifecycle_and_mark_acquired_without_collection_change(self):
         card_id = self.ids["card_b_id"]
@@ -130,7 +130,7 @@ class CatalogWishlistApiTest(unittest.TestCase):
             "acquired": 0,
             "missing_price": 1,
             "unmatched": 0,
-            "estimated_total": 37.5,
+            "estimated_total": 33.0,
         })
         self.assertEqual(first["priority"], "none")
         self.assertEqual(second["target_price"], 8)
@@ -191,8 +191,8 @@ class CatalogWishlistApiTest(unittest.TestCase):
         self.assertEqual(item["id"], jp_card)
         self.assertEqual(item["printing_count"], 2)
         self.assertEqual(item["reprint_count"], 1)
-        self.assertEqual(item["current_price"], 7.5)
-        self.assertEqual(item["resolution_method"], "cardtrader_marketplace_low_median_5")
+        self.assertIsNone(item["current_price"])
+        self.assertIsNone(item["resolution_method"])
 
         detail = self.client.get(f"/api/catalog/{jp_card}").json()
         self.assertEqual({row["id"] for row in detail["printings"]}, {en_card, jp_card})

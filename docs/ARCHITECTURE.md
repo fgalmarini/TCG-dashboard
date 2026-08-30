@@ -37,7 +37,7 @@ Cardmarket
 Cardmarket remains the primary European price source. Scryfall is metadata only for
 the physical Magic LOTR catalog. One Piece uses CardTrader Blueprints for catalog and
 exact-language images, exact Cardmarket products when language scope is proven, and
-CardTrader Marketplace as exact-language pricing fallback. Provider calls run only in
+CardTrader Marketplace is never a pricing source. Provider calls run only in
 maintenance commands, never during normal API reads.
 
 Image providers are independent from market data. Magic keeps Scryfall exact images
@@ -48,8 +48,8 @@ non-exact language provenance.
 
 ```text
 Printing (cards.id)
-  ├── Magic: Scryfall exact -> CardTrader exact -> missing
-  └── One Piece: exact language -> same printing/artwork other language -> missing
+  ├── Magic: validated Cardmarket id + Low -> null
+  └── One Piece: validated Cardmarket id + Low -> null
 ```
 
 ## Multi-TCG Domain
@@ -148,16 +148,24 @@ presentation metadata and never changes language, identity or pricing.
 Market prices must be stored as historical snapshots. The application should not
 replace an old price with a new price as the only record.
 
-The current market value is derived from `market_price_history` for legacy Cardmarket
-mappings or `printing_price_resolutions` for provider-neutral printing decisions.
+The current market value is Cardmarket Low. Trend and averages remain separate
+informational metrics. A current `printing_price_resolutions` row, including a NULL
+price, has priority over all historical rows; CardTrader is never a pricing fallback.
 
 Initial update cadence is approximately weekly, with manual updates allowed. Failed or
 ambiguous mappings must be reported instead of silently discarded.
 
-`./update-prices` identifies Cardmarket snapshots by the source timestamp and
-CardTrader snapshots by a fingerprint of pricing-relevant offer data. Repeating the
-same source snapshot is idempotent; a changed snapshot creates a new historical
-resolution, including an explicit null decision when no exact price exists.
+`./update-prices` identifies the combined Cardmarket Product Catalogue and Price Guide
+set by a stable manifest hash. Repeating the same source snapshot is idempotent; a
+changed snapshot creates a new historical resolution, including an explicit null
+decision when no exact price exists.
+
+The first repair scope is `collection`. It creates exactly one current Cardmarket
+resolution per `collection_item_id` and source, without changing global current
+resolutions. Automatic EXACT evidence supersedes a manual Collection approval;
+ambiguous, mismatched, missing and unpriced items receive an explicit current NULL.
+Historical rows remain immutable evidence, and the API never falls back to them when
+a scoped current NULL exists.
 
 ## Currency Handling
 
@@ -234,12 +242,8 @@ for One Piece or Pokémon.
 
 ## CardTrader Role
 
-CardTrader is the One Piece catalog/image provider and exact-language pricing fallback.
-Marketplace resolution keeps one cheapest eligible offer per seller, takes at most
-five sellers and stores the median. Eligible offers are Near Mint, ungraded, unsigned,
-unaltered, individual cards from non-vacation sellers. Confidence is high for 5,
-medium for 3-4, low for 1-2 and null for none. Magic retains its exact CardTrader image
-fallback behavior.
+CardTrader remains an image/catalog evidence provider where explicitly documented;
+it cannot assign current prices, populate pricing history, or act as a fallback.
 
 Bandai EN/JP validates releases and card-number metadata through a versioned registry.
 It is not scraped and is not a runtime dependency.

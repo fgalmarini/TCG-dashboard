@@ -8,6 +8,7 @@ usuario en el SQL (`sort` se resuelve contra un diccionario fijo de columnas rea
 nunca el nombre de columna crudo del query param).
 """
 
+import re
 import sqlite3
 from dataclasses import dataclass, field
 
@@ -20,9 +21,18 @@ WITH latest_price AS (
     SELECT
         h.cardmarket_product_id,
         COALESCE(NULLIF(h.trend, 0), NULLIF(h.trend_alt, 0)) AS trend,
+        NULLIF(h.trend, 0) AS trend_base, NULLIF(h.trend_alt, 0) AS trend_alt_value,
         COALESCE(NULLIF(h.avg, 0), NULLIF(h.avg_alt, 0)) AS avg,
+        NULLIF(h.avg, 0) AS avg_base, NULLIF(h.avg_alt, 0) AS avg_alt_value,
+        COALESCE(NULLIF(h.avg1, 0), NULLIF(h.avg1_alt, 0)) AS avg1,
+        NULLIF(h.avg1, 0) AS avg1_base, NULLIF(h.avg1_alt, 0) AS avg1_alt_value,
+        COALESCE(NULLIF(h.avg7, 0), NULLIF(h.avg7_alt, 0)) AS avg7,
+        NULLIF(h.avg7, 0) AS avg7_base, NULLIF(h.avg7_alt, 0) AS avg7_alt_value,
         COALESCE(NULLIF(h.low, 0), NULLIF(h.low_alt, 0)) AS low,
+        NULLIF(h.low, 0) AS low_base,
+        NULLIF(h.low_alt, 0) AS low_alt,
         COALESCE(NULLIF(h.avg30, 0), NULLIF(h.avg30_alt, 0)) AS avg30,
+        NULLIF(h.avg30, 0) AS avg30_base, NULLIF(h.avg30_alt, 0) AS avg30_alt_value,
         h.observed_at,
         (
             SELECT COALESCE(NULLIF(h2.trend, 0), NULLIF(h2.trend_alt, 0))
@@ -42,8 +52,11 @@ WITH latest_price AS (
         WHERE h2.cardmarket_product_id = h.cardmarket_product_id
     )
 ), latest_printing_resolution AS (
-    SELECT r.card_id, r.language_id, r.current_price, r.currency,
+    SELECT r.id, r.card_id, r.language_id, r.current_price, r.currency,
            r.source, r.resolution_method, r.resolved_at,
+           r.match_status, r.selected_metric, r.cardmarket_low,
+           r.cardmarket_trend, r.cardmarket_avg1, r.cardmarket_avg7,
+           r.cardmarket_avg30, r.source_currency,
            (
                SELECT r2.current_price
                  FROM printing_price_resolutions r2
@@ -58,13 +71,31 @@ WITH latest_price AS (
                 LIMIT 1
            ) AS previous_current_price
       FROM printing_price_resolutions r
-     WHERE r.id = (
-         SELECT r2.id FROM printing_price_resolutions r2
-          WHERE r2.card_id = r.card_id
-            AND COALESCE(r2.language_id, -1) = COALESCE(r.language_id, -1)
-          ORDER BY r2.resolved_at DESC, r2.id DESC
-          LIMIT 1
-     )
+     WHERE r.is_current = 1
+       AND r.collection_item_id IS NULL
+       AND COALESCE(r.source, 'cardmarket') = 'cardmarket'
+), latest_collection_resolution AS (
+    SELECT r.id, r.collection_item_id, r.card_id, r.language_id,
+           r.current_price, r.currency, r.source, r.resolution_method,
+           r.resolved_at, r.match_status, r.selected_metric,
+           r.cardmarket_low, r.cardmarket_trend, r.cardmarket_avg1,
+           r.cardmarket_avg7, r.cardmarket_avg30, r.source_currency,
+           (
+               SELECT r2.current_price
+                 FROM printing_price_resolutions r2
+                WHERE r2.collection_item_id = r.collection_item_id
+                  AND r2.current_price IS NOT NULL
+                  AND (
+                       r2.resolved_at < r.resolved_at
+                       OR (r2.resolved_at = r.resolved_at AND r2.id < r.id)
+                  )
+                ORDER BY r2.resolved_at DESC, r2.id DESC
+                LIMIT 1
+           ) AS previous_current_price
+      FROM printing_price_resolutions r
+     WHERE r.is_current = 1
+       AND r.collection_item_id IS NOT NULL
+       AND COALESCE(r.source, 'cardmarket') = 'cardmarket'
 )
 """
 
@@ -89,15 +120,21 @@ _COLLECTION_COLUMNS = """
               AND lower(COALESCE(c.set_code, e.set_code)) IN ('ltr', 'ltc')
               AND c.card_number IS NOT NULL AND c.finish IS NOT NULL)
          THEN 1 ELSE 0 END AS catalog_matched,
-    CASE WHEN g.code = 'one_piece' THEN pr.current_price ELSE lp.trend END AS market_trend,
-    CASE WHEN g.code = 'one_piece' THEN pr.previous_current_price ELSE lp.previous_trend END AS previous_market_trend,
-    CASE WHEN g.code = 'one_piece' THEN NULL ELSE lp.avg END AS market_avg,
-    CASE WHEN g.code = 'one_piece' THEN NULL ELSE lp.low END AS market_low,
-    CASE WHEN g.code = 'one_piece' THEN NULL ELSE lp.avg30 END AS market_avg30,
-    CASE WHEN g.code = 'one_piece' THEN pr.resolved_at ELSE lp.observed_at END AS price_observed_at,
-    CASE WHEN g.code = 'one_piece' THEN pr.source ELSE 'cardmarket' END AS price_source,
-    CASE WHEN g.code = 'one_piece' THEN pr.currency ELSE 'EUR' END AS price_currency,
-    CASE WHEN g.code = 'one_piece' THEN pr.resolution_method ELSE 'cardmarket_exact_language' END AS resolution_method,
+    CASE WHEN cr.id IS NOT NULL THEN cr.current_price WHEN pr.id IS NOT NULL THEN pr.current_price ELSE CASE WHEN lower(c.finish) = 'foil' THEN lp.low_alt ELSE lp.low_base END END AS market_trend,
+    CASE WHEN cr.id IS NOT NULL THEN cr.previous_current_price WHEN pr.id IS NOT NULL THEN pr.previous_current_price ELSE lp.previous_trend END AS previous_market_trend,
+    CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_avg1 WHEN pr.id IS NOT NULL THEN pr.cardmarket_avg1 ELSE CASE WHEN lower(c.finish) = 'foil' THEN lp.avg_alt_value ELSE lp.avg_base END END AS market_avg,
+    CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_low WHEN pr.id IS NOT NULL THEN pr.cardmarket_low ELSE CASE WHEN lower(c.finish) = 'foil' THEN lp.low_alt ELSE lp.low_base END END AS market_low,
+    CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_avg30 WHEN pr.id IS NOT NULL THEN pr.cardmarket_avg30 ELSE lp.avg30 END AS market_avg30,
+    CASE WHEN cr.id IS NOT NULL THEN cr.resolved_at WHEN pr.id IS NOT NULL THEN pr.resolved_at ELSE lp.observed_at END AS price_observed_at,
+    CASE WHEN cr.id IS NOT NULL THEN cr.source WHEN pr.id IS NOT NULL THEN pr.source ELSE 'cardmarket' END AS price_source,
+    CASE WHEN cr.id IS NOT NULL THEN COALESCE(cr.source_currency, cr.currency) WHEN pr.id IS NOT NULL THEN COALESCE(pr.source_currency, pr.currency) ELSE 'EUR' END AS price_currency,
+    CASE WHEN cr.id IS NOT NULL THEN cr.resolution_method WHEN pr.id IS NOT NULL THEN pr.resolution_method ELSE 'cardmarket_price_guide' END AS resolution_method,
+    CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_low WHEN pr.id IS NOT NULL THEN pr.cardmarket_low ELSE lp.low END AS cardmarket_low,
+    CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_trend WHEN pr.id IS NOT NULL THEN pr.cardmarket_trend ELSE CASE WHEN lower(c.finish) = 'foil' THEN lp.trend_alt_value ELSE lp.trend_base END END AS cardmarket_trend,
+    CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_avg1 WHEN pr.id IS NOT NULL THEN pr.cardmarket_avg1 ELSE lp.avg END AS cardmarket_avg1,
+    CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_avg7 WHEN pr.id IS NOT NULL THEN pr.cardmarket_avg7 ELSE lp.avg7 END AS cardmarket_avg7,
+    CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_avg30 WHEN pr.id IS NOT NULL THEN pr.cardmarket_avg30 ELSE lp.avg30 END AS cardmarket_avg30,
+    CASE WHEN cr.id IS NOT NULL THEN cr.source_currency WHEN pr.id IS NOT NULL THEN pr.source_currency ELSE 'EUR' END AS source_currency,
     (SELECT COUNT(*) FROM cards pc
       WHERE pc.canonical_card_id = c.canonical_card_id AND pc.catalog_status = 'active') AS printing_count,
     (SELECT COUNT(*) FROM cards rc
@@ -114,11 +151,64 @@ _FROM_JOINS = """
     LEFT JOIN languages cl   ON cl.id = c.language_id
     LEFT JOIN latest_price lp ON lp.cardmarket_product_id = ci.cardmarket_product_id
     LEFT JOIN latest_printing_resolution pr
-           ON pr.card_id = c.id AND COALESCE(pr.language_id, -1) = COALESCE(c.language_id, -1)
+           ON pr.card_id = c.id AND COALESCE(pr.language_id, ci.language_id, -1) = COALESCE(c.language_id, ci.language_id, -1)
+    LEFT JOIN latest_collection_resolution cr
+           ON cr.collection_item_id = ci.id
 """
 
 
+def _pricing_schema_sql(conn: sqlite3.Connection, sql: str) -> str:
+    """Keep reads working on an unmigrated legacy DB; apply migrates atomically."""
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(printing_price_resolutions)")}
+    if "collection_item_id" not in columns:
+        # Very old databases do not have the collection-scoped table columns at
+        # all.  Remove that CTE and join instead of issuing a query against a
+        # nonexistent column; the legacy resolution path below still selects
+        # one historical row per printing.
+        marker = ", latest_collection_resolution AS ("
+        start = sql.find(marker)
+        if start >= 0:
+            end = sql.find(")\nSELECT", start)
+            if end >= 0:
+                sql = sql[:start] + "\nSELECT" + sql[end + len(")\nSELECT"):]
+        sql = sql.replace("       AND r.collection_item_id IS NULL\n", "")
+        sql = sql.replace("    LEFT JOIN latest_collection_resolution cr\n           ON cr.collection_item_id = ci.id\n", "")
+        sql = re.sub(r"\bcr\.[A-Za-z_]+\b", "NULL", sql)
+    if "is_current" not in columns:
+        # Legacy databases have no current marker.  Selecting every historical
+        # resolution multiplies collection/catalog rows; emulate one current
+        # Cardmarket resolution per printing, language and source instead.
+        legacy_current = """
+            r.id = (
+                SELECT r3.id
+                  FROM printing_price_resolutions r3
+                 WHERE r3.card_id = r.card_id
+                   AND COALESCE(r3.language_id, -1) = COALESCE(r.language_id, -1)
+                   AND COALESCE(r3.source, 'cardmarket') = COALESCE(r.source, 'cardmarket')
+                 ORDER BY r3.resolved_at DESC, r3.id DESC
+                 LIMIT 1
+            )
+        """
+        sql = sql.replace("cr.is_current = 1", "1=0")
+        # The legacy compatibility fixture/database may also predate the
+        # additive resolution columns.  Replace collection-scoped references
+        # before the generic `r.` substitutions so `cr.cardmarket_*` is never
+        # accidentally transformed into `cNULL`.
+        for column in ("match_status", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "source_currency"):
+            sql = sql.replace(f"cr.{column}", "NULL")
+        sql = sql.replace("r.is_current = 1", legacy_current).replace("r0.is_current = 1", "1=0")
+    # The API is also usable during the additive migration window.  Missing
+    # resolution metadata is reported as NULL until update-prices applies it.
+    for column in ("match_status", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30"):
+        if column not in columns:
+            sql = sql.replace(f"pr.{column}", "NULL").replace(f"r.{column}", "NULL")
+    if "source_currency" not in columns:
+        sql = sql.replace("pr.source_currency", "pr.currency").replace("r.source_currency", "r.currency")
+    return sql
+
+
 def _build_query(
+    conn: sqlite3.Connection,
     select_clause: str,
     where_sql: str = "",
     order_by_sql: str = "",
@@ -127,7 +217,7 @@ def _build_query(
     """Unico builder de la query base (CTE + joins). Parametrizable por endpoint --
     /api/overview, /api/collection y /api/collection/{id} llaman siempre a esta misma
     funcion, nunca duplican el SELECT/FROM/JOIN."""
-    return f"{_LATEST_PRICE_CTE}SELECT {select_clause}{_FROM_JOINS}{where_sql}{order_by_sql}{limit_offset_sql}"
+    return _pricing_schema_sql(conn, f"{_LATEST_PRICE_CTE}SELECT {select_clause}{_FROM_JOINS}{where_sql}{order_by_sql}{limit_offset_sql}")
 
 
 # --- Regla unica de "sin precio" -----------------------------------------------------
@@ -195,6 +285,12 @@ class CollectionRow:
     market_avg: float | None
     market_low: float | None
     market_avg30: float | None
+    cardmarket_low: float | None
+    cardmarket_trend: float | None
+    cardmarket_avg1: float | None
+    cardmarket_avg7: float | None
+    cardmarket_avg30: float | None
+    source_currency: str | None
     price_observed_at: str | None
     price_source: str | None
     price_currency: str | None
@@ -265,6 +361,12 @@ def _row_to_collection_row(row: sqlite3.Row) -> CollectionRow:
         market_avg=row["market_avg"],
         market_low=row["market_low"],
         market_avg30=row["market_avg30"],
+        cardmarket_low=row["cardmarket_low"],
+        cardmarket_trend=row["cardmarket_trend"],
+        cardmarket_avg1=row["cardmarket_avg1"],
+        cardmarket_avg7=row["cardmarket_avg7"],
+        cardmarket_avg30=row["cardmarket_avg30"],
+        source_currency=row["source_currency"],
         price_observed_at=row["price_observed_at"],
         price_source=row["price_source"],
         price_currency=row["price_currency"],
@@ -288,7 +390,7 @@ def fetch_collection_rows(
     if limit is not None:
         limit_offset_sql = " LIMIT ? OFFSET ?"
         params += [limit, offset or 0]
-    sql = _build_query(_COLLECTION_COLUMNS, where_sql, order_by_sql, limit_offset_sql)
+    sql = _build_query(conn, _COLLECTION_COLUMNS, where_sql, order_by_sql, limit_offset_sql)
     rows = conn.execute(sql, params).fetchall()
     collection_rows = [_row_to_collection_row(r) for r in rows]
     if include_images:
@@ -382,7 +484,7 @@ def count_collection_rows(
     where_sql: str = "",
     where_params: tuple | list = (),
 ) -> int:
-    sql = _build_query("COUNT(*) AS total", where_sql)
+    sql = _build_query(conn, "COUNT(*) AS total", where_sql)
     row = conn.execute(sql, list(where_params)).fetchone()
     return row["total"]
 
@@ -545,6 +647,7 @@ _CARD_PRICE_CTE = """
 WITH latest_price AS (
     SELECT h.cardmarket_product_id,
            COALESCE(NULLIF(h.trend, 0), NULLIF(h.trend_alt, 0)) AS trend,
+           NULLIF(h.low, 0) AS low_base, NULLIF(h.low_alt, 0) AS low_alt,
            h.observed_at
       FROM market_price_history h
      WHERE h.observed_at = (
@@ -558,38 +661,47 @@ WITH latest_price AS (
      GROUP BY cpm.card_id
     HAVING COUNT(DISTINCT cpm.cardmarket_product_id) = 1
 ), legacy_card_price AS (
-    SELECT sp.card_id, lp.trend AS current_price, lp.observed_at,
+    SELECT sp.card_id, lp.low_base AS current_price, lp.observed_at,
            'cardmarket' AS source, 'cardmarket_exact_language' AS resolution_method
       FROM single_product sp
       JOIN latest_price lp ON lp.cardmarket_product_id = sp.cardmarket_product_id
-     WHERE lp.trend IS NOT NULL
+     WHERE lp.low_base IS NOT NULL
+       AND NOT EXISTS (
+           SELECT 1 FROM printing_price_resolutions r0
+            WHERE r0.card_id = sp.card_id AND r0.is_current = 1
+       )
 ), latest_resolution AS (
     SELECT r.card_id, r.language_id, r.current_price, r.currency,
            r.resolved_at AS observed_at, r.source, r.resolution_method,
            r.external_id, r.sample_size, r.lowest_price, r.median_price,
-           r.price_confidence
-      FROM printing_price_resolutions r
-     WHERE r.id = (
-         SELECT r2.id FROM printing_price_resolutions r2
-          WHERE r2.card_id = r.card_id
-            AND COALESCE(r2.language_id, -1) = COALESCE(r.language_id, -1)
-          ORDER BY r2.resolved_at DESC, r2.id DESC LIMIT 1
-     )
+           r.price_confidence, r.cardmarket_low, r.cardmarket_trend,
+           r.cardmarket_avg1, r.cardmarket_avg7, r.cardmarket_avg30,
+           r.source_currency
+     FROM printing_price_resolutions r
+     WHERE r.is_current = 1
+       AND r.collection_item_id IS NULL
+       AND COALESCE(r.source, 'cardmarket') = 'cardmarket'
 ), card_price AS (
     SELECT c.id AS card_id,
-           CASE WHEN g.code = 'one_piece' THEN r.current_price ELSE l.current_price END AS current_price,
-           CASE WHEN g.code = 'one_piece' THEN r.observed_at ELSE l.observed_at END AS observed_at,
-           CASE WHEN g.code = 'one_piece' THEN r.source ELSE l.source END AS source,
-           CASE WHEN g.code = 'one_piece' THEN r.resolution_method ELSE l.resolution_method END AS resolution_method,
-           CASE WHEN g.code = 'one_piece' THEN r.currency ELSE 'EUR' END AS currency,
-           CASE WHEN g.code = 'one_piece' THEN r.external_id ELSE NULL END AS external_id,
-           COALESCE(CASE WHEN g.code = 'one_piece' THEN r.sample_size ELSE 0 END, 0) AS sample_size,
-           CASE WHEN g.code = 'one_piece' THEN r.lowest_price ELSE NULL END AS lowest_price,
-           CASE WHEN g.code = 'one_piece' THEN r.median_price ELSE NULL END AS median_price,
-           CASE WHEN g.code = 'one_piece' THEN r.price_confidence ELSE NULL END AS price_confidence
+           CASE WHEN r.card_id IS NOT NULL THEN r.current_price ELSE CASE WHEN lower(c.finish) = 'foil' THEN lp.low_alt ELSE l.current_price END END AS current_price,
+           CASE WHEN r.card_id IS NOT NULL THEN r.observed_at ELSE l.observed_at END AS observed_at,
+           CASE WHEN r.card_id IS NOT NULL THEN r.source ELSE l.source END AS source,
+           CASE WHEN r.card_id IS NOT NULL THEN r.resolution_method ELSE l.resolution_method END AS resolution_method,
+           CASE WHEN r.card_id IS NOT NULL THEN COALESCE(r.source_currency, r.currency) ELSE 'EUR' END AS currency,
+           CASE WHEN r.card_id IS NOT NULL THEN r.external_id ELSE NULL END AS external_id,
+           COALESCE(CASE WHEN r.card_id IS NOT NULL THEN r.sample_size ELSE 0 END, 0) AS sample_size,
+           CASE WHEN r.card_id IS NOT NULL THEN r.lowest_price ELSE NULL END AS lowest_price,
+           CASE WHEN r.card_id IS NOT NULL THEN r.median_price ELSE NULL END AS median_price,
+           CASE WHEN r.card_id IS NOT NULL THEN r.price_confidence ELSE NULL END AS price_confidence,
+           CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_low ELSE l.current_price END AS cardmarket_low,
+           CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_trend ELSE NULL END AS cardmarket_trend,
+           CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_avg1 ELSE NULL END AS cardmarket_avg1,
+           CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_avg7 ELSE NULL END AS cardmarket_avg7,
+           CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_avg30 ELSE NULL END AS cardmarket_avg30
       FROM cards c
       JOIN games g ON g.id = c.game_id
       LEFT JOIN legacy_card_price l ON l.card_id = c.id
+      LEFT JOIN latest_price lp ON lp.cardmarket_product_id = (SELECT cardmarket_product_id FROM single_product sp2 WHERE sp2.card_id = c.id)
       LEFT JOIN latest_resolution r
              ON r.card_id = c.id AND COALESCE(r.language_id, -1) = COALESCE(c.language_id, -1)
 )
@@ -623,6 +735,12 @@ class CatalogRow:
     lowest_price: float | None
     median_price: float | None
     price_confidence: str | None
+    cardmarket_low: float | None
+    cardmarket_trend: float | None
+    cardmarket_avg1: float | None
+    cardmarket_avg7: float | None
+    cardmarket_avg30: float | None
+    source_currency: str | None
     owned: bool
     wishlist: bool
     wishlist_item_id: int | None
@@ -670,6 +788,12 @@ class WishlistRow:
     source: str | None
     resolution_method: str | None
     price_currency: str | None
+    cardmarket_low: float | None
+    cardmarket_trend: float | None
+    cardmarket_avg1: float | None
+    cardmarket_avg7: float | None
+    cardmarket_avg30: float | None
+    source_currency: str | None
     matched: bool
     acquired_at: str | None
     removed_at: str | None
@@ -689,6 +813,9 @@ def _catalog_row(row: sqlite3.Row) -> CatalogRow:
         price_currency=row["price_currency"], price_external_id=row["price_external_id"],
         price_sample_size=row["price_sample_size"], lowest_price=row["lowest_price"],
         median_price=row["median_price"], price_confidence=row["price_confidence"],
+        cardmarket_low=row["cardmarket_low"], cardmarket_trend=row["cardmarket_trend"],
+        cardmarket_avg1=row["cardmarket_avg1"], cardmarket_avg7=row["cardmarket_avg7"],
+        cardmarket_avg30=row["cardmarket_avg30"], source_currency=row["source_currency"],
         wishlist=bool(row["wishlist"]), wishlist_item_id=row["wishlist_item_id"],
     )
 
@@ -744,7 +871,7 @@ def fetch_catalog_rows(
     limit: int,
     offset: int,
 ) -> list[CatalogRow]:
-    sql = _CARD_PRICE_CTE + f"""
+    sql = _pricing_schema_sql(conn, _CARD_PRICE_CTE) + f"""
         SELECT c.id, c.canonical_card_id, g.code AS game_code, c.name,
                COALESCE(s.code, c.set_code, e.set_code) AS set_code,
                COALESCE(s.name, e.name) AS expansion_name, c.card_number,
@@ -757,6 +884,8 @@ def fetch_catalog_rows(
                cp.currency AS price_currency, cp.external_id AS price_external_id,
                cp.sample_size AS price_sample_size, cp.lowest_price,
                cp.median_price, cp.price_confidence,
+               cp.cardmarket_low, cp.cardmarket_trend, cp.cardmarket_avg1,
+               cp.cardmarket_avg7, cp.cardmarket_avg30, cp.currency AS source_currency,
                EXISTS (SELECT 1 FROM collection_items ci WHERE ci.card_id = c.id) AS owned,
                EXISTS (SELECT 1 FROM wishlist_items wi WHERE wi.card_id = c.id AND wi.status = 'wanted') AS wishlist,
                (SELECT wi.id FROM wishlist_items wi WHERE wi.card_id = c.id AND wi.status = 'wanted' ORDER BY wi.id LIMIT 1) AS wishlist_item_id
@@ -779,7 +908,7 @@ def fetch_catalog_rows(
 
 def count_catalog_rows(conn: sqlite3.Connection, where_sql: str, where_params: list) -> int:
     row = conn.execute(
-        _CARD_PRICE_CTE + f"SELECT COUNT(*) FROM cards c JOIN expansions e ON e.id=c.expansion_id JOIN games g ON g.id=c.game_id LEFT JOIN sets s ON s.id=c.set_id LEFT JOIN languages l ON l.id=c.language_id {where_sql}",
+        _pricing_schema_sql(conn, _CARD_PRICE_CTE) + f"SELECT COUNT(*) FROM cards c JOIN expansions e ON e.id=c.expansion_id JOIN games g ON g.id=c.game_id LEFT JOIN sets s ON s.id=c.set_id LEFT JOIN languages l ON l.id=c.language_id {where_sql}",
         where_params,
     ).fetchone()
     return row[0]
@@ -844,6 +973,9 @@ def _wishlist_row(row: sqlite3.Row) -> WishlistRow:
         current_price=row["current_price"], source=row["source"],
         resolution_method=row["resolution_method"],
         price_currency=row["price_currency"],
+        cardmarket_low=row["cardmarket_low"], cardmarket_trend=row["cardmarket_trend"],
+        cardmarket_avg1=row["cardmarket_avg1"], cardmarket_avg7=row["cardmarket_avg7"],
+        cardmarket_avg30=row["cardmarket_avg30"], source_currency=row["source_currency"],
         matched=bool(row["matched"]), acquired_at=row["acquired_at"],
         removed_at=row["removed_at"],
     )
@@ -937,14 +1069,16 @@ def _wishlist_select_body(where_sql: str = "", order_by_sql: str = "") -> str:
                (SELECT COUNT(*) FROM cards rc WHERE rc.canonical_card_id=c.canonical_card_id AND rc.catalog_status='active' AND rc.release_kind='reprint') AS reprint_count,
                cp.current_price,
                cp.source, cp.resolution_method, cp.currency AS price_currency,
+               cp.cardmarket_low, cp.cardmarket_trend, cp.cardmarket_avg1,
+               cp.cardmarket_avg7, cp.cardmarket_avg30, cp.currency AS source_currency,
                {_WISHLIST_MATCHED_SQL} AS matched
           {_WISHLIST_FROM}
           {where_sql}
           {order_by_sql}"""
 
 
-def _wishlist_select_sql(where_sql: str = "", order_by_sql: str = "") -> str:
-    return _CARD_PRICE_CTE + _wishlist_select_body(where_sql, order_by_sql)
+def _wishlist_select_sql(conn: sqlite3.Connection, where_sql: str = "", order_by_sql: str = "") -> str:
+    return _pricing_schema_sql(conn, _CARD_PRICE_CTE) + _wishlist_select_body(where_sql, order_by_sql)
 
 
 def fetch_wishlist_rows(
@@ -963,7 +1097,7 @@ def fetch_wishlist_rows(
         status=status, priorities=priorities, sets=sets, finish=finish,
         has_price=has_price, matched=matched, game=game, language=language,
     )
-    sql = _wishlist_select_sql(where_sql, f" ORDER BY {_wishlist_order(sort)}")
+    sql = _wishlist_select_sql(conn, where_sql, f" ORDER BY {_wishlist_order(sort)}")
     result = [_wishlist_row(row) for row in conn.execute(sql, params).fetchall()]
     images = fetch_exact_images(conn, sorted({row.card_id for row in result}))
     for row in result:
@@ -1117,7 +1251,7 @@ def fetch_collection_match_context(
 
 def fetch_wishlist_summary(conn: sqlite3.Connection) -> WishlistSummary:
     row = conn.execute(
-        _CARD_PRICE_CTE + """
+        _pricing_schema_sql(conn, _CARD_PRICE_CTE) + """
         SELECT
             COALESCE(SUM(CASE WHEN status = 'wanted' THEN 1 ELSE 0 END), 0) AS wanted,
             COALESCE(SUM(CASE WHEN status = 'acquired' THEN 1 ELSE 0 END), 0) AS acquired,

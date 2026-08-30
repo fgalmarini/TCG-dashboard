@@ -50,7 +50,7 @@ class ApiTest(unittest.TestCase):
         self.assertIn("sin_catalogar", data["value_by_tcg"])
         self.assertLessEqual(len(data["top_cards"]), 10)
         self.assertEqual(data["top_cards"][0]["collection_item_id"], self.ids["row1_id"])
-        self.assertEqual(data["top_cards"][0]["price_variation"], 0.25)
+        self.assertEqual(data["top_cards"][0]["price_variation"], 0.1)
         self.assertEqual(data["top_cards"][0]["image"]["source"], "scryfall")
 
     def test_collection_endpoint_no_filters_returns_all_rows(self):
@@ -70,7 +70,7 @@ class ApiTest(unittest.TestCase):
         items_by_id = {item["id"]: item for item in resp.json()["items"]}
         self.assertIsNone(items_by_id[self.ids["row3_id"]]["market_value"])
         self.assertIsNone(items_by_id[self.ids["row2_id"]]["market_value"])
-        self.assertEqual(items_by_id[self.ids["row1_id"]]["market_value"], 12.5)
+        self.assertEqual(items_by_id[self.ids["row1_id"]]["market_value"], 11.0)
 
     def test_collection_endpoint_returns_exact_image_only(self):
         resp = self.client.get("/api/collection")
@@ -116,13 +116,28 @@ class ApiTest(unittest.TestCase):
         self.assertEqual(data["market_price"]["trend"], 12.5)
         self.assertEqual(data["market_price"]["observed_at"], "2026-01-08T00:00:00")
         self.assertEqual(data["market_price"]["source"], "cardmarket")
-        self.assertEqual(data["unrealized_pl"], 15.0)
-        self.assertEqual(data["roi"], 1.5)
+        self.assertEqual(data["unrealized_pl"], 12.0)
+        self.assertEqual(data["roi"], 1.2)
         self.assertEqual(data["image"]["faces"][0]["large_url"], "https://cards.scryfall.io/large/front/a/a/card-a.jpg")
 
     def test_collection_detail_404_for_missing_id(self):
         resp = self.client.get("/api/collection/999999")
         self.assertEqual(resp.status_code, 404)
+
+    def test_current_null_resolution_has_priority_over_historical_low(self):
+        conn = connect(self.db_path)
+        card_id = self.ids["card_a_id"]
+        conn.execute(
+            """INSERT INTO printing_price_resolutions
+               (card_id, language_id, resolved_at, current_price, currency, source,
+                resolution_method, match_status, is_current)
+               VALUES (?, 1, '2026-08-30T00:00:00Z', NULL, 'EUR', 'cardmarket',
+                       'no_exact_language_price', 'AMBIGUOUS', 1)""",
+            (card_id,),
+        )
+        conn.commit(); conn.close()
+        response = self.client.get(f"/api/collection/{self.ids['row1_id']}")
+        self.assertIsNone(response.json()["market_price"])
 
 
 if __name__ == "__main__":
