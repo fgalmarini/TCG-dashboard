@@ -182,6 +182,7 @@ def _pricing_schema_sql(conn: sqlite3.Connection, sql: str) -> str:
     if "wishlist_item_id" not in columns:
         # During the additive migration the Wishlist relation is empty, while
         # the global query remains readable against the legacy schema.
+        sql = sql.replace("r.id, r.wishlist_item_id, r.card_id", "r.id, NULL AS wishlist_item_id, r.card_id")
         sql = sql.replace("r.wishlist_item_id", "NULL")
         sql = sql.replace("r0.wishlist_item_id", "NULL")
         sql = sql.replace("r2.wishlist_item_id", "NULL")

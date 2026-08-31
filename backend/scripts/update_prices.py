@@ -85,6 +85,12 @@ class GameReport:
     wishlist_items: int = 0
     wishlist_units: int = 0
     wishlist_status: str | None = None
+    wishlist_exact_item_coverage: float | None = None
+    wishlist_exact_unit_coverage: float | None = None
+    wishlist_legacy_value: float | None = None
+    wishlist_resolved_low_value: float | None = None
+    wishlist_estimated_value_coverage: float | None = None
+    wishlist_value_without_exact: float | None = None
     write_candidates: int = 0
     current_pricing_changes: int = 0
     errors: list[str] = field(default_factory=list)
@@ -473,6 +479,41 @@ def _register_game_report(
         item.wishlist_items = len(rows)
         item.wishlist_units = sum(int(row.get("wishlist_quantity") or 0) for row in rows)
         item.wishlist_status = rows[0].get("wishlist_status") if rows else None
+        total_items = item.wishlist_items
+        total_units = item.wishlist_units
+        exact_rows = [row for row in rows if row.get("match_status") == "EXACT"]
+        exact_units = sum(int(row.get("wishlist_quantity") or 0) for row in exact_rows)
+        legacy_value = sum(
+            float(row["current_price"]) * int(row.get("wishlist_quantity") or 0)
+            for row in rows if row.get("current_price") is not None
+        )
+        resolved_low_value = 0.0
+        for row in exact_rows:
+            metric = row.get("cardmarket_metric_used")
+            low = row.get("low_alt" if metric == "Foil Low" else "low")
+            if audit.usable(low):
+                resolved_low_value += float(low) * int(row.get("wishlist_quantity") or 0)
+        value_without_exact = sum(
+            float(row["current_price"]) * int(row.get("wishlist_quantity") or 0)
+            for row in rows
+            if row.get("match_status") != "EXACT" and row.get("current_price") is not None
+        )
+        denominator = resolved_low_value + value_without_exact
+        estimated_coverage = (resolved_low_value / denominator * 100) if denominator else 0.0
+        item.wishlist_exact_item_coverage = round(len(exact_rows) / total_items * 100, 2) if total_items else 0.0
+        item.wishlist_exact_unit_coverage = round(exact_units / total_units * 100, 2) if total_units else 0.0
+        item.wishlist_legacy_value = round(legacy_value, 2)
+        item.wishlist_resolved_low_value = round(resolved_low_value, 2)
+        item.wishlist_estimated_value_coverage = round(estimated_coverage, 2)
+        item.wishlist_value_without_exact = round(value_without_exact, 2)
+        # Keep the legacy report fields populated for consumers that already
+        # render the Collection-named metrics for every pricing scope.
+        item.collection_exact_item_coverage = item.wishlist_exact_item_coverage
+        item.collection_exact_unit_coverage = item.wishlist_exact_unit_coverage
+        item.collection_legacy_value = item.wishlist_legacy_value
+        item.collection_low_value = item.wishlist_resolved_low_value
+        item.collection_value_coverage = item.wishlist_estimated_value_coverage
+        item.collection_value_without_exact = item.wishlist_value_without_exact
         item.current_pricing_changes = item.prices_changed
     report.game_reports[_game_report_key(report, scope, game)] = item
 

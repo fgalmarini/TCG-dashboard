@@ -279,6 +279,19 @@ class UpdatePricesTest(unittest.TestCase):
         self.assertEqual(conn.execute("SELECT COUNT(*) FROM printing_price_resolutions").fetchone()[0], 0)
         conn.close()
 
+    def test_wishlist_dry_run_populates_coverage_metrics_for_active_items(self):
+        conn = sqlite3.connect(self.db)
+        conn.execute("INSERT INTO wishlist_items (card_id, quantity_wanted, priority, status, language_id) VALUES (1, 3, 'high', 'wanted', 1)")
+        conn.commit()
+        conn.close()
+        report, code = self._run("dry-run", games=("magic",), scope="wishlist")
+        self.assertEqual(code, 0)
+        item = report.game_reports["magic"]
+        self.assertEqual((item.wishlist_items, item.wishlist_units), (1, 3))
+        self.assertEqual((item.wishlist_exact_item_coverage, item.wishlist_exact_unit_coverage), (100.0, 100.0))
+        self.assertEqual((item.wishlist_legacy_value, item.wishlist_resolved_low_value, item.wishlist_estimated_value_coverage, item.wishlist_value_without_exact), (0.0, 3.0, 100.0, 0.0))
+        self.assertEqual((item.collection_exact_item_coverage, item.collection_exact_unit_coverage, item.collection_legacy_value, item.collection_low_value, item.collection_value_coverage, item.collection_value_without_exact), (100.0, 100.0, 0.0, 3.0, 100.0, 0.0))
+
     def test_wishlist_apply_is_scoped_and_preserves_personal_and_global_state(self):
         conn = sqlite3.connect(self.db)
         conn.execute("INSERT INTO collection_items (card_id, cardmarket_product_id, language_id, quantity, status, match_status) VALUES (1, 1, 1, 2, 'KEEP', 'exact')")
