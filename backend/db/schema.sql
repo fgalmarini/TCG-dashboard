@@ -231,6 +231,7 @@ CREATE TABLE IF NOT EXISTS printing_price_resolutions (
     id                INTEGER PRIMARY KEY AUTOINCREMENT,
     card_id           INTEGER NOT NULL REFERENCES cards (id),
     collection_item_id INTEGER REFERENCES collection_items (id),
+    wishlist_item_id  INTEGER REFERENCES wishlist_items (id),
     resolution_scope  TEXT NOT NULL DEFAULT 'global'
         CHECK (resolution_scope IN ('global', 'collection', 'wishlist')),
     language_id       INTEGER NOT NULL REFERENCES languages (id),
@@ -274,6 +275,11 @@ CREATE TABLE IF NOT EXISTS printing_price_resolutions (
     source_manifest_id TEXT,
     provenance       TEXT,
     created_at        TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CHECK (
+        (resolution_scope = 'global' AND collection_item_id IS NULL AND wishlist_item_id IS NULL)
+        OR (resolution_scope = 'collection' AND collection_item_id IS NOT NULL AND wishlist_item_id IS NULL)
+        OR (resolution_scope = 'wishlist' AND collection_item_id IS NULL AND wishlist_item_id IS NOT NULL)
+    ),
     UNIQUE (card_id, language_id, resolved_at, resolution_method)
 );
 
@@ -282,7 +288,11 @@ CREATE INDEX IF NOT EXISTS idx_printing_price_latest
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_printing_price_current_identity
     ON printing_price_resolutions (card_id, language_id, COALESCE(source, 'cardmarket'))
-    WHERE is_current = 1 AND collection_item_id IS NULL;
+    WHERE is_current = 1 AND collection_item_id IS NULL AND wishlist_item_id IS NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_wishlist_price_current_item
+    ON printing_price_resolutions (wishlist_item_id, COALESCE(source, 'cardmarket'))
+    WHERE is_current = 1 AND wishlist_item_id IS NOT NULL AND collection_item_id IS NULL;
 
 CREATE TABLE IF NOT EXISTS collection_price_overrides (
     id                    INTEGER PRIMARY KEY AUTOINCREMENT,

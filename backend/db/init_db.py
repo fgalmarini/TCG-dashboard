@@ -24,6 +24,7 @@ def ensure_pricing_columns(conn: sqlite3.Connection) -> None:
         "printing_price_resolutions": {
             "cardmarket_product_id": "INTEGER REFERENCES cardmarket_products(id)",
             "collection_item_id": "INTEGER REFERENCES collection_items(id)",
+            "wishlist_item_id": "INTEGER REFERENCES wishlist_items(id)",
             "resolution_scope": "TEXT NOT NULL DEFAULT 'global' CHECK (resolution_scope IN ('global','collection','wishlist'))",
             "match_status": "TEXT", "is_current": "INTEGER NOT NULL DEFAULT 0",
             "selected_metric": "TEXT", "cardmarket_low": "REAL", "cardmarket_trend": "REAL",
@@ -41,9 +42,22 @@ def ensure_pricing_columns(conn: sqlite3.Connection) -> None:
                 conn.execute(f"ALTER TABLE {table} ADD COLUMN {field} {definition}")
     conn.execute("CREATE TABLE IF NOT EXISTS collection_price_overrides (id INTEGER PRIMARY KEY AUTOINCREMENT, collection_item_id INTEGER NOT NULL REFERENCES collection_items(id), card_id INTEGER NOT NULL REFERENCES cards(id), language_id INTEGER NOT NULL REFERENCES languages(id), cardmarket_product_id INTEGER NOT NULL REFERENCES cardmarket_products(id), match_status TEXT NOT NULL CHECK (match_status = 'EXACT'), approved INTEGER NOT NULL CHECK (approved IN (0,1)), row_hash TEXT NOT NULL, source_manifest_id TEXT NOT NULL, evidence TEXT NOT NULL, provenance TEXT NOT NULL, is_current INTEGER NOT NULL DEFAULT 1 CHECK (is_current IN (0,1)), created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, UNIQUE(collection_item_id, row_hash))")
     conn.execute("DROP INDEX IF EXISTS idx_printing_price_current_identity")
-    conn.execute("CREATE UNIQUE INDEX idx_printing_price_current_identity ON printing_price_resolutions (card_id, language_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND collection_item_id IS NULL")
-    conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_collection_price_current_identity ON printing_price_resolutions (collection_item_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND collection_item_id IS NOT NULL")
+    conn.execute("DROP INDEX IF EXISTS idx_collection_price_current_identity")
+    conn.execute("DROP INDEX IF EXISTS idx_wishlist_price_current_item")
+    conn.execute("CREATE UNIQUE INDEX idx_printing_price_current_identity ON printing_price_resolutions (card_id, language_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND collection_item_id IS NULL AND wishlist_item_id IS NULL")
+    conn.execute("CREATE UNIQUE INDEX idx_collection_price_current_identity ON printing_price_resolutions (collection_item_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND collection_item_id IS NOT NULL AND wishlist_item_id IS NULL")
+    conn.execute("CREATE UNIQUE INDEX idx_wishlist_price_current_item ON printing_price_resolutions (wishlist_item_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND wishlist_item_id IS NOT NULL AND collection_item_id IS NULL")
     conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_collection_override_current ON collection_price_overrides (collection_item_id) WHERE is_current = 1 AND approved = 1")
+    rows = conn.execute("SELECT id, resolution_scope, collection_item_id, wishlist_item_id FROM printing_price_resolutions").fetchall()
+    for row in rows:
+        scope = row[1] or "global"
+        valid = (
+            (scope == "global" and row[2] is None and row[3] is None)
+            or (scope == "collection" and row[2] is not None and row[3] is None)
+            or (scope == "wishlist" and row[2] is None and row[3] is not None)
+        )
+        if not valid:
+            raise ValueError(f"Invalid printing resolution scope at id={row[0]}")
 
 
 def init_db(db_path: Path) -> None:

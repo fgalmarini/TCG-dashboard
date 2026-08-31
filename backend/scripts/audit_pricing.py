@@ -390,6 +390,8 @@ def load_current_prices(conn: sqlite3.Connection) -> tuple[dict[tuple[int, int],
     all_resolution_rows = conn.execute("SELECT * FROM printing_price_resolutions").fetchall()
     if "collection_item_id" in columns:
         all_resolution_rows = [row for row in all_resolution_rows if row["collection_item_id"] is None]
+    if "wishlist_item_id" in columns:
+        all_resolution_rows = [row for row in all_resolution_rows if row["wishlist_item_id"] is None]
     if "is_current" in columns:
         current_rows = [row for row in all_resolution_rows if row["is_current"] == 1]
         current_keys = {(row["card_id"], row["language_id"]) for row in current_rows}
@@ -408,17 +410,106 @@ def load_collection_current_prices(conn: sqlite3.Connection) -> dict[int, dict]:
     columns = {row[1] for row in conn.execute("PRAGMA table_info(printing_price_resolutions)")}
     if "collection_item_id" not in columns or "is_current" not in columns:
         return {}
+    wishlist_clause = " AND wishlist_item_id IS NULL" if "wishlist_item_id" in columns else ""
     rows = conn.execute(
-        """SELECT * FROM printing_price_resolutions
-             WHERE collection_item_id IS NOT NULL AND is_current=1
+        f"""SELECT * FROM printing_price_resolutions
+             WHERE collection_item_id IS NOT NULL{wishlist_clause} AND is_current=1
              ORDER BY collection_item_id, id"""
     ).fetchall()
     return {int(row["collection_item_id"]): dict(row) for row in rows}
 
 
+def load_wishlist_current_prices(conn: sqlite3.Connection) -> dict[int, dict]:
+    """Load only current Wishlist-scoped resolutions, including NULL prices."""
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(printing_price_resolutions)")}
+    if "wishlist_item_id" not in columns or "is_current" not in columns:
+        return {}
+    rows = conn.execute(
+        """SELECT * FROM printing_price_resolutions
+             WHERE wishlist_item_id IS NOT NULL
+               AND collection_item_id IS NULL
+               AND is_current=1
+             ORDER BY wishlist_item_id, id"""
+    ).fetchall()
+    return {int(row["wishlist_item_id"]): dict(row) for row in rows}
+
+
 def load_expansion_names(conn: sqlite3.Connection) -> dict[int, str | None]:
     rows = conn.execute("SELECT cardmarket_id_expansion, name FROM expansions").fetchall()
     return {int(row[0]): row[1] for row in rows}
+
+
+def load_wishlist(conn: sqlite3.Connection, games: tuple[str, ...], status: str = "wanted") -> list[dict]:
+    """Load Wishlist work items without changing their status."""
+    if status not in {"wanted", "acquired", "removed", "all"}:
+        raise AuditError(f"Unknown Wishlist status: {status}")
+    placeholders = ",".join("?" for _ in games)
+    params: list[Any] = list(games)
+    status_clause = ""
+    if status != "all":
+        status_clause = " AND wi.status = ?"
+        params.append(status)
+    rows = conn.execute(
+        f"""SELECT wi.id AS wishlist_item_id, wi.card_id, wi.quantity_wanted,
+                    wi.priority, wi.target_price, wi.max_price, wi.currency,
+                    wi.status, wi.created_at, wi.updated_at
+               FROM wishlist_items wi
+               JOIN cards c ON c.id = wi.card_id
+               JOIN games g ON g.id = c.game_id
+              WHERE g.code IN ({placeholders}){status_clause}
+              ORDER BY wi.id""",
+        params,
+    ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def wishlist_audit_rows(
+    conn: sqlite3.Connection,
+    games: tuple[str, ...],
+    snapshots: dict[str, dict[str, SourceSnapshot]],
+    status: str = "wanted",
+) -> tuple[dict[str, list[dict]], dict[int, dict], list[dict]]:
+    """Audit Wishlist items at item grain using the shared identity resolver."""
+    wishlist = load_wishlist(conn, games, status)
+    card_ids = {int(item["card_id"]) for item in wishlist}
+    cards = {int(card["id"]): card for card in load_cards(conn, games, card_ids=card_ids, include_inactive=True)}
+    external = load_external_ids(conn)
+    mappings = load_mappings(conn)
+    resolutions, histories = load_current_prices(conn)
+    wishlist_resolutions = load_wishlist_current_prices(conn)
+    expansion_names = load_expansion_names(conn)
+    blueprint_info = blueprint_diagnostics(conn)
+    result = {game: [] for game in games}
+    for item in wishlist:
+        card = cards.get(int(item["card_id"]))
+        if card is None:
+            continue
+        game = str(card["game"])
+        product_snapshot = snapshots[game]["products"]
+        price_snapshot = snapshots[game]["price_guide"]
+        products, _ = build_product_indexes(product_snapshot, game)
+        prices = {int(raw["idProduct"]): normalize_price_entry(dict(raw)) for raw in price_snapshot.records}
+        row = audit_card(
+            card, game, products, prices, external, mappings, resolutions, histories,
+            expansion_names, blueprint_info, price_snapshot.created_at, "EUR",
+            wishlist_item_id=int(item["wishlist_item_id"]),
+            wishlist_resolutions=wishlist_resolutions,
+        )
+        row.update({
+            "wishlist_item_id": int(item["wishlist_item_id"]),
+            "wishlist_status": item["status"],
+            "wishlist_quantity": int(item["quantity_wanted"]),
+            "wishlist_priority": item["priority"],
+            "wishlist_target_price": item["target_price"],
+            "wishlist_max_price": item["max_price"],
+        })
+        if not row.get("cardmarket_candidates"):
+            diagnostic_ids = diagnostic_candidate_ids(card, products, expansion_names)
+            if diagnostic_ids:
+                row["cardmarket_candidates"] = ",".join(map(str, diagnostic_ids))
+                row["evidence"] = json.dumps({**json.loads(row.get("evidence") or "{}"), "diagnostic_candidates": diagnostic_ids}, sort_keys=True)
+        result.setdefault(game, []).append(row)
+    return result, cards, wishlist
 
 
 def build_product_indexes(snapshot: SourceSnapshot, game: str) -> tuple[dict[int, dict], dict[int, dict]]:
@@ -616,9 +707,20 @@ def current_for_card(
     mappings: dict[int, list[dict]],
     collection_item_id: int | None = None,
     collection_resolutions: dict[int, dict] | None = None,
+    wishlist_item_id: int | None = None,
+    wishlist_resolutions: dict[int, dict] | None = None,
 ) -> dict:
     if collection_item_id is not None and collection_resolutions and collection_item_id in collection_resolutions:
         value = collection_resolutions[collection_item_id]
+        return {
+            "current_price": value.get("current_price"), "current_currency": value.get("currency"),
+            "current_source": value.get("source"), "current_source_product_id": value.get("external_id"),
+            "current_timestamp": value.get("resolved_at"), "current_confidence": value.get("price_confidence"),
+            "current_provenance": value.get("provenance") or value.get("metadata"),
+            "dashboard_metric": value.get("selected_metric") or "Low",
+        }
+    if wishlist_item_id is not None and wishlist_resolutions and wishlist_item_id in wishlist_resolutions:
+        value = wishlist_resolutions[wishlist_item_id]
         return {
             "current_price": value.get("current_price"), "current_currency": value.get("currency"),
             "current_source": value.get("source"), "current_source_product_id": value.get("external_id"),
@@ -733,9 +835,15 @@ def audit_card(
     display_currency: str,
     collection_item_id: int | None = None,
     collection_resolutions: dict[int, dict] | None = None,
+    wishlist_item_id: int | None = None,
+    wishlist_resolutions: dict[int, dict] | None = None,
 ) -> dict:
     identity = resolve_identity(card, game, products, external, mappings, expansion_names)
-    current = current_for_card(card, game, resolutions, histories, mappings, collection_item_id, collection_resolutions)
+    current = current_for_card(
+        card, game, resolutions, histories, mappings,
+        collection_item_id, collection_resolutions,
+        wishlist_item_id, wishlist_resolutions,
+    )
     cm, selected_metric = cardmarket_price(identity.resolved_id, prices, card, game)
     cm_low = cm.get(selected_metric) if selected_metric else None
     trend_metric = "trend_alt" if selected_metric == "low_alt" else "trend"
@@ -812,6 +920,8 @@ def audit_card(
     }
     if collection_item_id is not None:
         row["collection_item_id"] = collection_item_id
+    if wishlist_item_id is not None:
+        row["wishlist_item_id"] = wishlist_item_id
     return row
 
 

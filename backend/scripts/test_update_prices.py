@@ -130,12 +130,13 @@ class UpdatePricesTest(unittest.TestCase):
             result[f"{game}:price_guide"] = DownloadResult("prices", "fixture", price_path, True, price_path.stat().st_size, None)
         return result
 
-    def _run(self, mode, games=("magic", "one_piece"), now="2026-08-28T12:00:00+00:00"):
+    def _run(self, mode, games=("magic", "one_piece"), now="2026-08-28T12:00:00+00:00", scope="all", wishlist_status="wanted"):
         with patch.object(update_prices, "LOG_DIR", self.root / "logs"), \
              patch.object(update_prices, "BACKUP_DIR", self.root / "backups"):
             return update_prices.run_workflow(
                 mode=mode, games=tuple(games), db_path=self.db, now=now,
-                download_fn=self._download, cardtrader_client=FakeCardTrader(),
+                download_fn=self._download, cardtrader_client=FakeCardTrader(), scope=scope,
+                wishlist_status=wishlist_status,
             )
 
     def _seed_legacy_unsafe_magic_price(self):
@@ -197,7 +198,7 @@ class UpdatePricesTest(unittest.TestCase):
         self.assertEqual(report.transaction, "COMMITTED")
         self.assertTrue(Path(report.backup).is_file())
         conn = sqlite3.connect(self.db)
-        self.assertEqual(conn.execute("SELECT COUNT(*) FROM market_price_history").fetchone()[0], 1)
+        self.assertEqual(conn.execute("SELECT COUNT(*) FROM market_price_history").fetchone()[0], 2)
         methods = {row[0] for row in conn.execute("SELECT resolution_method FROM printing_price_resolutions")}
         self.assertEqual(methods, {"cardmarket_exact_language", "no_exact_language_price"})
         rows = conn.execute("SELECT match_status, current_price, source FROM printing_price_resolutions ORDER BY card_id").fetchall()
@@ -223,7 +224,7 @@ class UpdatePricesTest(unittest.TestCase):
             )
         self.assertEqual(code, 0)
         self.assertEqual(requested, [("magic",)])
-        self.assertEqual(set(report.game_reports), {"magic"})
+        self.assertEqual(set(report.game_reports), {"magic", "collection:magic", "wishlist:magic"})
 
     def test_failure_during_write_rolls_back_every_game(self):
         with patch.object(update_prices, "_write_one_piece", side_effect=RuntimeError("forced failure")):
@@ -263,6 +264,60 @@ class UpdatePricesTest(unittest.TestCase):
             update_prices.build_parser().parse_args(["--dry-run", "--apply"])
         args = update_prices.build_parser().parse_args(["--game", "magic", "--dry-run"])
         self.assertEqual(args.game, "magic")
+        self.assertEqual(args.wishlist_status, "wanted")
+        args = update_prices.build_parser().parse_args(["--dry-run", "--scope", "wishlist", "--wishlist-status", "removed"])
+        self.assertEqual(args.wishlist_status, "removed")
+
+    def test_wishlist_wanted_empty_has_no_write_candidates(self):
+        before = self.db.read_bytes()
+        report, code = self._run("dry-run", games=("magic",), scope="wishlist")
+        self.assertEqual(code, 0)
+        item = report.game_reports["magic"]
+        self.assertEqual((item.wishlist_items, item.write_candidates, item.current_pricing_changes), (0, 0, 0))
+        self.assertEqual(before, self.db.read_bytes())
+        conn = sqlite3.connect(self.db)
+        self.assertEqual(conn.execute("SELECT COUNT(*) FROM printing_price_resolutions").fetchone()[0], 0)
+        conn.close()
+
+    def test_wishlist_apply_is_scoped_and_preserves_personal_and_global_state(self):
+        conn = sqlite3.connect(self.db)
+        conn.execute("INSERT INTO collection_items (card_id, cardmarket_product_id, language_id, quantity, status, match_status) VALUES (1, 1, 1, 2, 'KEEP', 'exact')")
+        conn.execute("INSERT INTO wishlist_items (card_id, quantity_wanted, priority, status, language_id) VALUES (1, 3, 'high', 'wanted', 1)")
+        conn.commit()
+        collection_before = conn.execute("SELECT * FROM collection_items").fetchall()
+        wishlist_before = conn.execute("SELECT * FROM wishlist_items").fetchall()
+        mappings_before = conn.execute("SELECT * FROM cardmarket_product_mappings").fetchall()
+        conn.close()
+
+        report, code = self._run("apply", games=("magic",), scope="wishlist")
+        self.assertEqual(code, 0)
+        self.assertEqual(report.game_reports["magic"].wishlist_items, 1)
+        conn = sqlite3.connect(self.db)
+        resolution = conn.execute("SELECT wishlist_item_id, collection_item_id, resolution_scope, current_price, match_status FROM printing_price_resolutions").fetchone()
+        self.assertEqual(tuple(resolution), (1, None, "wishlist", 1.0, "EXACT"))
+        self.assertEqual(conn.execute("SELECT COUNT(*) FROM printing_price_resolutions WHERE resolution_scope='global'").fetchone()[0], 0)
+        self.assertEqual(conn.execute("SELECT COUNT(*) FROM printing_price_resolutions WHERE resolution_scope='collection'").fetchone()[0], 0)
+        self.assertEqual(conn.execute("SELECT * FROM collection_items").fetchall(), collection_before)
+        self.assertEqual(conn.execute("SELECT * FROM wishlist_items").fetchall(), wishlist_before)
+        self.assertEqual(conn.execute("SELECT * FROM cardmarket_product_mappings").fetchall(), mappings_before)
+        self.assertEqual(conn.execute("SELECT COUNT(*) FROM market_price_history WHERE cardmarket_product_id != 1").fetchone()[0], 0)
+        conn.close()
+
+    def test_resolution_scope_check_rejects_mixed_targets(self):
+        conn = sqlite3.connect(self.db)
+        with self.assertRaises(sqlite3.IntegrityError):
+            conn.execute("INSERT INTO printing_price_resolutions (card_id, collection_item_id, wishlist_item_id, resolution_scope, language_id, resolved_at, source, is_current) VALUES (1, NULL, NULL, 'wishlist', 1, '2026-08-28', 'cardmarket', 1)")
+        conn.rollback()
+        with self.assertRaises(sqlite3.IntegrityError):
+            conn.execute("INSERT INTO printing_price_resolutions (card_id, collection_item_id, wishlist_item_id, resolution_scope, language_id, resolved_at, source, is_current) VALUES (1, 1, 1, 'collection', 1, '2026-08-28', 'cardmarket', 1)")
+        conn.close()
+
+    def test_writer_rejects_target_outside_wishlist_scope(self):
+        work = update_prices.ScopeWork("wishlist", allowed_wishlist_ids={10})
+        with self.assertRaises(update_prices.WorkflowError):
+            update_prices._validate_write_target(work, {"local_printing_id": 1, "wishlist_item_id": 11, "collection_item_id": None}, {"id": 1})
+        with self.assertRaises(update_prices.WorkflowError):
+            update_prices._validate_write_target(work, {"local_printing_id": 1, "wishlist_item_id": 10, "collection_item_id": 2}, {"id": 1})
 
     def test_collection_review_hash_covers_target_printing_and_candidates(self):
         row = {

@@ -62,6 +62,8 @@ WITH latest_price AS (
                  FROM printing_price_resolutions r2
                 WHERE r2.card_id = r.card_id
                   AND r2.language_id = r.language_id
+                  AND r2.collection_item_id IS NULL
+                  AND r2.wishlist_item_id IS NULL
                   AND r2.current_price IS NOT NULL
                   AND (
                        r2.resolved_at < r.resolved_at
@@ -73,6 +75,7 @@ WITH latest_price AS (
       FROM printing_price_resolutions r
      WHERE r.is_current = 1
        AND r.collection_item_id IS NULL
+       AND r.wishlist_item_id IS NULL
        AND COALESCE(r.source, 'cardmarket') = 'cardmarket'
 ), latest_collection_resolution AS (
     SELECT r.id, r.collection_item_id, r.card_id, r.language_id,
@@ -84,6 +87,7 @@ WITH latest_price AS (
                SELECT r2.current_price
                  FROM printing_price_resolutions r2
                 WHERE r2.collection_item_id = r.collection_item_id
+                  AND r2.wishlist_item_id IS NULL
                   AND r2.current_price IS NOT NULL
                   AND (
                        r2.resolved_at < r.resolved_at
@@ -95,6 +99,7 @@ WITH latest_price AS (
       FROM printing_price_resolutions r
      WHERE r.is_current = 1
        AND r.collection_item_id IS NOT NULL
+       AND r.wishlist_item_id IS NULL
        AND COALESCE(r.source, 'cardmarket') = 'cardmarket'
 )
 """
@@ -174,6 +179,12 @@ def _pricing_schema_sql(conn: sqlite3.Connection, sql: str) -> str:
         sql = sql.replace("       AND r.collection_item_id IS NULL\n", "")
         sql = sql.replace("    LEFT JOIN latest_collection_resolution cr\n           ON cr.collection_item_id = ci.id\n", "")
         sql = re.sub(r"\bcr\.[A-Za-z_]+\b", "NULL", sql)
+    if "wishlist_item_id" not in columns:
+        # During the additive migration the Wishlist relation is empty, while
+        # the global query remains readable against the legacy schema.
+        sql = sql.replace("r.wishlist_item_id", "NULL")
+        sql = sql.replace("r0.wishlist_item_id", "NULL")
+        sql = sql.replace("r2.wishlist_item_id", "NULL")
     if "is_current" not in columns:
         # Legacy databases have no current marker.  Selecting every historical
         # resolution multiplies collection/catalog rows; emulate one current
@@ -669,6 +680,7 @@ WITH latest_price AS (
        AND NOT EXISTS (
            SELECT 1 FROM printing_price_resolutions r0
             WHERE r0.card_id = sp.card_id AND r0.is_current = 1
+              AND r0.collection_item_id IS NULL AND r0.wishlist_item_id IS NULL
        )
 ), latest_resolution AS (
     SELECT r.card_id, r.language_id, r.current_price, r.currency,
@@ -680,6 +692,19 @@ WITH latest_price AS (
      FROM printing_price_resolutions r
      WHERE r.is_current = 1
        AND r.collection_item_id IS NULL
+       AND r.wishlist_item_id IS NULL
+       AND COALESCE(r.source, 'cardmarket') = 'cardmarket'
+), latest_wishlist_resolution AS (
+    SELECT r.id, r.wishlist_item_id, r.card_id, r.current_price, r.currency,
+           r.resolved_at AS observed_at, r.source, r.resolution_method,
+           r.external_id, r.sample_size, r.lowest_price, r.median_price,
+           r.price_confidence, r.cardmarket_low, r.cardmarket_trend,
+           r.cardmarket_avg1, r.cardmarket_avg7, r.cardmarket_avg30,
+           r.source_currency
+      FROM printing_price_resolutions r
+     WHERE r.is_current = 1
+       AND r.collection_item_id IS NULL
+       AND r.wishlist_item_id IS NOT NULL
        AND COALESCE(r.source, 'cardmarket') = 'cardmarket'
 ), card_price AS (
     SELECT c.id AS card_id,
@@ -998,6 +1023,7 @@ _WISHLIST_FROM = """
           LEFT JOIN sets s ON s.id = c.set_id
           LEFT JOIN languages l ON l.id = c.language_id
           LEFT JOIN card_price cp ON cp.card_id = c.id
+          LEFT JOIN latest_wishlist_resolution wr ON wr.wishlist_item_id = wi.id
 """
 
 
@@ -1033,10 +1059,11 @@ def build_wishlist_filters(
     if finish:
         clauses.append("c.finish = ?")
         params.append(finish.casefold())
+    effective_price = "CASE WHEN wr.id IS NOT NULL THEN wr.current_price ELSE cp.current_price END"
     if has_price is True:
-        clauses.append("cp.current_price IS NOT NULL")
+        clauses.append(f"({effective_price}) IS NOT NULL")
     elif has_price is False:
-        clauses.append("cp.current_price IS NULL")
+        clauses.append(f"({effective_price}) IS NULL")
     if matched is True:
         clauses.append(_WISHLIST_MATCHED_SQL)
     elif matched is False:
@@ -1045,10 +1072,11 @@ def build_wishlist_filters(
 
 
 def _wishlist_order(sort: str) -> str:
+    effective_price = "CASE WHEN wr.id IS NOT NULL THEN wr.current_price ELSE cp.current_price END"
     order_by = {
         "priority": "CASE wi.priority WHEN 'high' THEN 0 WHEN 'medium' THEN 1 WHEN 'low' THEN 2 ELSE 3 END, wi.updated_at DESC, wi.id DESC",
         "name": "c.name COLLATE NOCASE, wi.id DESC",
-        "current_price": "cp.current_price IS NULL, cp.current_price, c.name COLLATE NOCASE, wi.id DESC",
+        "current_price": f"{effective_price} IS NULL, {effective_price}, c.name COLLATE NOCASE, wi.id DESC",
         "target_price": "wi.target_price IS NULL, wi.target_price, c.name COLLATE NOCASE, wi.id DESC",
         "max_price": "wi.max_price IS NULL, wi.max_price, c.name COLLATE NOCASE, wi.id DESC",
     }
@@ -1067,10 +1095,16 @@ def _wishlist_select_body(where_sql: str = "", order_by_sql: str = "") -> str:
                c.release_kind, c.art_kind,
                (SELECT COUNT(*) FROM cards pc WHERE pc.canonical_card_id=c.canonical_card_id AND pc.catalog_status='active') AS printing_count,
                (SELECT COUNT(*) FROM cards rc WHERE rc.canonical_card_id=c.canonical_card_id AND rc.catalog_status='active' AND rc.release_kind='reprint') AS reprint_count,
-               cp.current_price,
-               cp.source, cp.resolution_method, cp.currency AS price_currency,
-               cp.cardmarket_low, cp.cardmarket_trend, cp.cardmarket_avg1,
-               cp.cardmarket_avg7, cp.cardmarket_avg30, cp.currency AS source_currency,
+               CASE WHEN wr.id IS NOT NULL THEN wr.current_price ELSE cp.current_price END AS current_price,
+               CASE WHEN wr.id IS NOT NULL THEN wr.source ELSE cp.source END AS source,
+               CASE WHEN wr.id IS NOT NULL THEN wr.resolution_method ELSE cp.resolution_method END AS resolution_method,
+               CASE WHEN wr.id IS NOT NULL THEN COALESCE(wr.source_currency, wr.currency) ELSE cp.currency END AS price_currency,
+               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_low ELSE cp.cardmarket_low END AS cardmarket_low,
+               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_trend ELSE cp.cardmarket_trend END AS cardmarket_trend,
+               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_avg1 ELSE cp.cardmarket_avg1 END AS cardmarket_avg1,
+               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_avg7 ELSE cp.cardmarket_avg7 END AS cardmarket_avg7,
+               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_avg30 ELSE cp.cardmarket_avg30 END AS cardmarket_avg30,
+               CASE WHEN wr.id IS NOT NULL THEN wr.source_currency ELSE cp.currency END AS source_currency,
                {_WISHLIST_MATCHED_SQL} AS matched
           {_WISHLIST_FROM}
           {where_sql}

@@ -39,6 +39,18 @@ class LockError(WorkflowError):
 
 
 @dataclass
+class ScopeWork:
+    """A resolved work universe plus the write targets permitted for it."""
+
+    scope: str
+    wishlist_status: str = "wanted"
+    rows_by_game: dict[str, list[dict]] = field(default_factory=dict)
+    cards: dict[int, dict] = field(default_factory=dict)
+    allowed_collection_ids: set[int] = field(default_factory=set)
+    allowed_wishlist_ids: set[int] = field(default_factory=set)
+
+
+@dataclass
 class GameReport:
     game: str
     scope: str = "all"
@@ -70,6 +82,11 @@ class GameReport:
     collection_trade_value: float | None = None
     collection_trade_value_min: float | None = None
     collection_trade_value_max: float | None = None
+    wishlist_items: int = 0
+    wishlist_units: int = 0
+    wishlist_status: str | None = None
+    write_candidates: int = 0
+    current_pricing_changes: int = 0
     errors: list[str] = field(default_factory=list)
 
     @property
@@ -105,10 +122,11 @@ class WorkflowReport:
     game_reports: dict[str, GameReport] = field(default_factory=dict)
     errors: list[str] = field(default_factory=list)
     collection_wishlist_unchanged: bool | None = None
+    wishlist_status: str = "wanted"
     duration_seconds: float | None = None
 
     def to_dict(self) -> dict:
-        return {"timestamp": self.started_at, "mode": self.mode, "scope": self.scope, "games": list(self.games), "database": self.database, "providers": self.providers, "snapshots": self.snapshots, "source_manifest_id": self.source_manifest_id, "current_state_audit": self.current_state_audit, "proposed_state_validation": self.proposed_state_validation, "post_apply_validation": self.post_apply_validation, "printings": {k: v.to_dict() for k, v in self.game_reports.items()}, "transaction": self.transaction, "backup": self.backup, "integrity": self.integrity, "foreign_keys": self.foreign_keys, "collection_wishlist_unchanged": self.collection_wishlist_unchanged, "errors": self.errors, "result": self.result, "duration_seconds": self.duration_seconds}
+        return {"timestamp": self.started_at, "mode": self.mode, "scope": self.scope, "wishlist_status": self.wishlist_status, "games": list(self.games), "database": self.database, "providers": self.providers, "snapshots": self.snapshots, "source_manifest_id": self.source_manifest_id, "current_state_audit": self.current_state_audit, "proposed_state_validation": self.proposed_state_validation, "post_apply_validation": self.post_apply_validation, "printings": {k: v.to_dict() for k, v in self.game_reports.items()}, "transaction": self.transaction, "backup": self.backup, "integrity": self.integrity, "foreign_keys": self.foreign_keys, "collection_wishlist_unchanged": self.collection_wishlist_unchanged, "errors": self.errors, "result": self.result, "duration_seconds": self.duration_seconds}
 
 
 def _utc_now() -> str:
@@ -138,13 +156,41 @@ def _validate_database(conn: sqlite3.Connection) -> tuple[str, str]:
     missing_games = sorted(set(SUPPORTED_GAMES) - configured)
     if missing_games:
         raise WorkflowError(f"Database is missing configured games: {', '.join(missing_games)}")
+    _validate_resolution_scope_invariants(conn)
     return integrity, "ok"
+
+
+def _validate_resolution_scope_invariants(conn: sqlite3.Connection) -> None:
+    """Reject rows that mix global, Collection and Wishlist targets."""
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(printing_price_resolutions)")}
+    if "wishlist_item_id" not in columns:
+        return
+    rows = conn.execute(
+        """SELECT id, resolution_scope, collection_item_id, wishlist_item_id
+             FROM printing_price_resolutions ORDER BY id"""
+    ).fetchall()
+    failures: list[str] = []
+    for row in rows:
+        scope = row["resolution_scope"] or "global"
+        collection_id = row["collection_item_id"]
+        wishlist_id = row["wishlist_item_id"]
+        valid = (
+            (scope == "global" and collection_id is None and wishlist_id is None)
+            or (scope == "collection" and collection_id is not None and wishlist_id is None)
+            or (scope == "wishlist" and collection_id is None and wishlist_id is not None)
+        )
+        if not valid:
+            failures.append(
+                f"resolution {row['id']}: scope={scope}, collection_item_id={collection_id}, wishlist_item_id={wishlist_id}"
+            )
+    if failures:
+        raise WorkflowError("Resolution scope invariants failed: " + "; ".join(failures[:20]))
 
 
 def ensure_pricing_schema(conn: sqlite3.Connection) -> None:
     additions = {
         "market_price_history": {"source": "TEXT NOT NULL DEFAULT 'cardmarket'", "source_currency": "TEXT NOT NULL DEFAULT 'EUR'", "source_snapshot_created_at": "TEXT", "source_snapshot_sha256": "TEXT", "source_manifest_id": "TEXT", "provenance": "TEXT"},
-        "printing_price_resolutions": {"cardmarket_product_id": "INTEGER REFERENCES cardmarket_products(id)", "collection_item_id": "INTEGER REFERENCES collection_items(id)", "resolution_scope": "TEXT NOT NULL DEFAULT 'global'", "match_status": "TEXT", "is_current": "INTEGER NOT NULL DEFAULT 0", "selected_metric": "TEXT", "cardmarket_low": "REAL", "cardmarket_trend": "REAL", "cardmarket_avg1": "REAL", "cardmarket_avg7": "REAL", "cardmarket_avg30": "REAL", "cardmarket_foil_low": "REAL", "cardmarket_foil_trend": "REAL", "cardmarket_foil_avg1": "REAL", "cardmarket_foil_avg7": "REAL", "cardmarket_foil_avg30": "REAL", "source_currency": "TEXT", "source_snapshot_created_at": "TEXT", "source_snapshot_sha256": "TEXT", "source_manifest_id": "TEXT", "provenance": "TEXT"},
+        "printing_price_resolutions": {"cardmarket_product_id": "INTEGER REFERENCES cardmarket_products(id)", "collection_item_id": "INTEGER REFERENCES collection_items(id)", "wishlist_item_id": "INTEGER REFERENCES wishlist_items(id)", "resolution_scope": "TEXT NOT NULL DEFAULT 'global' CHECK (resolution_scope IN ('global','collection','wishlist'))", "match_status": "TEXT", "is_current": "INTEGER NOT NULL DEFAULT 0", "selected_metric": "TEXT", "cardmarket_low": "REAL", "cardmarket_trend": "REAL", "cardmarket_avg1": "REAL", "cardmarket_avg7": "REAL", "cardmarket_avg30": "REAL", "cardmarket_foil_low": "REAL", "cardmarket_foil_trend": "REAL", "cardmarket_foil_avg1": "REAL", "cardmarket_foil_avg7": "REAL", "cardmarket_foil_avg30": "REAL", "source_currency": "TEXT", "source_snapshot_created_at": "TEXT", "source_snapshot_sha256": "TEXT", "source_manifest_id": "TEXT", "provenance": "TEXT"},
     }
     for table, fields in additions.items():
         existing = {row[1] for row in conn.execute(f"PRAGMA table_info({table})")}
@@ -155,8 +201,11 @@ def ensure_pricing_schema(conn: sqlite3.Connection) -> None:
     # Recreate this index so databases migrated by the previous global-only
     # version cannot accidentally constrain Collection-scoped rows.
     conn.execute("DROP INDEX IF EXISTS idx_printing_price_current_identity")
-    conn.execute("CREATE UNIQUE INDEX idx_printing_price_current_identity ON printing_price_resolutions (card_id, language_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND collection_item_id IS NULL")
-    conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_collection_price_current_identity ON printing_price_resolutions (collection_item_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND collection_item_id IS NOT NULL")
+    conn.execute("DROP INDEX IF EXISTS idx_collection_price_current_identity")
+    conn.execute("DROP INDEX IF EXISTS idx_wishlist_price_current_item")
+    conn.execute("CREATE UNIQUE INDEX idx_printing_price_current_identity ON printing_price_resolutions (card_id, language_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND collection_item_id IS NULL AND wishlist_item_id IS NULL")
+    conn.execute("CREATE UNIQUE INDEX idx_collection_price_current_identity ON printing_price_resolutions (collection_item_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND collection_item_id IS NOT NULL AND wishlist_item_id IS NULL")
+    conn.execute("CREATE UNIQUE INDEX idx_wishlist_price_current_item ON printing_price_resolutions (wishlist_item_id, COALESCE(source, 'cardmarket')) WHERE is_current = 1 AND wishlist_item_id IS NOT NULL AND collection_item_id IS NULL")
     conn.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_collection_override_current ON collection_price_overrides (collection_item_id) WHERE is_current = 1 AND approved = 1")
 
 
@@ -168,6 +217,10 @@ def _personal_snapshot(conn: sqlite3.Connection) -> str:
         for row in conn.execute(f"SELECT * FROM {table} ORDER BY id"):
             digest.update(json.dumps(tuple(row), default=str, separators=(",", ":")).encode() + b"\n")
     return digest.hexdigest()
+
+
+def _mapping_snapshot(conn: sqlite3.Connection) -> list[tuple]:
+    return [tuple(row) for row in conn.execute("SELECT * FROM cardmarket_product_mappings ORDER BY id")]
 
 
 def _load_sources(source_dir: Path | None, games: tuple[str, ...], conn: sqlite3.Connection, audited_at: str, download_fn: Callable | None, report: WorkflowReport):
@@ -374,37 +427,35 @@ def _apply_collection_reviews(conn: sqlite3.Connection, rows_by_game: dict[str, 
         approved_by_item[item_id] = review
 
 
-def _build_rows(conn: sqlite3.Connection, games: tuple[str, ...], snapshots: dict, report: WorkflowReport, manifest: dict | None = None, collection_review: Path | None = None):
-    cards = audit.load_cards(conn, games)
-    external = audit.load_external_ids(conn)
-    mappings = audit.load_mappings(conn)
-    resolutions, histories = audit.load_current_prices(conn)
-    expansion_names = audit.load_expansion_names(conn)
-    blueprints = audit.blueprint_diagnostics(conn)
-    collection = audit.load_collection(conn)
-    collection_resolutions = audit.load_collection_current_prices(conn)
-    rows_by_game = {game: [] for game in games}
-    if report.scope == "collection":
-        rows_by_game, collection = audit.collection_audit_rows(conn, games, snapshots, collection_resolutions)
-        if manifest is not None:
-            collection_card_ids = {int(entry["card_id"]) for entry in collection if entry.get("card_id") is not None}
-            collection_card_ids.update(_review_printing_ids(collection_review))
-            collection_cards = audit.load_cards(conn, games, card_ids=collection_card_ids, include_inactive=True)
-            _apply_collection_reviews(conn, rows_by_game, {int(row["id"]): dict(row) for row in collection_cards}, snapshots, manifest, collection_review, expansion_names)
-        for game, rows in rows_by_game.items():
-            audit.refresh_collection_contributions(rows)
-            item = report.game_reports.setdefault(game, GameReport(game, report.scope))
-            item.printings_checked = len(rows)
-            counts = Counter(row["match_status"] for row in rows)
-            item.exact, item.ambiguous, item.mismatch = counts["EXACT"], counts["AMBIGUOUS"], counts["MISMATCH"]
-            item.missing = counts["MISSING"]
-            item.unpriced = sum(1 for row in rows if audit.collection_unpriced(row))
-            item.collection_items = len(rows)
-            item.collection_units = sum(int(row.get("collection_quantity") or 0) for row in rows)
-            item.low_available = sum(1 for row in rows if audit.collection_metric_available(row))
-            item.trend_available = sum(1 for row in rows if audit.usable(row.get("trend" if row.get("cardmarket_metric_used") == "Low" else "trend_alt")))
-            item.avg7_available = sum(1 for row in rows if audit.usable(row.get("avg7" if row.get("cardmarket_metric_used") == "Low" else "avg7_alt")))
-            item.identity_mismatches_prevented = item.mismatch
+def _game_report_key(report: WorkflowReport, scope: str, game: str) -> str:
+    # Keep the historical catalog keys stable; composite scoped work gets an
+    # explicit prefix for Collection/Wishlist to avoid collisions.
+    return game if report.scope != "all" or scope == "catalog" else f"{scope}:{game}"
+
+
+def _register_game_report(
+    report: WorkflowReport,
+    scope: str,
+    game: str,
+    rows: list[dict],
+    collection: list[dict] | None = None,
+) -> None:
+    item = GameReport(game, scope)
+    item.printings_checked = len(rows)
+    counts = Counter(row.get("match_status") for row in rows)
+    item.exact, item.ambiguous, item.mismatch = counts["EXACT"], counts["AMBIGUOUS"], counts["MISMATCH"]
+    item.missing, item.unpriced = counts["MISSING"], counts["UNPRICED"]
+    item.low_available = sum(1 for row in rows if audit.usable(row.get("low" if row.get("cardmarket_metric_used") == "Low" else "low_alt")))
+    item.trend_available = sum(1 for row in rows if audit.usable(row.get("trend" if row.get("cardmarket_metric_used") == "Low" else "trend_alt")))
+    item.avg7_available = sum(1 for row in rows if audit.usable(row.get("avg7" if row.get("cardmarket_metric_used") == "Low" else "avg7_alt")))
+    item.identity_mismatches_prevented = item.mismatch
+    item.write_candidates = sum(1 for row in rows if row.get("local_printing_id") is not None)
+    if scope == "collection":
+        item.collection_items = len(rows)
+        item.collection_units = sum(int(row.get("collection_quantity") or 0) for row in rows)
+        item.low_available = sum(1 for row in rows if audit.collection_metric_available(row))
+        item.unpriced = sum(1 for row in rows if audit.collection_unpriced(row))
+        if collection is not None:
             metrics = audit.collection_summary(rows, [entry for entry in collection if entry.get("game") == game])
             item.collection_exact_item_coverage = metrics.get("item_coverage_percent")
             item.collection_exact_unit_coverage = metrics.get("unit_coverage_percent")
@@ -418,10 +469,59 @@ def _build_rows(conn: sqlite3.Connection, games: tuple[str, ...], snapshots: dic
             item.collection_trade_value = metrics.get("trade_value")
             item.collection_trade_value_min = metrics.get("trade_value_min")
             item.collection_trade_value_max = metrics.get("trade_value_max")
-        collection_card_ids = {int(entry["card_id"]) for entry in collection if entry.get("card_id") is not None}
-        collection_card_ids.update(_review_printing_ids(collection_review))
-        collection_cards = audit.load_cards(conn, games, card_ids=collection_card_ids, include_inactive=True)
-        return rows_by_game, {int(row["id"]): dict(row) for row in collection_cards}
+    elif scope == "wishlist":
+        item.wishlist_items = len(rows)
+        item.wishlist_units = sum(int(row.get("wishlist_quantity") or 0) for row in rows)
+        item.wishlist_status = rows[0].get("wishlist_status") if rows else None
+        item.current_pricing_changes = item.prices_changed
+    report.game_reports[_game_report_key(report, scope, game)] = item
+
+
+def _build_scope_work(
+    conn: sqlite3.Connection,
+    games: tuple[str, ...],
+    snapshots: dict,
+    report: WorkflowReport,
+    scope: str,
+    wishlist_status: str,
+    manifest: dict | None = None,
+    collection_review: Path | None = None,
+) -> ScopeWork:
+    if scope == "collection":
+        collection_resolutions = audit.load_collection_current_prices(conn)
+        rows_by_game, collection = audit.collection_audit_rows(conn, games, snapshots, collection_resolutions)
+        expansion_names = audit.load_expansion_names(conn)
+        if manifest is not None:
+            collection_card_ids = {int(entry["card_id"]) for entry in collection if entry.get("card_id") is not None}
+            collection_card_ids.update(_review_printing_ids(collection_review))
+            collection_cards = audit.load_cards(conn, games, card_ids=collection_card_ids, include_inactive=True)
+            _apply_collection_reviews(conn, rows_by_game, {int(row["id"]): dict(row) for row in collection_cards}, snapshots, manifest, collection_review, expansion_names)
+        for game, rows in rows_by_game.items():
+            audit.refresh_collection_contributions(rows)
+            _register_game_report(report, scope, game, rows, collection)
+        card_ids = {int(entry["card_id"]) for entry in collection if entry.get("card_id") is not None}
+        card_ids.update(_review_printing_ids(collection_review))
+        cards = audit.load_cards(conn, games, card_ids=card_ids, include_inactive=True)
+        return ScopeWork(scope, wishlist_status, rows_by_game, {int(row["id"]): dict(row) for row in cards},
+                         allowed_collection_ids={int(row["collection_item_id"]) for rows in rows_by_game.values() for row in rows if row.get("collection_item_id") is not None})
+
+    if scope == "wishlist":
+        rows_by_game, cards, wishlist = audit.wishlist_audit_rows(conn, games, snapshots, wishlist_status)
+        for game, rows in rows_by_game.items():
+            _register_game_report(report, scope, game, rows)
+        return ScopeWork(scope, wishlist_status, rows_by_game, cards,
+                         allowed_wishlist_ids={int(row["wishlist_item_id"]) for row in wishlist})
+
+    if scope != "catalog":
+        raise WorkflowError(f"Unknown concrete scope: {scope}")
+    cards_list = audit.load_cards(conn, games)
+    external = audit.load_external_ids(conn)
+    mappings = audit.load_mappings(conn)
+    resolutions, histories = audit.load_current_prices(conn)
+    expansion_names = audit.load_expansion_names(conn)
+    blueprints = audit.blueprint_diagnostics(conn)
+    collection = audit.load_collection(conn)
+    rows_by_game = {game: [] for game in games}
     for game in audit.GAME_ORDER:
         if game not in games:
             continue
@@ -430,26 +530,35 @@ def _build_rows(conn: sqlite3.Connection, games: tuple[str, ...], snapshots: dic
         products, _ = audit.build_product_indexes(product_snapshot, game)
         prices = {int(row["idProduct"]): audit.normalize_price_entry(dict(row)) for row in guide_snapshot.records}
         rows = rows_by_game[game]
-        for card in (item for item in cards if item["game"] == game):
+        for card in (value for value in cards_list if value["game"] == game):
             rows.append(audit.audit_card(card, game, products, prices, external, mappings, resolutions, histories, expansion_names, blueprints, guide_snapshot.created_at, "EUR"))
         audit.apply_collection_metrics(rows, collection, histories, {int(row["local_printing_id"]): {"current_price": row.get("current_price")} for row in rows}, prices, {int(row["local_printing_id"]): row for row in rows})
-        item = report.game_reports.setdefault(game, GameReport(game, report.scope))
-        item.printings_checked = len(rows)
-        counts = Counter(row["match_status"] for row in rows)
-        item.exact, item.ambiguous, item.mismatch = counts["EXACT"], counts["AMBIGUOUS"], counts["MISMATCH"]
-        item.missing, item.unpriced = counts["MISSING"], counts["UNPRICED"]
-        item.low_available = sum(1 for row in rows if audit.usable(row.get("low" if row.get("cardmarket_metric_used") == "Low" else "low_alt")))
-        item.trend_available = sum(1 for row in rows if audit.usable(row.get("trend" if row.get("cardmarket_metric_used") == "Low" else "trend_alt")))
-        item.avg7_available = sum(1 for row in rows if audit.usable(row.get("avg7" if row.get("cardmarket_metric_used") == "Low" else "avg7_alt")))
-        item.identity_mismatches_prevented = item.mismatch
-    return rows_by_game, {int(row["id"]): dict(row) for row in cards}
+        _register_game_report(report, scope, game, rows)
+    return ScopeWork(scope, wishlist_status, rows_by_game, {int(row["id"]): dict(row) for row in cards_list})
 
 
-def _current_state_audit(rows_by_game: dict[str, list[dict]], report: WorkflowReport) -> None:
+def _build_rows(
+    conn: sqlite3.Connection,
+    games: tuple[str, ...],
+    snapshots: dict,
+    report: WorkflowReport,
+    manifest: dict | None = None,
+    collection_review: Path | None = None,
+    wishlist_status: str = "wanted",
+) -> list[ScopeWork]:
+    scopes = ("collection", "wishlist", "catalog") if report.scope == "all" else (report.scope,)
+    return [
+        _build_scope_work(conn, games, snapshots, report, scope, wishlist_status, manifest, collection_review)
+        for scope in scopes
+    ]
+
+
+def _current_state_audit(works: list[ScopeWork], report: WorkflowReport) -> None:
     """Record the legacy state without making it a repair precondition."""
-    for game, rows in rows_by_game.items():
-        identity, parity = audit.verdicts(rows)
-        report.current_state_audit[game] = f"identity={identity}; pricing_parity={parity}"
+    for work in works:
+        for game, rows in work.rows_by_game.items():
+            identity, parity = audit.verdicts(rows)
+            report.current_state_audit[_game_report_key(report, work.scope, game)] = f"identity={identity}; pricing_parity={parity}"
 
 
 def _proposed_price(row: dict) -> tuple[float | None, str | None]:
@@ -505,42 +614,72 @@ def _eb02_regression(rows: list[dict]) -> tuple[bool, str]:
     return True, "EB02-061 identity separation PASS"
 
 
-def _validate_proposed_state(rows_by_game: dict[str, list[dict]], report: WorkflowReport, *, persisted: bool = False) -> None:
+def _validate_proposed_state(works: list[ScopeWork], report: WorkflowReport, *, persisted: bool = False) -> None:
     """Validate the state produced by the resolver, not the unsafe legacy state."""
     failures: list[str] = []
-    for game, rows in rows_by_game.items():
-        game_failures: list[str] = []
-        for row in rows:
-            proposed, metric = _proposed_price(row)
-            status = row.get("match_status")
-            if status in {"AMBIGUOUS", "MISMATCH", "MISSING", "UNPRICED"} and proposed is not None:
-                game_failures.append(f"{row['local_printing_id']}: {status} has proposed price")
-            if proposed is not None:
-                if status != "EXACT" or metric not in {"Low", "Foil Low"}:
-                    game_failures.append(f"{row['local_printing_id']}: proposed price is not EXACT + Cardmarket Low")
-            if persisted:
-                current = row.get("current_price")
-                if current is not None:
-                    expected, expected_metric = _proposed_price(row)
-                    if expected is None or row.get("current_source") != "cardmarket" or row.get("current_metric") != expected_metric or row.get("current_currency", "").casefold() != "eur" or float(current) != expected:
-                        game_failures.append(f"{row['local_printing_id']}: persisted current state is not EXACT + Cardmarket Low")
-        if game == "one_piece":
-            passed, detail = _eb02_regression(rows)
-            if not passed:
-                game_failures.append(detail)
-        report.proposed_state_validation[game] = "UNSAFE" if game_failures else "SAFE"
-        if game_failures:
-            failures.extend(f"{game}: {detail}" for detail in game_failures)
+    for work in works:
+        for game, rows in work.rows_by_game.items():
+            game_failures: list[str] = []
+            for row in rows:
+                proposed, metric = _proposed_price(row)
+                status = row.get("match_status")
+                if status in {"AMBIGUOUS", "MISMATCH", "MISSING", "UNPRICED"} and proposed is not None:
+                    game_failures.append(f"{row['local_printing_id']}: {status} has proposed price")
+                if proposed is not None:
+                    if status != "EXACT" or metric not in {"Low", "Foil Low"}:
+                        game_failures.append(f"{row['local_printing_id']}: proposed price is not EXACT + Cardmarket Low")
+                if persisted:
+                    current = row.get("current_price")
+                    if current is not None:
+                        expected, expected_metric = _proposed_price(row)
+                        if expected is None or row.get("current_source") != "cardmarket" or row.get("current_metric") != expected_metric or row.get("current_currency", "").casefold() != "eur" or float(current) != expected:
+                            game_failures.append(f"{row['local_printing_id']}: persisted current state is not EXACT + Cardmarket Low")
+            if game == "one_piece":
+                passed, detail = _eb02_regression(rows)
+                if not passed:
+                    game_failures.append(detail)
+            key = _game_report_key(report, work.scope, game)
+            report.proposed_state_validation[key] = "UNSAFE" if game_failures else "SAFE"
+            if game_failures:
+                failures.extend(f"{key}: {detail}" for detail in game_failures)
     if failures:
         raise WorkflowError("Proposed state validation failed: " + "; ".join(failures[:20]))
 
 
 def _resolution_snapshot(conn: sqlite3.Connection) -> list[tuple]:
-    """Stable snapshot of global resolution rows used to enforce Collection scope."""
+    """Stable snapshot of global resolution rows."""
     columns = [row[1] for row in conn.execute("PRAGMA table_info(printing_price_resolutions)")]
     if "collection_item_id" not in columns:
         return [tuple(row) for row in conn.execute("SELECT * FROM printing_price_resolutions ORDER BY id")]
-    return [tuple(row) for row in conn.execute("SELECT * FROM printing_price_resolutions WHERE collection_item_id IS NULL ORDER BY id")]
+    wishlist_clause = " AND wishlist_item_id IS NULL" if "wishlist_item_id" in columns else ""
+    return [tuple(row) for row in conn.execute(f"SELECT * FROM printing_price_resolutions WHERE collection_item_id IS NULL{wishlist_clause} ORDER BY id")]
+
+
+def _resolution_snapshot_outside_work(conn: sqlite3.Connection, works: list[ScopeWork]) -> list[tuple]:
+    """Snapshot every resolution row that the active work is not allowed to touch."""
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(printing_price_resolutions)")}
+    rows = [tuple(row) for row in conn.execute("SELECT * FROM printing_price_resolutions ORDER BY id")]
+    names = [row[1] for row in conn.execute("PRAGMA table_info(printing_price_resolutions)")]
+    positions = {name: index for index, name in enumerate(names)}
+    collection_ids = set().union(*(work.allowed_collection_ids for work in works))
+    wishlist_ids = set().union(*(work.allowed_wishlist_ids for work in works))
+    allow_global = any(work.scope == "catalog" for work in works)
+    outside: list[tuple] = []
+    for row in rows:
+        scope = row[positions["resolution_scope"]] if "resolution_scope" in positions else None
+        collection_id = row[positions["collection_item_id"]] if "collection_item_id" in positions else None
+        wishlist_id = row[positions["wishlist_item_id"]] if "wishlist_item_id" in positions else None
+        if scope == "global" or (scope is None and collection_id is None and wishlist_id is None):
+            allowed = allow_global
+        elif scope == "collection" or (scope is None and collection_id is not None):
+            allowed = collection_id in collection_ids
+        elif scope == "wishlist" or (scope is None and wishlist_id is not None):
+            allowed = wishlist_id in wishlist_ids
+        else:
+            allowed = False
+        if not allowed:
+            outside.append(row)
+    return outside
 
 
 def _validate_collection_persisted(conn: sqlite3.Connection, rows_by_game: dict[str, list[dict]]) -> None:
@@ -566,6 +705,35 @@ def _validate_collection_persisted(conn: sqlite3.Connection, rows_by_game: dict[
                 failures.append(f"collection item {item_id}: unsafe status has non-null current")
     if failures:
         raise WorkflowError("Persisted Collection validation failed: " + "; ".join(failures[:20]))
+
+
+def _validate_wishlist_persisted(conn: sqlite3.Connection, rows_by_game: dict[str, list[dict]]) -> None:
+    failures = []
+    for rows in rows_by_game.values():
+        for row in rows:
+            item_id = row.get("wishlist_item_id")
+            if item_id is None or row.get("local_printing_id") is None:
+                continue
+            current = conn.execute(
+                """SELECT resolution_scope, wishlist_item_id, collection_item_id,
+                          source, current_price, match_status, selected_metric,
+                          source_currency
+                     FROM printing_price_resolutions
+                    WHERE wishlist_item_id=? AND is_current=1""",
+                (item_id,),
+            ).fetchall()
+            if len(current) != 1:
+                failures.append(f"wishlist item {item_id}: expected exactly one current resolution")
+                continue
+            value = current[0]
+            if value[0] != "wishlist" or value[1] != item_id or value[2] is not None or value[3] != "cardmarket":
+                failures.append(f"wishlist item {item_id}: current target scope is invalid")
+            if value[4] is not None and (row.get("match_status") != "EXACT" or value[5] != "EXACT" or value[6] not in {"Low", "Foil Low"} or str(value[7] or "").casefold() != "eur"):
+                failures.append(f"wishlist item {item_id}: non-null current is not EXACT + Cardmarket Low")
+            if row.get("match_status") != "EXACT" and value[4] is not None:
+                failures.append(f"wishlist item {item_id}: unsafe status has non-null current")
+    if failures:
+        raise WorkflowError("Persisted Wishlist validation failed: " + "; ".join(failures[:20]))
 
 
 def _local_product_id(conn: sqlite3.Connection, external_id: int | None) -> int | None:
@@ -649,31 +817,61 @@ def _resolution_equal(old: sqlite3.Row, new: dict) -> bool:
     return all(old[field] == new.get(field) for field in fields if field in old.keys())
 
 
-def _write_resolution(conn: sqlite3.Connection, card: dict, payload: dict, resolved_at: str, report: GameReport, collection_item_id: int | None = None) -> None:
-    if collection_item_id is not None:
-        old = conn.execute("SELECT * FROM printing_price_resolutions WHERE collection_item_id=? AND COALESCE(source,'cardmarket')='cardmarket' AND is_current=1 ORDER BY id DESC LIMIT 1", (collection_item_id,)).fetchone()
+def _validate_write_target(work: ScopeWork, row: dict, card: dict) -> None:
+    """Reject target IDs outside the selected work universe before any write."""
+    if row.get("local_printing_id") is not None and int(row["local_printing_id"]) != int(card["id"]):
+        raise WorkflowError(f"{work.scope} writer received a row for printing {row['local_printing_id']} with card {card['id']}")
+    collection_id = row.get("collection_item_id")
+    wishlist_id = row.get("wishlist_item_id")
+    if work.scope == "collection":
+        if collection_id is None or int(collection_id) not in work.allowed_collection_ids or wishlist_id is not None:
+            raise WorkflowError(f"Collection writer received incompatible target: collection_item_id={collection_id}, wishlist_item_id={wishlist_id}")
+    elif work.scope == "wishlist":
+        if wishlist_id is None or int(wishlist_id) not in work.allowed_wishlist_ids or collection_id is not None:
+            raise WorkflowError(f"Wishlist writer received incompatible target: collection_item_id={collection_id}, wishlist_item_id={wishlist_id}")
+    elif work.scope == "catalog":
+        if collection_id is not None or wishlist_id is not None:
+            raise WorkflowError(f"Catalog writer received scoped target: collection_item_id={collection_id}, wishlist_item_id={wishlist_id}")
     else:
-        old = conn.execute("SELECT * FROM printing_price_resolutions WHERE card_id=? AND language_id=? AND collection_item_id IS NULL AND COALESCE(source,'cardmarket')='cardmarket' AND is_current=1 ORDER BY id DESC LIMIT 1", (card["id"], card.get("language_id"))).fetchone()
+        raise WorkflowError(f"Unknown writer scope: {work.scope}")
+
+
+def _write_resolution(conn: sqlite3.Connection, card: dict, row: dict, payload: dict, resolved_at: str, report: GameReport, work: ScopeWork) -> None:
+    _validate_write_target(work, row, card)
+    collection_item_id = row.get("collection_item_id") if work.scope == "collection" else None
+    wishlist_item_id = row.get("wishlist_item_id") if work.scope == "wishlist" else None
+    resolution_scope = work.scope if work.scope in {"collection", "wishlist"} else "global"
+    if work.scope == "collection":
+        old = conn.execute("SELECT * FROM printing_price_resolutions WHERE collection_item_id=? AND wishlist_item_id IS NULL AND COALESCE(source,'cardmarket')='cardmarket' AND is_current=1 ORDER BY id DESC LIMIT 1", (collection_item_id,)).fetchone()
+    elif work.scope == "wishlist":
+        old = conn.execute("SELECT * FROM printing_price_resolutions WHERE wishlist_item_id=? AND collection_item_id IS NULL AND COALESCE(source,'cardmarket')='cardmarket' AND is_current=1 ORDER BY id DESC LIMIT 1", (wishlist_item_id,)).fetchone()
+    else:
+        old = conn.execute("SELECT * FROM printing_price_resolutions WHERE card_id=? AND language_id=? AND collection_item_id IS NULL AND wishlist_item_id IS NULL AND COALESCE(source,'cardmarket')='cardmarket' AND is_current=1 ORDER BY id DESC LIMIT 1", (card["id"], card.get("language_id"))).fetchone()
     if old is not None and _resolution_equal(old, payload):
         # Idempotent Cardmarket state still supersedes any legacy source that
         # might have remained active for the same printing.
-        if collection_item_id is not None:
-            conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE collection_item_id=? AND is_current=1", (collection_item_id,))
+        if work.scope == "collection":
+            conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE collection_item_id=? AND wishlist_item_id IS NULL AND is_current=1", (collection_item_id,))
+        elif work.scope == "wishlist":
+            conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE wishlist_item_id=? AND collection_item_id IS NULL AND is_current=1", (wishlist_item_id,))
         else:
-            conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE card_id=? AND language_id=? AND collection_item_id IS NULL AND is_current=1 AND COALESCE(source,'cardmarket')<>'cardmarket'", (card["id"], card.get("language_id")))
+            conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE card_id=? AND language_id=? AND collection_item_id IS NULL AND wishlist_item_id IS NULL AND is_current=1 AND COALESCE(source,'cardmarket')<>'cardmarket'", (card["id"], card.get("language_id")))
         report.prices_unchanged += 1
         return
     # CardTrader rows remain historical evidence, but cannot remain active once
     # the Cardmarket resolution for the same printing is materialized.
-    if collection_item_id is not None:
-        conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE collection_item_id=? AND is_current=1", (collection_item_id,))
+    if work.scope == "collection":
+        conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE collection_item_id=? AND wishlist_item_id IS NULL AND is_current=1", (collection_item_id,))
+    elif work.scope == "wishlist":
+        conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE wishlist_item_id=? AND collection_item_id IS NULL AND is_current=1", (wishlist_item_id,))
     else:
-        conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE card_id=? AND language_id=? AND collection_item_id IS NULL AND is_current=1", (card["id"], card.get("language_id")))
-    columns = ("card_id", "collection_item_id", "resolution_scope", "language_id", "resolved_at", "current_price", "currency", "source", "price_type", "resolution_method", "external_id", "price_confidence", "language_scope", "metadata", "cardmarket_product_id", "match_status", "is_current", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "cardmarket_foil_low", "cardmarket_foil_trend", "cardmarket_foil_avg1", "cardmarket_foil_avg7", "cardmarket_foil_avg30", "source_currency", "source_snapshot_created_at", "source_snapshot_sha256", "source_manifest_id", "provenance")
-    values = (card["id"], collection_item_id, "collection" if collection_item_id is not None else "global", card.get("language_id"), resolved_at, payload["current_price"], payload["currency"], payload["source"], payload["price_type"], payload["resolution_method"], payload["external_id"], payload["confidence"], payload["language_scope"], payload["provenance"], payload["cardmarket_product_id"], payload["match_status"], 1, payload["selected_metric"], payload["cardmarket_low"], payload["cardmarket_trend"], payload["cardmarket_avg1"], payload["cardmarket_avg7"], payload["cardmarket_avg30"], payload["cardmarket_foil_low"], payload["cardmarket_foil_trend"], payload["cardmarket_foil_avg1"], payload["cardmarket_foil_avg7"], payload["cardmarket_foil_avg30"], payload["source_currency"], payload["source_snapshot_created_at"], payload["source_snapshot_sha256"], payload["source_manifest_id"], payload["provenance"])
+        conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE card_id=? AND language_id=? AND collection_item_id IS NULL AND wishlist_item_id IS NULL AND is_current=1", (card["id"], card.get("language_id")))
+    columns = ("card_id", "collection_item_id", "wishlist_item_id", "resolution_scope", "language_id", "resolved_at", "current_price", "currency", "source", "price_type", "resolution_method", "external_id", "price_confidence", "language_scope", "metadata", "cardmarket_product_id", "match_status", "is_current", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "cardmarket_foil_low", "cardmarket_foil_trend", "cardmarket_foil_avg1", "cardmarket_foil_avg7", "cardmarket_foil_avg30", "source_currency", "source_snapshot_created_at", "source_snapshot_sha256", "source_manifest_id", "provenance")
+    values = (card["id"], collection_item_id, wishlist_item_id, resolution_scope, card.get("language_id"), resolved_at, payload["current_price"], payload["currency"], payload["source"], payload["price_type"], payload["resolution_method"], payload["external_id"], payload["confidence"], payload["language_scope"], payload["provenance"], payload["cardmarket_product_id"], payload["match_status"], 1, payload["selected_metric"], payload["cardmarket_low"], payload["cardmarket_trend"], payload["cardmarket_avg1"], payload["cardmarket_avg7"], payload["cardmarket_avg30"], payload["cardmarket_foil_low"], payload["cardmarket_foil_trend"], payload["cardmarket_foil_avg1"], payload["cardmarket_foil_avg7"], payload["cardmarket_foil_avg30"], payload["source_currency"], payload["source_snapshot_created_at"], payload["source_snapshot_sha256"], payload["source_manifest_id"], payload["provenance"])
     placeholders = ",".join("?" for _ in columns)
     conn.execute(f"INSERT INTO printing_price_resolutions ({','.join(columns)}) VALUES ({placeholders})", values)
     report.prices_changed += 1
+    report.current_pricing_changes += 1
 
 
 def _write_history(conn: sqlite3.Connection, game: str, snapshot: audit.SourceSnapshot, manifest: dict, report: GameReport, product_ids: set[int] | None = None) -> None:
@@ -691,40 +889,45 @@ def _write_history(conn: sqlite3.Connection, game: str, snapshot: audit.SourceSn
             report.history_rows_skipped += 1
 
 
-def _apply_game(conn: sqlite3.Connection, game: str, rows: list[dict], cards: dict[int, dict], snapshots: dict, manifest: dict, resolved_at: str, report: GameReport) -> None:
-    product_ids = None
-    if report.scope == "collection":
-        product_ids = {int(row["resolved_cardmarket_id"]) for row in rows if row.get("resolved_cardmarket_id") is not None and row.get("match_status") in {"EXACT", "UNPRICED"}}
-        products, _ = audit.build_product_indexes(snapshots[game]["products"], game)
-        for product_id in product_ids:
-            product = products.get(product_id)
-            if product is not None:
-                # The source catalogue can contain a selected product that is
-                # not yet materialized locally. This is catalogue state only;
-                # no card-to-product mapping is created here.
-                _ensure_local_product(conn, product)
-    _write_history(conn, game, snapshots[game]["price_guide"], manifest, report, product_ids)
+def _apply_game(conn: sqlite3.Connection, game: str, work: ScopeWork, snapshots: dict, manifest: dict, resolved_at: str, report: WorkflowReport) -> None:
+    rows = work.rows_by_game.get(game, [])
+    if not rows:
+        return
+    game_report = report.game_reports[_game_report_key(report, work.scope, game)]
+    _validate_resolution_scope_invariants(conn)
+    # Source-table writes are limited to products selected by the active target,
+    # including Catalog. No mapping is inferred or created here.
+    product_ids = {int(row["resolved_cardmarket_id"]) for row in rows if row.get("resolved_cardmarket_id") is not None and row.get("match_status") in {"EXACT", "UNPRICED"}}
+    products, _ = audit.build_product_indexes(snapshots[game]["products"], game)
+    for product_id in product_ids:
+        product = products.get(product_id)
+        if product is not None:
+            _ensure_local_product(conn, product)
+    _write_history(conn, game, snapshots[game]["price_guide"], manifest, game_report, product_ids)
+    _validate_resolution_scope_invariants(conn)
     if game == "one_piece":
-        _write_one_piece(conn, rows, cards, snapshots[game]["products"], manifest, resolved_at, report)
+        _write_one_piece(conn, rows, work.cards, snapshots[game]["products"], manifest, resolved_at, game_report, work)
     else:
         for row in rows:
             if row.get("local_printing_id") is not None:
-                card = cards[int(row["local_printing_id"])]
+                card = work.cards[int(row["local_printing_id"])]
                 payload = _resolution_payload(row, manifest, snapshots[game]["products"], conn)
-                if report.scope == "collection":
+                if work.scope == "collection":
                     _sync_collection_override(conn, row, card, payload, resolved_at)
-                _write_resolution(conn, card, payload, resolved_at, report, row.get("collection_item_id") if report.scope == "collection" else None)
+                _write_resolution(conn, card, row, payload, resolved_at, game_report, work)
+                _validate_resolution_scope_invariants(conn)
 
 
-def _write_one_piece(conn: sqlite3.Connection, rows: list[dict], cards: dict[int, dict], snapshot: audit.SourceSnapshot, manifest: dict, resolved_at: str, report: GameReport) -> None:
+def _write_one_piece(conn: sqlite3.Connection, rows: list[dict], cards: dict[int, dict], snapshot: audit.SourceSnapshot, manifest: dict, resolved_at: str, report: GameReport, work: ScopeWork) -> None:
     """Compatibility-named writer; it uses the same Cardmarket resolver as Magic."""
     for row in rows:
         if row.get("local_printing_id") is not None:
             card = cards[int(row["local_printing_id"])]
             payload = _resolution_payload(row, manifest, snapshot, conn)
-            if report.scope == "collection":
+            if work.scope == "collection":
                 _sync_collection_override(conn, row, card, payload, resolved_at)
-            _write_resolution(conn, card, payload, resolved_at, report, row.get("collection_item_id") if report.scope == "collection" else None)
+            _write_resolution(conn, card, row, payload, resolved_at, report, work)
+            _validate_resolution_scope_invariants(conn)
 
 
 def _probe_write_lock(path: Path) -> None:
@@ -784,14 +987,16 @@ def _write_log(report: WorkflowReport) -> None:
     (LOG_DIR / f"{stamp}.json").write_text(json.dumps(report.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", db_path: Path = DEFAULT_DB_PATH, now: str | None = None, download_fn: Callable | None = None, cardtrader_client=None, source_dir: Path | None = None, collection_review: Path | None = None) -> tuple[WorkflowReport, int]:
+def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishlist_status: str = "wanted", db_path: Path = DEFAULT_DB_PATH, now: str | None = None, download_fn: Callable | None = None, cardtrader_client=None, source_dir: Path | None = None, collection_review: Path | None = None) -> tuple[WorkflowReport, int]:
     if scope not in {"collection", "wishlist", "catalog", "all"}:
         raise WorkflowError(f"Unknown pricing scope: {scope}")
+    if wishlist_status not in {"wanted", "acquired", "removed", "all"}:
+        raise WorkflowError(f"Unknown Wishlist status: {wishlist_status}")
     if collection_review is not None and scope != "collection":
         raise WorkflowError("--collection-review requires --scope collection")
     del cardtrader_client
     started_at = now or _utc_now()
-    report = WorkflowReport(mode, scope, games, str(db_path.resolve()), started_at)
+    report = WorkflowReport(mode, scope, games, str(db_path.resolve()), started_at, wishlist_status=wishlist_status)
     clock = dt.datetime.now(dt.timezone.utc)
     temp_path: Path | None = None
     backup: Path | None = None
@@ -800,6 +1005,8 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", db_pa
     try:
         if not db_path.is_file():
             raise WorkflowError(f"Database does not exist: {db_path.resolve()}")
+        if mode == "apply" and db_path.resolve() == DEFAULT_DB_PATH.resolve():
+            raise WorkflowError("Production pricing apply is disabled for the Wishlist scope safety sprint; use a temporary DB copy")
         original = _connect(db_path)
         try:
             report.integrity, report.foreign_keys = _validate_database(original)
@@ -813,15 +1020,17 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", db_pa
         working = _connect(temp_path)
         ensure_pricing_schema(working)
         _validate_database(working)
-        global_resolutions_before = _resolution_snapshot(working)
-        rows_by_game, cards = _build_rows(working, games, snapshots, report, manifest, collection_review)
-        _current_state_audit(rows_by_game, report)
+        works = _build_rows(working, games, snapshots, report, manifest, collection_review, wishlist_status)
+        protected_resolutions_before = _resolution_snapshot_outside_work(working, works)
+        mappings_before = _mapping_snapshot(working)
+        personal_before_work = _personal_snapshot(working)
+        _current_state_audit(works, report)
         # This is the actual repair preflight. It intentionally does not call
         # the current-state verdict as a gate: legacy unsafe prices are what the
         # transaction is designed to replace.
-        _validate_proposed_state(rows_by_game, report)
+        _validate_proposed_state(works, report)
         if mode == "dry-run":
-            if _personal_snapshot(working) != original_personal:
+            if _personal_snapshot(working) != personal_before_work or _mapping_snapshot(working) != mappings_before:
                 raise WorkflowError("Collection/Wishlist changed during dry-run")
             report.transaction = "NOT_APPLIED"
             report.collection_wishlist_unchanged = True
@@ -832,11 +1041,15 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", db_pa
             backup = _make_backup(db_path, started_at)
             report.backup = str(backup.resolve())
             working.execute("BEGIN IMMEDIATE")
-            for game in audit.GAME_ORDER:
-                if game in games:
-                    _apply_game(working, game, rows_by_game[game], cards, snapshots, manifest, started_at, report.game_reports[game])
-            if scope == "collection" and _resolution_snapshot(working) != global_resolutions_before:
-                raise WorkflowError("Collection scope attempted to modify a global resolution")
+            for work in works:
+                _validate_resolution_scope_invariants(working)
+                for game in audit.GAME_ORDER:
+                    if game in games:
+                        _apply_game(working, game, work, snapshots, manifest, started_at, report)
+            if _resolution_snapshot_outside_work(working, works) != protected_resolutions_before:
+                raise WorkflowError("Pricing scope modified a resolution outside its active targets")
+            if _mapping_snapshot(working) != mappings_before:
+                raise WorkflowError("Pricing scope modified cardmarket mappings")
             if _personal_snapshot(working) != original_personal:
                 raise WorkflowError("Collection/Wishlist changed during pricing transaction")
             _validate_database(working)
@@ -850,14 +1063,19 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", db_pa
                 _validate_database(post)
                 if _personal_snapshot(post) != original_personal:
                     raise WorkflowError("Collection/Wishlist changed during pricing update")
-                post_probe = WorkflowReport("post-apply-validation", scope, games, str(db_path.resolve()), started_at)
-                post_rows, _ = _build_rows(post, games, snapshots, post_probe, manifest, collection_review)
-                _validate_proposed_state(post_rows, report, persisted=True)
-                if scope == "collection":
-                    _validate_collection_persisted(post, post_rows)
-                    if _resolution_snapshot(post) != global_resolutions_before:
-                        raise WorkflowError("Collection scope changed a global resolution")
-                report.post_apply_validation = dict(report.proposed_state_validation)
+                post_probe = WorkflowReport("post-apply-validation", scope, games, str(db_path.resolve()), started_at, wishlist_status=wishlist_status)
+                post_works = _build_rows(post, games, snapshots, post_probe, manifest, collection_review, wishlist_status)
+                _validate_proposed_state(post_works, post_probe, persisted=True)
+                if _resolution_snapshot_outside_work(post, works) != protected_resolutions_before:
+                    raise WorkflowError("Pricing scope changed a resolution outside its active targets")
+                if _mapping_snapshot(post) != mappings_before:
+                    raise WorkflowError("Pricing scope changed cardmarket mappings")
+                for post_work in post_works:
+                    if post_work.scope == "collection":
+                        _validate_collection_persisted(post, post_work.rows_by_game)
+                    elif post_work.scope == "wishlist":
+                        _validate_wishlist_persisted(post, post_work.rows_by_game)
+                report.post_apply_validation = dict(post_probe.proposed_state_validation)
             finally:
                 post.close()
             report.transaction, report.collection_wishlist_unchanged, report.result = "COMMITTED", True, "SUCCESS"
@@ -901,12 +1119,12 @@ def _print_report(report: WorkflowReport) -> None:
     print("\nPRICE UPDATE COMPLETE")
     print(f"\nMode: {report.mode.upper()}")
     print(f"Scope: {report.scope}")
-    for game in report.games:
-        item = report.game_reports.get(game)
-        if not item:
-            continue
-        print(f"\n{game.replace('_', ' ').title()}\n------")
-        for label, value in (("Printings checked", item.printings_checked), ("Collection items", item.collection_items), ("Collection units", item.collection_units), ("Exact Cardmarket matches", item.exact), ("Ambiguous", item.ambiguous), ("Missing", item.missing), ("Unpriced", item.unpriced), ("Identity mismatches prevented", item.identity_mismatches_prevented), ("Low available", item.low_available), ("Trend available", item.trend_available), ("AVG7 available", item.avg7_available), ("Prices changed", item.prices_changed), ("Prices unchanged", item.prices_unchanged), ("Exact item coverage", item.collection_exact_item_coverage), ("Exact unit coverage", item.collection_exact_unit_coverage), ("Legacy value", item.collection_legacy_value), ("Resolved Low value", item.collection_low_value), ("Estimated value coverage", item.collection_value_coverage), ("Value without exact resolution", item.collection_value_without_exact)):
+    for key, item in report.game_reports.items():
+        title = item.game.replace('_', ' ').title()
+        if key != item.game:
+            title += f" [{item.scope}]"
+        print(f"\n{title}\n------")
+        for label, value in (("Printings checked", item.printings_checked), ("Collection items", item.collection_items), ("Collection units", item.collection_units), ("Wishlist items", item.wishlist_items), ("Wishlist units", item.wishlist_units), ("Write candidates", item.write_candidates), ("Current pricing changes", item.current_pricing_changes), ("Exact Cardmarket matches", item.exact), ("Ambiguous", item.ambiguous), ("Missing", item.missing), ("Unpriced", item.unpriced), ("Identity mismatches prevented", item.identity_mismatches_prevented), ("Low available", item.low_available), ("Trend available", item.trend_available), ("AVG7 available", item.avg7_available), ("Prices changed", item.prices_changed), ("Prices unchanged", item.prices_unchanged), ("Exact item coverage", item.collection_exact_item_coverage), ("Exact unit coverage", item.collection_exact_unit_coverage), ("Legacy value", item.collection_legacy_value), ("Resolved Low value", item.collection_low_value), ("Estimated value coverage", item.collection_value_coverage), ("Value without exact resolution", item.collection_value_without_exact)):
             print(f"{label}: {value}")
         print(f"History rows inserted: {item.history_rows_inserted}")
     print(f"\nTransaction: {report.transaction}\nIntegrity: {report.integrity}\nForeign keys: {report.foreign_keys}\nResult: {report.result}")
@@ -935,6 +1153,7 @@ def build_parser() -> argparse.ArgumentParser:
     mode.add_argument("--apply", action="store_true")
     parser.add_argument("--game", choices=("all", *SUPPORTED_GAMES), default="all")
     parser.add_argument("--scope", choices=("collection", "wishlist", "catalog", "all"), default="collection")
+    parser.add_argument("--wishlist-status", choices=("wanted", "acquired", "removed", "all"), default="wanted")
     parser.add_argument("--db", type=Path, default=DEFAULT_DB_PATH)
     parser.add_argument("--source-dir", type=Path)
     parser.add_argument("--collection-review", type=Path)
@@ -945,7 +1164,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     games = audit.GAME_ORDER if args.game == "all" else (args.game,)
-    report, code = run_workflow(mode="dry-run" if args.dry_run else "apply", games=tuple(games), scope=args.scope, db_path=args.db, now=args.now, source_dir=args.source_dir, collection_review=args.collection_review)
+    report, code = run_workflow(mode="dry-run" if args.dry_run else "apply", games=tuple(games), scope=args.scope, wishlist_status=args.wishlist_status, db_path=args.db, now=args.now, source_dir=args.source_dir, collection_review=args.collection_review)
     _print_report(report)
     return code
 

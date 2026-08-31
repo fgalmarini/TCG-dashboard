@@ -256,3 +256,21 @@ It is not scraped and is not a runtime dependency.
 - Trading, Analytics and CARDMADNESS are later phases.
 - Pokémon remains inactive but can reuse the neutral model and provider interfaces.
 - No scrapers or private Cardmarket API integrations are in scope.
+
+## Scoped Pricing Resolution (`2026-08-31`)
+
+Pricing work is explicitly separated into `collection`, `wishlist`, `catalog` and
+the composite `all` scope. `printing_price_resolutions` uses the same table for all
+three target types and enforces these mutually exclusive invariants:
+
+- `global`: both target IDs are `NULL`;
+- `collection`: only `collection_item_id` is set;
+- `wishlist`: only `wishlist_item_id` is set.
+
+The Wishlist writer selects `wanted` items by default and accepts `acquired`,
+`removed` or `all` explicitly. Its current resolution is authoritative even when
+`current_price` is `NULL`, so the API does not fall back to a global resolution or
+history. Cardmarket product and history tables remain global source tables, but
+writes are limited to product IDs selected by the active target. The additive
+Wishlist migration is validated only on temporary copies/fixtures; it is not run
+against the production SQLite database in this sprint.

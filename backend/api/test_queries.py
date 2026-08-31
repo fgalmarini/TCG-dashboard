@@ -72,6 +72,7 @@ class QueriesTest(unittest.TestCase):
                 (ids["card_a_id"], f"2026-01-0{index}T00:00:00", price),
             )
         legacy_conn.execute("DROP INDEX idx_printing_price_current_identity")
+        legacy_conn.execute("DROP INDEX IF EXISTS idx_wishlist_price_current_item")
         for column in (
             "provenance", "source_manifest_id", "source_snapshot_sha256",
             "source_snapshot_created_at", "source_currency", "cardmarket_foil_avg30",
@@ -115,6 +116,30 @@ class QueriesTest(unittest.TestCase):
         self.assertEqual(sum(row.id == self.ids["row1_id"] for row in collection_rows), 1)
         self.assertEqual(sum(row.id == card_id for row in catalog_rows), 1)
         self.assertEqual(sum(row.card_id == card_id for row in wishlist_rows), 1)
+
+    def test_wishlist_current_null_resolution_blocks_global_fallback(self):
+        card_id = self.ids["card_a_id"]
+        self.conn.execute(
+            "INSERT INTO wishlist_items (card_id, language_id, quantity_wanted, status) VALUES (?, 1, 1, 'wanted')",
+            (card_id,),
+        )
+        wishlist_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        self._insert_resolution(card_id=card_id, resolved_at="2026-01-10T00:00:00", current_price=99.0, is_current=1)
+        self.conn.execute(
+            """INSERT INTO printing_price_resolutions
+               (card_id, wishlist_item_id, resolution_scope, language_id,
+                resolved_at, current_price, currency, source, resolution_method,
+                match_status, is_current)
+               VALUES (?, ?, 'wishlist', 1, '2026-01-11T00:00:00', NULL, 'EUR',
+                       'cardmarket', 'no_exact_language_price', 'AMBIGUOUS', 1)""",
+            (card_id, wishlist_id),
+        )
+        self.conn.commit()
+        rows = queries.fetch_wishlist_rows(self.conn, status="wanted", game="magic")
+        matching = [row for row in rows if row.id == wishlist_id]
+        self.assertEqual(len(matching), 1)
+        self.assertIsNone(matching[0].current_price)
+        self.assertEqual(matching[0].source, "cardmarket")
 
     def test_product_without_snapshot_has_null_market_trend_and_is_not_manual(self):
         row = queries.fetch_collection_row_by_id(self.conn, self.ids["row2_id"])

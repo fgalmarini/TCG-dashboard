@@ -1,0 +1,6 @@
+wishlist_item_id,status,game,quantity_wanted,identity_status,rule_exists,rule_used,rule_resolved_item,existing_product_provenance,candidate_count,blocking_category
+1,removed,magic,1,AMBIGUOUS,yes,SCRYFALL_CARDMARKET_ID + TREATMENT_UNPROVEN,false,738032,1,TREATMENT
+2,removed,magic,1,AMBIGUOUS,yes,SCRYFALL_CARDMARKET_ID + TREATMENT_UNPROVEN,false,717914,1,TREATMENT
+3,removed,magic,1,AMBIGUOUS,yes,SCRYFALL_CARDMARKET_ID + TREATMENT_UNPROVEN,false,735375,1,TREATMENT
+4,removed,magic,1,AMBIGUOUS,yes,SCRYFALL_CARDMARKET_ID + TREATMENT_UNPROVEN,false,717914,1,TREATMENT
+5,removed,magic,1,EXACT,yes,SCRYFALL_CARDMARKET_ID,true,717343,1,

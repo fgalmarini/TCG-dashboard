@@ -262,3 +262,16 @@ avoid changing Trading/Analytics/CARDMADNESS scope during this phase.
   `38959ecb8224c9c4e06c00dbc7ccda37d17660c828b72be0418f1419c1437aff`.
 - Next recommended scope is Wishlist; this checkpoint does not claim Wishlist pricing
   is resolved.
+
+## Wishlist Scope Safety (`2026-08-31`)
+
+- The safe scoped pricing sprint is implemented and validated with temporary DB
+  copies/fixtures only. No production apply or production migration was executed.
+- `--scope wishlist` defaults to `--wishlist-status wanted`; it processes only active
+  Wishlist targets and writes `resolution_scope='wishlist'` with
+  `wishlist_item_id` set and `collection_item_id` NULL.
+- Wishlist current rows, including NULL prices, block global/history fallback in the
+  Wishlist API. Global, Collection and Wishlist resolution invariants are checked by
+  schema, migration validation and writers.
+- The production DB SHA-256 remains
+  `38959ecb8224c9c4e06c00dbc7ccda37d17660c828b72be0418f1419c1437aff`.
