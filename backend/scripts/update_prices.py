@@ -128,11 +128,17 @@ class WorkflowReport:
     game_reports: dict[str, GameReport] = field(default_factory=dict)
     errors: list[str] = field(default_factory=list)
     collection_wishlist_unchanged: bool | None = None
+    apply_gate: str = "NOT_APPLICABLE"
+    out_of_scope_writes: int | None = None
+    wishlist_scoped_writes_expected: int | None = None
+    global_writes: int | None = None
+    collection_writes: int | None = None
+    blocked_pending_items: list[int] = field(default_factory=list)
     wishlist_status: str = "wanted"
     duration_seconds: float | None = None
 
     def to_dict(self) -> dict:
-        return {"timestamp": self.started_at, "mode": self.mode, "scope": self.scope, "wishlist_status": self.wishlist_status, "games": list(self.games), "database": self.database, "providers": self.providers, "snapshots": self.snapshots, "source_manifest_id": self.source_manifest_id, "current_state_audit": self.current_state_audit, "proposed_state_validation": self.proposed_state_validation, "post_apply_validation": self.post_apply_validation, "printings": {k: v.to_dict() for k, v in self.game_reports.items()}, "transaction": self.transaction, "backup": self.backup, "integrity": self.integrity, "foreign_keys": self.foreign_keys, "collection_wishlist_unchanged": self.collection_wishlist_unchanged, "errors": self.errors, "result": self.result, "duration_seconds": self.duration_seconds}
+        return {"timestamp": self.started_at, "mode": self.mode, "scope": self.scope, "wishlist_status": self.wishlist_status, "games": list(self.games), "database": self.database, "providers": self.providers, "snapshots": self.snapshots, "source_manifest_id": self.source_manifest_id, "current_state_audit": self.current_state_audit, "proposed_state_validation": self.proposed_state_validation, "post_apply_validation": self.post_apply_validation, "printings": {k: v.to_dict() for k, v in self.game_reports.items()}, "transaction": self.transaction, "apply_gate": self.apply_gate, "out_of_scope_writes": self.out_of_scope_writes, "wishlist_scoped_writes_expected": self.wishlist_scoped_writes_expected, "global_writes": self.global_writes, "collection_writes": self.collection_writes, "blocked_pending_items": self.blocked_pending_items, "backup": self.backup, "integrity": self.integrity, "foreign_keys": self.foreign_keys, "collection_wishlist_unchanged": self.collection_wishlist_unchanged, "errors": self.errors, "result": self.result, "duration_seconds": self.duration_seconds}
 
 
 def _utc_now() -> str:
@@ -261,6 +267,16 @@ def _load_collection_review(path: Path | None) -> list[dict]:
         return [dict(row) for row in csv.DictReader(handle)]
 
 
+def _load_wishlist_review(path: Path | None) -> list[dict]:
+    if path is None:
+        return []
+    if not path.is_file():
+        raise WorkflowError(f"Wishlist review file does not exist: {path.resolve()}")
+    import csv
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        return [dict(row) for row in csv.DictReader(handle)]
+
+
 def _review_printing_ids(path: Path | None) -> set[int]:
     """Return explicitly approved target printings needed by Collection reviews."""
     return {
@@ -268,6 +284,10 @@ def _review_printing_ids(path: Path | None) -> set[int]:
         for row in _load_collection_review(path)
         if str(row.get("printing_id") or "").strip().isdigit()
     }
+
+
+def _review_product_ids(raw: object) -> set[int]:
+    return {int(value) for value in str(raw or "").replace(",", "|").split("|") if value.strip().isdigit()}
 
 
 def _cardmarket_ids_for_card(conn: sqlite3.Connection, card_id: int) -> set[int]:
@@ -433,6 +453,95 @@ def _apply_collection_reviews(conn: sqlite3.Connection, rows_by_game: dict[str, 
         approved_by_item[item_id] = review
 
 
+def _validate_wishlist_review_fields(review: dict, row: dict, item_id: int) -> None:
+    """Ensure the manual CSV names the active Wishlist printing exactly."""
+    fields = (
+        ("game", review.get("game"), row.get("game"), audit.normalize),
+        ("card name", review.get("card_name"), row.get("card_name"), audit.normalize),
+        ("set", review.get("set"), row.get("local_set_code"), audit.normalize),
+        ("card number", review.get("card_number"), row.get("card_number"), audit.normalize_number),
+        ("language", review.get("language"), row.get("language"), audit.normalize),
+        ("finish", review.get("finish"), row.get("finish"), audit.normalize),
+        ("treatment", review.get("treatment"), row.get("treatment"), audit.normalize),
+    )
+    for label, expected_value, actual_value, normalizer in fields:
+        expected = normalizer(expected_value)
+        actual = normalizer(actual_value)
+        if expected and actual and expected != actual:
+            raise WorkflowError(f"Wishlist review target does not match item {item_id}: {label}")
+
+
+def _apply_wishlist_reviews(conn: sqlite3.Connection, rows_by_game: dict[str, list[dict]], cards: dict[int, dict], snapshots: dict, review_path: Path | None, expansion_names: dict[int, str | None]) -> None:
+    """Apply only approved Wishlist review rows to the in-memory dry-run copy."""
+    reviews = _load_wishlist_review(review_path)
+    if not reviews:
+        return
+    by_item = {int(row["wishlist_item_id"]): row for rows in rows_by_game.values() for row in rows if row.get("wishlist_item_id") is not None}
+    seen: set[int] = set()
+    for review in reviews:
+        try:
+            item_id = int(review.get("wishlist_item_id"))
+        except (TypeError, ValueError) as exc:
+            raise WorkflowError("Wishlist review has invalid wishlist_item_id") from exc
+        if item_id in seen:
+            raise WorkflowError(f"Multiple Wishlist reviews for item {item_id}")
+        seen.add(item_id)
+        row = by_item.get(item_id)
+        if row is None:
+            raise WorkflowError(f"Wishlist review references item outside selected Wishlist scope: {item_id}")
+        _validate_wishlist_review_fields(review, row, item_id)
+        target_raw = str(review.get("printing_id") or "").strip()
+        if not target_raw.isdigit() or int(target_raw) != int(row["local_printing_id"]):
+            raise WorkflowError(f"Wishlist review target printing does not match item {item_id}")
+        if str(review.get("card_id") or "").strip() and int(review["card_id"]) != int(row["local_printing_id"]):
+            raise WorkflowError(f"Wishlist review card_id does not match item {item_id}")
+        approved = str(review.get("approved") or "").strip().casefold() in {"true", "1", "yes"}
+        selected_raw = str(review.get("selected_cardmarket_product_id") or "").strip()
+        proposed_status = str(review.get("proposed_status") or "").strip().upper()
+        if not approved:
+            if selected_raw:
+                raise WorkflowError(f"Unapproved Wishlist review cannot select a product for item {item_id}")
+            if proposed_status and proposed_status not in {str(row.get("match_status") or "").upper(), "PENDING"}:
+                raise WorkflowError(f"Wishlist review status changed for item {item_id}")
+            continue
+        if not selected_raw.isdigit():
+            raise WorkflowError(f"Approved Wishlist review has no selected product for item {item_id}")
+        if proposed_status and proposed_status not in {"EXACT", "APPROVED"}:
+            raise WorkflowError(f"Approved Wishlist review has unsafe status for item {item_id}")
+        candidate_ids = {int(value) for value in str(row.get("cardmarket_candidates") or "").split(",") if value.strip().isdigit()}
+        csv_candidates = _review_product_ids(review.get("candidate_cardmarket_product_id"))
+        selected = int(selected_raw)
+        if selected not in csv_candidates or not candidate_ids.issubset(csv_candidates):
+            raise WorkflowError(f"Wishlist review candidates changed for item {item_id}")
+        card = cards.get(int(row["local_printing_id"]))
+        if card is None:
+            raise WorkflowError(f"Wishlist review item {item_id} has no local printing")
+        game = str(row["game"])
+        products, _ = audit.build_product_indexes(snapshots[game]["products"], game)
+        product = products.get(selected)
+        price_rows = {int(value["idProduct"]): audit.normalize_price_entry(dict(value)) for value in snapshots[game]["price_guide"].records}
+        if product is None or selected not in price_rows:
+            raise WorkflowError(f"Wishlist review selected product is absent from current snapshots for item {item_id}")
+        matches, reasons = audit._product_matches_card(card, product, game, expansion_names)
+        hard_reasons = [reason for reason in reasons if reason not in {"unproven_finish", "unproven_treatment"}]
+        if not matches and hard_reasons:
+            raise WorkflowError(f"Wishlist review product does not match item {item_id}: {', '.join(hard_reasons)}")
+        price = price_rows[selected]
+        for field in audit.METRICS + audit.FOIL_METRICS:
+            row[field] = price.get(field)
+        foil = game == "magic" and str(card.get("finish") or "").casefold() == "foil"
+        row.update({
+            "match_status": "EXACT", "resolved_cardmarket_id": selected,
+            "cardmarket_candidates": str(selected), "cardmarket_product_name": product.get("name"),
+            "cardmarket_expansion_id": product.get("idExpansion"),
+            "cardmarket_expansion": expansion_names.get(int(product["idExpansion"])) if product.get("idExpansion") is not None else None,
+            "cardmarket_version": product.get("version"), "cardmarket_number": product.get("card_number"),
+            "cardmarket_language_scope": "unknown", "cardmarket_metric_used": "Foil Low" if foil else "Low",
+            "match_reason": "approved Wishlist manual mapping", "primary_cause": None,
+            "identity_mismatch": False, "manual_approval": review,
+        })
+
+
 def _game_report_key(report: WorkflowReport, scope: str, game: str) -> str:
     # Keep the historical catalog keys stable; composite scoped work gets an
     # explicit prefix for Collection/Wishlist to avoid collisions.
@@ -527,6 +636,7 @@ def _build_scope_work(
     wishlist_status: str,
     manifest: dict | None = None,
     collection_review: Path | None = None,
+    wishlist_review: Path | None = None,
 ) -> ScopeWork:
     if scope == "collection":
         collection_resolutions = audit.load_collection_current_prices(conn)
@@ -548,6 +658,7 @@ def _build_scope_work(
 
     if scope == "wishlist":
         rows_by_game, cards, wishlist = audit.wishlist_audit_rows(conn, games, snapshots, wishlist_status)
+        _apply_wishlist_reviews(conn, rows_by_game, cards, snapshots, wishlist_review, audit.load_expansion_names(conn))
         for game, rows in rows_by_game.items():
             _register_game_report(report, scope, game, rows)
         return ScopeWork(scope, wishlist_status, rows_by_game, cards,
@@ -585,11 +696,12 @@ def _build_rows(
     report: WorkflowReport,
     manifest: dict | None = None,
     collection_review: Path | None = None,
+    wishlist_review: Path | None = None,
     wishlist_status: str = "wanted",
 ) -> list[ScopeWork]:
     scopes = ("collection", "wishlist", "catalog") if report.scope == "all" else (report.scope,)
     return [
-        _build_scope_work(conn, games, snapshots, report, scope, wishlist_status, manifest, collection_review)
+        _build_scope_work(conn, games, snapshots, report, scope, wishlist_status, manifest, collection_review, wishlist_review)
         for scope in scopes
     ]
 
@@ -662,6 +774,11 @@ def _validate_proposed_state(works: list[ScopeWork], report: WorkflowReport, *, 
         for game, rows in work.rows_by_game.items():
             game_failures: list[str] = []
             for row in rows:
+                if row.get("local_printing_id") is not None:
+                    try:
+                        _validate_write_target(work, row, work.cards[int(row["local_printing_id"])])
+                    except (KeyError, WorkflowError) as exc:
+                        game_failures.append(str(exc))
                 proposed, metric = _proposed_price(row)
                 status = row.get("match_status")
                 if status in {"AMBIGUOUS", "MISMATCH", "MISSING", "UNPRICED"} and proposed is not None:
@@ -685,6 +802,68 @@ def _validate_proposed_state(works: list[ScopeWork], report: WorkflowReport, *, 
                 failures.extend(f"{key}: {detail}" for detail in game_failures)
     if failures:
         raise WorkflowError("Proposed state validation failed: " + "; ".join(failures[:20]))
+
+
+def _validate_wishlist_apply_gate(
+    *,
+    scope: str,
+    wishlist_status: str,
+    wishlist_review: Path | None,
+    works: list[ScopeWork],
+    report: WorkflowReport,
+) -> None:
+    """Fail closed before allowing any Wishlist apply transaction."""
+    failures: list[str] = []
+    wishlist_rows = [
+        row
+        for work in works
+        if work.scope == "wishlist"
+        for rows in work.rows_by_game.values()
+        for row in rows
+    ]
+    report.wishlist_scoped_writes_expected = sum(
+        1 for row in wishlist_rows if row.get("local_printing_id") is not None
+    )
+    report.global_writes = 0
+    report.collection_writes = 0
+    report.out_of_scope_writes = 0
+    report.blocked_pending_items = sorted({
+        int(row["wishlist_item_id"])
+        for row in wishlist_rows
+        if row.get("wishlist_item_id") is not None
+        and row.get("match_status") in {"AMBIGUOUS", "MISMATCH", "PENDING", "MISSING", "UNPRICED"}
+    })
+    if scope != "wishlist":
+        failures.append("scope must be wishlist")
+    if wishlist_status != "wanted":
+        failures.append("wishlist-status must be wanted")
+    if wishlist_review is None:
+        failures.append("--wishlist-review is required")
+    elif not _load_wishlist_review(wishlist_review):
+        failures.append("--wishlist-review must contain at least one row")
+    if not report.proposed_state_validation or any(value != "SAFE" for value in report.proposed_state_validation.values()):
+        failures.append("proposed state is not SAFE")
+    if len(works) != 1 or any(work.scope != "wishlist" for work in works):
+        failures.append("work plan contains a non-Wishlist scope")
+    for work in works:
+        for rows in work.rows_by_game.values():
+            for row in rows:
+                if row.get("local_printing_id") is None:
+                    continue
+                try:
+                    _validate_write_target(work, row, work.cards[int(row["local_printing_id"])])
+                except (KeyError, WorkflowError) as exc:
+                    failures.append(str(exc))
+                proposed, _ = _proposed_price(row)
+                if row.get("match_status") in {"AMBIGUOUS", "MISMATCH", "PENDING", "MISSING", "UNPRICED"} and proposed is not None:
+                    failures.append(f"{row.get('wishlist_item_id')}: unsafe Wishlist status has a price")
+    if failures:
+        report.apply_gate = "FAIL"
+        raise WorkflowError("Wishlist apply gate failed: " + "; ".join(failures[:20]))
+    report.apply_gate = "PASS"
+    # The transaction below must prove this again by comparing the protected
+    # snapshot after all writes.
+    report.out_of_scope_writes = 0
 
 
 def _resolution_snapshot(conn: sqlite3.Connection) -> list[tuple]:
@@ -1028,16 +1207,19 @@ def _write_log(report: WorkflowReport) -> None:
     (LOG_DIR / f"{stamp}.json").write_text(json.dumps(report.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishlist_status: str = "wanted", db_path: Path = DEFAULT_DB_PATH, now: str | None = None, download_fn: Callable | None = None, cardtrader_client=None, source_dir: Path | None = None, collection_review: Path | None = None) -> tuple[WorkflowReport, int]:
+def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishlist_status: str = "wanted", db_path: Path = DEFAULT_DB_PATH, now: str | None = None, download_fn: Callable | None = None, cardtrader_client=None, source_dir: Path | None = None, collection_review: Path | None = None, wishlist_review: Path | None = None) -> tuple[WorkflowReport, int]:
     if scope not in {"collection", "wishlist", "catalog", "all"}:
         raise WorkflowError(f"Unknown pricing scope: {scope}")
     if wishlist_status not in {"wanted", "acquired", "removed", "all"}:
         raise WorkflowError(f"Unknown Wishlist status: {wishlist_status}")
     if collection_review is not None and scope != "collection":
         raise WorkflowError("--collection-review requires --scope collection")
+    if wishlist_review is not None and scope not in {"wishlist", "all"}:
+        raise WorkflowError("--wishlist-review requires --scope wishlist or all")
     del cardtrader_client
     started_at = now or _utc_now()
     report = WorkflowReport(mode, scope, games, str(db_path.resolve()), started_at, wishlist_status=wishlist_status)
+    wishlist_gate_requested = scope == "wishlist" and (mode == "apply" or wishlist_review is not None)
     clock = dt.datetime.now(dt.timezone.utc)
     temp_path: Path | None = None
     backup: Path | None = None
@@ -1046,8 +1228,8 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishl
     try:
         if not db_path.is_file():
             raise WorkflowError(f"Database does not exist: {db_path.resolve()}")
-        if mode == "apply" and db_path.resolve() == DEFAULT_DB_PATH.resolve():
-            raise WorkflowError("Production pricing apply is disabled for the Wishlist scope safety sprint; use a temporary DB copy")
+        if mode == "apply" and db_path.resolve() == DEFAULT_DB_PATH.resolve() and scope != "wishlist":
+            raise WorkflowError("Productive apply is enabled only for --scope wishlist with the pre-apply gate")
         original = _connect(db_path)
         try:
             report.integrity, report.foreign_keys = _validate_database(original)
@@ -1061,7 +1243,7 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishl
         working = _connect(temp_path)
         ensure_pricing_schema(working)
         _validate_database(working)
-        works = _build_rows(working, games, snapshots, report, manifest, collection_review, wishlist_status)
+        works = _build_rows(working, games, snapshots, report, manifest, collection_review, wishlist_review, wishlist_status)
         protected_resolutions_before = _resolution_snapshot_outside_work(working, works)
         mappings_before = _mapping_snapshot(working)
         personal_before_work = _personal_snapshot(working)
@@ -1069,7 +1251,20 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishl
         # This is the actual repair preflight. It intentionally does not call
         # the current-state verdict as a gate: legacy unsafe prices are what the
         # transaction is designed to replace.
-        _validate_proposed_state(works, report)
+        try:
+            _validate_proposed_state(works, report)
+        except WorkflowError:
+            if wishlist_gate_requested:
+                report.apply_gate = "FAIL"
+            raise
+        if wishlist_gate_requested:
+            _validate_wishlist_apply_gate(
+                scope=scope,
+                wishlist_status=wishlist_status,
+                wishlist_review=wishlist_review,
+                works=works,
+                report=report,
+            )
         if mode == "dry-run":
             if _personal_snapshot(working) != personal_before_work or _mapping_snapshot(working) != mappings_before:
                 raise WorkflowError("Collection/Wishlist changed during dry-run")
@@ -1087,7 +1282,9 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishl
                 for game in audit.GAME_ORDER:
                     if game in games:
                         _apply_game(working, game, work, snapshots, manifest, started_at, report)
-            if _resolution_snapshot_outside_work(working, works) != protected_resolutions_before:
+            out_of_scope_after = _resolution_snapshot_outside_work(working, works)
+            report.out_of_scope_writes = 0 if out_of_scope_after == protected_resolutions_before else 1
+            if out_of_scope_after != protected_resolutions_before:
                 raise WorkflowError("Pricing scope modified a resolution outside its active targets")
             if _mapping_snapshot(working) != mappings_before:
                 raise WorkflowError("Pricing scope modified cardmarket mappings")
@@ -1105,7 +1302,7 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishl
                 if _personal_snapshot(post) != original_personal:
                     raise WorkflowError("Collection/Wishlist changed during pricing update")
                 post_probe = WorkflowReport("post-apply-validation", scope, games, str(db_path.resolve()), started_at, wishlist_status=wishlist_status)
-                post_works = _build_rows(post, games, snapshots, post_probe, manifest, collection_review, wishlist_status)
+                post_works = _build_rows(post, games, snapshots, post_probe, manifest, collection_review, wishlist_review, wishlist_status)
                 _validate_proposed_state(post_works, post_probe, persisted=True)
                 if _resolution_snapshot_outside_work(post, works) != protected_resolutions_before:
                     raise WorkflowError("Pricing scope changed a resolution outside its active targets")
@@ -1121,6 +1318,8 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishl
                 post.close()
             report.transaction, report.collection_wishlist_unchanged, report.result = "COMMITTED", True, "SUCCESS"
     except Exception as exc:
+        if wishlist_gate_requested:
+            report.apply_gate = "FAIL"
         if working is not None:
             try:
                 working.rollback()
@@ -1168,7 +1367,7 @@ def _print_report(report: WorkflowReport) -> None:
         for label, value in (("Printings checked", item.printings_checked), ("Collection items", item.collection_items), ("Collection units", item.collection_units), ("Wishlist items", item.wishlist_items), ("Wishlist units", item.wishlist_units), ("Write candidates", item.write_candidates), ("Current pricing changes", item.current_pricing_changes), ("Exact Cardmarket matches", item.exact), ("Ambiguous", item.ambiguous), ("Missing", item.missing), ("Unpriced", item.unpriced), ("Identity mismatches prevented", item.identity_mismatches_prevented), ("Low available", item.low_available), ("Trend available", item.trend_available), ("AVG7 available", item.avg7_available), ("Prices changed", item.prices_changed), ("Prices unchanged", item.prices_unchanged), ("Exact item coverage", item.collection_exact_item_coverage), ("Exact unit coverage", item.collection_exact_unit_coverage), ("Legacy value", item.collection_legacy_value), ("Resolved Low value", item.collection_low_value), ("Estimated value coverage", item.collection_value_coverage), ("Value without exact resolution", item.collection_value_without_exact)):
             print(f"{label}: {value}")
         print(f"History rows inserted: {item.history_rows_inserted}")
-    print(f"\nTransaction: {report.transaction}\nIntegrity: {report.integrity}\nForeign keys: {report.foreign_keys}\nResult: {report.result}")
+    print(f"\nTransaction: {report.transaction}\nApply gate: {report.apply_gate}\nOut-of-scope writes: {report.out_of_scope_writes}\nWishlist scoped writes expected: {report.wishlist_scoped_writes_expected}\nGlobal writes: {report.global_writes}\nCollection writes: {report.collection_writes}\nBlocked pending items: {report.blocked_pending_items}\nIntegrity: {report.integrity}\nForeign keys: {report.foreign_keys}\nResult: {report.result}")
     if report.current_state_audit:
         print("\nCURRENT STATE AUDIT")
         for game, value in report.current_state_audit.items():
@@ -1198,6 +1397,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--db", type=Path, default=DEFAULT_DB_PATH)
     parser.add_argument("--source-dir", type=Path)
     parser.add_argument("--collection-review", type=Path)
+    parser.add_argument("--wishlist-review", type=Path)
     parser.add_argument("--now")
     return parser
 
@@ -1205,7 +1405,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     games = audit.GAME_ORDER if args.game == "all" else (args.game,)
-    report, code = run_workflow(mode="dry-run" if args.dry_run else "apply", games=tuple(games), scope=args.scope, wishlist_status=args.wishlist_status, db_path=args.db, now=args.now, source_dir=args.source_dir, collection_review=args.collection_review)
+    report, code = run_workflow(mode="dry-run" if args.dry_run else "apply", games=tuple(games), scope=args.scope, wishlist_status=args.wishlist_status, db_path=args.db, now=args.now, source_dir=args.source_dir, collection_review=args.collection_review, wishlist_review=args.wishlist_review)
     _print_report(report)
     return code
 

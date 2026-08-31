@@ -139,6 +139,38 @@ class QueriesTest(unittest.TestCase):
         matching = [row for row in rows if row.id == wishlist_id]
         self.assertEqual(len(matching), 1)
         self.assertIsNone(matching[0].current_price)
+        self.assertIsNone(matching[0].cardmarket_low)
+        self.assertIsNone(matching[0].source)
+        self.assertIsNone(matching[0].resolution_method)
+
+    def test_wishlist_foil_resolution_exposes_selected_low_not_base_low(self):
+        card_id = self.ids["card_a_id"]
+        self.conn.execute("UPDATE cards SET finish='foil' WHERE id=?", (card_id,))
+        self.conn.execute(
+            "INSERT INTO wishlist_items (card_id, language_id, quantity_wanted, status) VALUES (?, 1, 1, 'wanted')",
+            (card_id,),
+        )
+        wishlist_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        self.conn.execute(
+            """INSERT INTO printing_price_resolutions
+               (card_id, wishlist_item_id, resolution_scope, language_id,
+                resolved_at, current_price, currency, source, resolution_method,
+                match_status, is_current, selected_metric, cardmarket_low,
+                cardmarket_trend, cardmarket_avg7, cardmarket_foil_low,
+                cardmarket_foil_trend, cardmarket_foil_avg7, source_currency)
+               VALUES (?, ?, 'wishlist', 1, '2026-01-11T00:00:00', 14.5, 'EUR',
+                       'cardmarket', 'cardmarket_exact_language', 'EXACT', 1,
+                       'Foil Low', 10.0, 11.0, 12.0, 14.5, 15.5, 16.5, 'EUR')""",
+            (card_id, wishlist_id),
+        )
+        self.conn.commit()
+        rows = queries.fetch_wishlist_rows(self.conn, status="wanted", game="magic")
+        matching = [row for row in rows if row.id == wishlist_id]
+        self.assertEqual(len(matching), 1)
+        self.assertEqual(matching[0].current_price, 14.5)
+        self.assertEqual(matching[0].cardmarket_low, 14.5)
+        self.assertEqual(matching[0].cardmarket_trend, 15.5)
+        self.assertEqual(matching[0].cardmarket_avg7, 16.5)
         self.assertEqual(matching[0].source, "cardmarket")
 
     def test_product_without_snapshot_has_null_market_trend_and_is_not_manual(self):

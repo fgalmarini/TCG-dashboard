@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CardArt } from '@/components/collection/CardImage'
 import { ErrorState } from '@/components/shared/ErrorState'
@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { addToCollection, addToWishlist, fetchCatalog, fetchCatalogOptions, removeFromWishlist } from '@/lib/api'
 import { GAME_OPTIONS, LANGUAGE_OPTIONS } from '@/lib/types'
-import type { CatalogQueryParams } from '@/lib/types'
+import type { CatalogOptionsResponse, CatalogQueryParams } from '@/lib/types'
 import { useApi } from '@/lib/useApi'
 import { CardActions, CardIdentity, CardMetadata, CardPrice, TradingCard } from '@/components/shared/TradingCard'
 import { cardImageUrl, formatSetCode } from '@/lib/format'
@@ -26,11 +26,29 @@ export function CatalogPage() {
   const [ownership, setOwnership] = useState<CatalogQueryParams['ownership']>()
   const [page, setPage] = useState(1)
   const [actionError, setActionError] = useState<string | null>(null)
+  const [options, setOptions] = useState<CatalogOptionsResponse | null>(null)
   const { data, error, loading, reload } = useApi(
     () => fetchCatalog({ game, language: language || undefined, sets: sets || undefined, search: search || undefined, ownership, page, page_size: 24 }),
     [game, language, sets, search, ownership, page],
   )
-  const { data: options } = useApi(() => fetchCatalogOptions(game), [game])
+
+  useEffect(() => {
+    if (loading || !data) return
+
+    let cancelled = false
+    setOptions(null)
+    fetchCatalogOptions(game)
+      .then((nextOptions) => {
+        if (!cancelled) setOptions(nextOptions)
+      })
+      .catch(() => {
+        if (!cancelled) setOptions(null)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [data, game, loading])
 
   async function changeWishlist(cardId: number, wished: boolean) {
     setActionError(null)

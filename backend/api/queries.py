@@ -211,9 +211,9 @@ def _pricing_schema_sql(conn: sqlite3.Connection, sql: str) -> str:
         sql = sql.replace("r.is_current = 1", legacy_current).replace("r0.is_current = 1", "1=0")
     # The API is also usable during the additive migration window.  Missing
     # resolution metadata is reported as NULL until update-prices applies it.
-    for column in ("match_status", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30"):
-        if column not in columns:
-            sql = sql.replace(f"pr.{column}", "NULL").replace(f"r.{column}", "NULL")
+        for column in ("match_status", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "cardmarket_foil_low", "cardmarket_foil_trend", "cardmarket_foil_avg1", "cardmarket_foil_avg7", "cardmarket_foil_avg30"):
+            if column not in columns:
+                sql = sql.replace(f"pr.{column}", "NULL").replace(f"r.{column}", "NULL")
     if "source_currency" not in columns:
         sql = sql.replace("pr.source_currency", "pr.currency").replace("r.source_currency", "r.currency")
     return sql
@@ -699,8 +699,27 @@ WITH latest_price AS (
     SELECT r.id, r.wishlist_item_id, r.card_id, r.current_price, r.currency,
            r.resolved_at AS observed_at, r.source, r.resolution_method,
            r.external_id, r.sample_size, r.lowest_price, r.median_price,
-           r.price_confidence, r.cardmarket_low, r.cardmarket_trend,
-           r.cardmarket_avg1, r.cardmarket_avg7, r.cardmarket_avg30,
+           r.price_confidence, r.match_status, r.selected_metric,
+           CASE WHEN r.match_status = 'EXACT' AND r.current_price IS NOT NULL
+                THEN CASE WHEN r.selected_metric = 'Foil Low'
+                          THEN r.cardmarket_foil_low ELSE r.cardmarket_low END
+           END AS selected_low,
+           CASE WHEN r.match_status = 'EXACT' AND r.current_price IS NOT NULL
+                THEN CASE WHEN r.selected_metric = 'Foil Low'
+                          THEN r.cardmarket_foil_trend ELSE r.cardmarket_trend END
+           END AS selected_trend,
+           CASE WHEN r.match_status = 'EXACT' AND r.current_price IS NOT NULL
+                THEN CASE WHEN r.selected_metric = 'Foil Low'
+                          THEN r.cardmarket_foil_avg1 ELSE r.cardmarket_avg1 END
+           END AS selected_avg1,
+           CASE WHEN r.match_status = 'EXACT' AND r.current_price IS NOT NULL
+                THEN CASE WHEN r.selected_metric = 'Foil Low'
+                          THEN r.cardmarket_foil_avg7 ELSE r.cardmarket_avg7 END
+           END AS selected_avg7,
+           CASE WHEN r.match_status = 'EXACT' AND r.current_price IS NOT NULL
+                THEN CASE WHEN r.selected_metric = 'Foil Low'
+                          THEN r.cardmarket_foil_avg30 ELSE r.cardmarket_avg30 END
+           END AS selected_avg30,
            r.source_currency
       FROM printing_price_resolutions r
      WHERE r.is_current = 1
@@ -1060,7 +1079,7 @@ def build_wishlist_filters(
     if finish:
         clauses.append("c.finish = ?")
         params.append(finish.casefold())
-    effective_price = "CASE WHEN wr.id IS NOT NULL THEN wr.current_price ELSE cp.current_price END"
+    effective_price = "CASE WHEN wr.id IS NOT NULL THEN wr.selected_low ELSE cp.current_price END"
     if has_price is True:
         clauses.append(f"({effective_price}) IS NOT NULL")
     elif has_price is False:
@@ -1073,7 +1092,7 @@ def build_wishlist_filters(
 
 
 def _wishlist_order(sort: str) -> str:
-    effective_price = "CASE WHEN wr.id IS NOT NULL THEN wr.current_price ELSE cp.current_price END"
+    effective_price = "CASE WHEN wr.id IS NOT NULL THEN wr.selected_low ELSE cp.current_price END"
     order_by = {
         "priority": "CASE wi.priority WHEN 'high' THEN 0 WHEN 'medium' THEN 1 WHEN 'low' THEN 2 ELSE 3 END, wi.updated_at DESC, wi.id DESC",
         "name": "c.name COLLATE NOCASE, wi.id DESC",
@@ -1096,16 +1115,16 @@ def _wishlist_select_body(where_sql: str = "", order_by_sql: str = "") -> str:
                c.release_kind, c.art_kind,
                (SELECT COUNT(*) FROM cards pc WHERE pc.canonical_card_id=c.canonical_card_id AND pc.catalog_status='active') AS printing_count,
                (SELECT COUNT(*) FROM cards rc WHERE rc.canonical_card_id=c.canonical_card_id AND rc.catalog_status='active' AND rc.release_kind='reprint') AS reprint_count,
-               CASE WHEN wr.id IS NOT NULL THEN wr.current_price ELSE cp.current_price END AS current_price,
-               CASE WHEN wr.id IS NOT NULL THEN wr.source ELSE cp.source END AS source,
-               CASE WHEN wr.id IS NOT NULL THEN wr.resolution_method ELSE cp.resolution_method END AS resolution_method,
-               CASE WHEN wr.id IS NOT NULL THEN COALESCE(wr.source_currency, wr.currency) ELSE cp.currency END AS price_currency,
-               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_low ELSE cp.cardmarket_low END AS cardmarket_low,
-               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_trend ELSE cp.cardmarket_trend END AS cardmarket_trend,
-               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_avg1 ELSE cp.cardmarket_avg1 END AS cardmarket_avg1,
-               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_avg7 ELSE cp.cardmarket_avg7 END AS cardmarket_avg7,
-               CASE WHEN wr.id IS NOT NULL THEN wr.cardmarket_avg30 ELSE cp.cardmarket_avg30 END AS cardmarket_avg30,
-               CASE WHEN wr.id IS NOT NULL THEN wr.source_currency ELSE cp.currency END AS source_currency,
+               CASE WHEN wr.id IS NOT NULL THEN wr.selected_low ELSE cp.current_price END AS current_price,
+               CASE WHEN wr.id IS NOT NULL AND wr.selected_low IS NOT NULL THEN wr.source ELSE cp.source END AS source,
+               CASE WHEN wr.id IS NOT NULL AND wr.selected_low IS NOT NULL THEN wr.resolution_method ELSE cp.resolution_method END AS resolution_method,
+               CASE WHEN wr.id IS NOT NULL AND wr.selected_low IS NOT NULL THEN COALESCE(wr.source_currency, wr.currency) ELSE cp.currency END AS price_currency,
+               CASE WHEN wr.id IS NOT NULL THEN wr.selected_low ELSE cp.cardmarket_low END AS cardmarket_low,
+               CASE WHEN wr.id IS NOT NULL THEN wr.selected_trend ELSE cp.cardmarket_trend END AS cardmarket_trend,
+               CASE WHEN wr.id IS NOT NULL THEN wr.selected_avg1 ELSE cp.cardmarket_avg1 END AS cardmarket_avg1,
+               CASE WHEN wr.id IS NOT NULL THEN wr.selected_avg7 ELSE cp.cardmarket_avg7 END AS cardmarket_avg7,
+               CASE WHEN wr.id IS NOT NULL THEN wr.selected_avg30 ELSE cp.cardmarket_avg30 END AS cardmarket_avg30,
+               CASE WHEN wr.id IS NOT NULL AND wr.selected_low IS NOT NULL THEN wr.source_currency ELSE cp.currency END AS source_currency,
                {_WISHLIST_MATCHED_SQL} AS matched
           {_WISHLIST_FROM}
           {where_sql}

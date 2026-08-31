@@ -1,4 +1,5 @@
 import json
+import csv
 import sqlite3
 import tempfile
 import unittest
@@ -130,13 +131,14 @@ class UpdatePricesTest(unittest.TestCase):
             result[f"{game}:price_guide"] = DownloadResult("prices", "fixture", price_path, True, price_path.stat().st_size, None)
         return result
 
-    def _run(self, mode, games=("magic", "one_piece"), now="2026-08-28T12:00:00+00:00", scope="all", wishlist_status="wanted"):
+    def _run(self, mode, games=("magic", "one_piece"), now="2026-08-28T12:00:00+00:00", scope="all", wishlist_status="wanted", wishlist_review=None):
         with patch.object(update_prices, "LOG_DIR", self.root / "logs"), \
              patch.object(update_prices, "BACKUP_DIR", self.root / "backups"):
             return update_prices.run_workflow(
                 mode=mode, games=tuple(games), db_path=self.db, now=now,
                 download_fn=self._download, cardtrader_client=FakeCardTrader(), scope=scope,
                 wishlist_status=wishlist_status,
+                wishlist_review=wishlist_review,
             )
 
     def _seed_legacy_unsafe_magic_price(self):
@@ -292,6 +294,38 @@ class UpdatePricesTest(unittest.TestCase):
         self.assertEqual((item.wishlist_legacy_value, item.wishlist_resolved_low_value, item.wishlist_estimated_value_coverage, item.wishlist_value_without_exact), (0.0, 3.0, 100.0, 0.0))
         self.assertEqual((item.collection_exact_item_coverage, item.collection_exact_unit_coverage, item.collection_legacy_value, item.collection_low_value, item.collection_value_coverage, item.collection_value_without_exact), (100.0, 100.0, 0.0, 3.0, 100.0, 0.0))
 
+    def test_wishlist_review_gate_approves_only_selected_item_on_dry_run_copy(self):
+        conn = sqlite3.connect(self.db)
+        conn.execute("INSERT INTO wishlist_items (card_id, quantity_wanted, priority, status, language_id) VALUES (1, 1, 'high', 'wanted', 1)")
+        conn.commit()
+        conn.close()
+        review = self.root / "wishlist_review.csv"
+        with review.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=(
+                "wishlist_item_id", "printing_id", "card_id", "game", "card_name", "set",
+                "card_number", "language", "finish", "treatment",
+                "candidate_cardmarket_product_id", "approved", "selected_cardmarket_product_id",
+            ))
+            writer.writeheader()
+            writer.writerow({
+                "wishlist_item_id": 1, "printing_id": 1, "card_id": 1, "game": "magic",
+                "card_name": "Magic Test", "set": "ltr", "card_number": "1", "language": "en",
+                "finish": "nonfoil", "treatment": "", "candidate_cardmarket_product_id": "500",
+                "approved": "true", "selected_cardmarket_product_id": "500",
+            })
+        before = self.db.read_bytes()
+        report, code = self._run("dry-run", games=("magic",), scope="wishlist", wishlist_review=review)
+        self.assertEqual(code, 0)
+        self.assertEqual(report.apply_gate, "PASS")
+        self.assertEqual((report.out_of_scope_writes, report.wishlist_scoped_writes_expected, report.global_writes, report.collection_writes), (0, 1, 0, 0))
+        self.assertEqual(report.blocked_pending_items, [])
+        self.assertEqual(report.game_reports["magic"].exact, 1)
+        self.assertEqual(report.game_reports["magic"].current_pricing_changes, 0)
+        self.assertEqual(before, self.db.read_bytes())
+        conn = sqlite3.connect(self.db)
+        self.assertEqual(conn.execute("SELECT COUNT(*) FROM printing_price_resolutions").fetchone()[0], 0)
+        conn.close()
+
     def test_wishlist_apply_is_scoped_and_preserves_personal_and_global_state(self):
         conn = sqlite3.connect(self.db)
         conn.execute("INSERT INTO collection_items (card_id, cardmarket_product_id, language_id, quantity, status, match_status) VALUES (1, 1, 1, 2, 'KEEP', 'exact')")
@@ -302,8 +336,26 @@ class UpdatePricesTest(unittest.TestCase):
         mappings_before = conn.execute("SELECT * FROM cardmarket_product_mappings").fetchall()
         conn.close()
 
-        report, code = self._run("apply", games=("magic",), scope="wishlist")
+        review = self.root / "wishlist_apply_review.csv"
+        with review.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=(
+                "wishlist_item_id", "printing_id", "card_id", "game", "card_name", "set",
+                "card_number", "language", "finish", "treatment",
+                "candidate_cardmarket_product_id", "approved", "selected_cardmarket_product_id",
+            ))
+            writer.writeheader()
+            writer.writerow({
+                "wishlist_item_id": 1, "printing_id": 1, "card_id": 1, "game": "magic",
+                "card_name": "Magic Test", "set": "ltr", "card_number": "1", "language": "en",
+                "finish": "nonfoil", "treatment": "", "candidate_cardmarket_product_id": "500",
+                "approved": "true", "selected_cardmarket_product_id": "500",
+            })
+
+        report, code = self._run("apply", games=("magic",), scope="wishlist", wishlist_review=review)
         self.assertEqual(code, 0)
+        self.assertEqual(report.apply_gate, "PASS")
+        self.assertEqual((report.out_of_scope_writes, report.wishlist_scoped_writes_expected, report.global_writes, report.collection_writes), (0, 1, 0, 0))
+        self.assertEqual(report.blocked_pending_items, [])
         self.assertEqual(report.game_reports["magic"].wishlist_items, 1)
         conn = sqlite3.connect(self.db)
         resolution = conn.execute("SELECT wishlist_item_id, collection_item_id, resolution_scope, current_price, match_status FROM printing_price_resolutions").fetchone()
@@ -315,6 +367,33 @@ class UpdatePricesTest(unittest.TestCase):
         self.assertEqual(conn.execute("SELECT * FROM cardmarket_product_mappings").fetchall(), mappings_before)
         self.assertEqual(conn.execute("SELECT COUNT(*) FROM market_price_history WHERE cardmarket_product_id != 1").fetchone()[0], 0)
         conn.close()
+
+    def test_wishlist_apply_rejects_without_pre_apply_gate(self):
+        conn = sqlite3.connect(self.db)
+        conn.execute("INSERT INTO wishlist_items (card_id, quantity_wanted, priority, status, language_id) VALUES (1, 1, 'high', 'wanted', 1)")
+        conn.commit()
+        conn.close()
+        before = self.db.read_bytes()
+        report, code = self._run("apply", games=("magic",), scope="wishlist")
+        self.assertNotEqual(code, 0)
+        self.assertEqual(report.apply_gate, "FAIL")
+        self.assertEqual(report.result, "FAILED")
+        self.assertTrue(any("--wishlist-review is required" in error for error in report.errors))
+        self.assertEqual(before, self.db.read_bytes())
+
+    def test_wishlist_dry_run_fails_closed_when_requested_gate_cannot_be_calculated(self):
+        conn = sqlite3.connect(self.db)
+        conn.execute("INSERT INTO wishlist_items (card_id, quantity_wanted, priority, status, language_id) VALUES (1, 1, 'high', 'wanted', 1)")
+        conn.commit()
+        conn.close()
+        report, code = self._run(
+            "dry-run", games=("magic",), scope="wishlist",
+            wishlist_review=self.root / "missing-wishlist-review.csv",
+        )
+        self.assertNotEqual(code, 0)
+        self.assertEqual(report.apply_gate, "FAIL")
+        self.assertNotEqual(report.apply_gate, "NOT_RUN")
+        self.assertTrue(any("Wishlist review file does not exist" in error for error in report.errors))
 
     def test_resolution_scope_check_rejects_mixed_targets(self):
         conn = sqlite3.connect(self.db)

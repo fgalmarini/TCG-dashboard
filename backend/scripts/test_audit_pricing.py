@@ -177,6 +177,18 @@ class AuditPricingTest(unittest.TestCase):
         self.assertIsNone(row["current_price"])
         self.assertEqual(row["match_status"], "EXACT")
         conn.close()
+
+    def test_wishlist_scope_does_not_fall_back_to_global_current(self):
+        conn = sqlite3.connect(self.db)
+        conn.row_factory = sqlite3.Row
+        conn.execute("INSERT INTO wishlist_items (card_id, quantity_wanted, status, language_id) VALUES (1, 1, 'wanted', 1)")
+        conn.commit()
+        snapshots, _ = audit_pricing.load_snapshots(self.source, ("one_piece",), conn, "2026-08-29T00:00:00+00:00")
+        rows_by_game, _, _ = audit_pricing.wishlist_audit_rows(conn, ("one_piece",), snapshots, "wanted")
+        self.assertEqual(len(rows_by_game["one_piece"]), 1)
+        self.assertIsNone(rows_by_game["one_piece"][0]["current_price"])
+        self.assertIsNone(rows_by_game["one_piece"][0]["current_source"])
+        conn.close()
     def test_wrong_language_version_and_expansion_are_explicit(self):
         ctx = self._context("one_piece")
         conn, card, products, prices, external, mappings, resolutions, histories, names = ctx
@@ -328,6 +340,10 @@ class AuditPricingTest(unittest.TestCase):
         with self.assertRaises(sqlite3.OperationalError):
             conn.execute("CREATE TABLE forbidden_audit_write (id INTEGER)")
         conn.close()
+        writable = sqlite3.connect(self.db)
+        with self.assertRaises(audit_pricing.AuditError):
+            audit_pricing._assert_read_only(writable)
+        writable.close()
 
 
 if __name__ == "__main__":

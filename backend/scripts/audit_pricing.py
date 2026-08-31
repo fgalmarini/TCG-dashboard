@@ -287,8 +287,7 @@ def connect_read_only(path: Path) -> sqlite3.Connection:
     try:
         conn.execute("PRAGMA query_only=ON")
         conn.execute("PRAGMA foreign_keys=ON")
-        if conn.execute("PRAGMA query_only").fetchone()[0] != 1:
-            raise AuditError("SQLite no activó PRAGMA query_only")
+        _assert_read_only(conn)
         integrity = conn.execute("PRAGMA integrity_check").fetchone()[0]
         if integrity != "ok":
             raise AuditError(f"PRAGMA integrity_check falló: {integrity}")
@@ -298,6 +297,13 @@ def connect_read_only(path: Path) -> sqlite3.Connection:
         conn.close()
         raise
     return conn
+
+
+def _assert_read_only(conn: sqlite3.Connection) -> None:
+    """Fail closed unless the audit connection is explicitly query-only."""
+    value = conn.execute("PRAGMA query_only").fetchone()[0]
+    if value != 1:
+        raise AuditError("Reporte read-only rechazado: SQLite PRAGMA query_only no está en ON")
 
 
 def load_cards(
@@ -719,14 +725,25 @@ def current_for_card(
             "current_provenance": value.get("provenance") or value.get("metadata"),
             "dashboard_metric": value.get("selected_metric") or "Low",
         }
-    if wishlist_item_id is not None and wishlist_resolutions and wishlist_item_id in wishlist_resolutions:
-        value = wishlist_resolutions[wishlist_item_id]
+    if wishlist_item_id is not None:
+        # Wishlist scope is target-authoritative: an absent current Wishlist
+        # resolution must not fall through to a global resolution, mapping or
+        # historical source.  This also preserves a current NULL price as an
+        # intentional block against fallback pricing.
+        if wishlist_resolutions and wishlist_item_id in wishlist_resolutions:
+            value = wishlist_resolutions[wishlist_item_id]
+            return {
+                "current_price": value.get("current_price"), "current_currency": value.get("currency"),
+                "current_source": value.get("source"), "current_source_product_id": value.get("external_id"),
+                "current_timestamp": value.get("resolved_at"), "current_confidence": value.get("price_confidence"),
+                "current_provenance": value.get("provenance") or value.get("metadata"),
+                "dashboard_metric": value.get("selected_metric") or "Low",
+            }
         return {
-            "current_price": value.get("current_price"), "current_currency": value.get("currency"),
-            "current_source": value.get("source"), "current_source_product_id": value.get("external_id"),
-            "current_timestamp": value.get("resolved_at"), "current_confidence": value.get("price_confidence"),
-            "current_provenance": value.get("provenance") or value.get("metadata"),
-            "dashboard_metric": value.get("selected_metric") or "Low",
+            "current_price": None, "current_currency": None, "current_source": None,
+            "current_source_product_id": None, "current_timestamp": None,
+            "current_confidence": None, "current_provenance": None,
+            "dashboard_metric": None,
         }
     value = resolutions.get((int(card["id"]), int(card.get("language_id") or 0)))
     if value is not None:
@@ -1583,9 +1600,12 @@ def audit(*, db_path: Path, source_dir: Path | None, output_dir: Path, games: tu
             raise AuditError(f"PRAGMA integrity_check falló al finalizar: {integrity_check}")
         if foreign_key_check is not None:
             raise AuditError("PRAGMA foreign_key_check encontró errores al finalizar")
+        _assert_read_only(conn)
         manifest["database"] = {
             "path": str(db_path.resolve()), "sha256_before": before_hash,
             "sha256_after": after_hash, "unchanged": True,
+            "sqlite_open_mode": "uri_mode=ro",
+            "read_only": True,
             "query_only": conn.execute("PRAGMA query_only").fetchone()[0],
             "integrity_check": integrity_check,
             "foreign_key_check": "ok" if foreign_key_check is None else list(foreign_key_check),

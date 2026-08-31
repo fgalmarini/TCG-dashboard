@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CardThumbnail } from '@/components/collection/CardImage'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { exportWishlist, fetchCatalogOptions, fetchWishlist, markWishlistAcquired, removeFromWishlist, restoreWishlist, updateWishlist } from '@/lib/api'
 import { formatCurrency, formatSetCode } from '@/lib/format'
-import { GAME_OPTIONS, LANGUAGE_OPTIONS, type WishlistItem, type WishlistQueryParams } from '@/lib/types'
+import { GAME_OPTIONS, LANGUAGE_OPTIONS, type CatalogOptionsResponse, type WishlistItem, type WishlistQueryParams } from '@/lib/types'
 import { useApi } from '@/lib/useApi'
 
 const ALL = '__all__'
@@ -141,6 +141,7 @@ export function WishlistPage() {
   const [buyingMode, setBuyingMode] = useState(false)
   const [pendingIds, setPendingIds] = useState<Set<number>>(new Set())
   const [actionError, setActionError] = useState<string | null>(null)
+  const [options, setOptions] = useState<CatalogOptionsResponse | null>(null)
   const query = useMemo<WishlistQueryParams>(() => ({
     status,
     priority: priorities.length ? priorities.join(',') : undefined,
@@ -153,7 +154,24 @@ export function WishlistPage() {
     sort,
   }), [status, priorities, sets, game, language, finish, hasPrice, matched, sort])
   const { data, error, loading, reload } = useApi(() => fetchWishlist(query), [query])
-  const { data: options } = useApi(() => fetchCatalogOptions(game || undefined), [game])
+
+  useEffect(() => {
+    if (loading || !data) return
+
+    let cancelled = false
+    setOptions(null)
+    fetchCatalogOptions(game || undefined)
+      .then((nextOptions) => {
+        if (!cancelled) setOptions(nextOptions)
+      })
+      .catch(() => {
+        if (!cancelled) setOptions(null)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [data, game, loading])
 
   async function runAction(item: WishlistItem, action: 'acquired' | 'removed' | 'restore') {
     if (pendingIds.has(item.id)) return
