@@ -1,1 +1,74 @@
 idProduct,idMetacard,product_name,collector_number,canonical_card_id,card_name,rarity,mapping_method,review_notes
+719442,421079,Bulbasaur [Leech Seed | 151],001,23356,Bulbasaur,,manual_review,batch identity approval: first candidate through 719617
+719444,421081,Ivysaur [Leech Seed | Vine Whip | 151],002,23357,Ivysaur,,manual_review,batch identity approval: first candidate through 719617
+719445,421082,Venusaur ex [Tranquil Flower | Dangerous Toxwhip],003,23358,Venusaur ex,,manual_review,batch identity approval: first candidate through 719617
+719446,421083,Charmander [Blazing Destruction | Steady Firebreathing],004,23359,Charmander,,manual_review,batch identity approval: first candidate through 719617
+719447,421084,Charmeleon [Combustion | Fire Blast],005,23360,Charmeleon,,manual_review,batch identity approval: first candidate through 719617
+719448,421085,Charizard ex [Brave Wing | Explosive Vortex],006,23361,Charizard ex,,manual_review,batch identity approval: first candidate through 719617
+719449,421086,Squirtle [Withdraw | Skull Bash],007,23362,Squirtle,,manual_review,batch identity approval: first candidate through 719617
+719450,421087,Wartortle [Free Diving | Spinning Attack],008,23363,Wartortle,,manual_review,batch identity approval: first candidate through 719617
+719451,421088,Blastoise ex [Solid Shell | Twin Cannons],009,23364,Blastoise ex,,manual_review,batch identity approval: first candidate through 719617
+719452,421089,Caterpie [Leaf Munch],010,23365,Caterpie,,manual_review,batch identity approval: first candidate through 719617
+719466,421103,Arbok ex [Bind Down | Menacing Fangs],024,23379,Arbok ex,,manual_review,batch identity approval: first candidate through 719617
+719467,421104,Pikachu [Charge | Pika Punch],025,23380,Pikachu,,manual_review,batch identity approval: first candidate through 719617
+719476,421113,Nidoking [Enthusiastic King | Venom Impact],034,23389,Nidoking,,manual_review,batch identity approval: first candidate through 719617
+719480,421117,Ninetales ex [Heat Wave | Mirrored Flames],038,23393,Ninetales ex,,manual_review,batch identity approval: first candidate through 719617
+719482,421119,Wigglytuff ex [Expanding Body | Friend Tackle],040,23395,Wigglytuff ex,,manual_review,batch identity approval: first candidate through 719617
+719496,421133,Psyduck [Overthinking | Water Gun],054,23409,Psyduck,,manual_review,batch identity approval: first candidate through 719617
+719503,421140,Poliwhirl [Wave Splash | Frog Hop],061,23416,Poliwhirl,,manual_review,batch identity approval: first candidate through 719617
+719507,421144,Alakazam ex [Mind Jack | Dimensional Hand],065,23420,Alakazam ex,,manual_review,batch identity approval: first candidate through 719617
+719509,421146,Machoke [Mountain Ramming],067,23422,Machoke,,manual_review,batch identity approval: first candidate through 719617
+719518,421155,Golem ex [Dynamic Roll | Rock Blaster],076,23431,Golem ex,,manual_review,batch identity approval: first candidate through 719617
+719567,421193,Tangela [Tactful Tangling],114,23469,Tangela,,manual_review,batch identity approval: first candidate through 719617
+719568,421194,Kangaskhan ex [Triple Draw | Incessant Punching],115,23470,Kangaskhan ex,,manual_review,batch identity approval: first candidate through 719617
+719575,421201,Mr. Mime [Mimic Barrier | Psypower],122,23477,Mr. Mime,,manual_review,batch identity approval: first candidate through 719617
+719577,421203,Jynx ex [Heart-Stopping Kiss | Icy Wind],124,23479,Jynx ex,,manual_review,batch identity approval: first candidate through 719617
+719591,421217,Omanyte [Tentacular Return],138,23493,Omanyte,,manual_review,batch identity approval: first candidate through 719617
+719598,421224,Zapdos ex [Voltaic Float | Multishot Lightning],145,23500,Zapdos ex,,manual_review,batch identity approval: first candidate through 719617
+719601,421227,Dragonair [Beat | Aqua Slash],148,23503,Dragonair,,manual_review,batch identity approval: first candidate through 719617
+719604,421230,Mew ex [Restart | Genome Hacking],151,23506,Mew ex,,manual_review,batch identity approval: first candidate through 719617
+719614,421239,Erika's Invitation,160,23515,Erika’s Invitation,,manual_review,batch identity approval: first candidate through 719617
+719615,421240,Giovanni's Charisma,161,23516,Giovanni’s Charisma,,manual_review,batch identity approval: first candidate through 719617
+719616,421241,Daisy's Help,158,23513,Daisy’s Help,,manual_review,batch identity approval: first candidate through 719617
+719617,421242,Bill's Transfer,156,23511,Bill’s Transfer,,manual_review,batch identity approval: first candidate through 719617
+719619,421079,Bulbasaur [Leech Seed | 151],166,23521,Bulbasaur,,manual_review,batch identity approval: second candidate through 719652
+719620,421081,Ivysaur [Leech Seed | Vine Whip | 151],167,23522,Ivysaur,,manual_review,batch identity approval: second candidate through 719652
+719621,421083,Charmander [Blazing Destruction | Steady Firebreathing],168,23523,Charmander,,manual_review,batch identity approval: second candidate through 719652
+719622,421084,Charmeleon [Combustion | Fire Blast],169,23524,Charmeleon,,manual_review,batch identity approval: second candidate through 719652
+719623,421086,Squirtle [Withdraw | Skull Bash],170,23525,Squirtle,,manual_review,batch identity approval: second candidate through 719652
+719624,421087,Wartortle [Free Diving | Spinning Attack],171,23526,Wartortle,,manual_review,batch identity approval: second candidate through 719652
+719625,421089,Caterpie [Leaf Munch],172,23527,Caterpie,,manual_review,batch identity approval: second candidate through 719652
+719626,421104,Pikachu [Charge | Pika Punch],173,23528,Pikachu,,manual_review,batch identity approval: second candidate through 719652
+719627,421113,Nidoking [Enthusiastic King | Venom Impact],174,23529,Nidoking,,manual_review,batch identity approval: second candidate through 719652
+719628,421133,Psyduck [Overthinking | Water Gun],175,23530,Psyduck,,manual_review,batch identity approval: second candidate through 719652
+719629,421140,Poliwhirl [Wave Splash | Frog Hop],176,23531,Poliwhirl,,manual_review,batch identity approval: second candidate through 719652
+719630,421146,Machoke [Mountain Ramming],177,23532,Machoke,,manual_review,batch identity approval: second candidate through 719652
+719631,421193,Tangela [Tactful Tangling],178,23533,Tangela,,manual_review,batch identity approval: second candidate through 719652
+719632,421201,Mr. Mime [Mimic Barrier | Psypower],179,23534,Mr. Mime,,manual_review,batch identity approval: second candidate through 719652
+719633,421217,Omanyte [Tentacular Return],180,23535,Omanyte,,manual_review,batch identity approval: second candidate through 719652
+719635,421227,Dragonair [Beat | Aqua Slash],181,23536,Dragonair,,manual_review,batch identity approval: second candidate through 719652
+719637,421082,Venusaur ex [Tranquil Flower | Dangerous Toxwhip],182,23537,Venusaur ex,,manual_review,batch identity approval: second candidate through 719652
+719638,421085,Charizard ex [Brave Wing | Explosive Vortex],183,23538,Charizard ex,,manual_review,batch identity approval: second candidate through 719652
+719639,421088,Blastoise ex [Solid Shell | Twin Cannons],184,23539,Blastoise ex,,manual_review,batch identity approval: second candidate through 719652
+719640,421103,Arbok ex [Bind Down | Menacing Fangs],185,23540,Arbok ex,,manual_review,batch identity approval: second candidate through 719652
+719641,421117,Ninetales ex [Heat Wave | Mirrored Flames],186,23541,Ninetales ex,,manual_review,batch identity approval: second candidate through 719652
+719642,421119,Wigglytuff ex [Expanding Body | Friend Tackle],187,23542,Wigglytuff ex,,manual_review,batch identity approval: second candidate through 719652
+719643,421144,Alakazam ex [Mind Jack | Dimensional Hand],188,23543,Alakazam ex,,manual_review,batch identity approval: second candidate through 719652
+719644,421155,Golem ex [Dynamic Roll | Rock Blaster],189,23544,Golem ex,,manual_review,batch identity approval: second candidate through 719652
+719645,421194,Kangaskhan ex [Triple Draw | Incessant Punching],190,23545,Kangaskhan ex,,manual_review,batch identity approval: second candidate through 719652
+719646,421203,Jynx ex [Heart-Stopping Kiss | Icy Wind],191,23546,Jynx ex,,manual_review,batch identity approval: second candidate through 719652
+719647,421224,Zapdos ex [Voltaic Float | Multishot Lightning],192,23547,Zapdos ex,,manual_review,batch identity approval: second candidate through 719652
+719648,421230,Mew ex [Restart | Genome Hacking],193,23548,Mew ex,,manual_review,batch identity approval: second candidate through 719652
+719649,421239,Erika's Invitation,196,23551,Erika’s Invitation,,manual_review,batch identity approval: second candidate through 719652
+719650,421240,Giovanni's Charisma,197,23552,Giovanni’s Charisma,,manual_review,batch identity approval: second candidate through 719652
+719651,421241,Daisy's Help,195,23550,Daisy’s Help,,manual_review,batch identity approval: second candidate through 719652
+719652,421242,Bill's Transfer,194,23549,Bill’s Transfer,,manual_review,batch identity approval: second candidate through 719652
+719653,421082,Venusaur ex [Tranquil Flower | Dangerous Toxwhip],198,23553,Venusaur ex,,manual_review,batch identity approval: third candidate from 719653 onward
+719654,421085,Charizard ex [Brave Wing | Explosive Vortex],199,23554,Charizard ex,,manual_review,batch identity approval: third candidate from 719653 onward
+719655,421088,Blastoise ex [Solid Shell | Twin Cannons],200,23555,Blastoise ex,,manual_review,batch identity approval: third candidate from 719653 onward
+719656,421144,Alakazam ex [Mind Jack | Dimensional Hand],201,23556,Alakazam ex,,manual_review,batch identity approval: third candidate from 719653 onward
+719657,421224,Zapdos ex [Voltaic Float | Multishot Lightning],202,23557,Zapdos ex,,manual_review,batch identity approval: third candidate from 719653 onward
+719658,421230,Mew ex [Restart | Genome Hacking],205,23560,Mew ex,,manual_review,batch identity approval: third candidate from 719653 onward
+719659,421239,Erika's Invitation,203,23558,Erika’s Invitation,,manual_review,batch identity approval: third candidate from 719653 onward
+719660,421240,Giovanni's Charisma,204,23559,Giovanni’s Charisma,,manual_review,batch identity approval: third candidate from 719653 onward
+719661,421230,Mew ex [Restart | Genome Hacking],205,23560,Mew ex,,manual_review,batch identity approval: third candidate from 719653 onward

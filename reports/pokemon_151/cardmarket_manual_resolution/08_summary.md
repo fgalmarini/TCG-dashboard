@@ -1,12 +1,18 @@
 # POKEMON-151-004B — CARDMARKET MANUAL MAPPING RESOLUTION
 
 - Manual review workflow prepared: COMPLETE
-- Manual mappings actually resolved: 0
+- Manual mappings actually resolved: 73
 - Cardmarket products: 210
 - EXACT before: 137
-- EXACT after: 137/210
-- Pending human approval: 73
+- EXACT after: 210/210
+- Pending human approval: 0
 - Cardmarket prices applied: NO
+- AUTO_EXACT: 0
+- RECOMMENDED: 40
+- NEEDS_REVIEW: 33
+- BLOCKED: 0
+- Cardmarket review links generated: YES
+- Cardmarket price-guide evidence loaded for review: YES
 - Metric mappings promoted: NO
 - pricing_eligible changed: NO
 - TCGplayer changed: NO
@@ -14,4 +20,4 @@
 - One Piece modified: NO
 - Collection modified: NO
 - Wishlist modified: NO
-- Apply idempotent: NO-OP
+- Apply idempotent: YES
