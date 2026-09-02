@@ -15,6 +15,7 @@ all existing primary keys and historical price rows.
 | `printing_relations` | Explicit printing relationships | source + target + relation |
 | `card_images` | Exact/fallback remote image metadata | printing + provider + requested language + face |
 | `printing_price_resolutions` | Historical selected/null pricing decision | printing + language + timestamp + method |
+| `market_price_observations` | Source-neutral secondary/future market metrics | printing + provider + market + metric + currency + snapshot |
 
 One Piece commercial identity is canonical card + release + source variant/art kind +
 language. It is an audit identity, not a replacement primary key. A collision keeps
@@ -49,6 +50,14 @@ The manual pricing workflow writes `market_price_history` for Magic and
 wishlist rows. CardTrader fingerprints are stored in resolution `metadata` so an
 identical source response does not create duplicate historical rows.
 
+`market_price_observations` is independent from the primary pricing tables. It stores
+one positive metric per physical printing and source snapshot, preserving
+`source_updated_at` from the provider separately from local `observed_at`. Its
+uniqueness key includes `snapshot_key`, so repeated imports are idempotent while
+changed source snapshots remain historical evidence. Pokémon 151 TCGplayer rows use
+`provider=pokemon_tcg_api`, `market=tcgplayer` and `currency=USD`; no API valuation
+query reads this table.
+
 ## Safe Maintenance
 
 ```bash
@@ -67,6 +76,19 @@ PRAGMA foreign_key_check;
 ```
 
 Never delete, merge or reassign an ambiguous printing through automated matching.
+
+## Pokémon 151 Manual Cardmarket Mappings
+
+`cardmarket_product_printing_scopes` supports a canonical-only manual mapping.
+After approval, only `canonical_card_id`, identity statuses and
+`mapping_method=manual_review` are promoted. Existing `card_id`, `finish_scope`,
+`compatible_finishes` and `pricing_eligible` values are preserved exactly; a
+new canonical-only row leaves finish fields absent and pricing disabled.
+
+`backend/scripts/apply_pokemon_151_cardmarket_manual_review.py` consumes only
+the validated review CSV, protects the existing 137 EXACT mappings using a
+runtime-computed hash, and writes no prices. With no valid approvals it writes
+reports only and leaves the database byte-identical.
 
 ## Image display fallback
 

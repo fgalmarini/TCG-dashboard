@@ -1,0 +1,24 @@
+card_id,collector_number,card_name,finish,reason,detail
+25171,004,Charmander,holo,FINISH_MISMATCH,TCGdex finish variant is not exact; API finish variant missing
+25174,005,Charmeleon,holo,FINISH_MISMATCH,TCGdex finish variant is not exact; API finish variant missing
+25219,029,Nidoran♀,normal,IDENTITY_AMBIGUOUS,Pokémon TCG API identity: name 'Nidoran ♀' != 'Nidoran♀'
+25220,029,Nidoran♀,reverse_holo,IDENTITY_AMBIGUOUS,Pokémon TCG API identity: name 'Nidoran ♀' != 'Nidoran♀'
+25225,032,Nidoran♂,normal,IDENTITY_AMBIGUOUS,Pokémon TCG API identity: name 'Nidoran ♂' != 'Nidoran♂'
+25226,032,Nidoran♂,reverse_holo,IDENTITY_AMBIGUOUS,Pokémon TCG API identity: name 'Nidoran ♂' != 'Nidoran♂'
+25323,083,Farfetch’d,normal,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Farfetch'd"" != 'Farfetch’d'; TCGdex identity: name ""Farfetch'd"" != 'Farfetch’d'"
+25324,083,Farfetch’d,reverse_holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Farfetch'd"" != 'Farfetch’d'; TCGdex identity: name ""Farfetch'd"" != 'Farfetch’d'"
+25465,156,Bill’s Transfer,normal,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Bill's Transfer"" != 'Bill’s Transfer'; TCGdex identity: name ""Bill's Transfer"" != 'Bill’s Transfer'"
+25466,156,Bill’s Transfer,reverse_holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Bill's Transfer"" != 'Bill’s Transfer'; TCGdex identity: name ""Bill's Transfer"" != 'Bill’s Transfer'"
+25469,158,Daisy’s Help,normal,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Daisy's Help"" != 'Daisy’s Help'; TCGdex identity: name ""Daisy's Help"" != 'Daisy’s Help'"
+25470,158,Daisy’s Help,reverse_holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Daisy's Help"" != 'Daisy’s Help'; TCGdex identity: name ""Daisy's Help"" != 'Daisy’s Help'"
+25473,160,Erika’s Invitation,normal,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Erika's Invitation"" != 'Erika’s Invitation'; TCGdex identity: name ""Erika's Invitation"" != 'Erika’s Invitation'"
+25474,160,Erika’s Invitation,reverse_holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Erika's Invitation"" != 'Erika’s Invitation'; TCGdex identity: name ""Erika's Invitation"" != 'Erika’s Invitation'"
+25475,161,Giovanni’s Charisma,normal,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Giovanni's Charisma"" != 'Giovanni’s Charisma'; TCGdex identity: name ""Giovanni's Charisma"" != 'Giovanni’s Charisma'"
+25476,161,Giovanni’s Charisma,reverse_holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Giovanni's Charisma"" != 'Giovanni’s Charisma'; TCGdex identity: name ""Giovanni's Charisma"" != 'Giovanni’s Charisma'"
+25513,194,Bill’s Transfer,holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Bill's Transfer"" != 'Bill’s Transfer'; TCGdex identity: name ""Bill's Transfer"" != 'Bill’s Transfer'"
+25514,195,Daisy’s Help,holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Daisy's Help"" != 'Daisy’s Help'; TCGdex identity: name ""Daisy's Help"" != 'Daisy’s Help'"
+25515,196,Erika’s Invitation,holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Erika's Invitation"" != 'Erika’s Invitation'; TCGdex identity: name ""Erika's Invitation"" != 'Erika’s Invitation'"
+25516,197,Giovanni’s Charisma,holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Giovanni's Charisma"" != 'Giovanni’s Charisma'; TCGdex identity: name ""Giovanni's Charisma"" != 'Giovanni’s Charisma'"
+25522,203,Erika’s Invitation,holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Erika's Invitation"" != 'Erika’s Invitation'; TCGdex identity: name ""Erika's Invitation"" != 'Erika’s Invitation'"
+25523,204,Giovanni’s Charisma,holo,IDENTITY_AMBIGUOUS,"Pokémon TCG API identity: name ""Giovanni's Charisma"" != 'Giovanni’s Charisma'; TCGdex identity: name ""Giovanni's Charisma"" != 'Giovanni’s Charisma'"
+25526,207,Basic Energy,holo,IDENTITY_AMBIGUOUS,Pokémon TCG API identity: name 'Basic Psychic Energy' != 'Basic Energy'; TCGdex identity: name 'Basic Psychic Energy' != 'Basic Energy'

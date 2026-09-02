@@ -1,0 +1,2444 @@
+{
+  "documentation": [
+    {
+      "cache_file": "412c69427ecab7ae8bee47af1e567b4ed7bbb772f7b8da97eb10455b67860351.bin",
+      "content_type": "text/html;charset=utf-8",
+      "http_status": 200,
+      "name": "cardmarket_help",
+      "retrieved_at": "2026-09-01T12:58:28+00:00",
+      "role": "cardmarket_current_help",
+      "sha256": "412c69427ecab7ae8bee47af1e567b4ed7bbb772f7b8da97eb10455b67860351",
+      "status": "OK",
+      "url": "https://help.cardmarket.com/en/finding-and-listing-pokemon-cards"
+    },
+    {
+      "cache_file": "e9ea94162a8782a52b716b7c6af1704529a4b55cf014f1ef0ce5c2912dd844d3.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "name": "pokemon_tcg_card_object",
+      "retrieved_at": "2026-09-01T12:58:29+00:00",
+      "role": "pokemon_tcg_current_docs",
+      "sha256": "e9ea94162a8782a52b716b7c6af1704529a4b55cf014f1ef0ce5c2912dd844d3",
+      "status": "OK",
+      "url": "https://docs.pokemontcg.io/api-reference/cards/card-object/"
+    },
+    {
+      "cache_file": "a82765453c453ea32d33fab6bd279b210ec45eb55abc21601f66be72a3fcbb0e.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "name": "pokemon_tcg_search",
+      "retrieved_at": "2026-09-01T12:58:29+00:00",
+      "role": "pokemon_tcg_current_docs",
+      "sha256": "a82765453c453ea32d33fab6bd279b210ec45eb55abc21601f66be72a3fcbb0e",
+      "status": "OK",
+      "url": "https://docs.pokemontcg.io/api-reference/cards/search-cards/"
+    },
+    {
+      "cache_file": "2a9f6304d7983f8eb56f719128fd764170b6675ae97ff9d6a0293d2dfc9b5ff4.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "name": "tcgdex_markets",
+      "retrieved_at": "2026-09-01T12:58:30+00:00",
+      "role": "tcgdex_current_docs",
+      "sha256": "2a9f6304d7983f8eb56f719128fd764170b6675ae97ff9d6a0293d2dfc9b5ff4",
+      "status": "OK",
+      "url": "https://tcgdex.dev/markets-prices"
+    },
+    {
+      "cache_file": "2f66f80836b528039bb1d4a736a60e11c63957d7aa3526b23845674ccd377499.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "name": "tcgdex_card_reference",
+      "retrieved_at": "2026-09-01T12:58:30+00:00",
+      "role": "tcgdex_current_docs",
+      "sha256": "2f66f80836b528039bb1d4a736a60e11c63957d7aa3526b23845674ccd377499",
+      "status": "OK",
+      "url": "https://tcgdex.dev/reference/card"
+    },
+    {
+      "cache_file": "bb7fefa64e0e80e8cfae76cb9df4056c7d7ff4c59f59b514628c6daab6191a21.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "name": "tcgdex_faq",
+      "retrieved_at": "2026-09-01T12:58:30+00:00",
+      "role": "tcgdex_current_docs",
+      "sha256": "bb7fefa64e0e80e8cfae76cb9df4056c7d7ff4c59f59b514628c6daab6191a21",
+      "status": "OK",
+      "url": "https://tcgdex.dev/faq"
+    }
+  ],
+  "external_sources": [
+    {
+      "cache_file": "412c69427ecab7ae8bee47af1e567b4ed7bbb772f7b8da97eb10455b67860351.bin",
+      "content_type": "text/html;charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:28+00:00",
+      "role": "cardmarket_current_help",
+      "sha256": "412c69427ecab7ae8bee47af1e567b4ed7bbb772f7b8da97eb10455b67860351",
+      "status": "OK",
+      "url": "https://help.cardmarket.com/en/finding-and-listing-pokemon-cards"
+    },
+    {
+      "cache_file": "e9ea94162a8782a52b716b7c6af1704529a4b55cf014f1ef0ce5c2912dd844d3.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:29+00:00",
+      "role": "pokemon_tcg_current_docs",
+      "sha256": "e9ea94162a8782a52b716b7c6af1704529a4b55cf014f1ef0ce5c2912dd844d3",
+      "status": "OK",
+      "url": "https://docs.pokemontcg.io/api-reference/cards/card-object/"
+    },
+    {
+      "cache_file": "a82765453c453ea32d33fab6bd279b210ec45eb55abc21601f66be72a3fcbb0e.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:29+00:00",
+      "role": "pokemon_tcg_current_docs",
+      "sha256": "a82765453c453ea32d33fab6bd279b210ec45eb55abc21601f66be72a3fcbb0e",
+      "status": "OK",
+      "url": "https://docs.pokemontcg.io/api-reference/cards/search-cards/"
+    },
+    {
+      "cache_file": "2a9f6304d7983f8eb56f719128fd764170b6675ae97ff9d6a0293d2dfc9b5ff4.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:30+00:00",
+      "role": "tcgdex_current_docs",
+      "sha256": "2a9f6304d7983f8eb56f719128fd764170b6675ae97ff9d6a0293d2dfc9b5ff4",
+      "status": "OK",
+      "url": "https://tcgdex.dev/markets-prices"
+    },
+    {
+      "cache_file": "2f66f80836b528039bb1d4a736a60e11c63957d7aa3526b23845674ccd377499.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:30+00:00",
+      "role": "tcgdex_current_docs",
+      "sha256": "2f66f80836b528039bb1d4a736a60e11c63957d7aa3526b23845674ccd377499",
+      "status": "OK",
+      "url": "https://tcgdex.dev/reference/card"
+    },
+    {
+      "cache_file": "bb7fefa64e0e80e8cfae76cb9df4056c7d7ff4c59f59b514628c6daab6191a21.bin",
+      "content_type": "text/html",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:30+00:00",
+      "role": "tcgdex_current_docs",
+      "sha256": "bb7fefa64e0e80e8cfae76cb9df4056c7d7ff4c59f59b514628c6daab6191a21",
+      "status": "OK",
+      "url": "https://tcgdex.dev/faq"
+    },
+    {
+      "cache_file": "8973a02d0498d832ce4131dd13df5a81c266e5ef1c548a8079cc5a57d586959c.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:30+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "8973a02d0498d832ce4131dd13df5a81c266e5ef1c548a8079cc5a57d586959c",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Basic-Energy-V1-MEW207"
+    },
+    {
+      "cache_file": "b65f444093c48feb15215681fac97d3827cdf68d299bbd0787978caf43044cf1.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:30+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "b65f444093c48feb15215681fac97d3827cdf68d299bbd0787978caf43044cf1",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Metapod-V1-MEW011"
+    },
+    {
+      "cache_file": "0c99330fa3b8537636e6a823f018f96a738ba755fde789fc048939e0092466cd.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:30+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "0c99330fa3b8537636e6a823f018f96a738ba755fde789fc048939e0092466cd",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Butterfree-V1-MEW012"
+    },
+    {
+      "cache_file": "e2e39d0bddbbc95eb78eb3c071ac9290c9dd27fed3e59bb05a5a6395821e5bb5.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:31+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "e2e39d0bddbbc95eb78eb3c071ac9290c9dd27fed3e59bb05a5a6395821e5bb5",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Weedle-V1-MEW013"
+    },
+    {
+      "cache_file": "19545f917f7fccc0ddeeb622bcb8ca01f1473c32587034de4e439db537e488cb.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:31+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "19545f917f7fccc0ddeeb622bcb8ca01f1473c32587034de4e439db537e488cb",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Kakuna-V1-MEW014"
+    },
+    {
+      "cache_file": "7ec407cd76c922c1e0f4a71dd0652ab1bb9fcc4d18af0186e55fdc1029fbb5e2.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:31+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "7ec407cd76c922c1e0f4a71dd0652ab1bb9fcc4d18af0186e55fdc1029fbb5e2",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Beedrill-V1-MEW015"
+    },
+    {
+      "cache_file": "d593e9243a7fa67db1e3b2feb2508945a2c7d7300d31fcd5caa4f61dbf2c3edb.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:31+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "d593e9243a7fa67db1e3b2feb2508945a2c7d7300d31fcd5caa4f61dbf2c3edb",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Pidgey-V1-MEW016"
+    },
+    {
+      "cache_file": "b8cf8324c79e40c949f42602ceb5e9b56a5e8d4ba993d8620dcc47926246097b.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:31+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "b8cf8324c79e40c949f42602ceb5e9b56a5e8d4ba993d8620dcc47926246097b",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Pidgeotto-V1-MEW017"
+    },
+    {
+      "cache_file": "833857051b582997666d00cf67f8c96f8446ef04acb0151c45403398a107ac23.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:31+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "833857051b582997666d00cf67f8c96f8446ef04acb0151c45403398a107ac23",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Pidgeot-V1-MEW018"
+    },
+    {
+      "cache_file": "ce92a1e11440b3691e57105c552673f7d2a730853734a424cefb01396ddfaf13.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:31+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "ce92a1e11440b3691e57105c552673f7d2a730853734a424cefb01396ddfaf13",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Rattata-V1-MEW019"
+    },
+    {
+      "cache_file": "fb2ba229f46d6af934babd2f09065755c7f23eb57c9dda4331f29490483a810b.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:31+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "fb2ba229f46d6af934babd2f09065755c7f23eb57c9dda4331f29490483a810b",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Raticate-V1-MEW020"
+    },
+    {
+      "cache_file": "3b9c2a4211d1d1021f077913701c2be863bf702d1fa3ff40a60b8e3a5236a619.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:32+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "3b9c2a4211d1d1021f077913701c2be863bf702d1fa3ff40a60b8e3a5236a619",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Spearow-V1-MEW021"
+    },
+    {
+      "cache_file": "9dc31c91601092442bc542701ab342b99e7031f207911cadc67f6d0e95988a67.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:32+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "9dc31c91601092442bc542701ab342b99e7031f207911cadc67f6d0e95988a67",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Fearow-V1-MEW022"
+    },
+    {
+      "cache_file": "12a4b5083a48a2f4ba7bd887f92b8dfe03448cb9725f3554d3cbbe02a5690e4a.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:32+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "12a4b5083a48a2f4ba7bd887f92b8dfe03448cb9725f3554d3cbbe02a5690e4a",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Ekans-V1-MEW023"
+    },
+    {
+      "cache_file": "b714f89c29ff1c32d33d0db12168c3c779266f48dc65977d1abdad973af7567b.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:32+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "b714f89c29ff1c32d33d0db12168c3c779266f48dc65977d1abdad973af7567b",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Raichu-V1-MEW026"
+    },
+    {
+      "cache_file": "26c036164eb22ec8349ed877bb02d8b061df287871e7cd28024a9513b725e32e.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:32+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "26c036164eb22ec8349ed877bb02d8b061df287871e7cd28024a9513b725e32e",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Sandshrew-V1-MEW027"
+    },
+    {
+      "cache_file": "ca7372033d1d2692b1193112e24a1cf00b34018d24bdaa664fdf61473a80235e.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:32+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "ca7372033d1d2692b1193112e24a1cf00b34018d24bdaa664fdf61473a80235e",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Sandslash-V1-MEW028"
+    },
+    {
+      "cache_file": "87a35a34eac230c0777eade9de855f149c9f755a0401e2daf014cad9e933c0be.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:32+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "87a35a34eac230c0777eade9de855f149c9f755a0401e2daf014cad9e933c0be",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Nidoran-V1-MEW029"
+    },
+    {
+      "cache_file": "1a52f9ca94a44aaefa070b74886ccbc6362814018ab132d74f5ea60de1769490.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:32+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "1a52f9ca94a44aaefa070b74886ccbc6362814018ab132d74f5ea60de1769490",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Nidorina-V1-MEW030"
+    },
+    {
+      "cache_file": "22fa5316dfab3efc1d1892f4ee9f4fff16243bb7aa6dde6e5051608e3879efe7.bin",
+      "content_type": "text/html; charset=UTF-8",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T12:58:32+00:00",
+      "role": "cardmarket_public_product_page",
+      "sha256": "22fa5316dfab3efc1d1892f4ee9f4fff16243bb7aa6dde6e5051608e3879efe7",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Nidoqueen-V1-MEW031"
+    },
+    {
+      "cache_file": "c08470d9f287a71176ed0d5c8a32c719e1e247d4985ad9da9cc3e1d05f541364.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:35+00:00",
+      "role": "tcgdex_set",
+      "sha256": "c08470d9f287a71176ed0d5c8a32c719e1e247d4985ad9da9cc3e1d05f541364",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5"
+    },
+    {
+      "cache_file": "7fe1fd68f14a074789a29e8995d6f9be24d695ff6d5efd1778c0bcf2adf6ef7f.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:36+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7fe1fd68f14a074789a29e8995d6f9be24d695ff6d5efd1778c0bcf2adf6ef7f",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/001"
+    },
+    {
+      "cache_file": "074ec57b8d6bf00fc05f1a560847939ea748eeb9e8a784968bb96a72b3d81ce0.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:36+00:00",
+      "role": "tcgdex_card",
+      "sha256": "074ec57b8d6bf00fc05f1a560847939ea748eeb9e8a784968bb96a72b3d81ce0",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/002"
+    },
+    {
+      "cache_file": "a32c5c6d2196b5335a09fc2cd411ff538119c3b8c7a89a2b43d8d75a0252927a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:37+00:00",
+      "role": "tcgdex_card",
+      "sha256": "a32c5c6d2196b5335a09fc2cd411ff538119c3b8c7a89a2b43d8d75a0252927a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/003"
+    },
+    {
+      "cache_file": "2bce2cc4452ae42c09069bed56605babdd365035344ef01b35c8b69146dad640.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:38+00:00",
+      "role": "tcgdex_card",
+      "sha256": "2bce2cc4452ae42c09069bed56605babdd365035344ef01b35c8b69146dad640",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/004"
+    },
+    {
+      "cache_file": "0eb2f6e8c5799d928c78e4e2a2f91af51aba272fbdf927e96e1a64ed02617184.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:40+00:00",
+      "role": "tcgdex_card",
+      "sha256": "0eb2f6e8c5799d928c78e4e2a2f91af51aba272fbdf927e96e1a64ed02617184",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/005"
+    },
+    {
+      "cache_file": "4b663a04350db304faeaf384b1c02a2f333e8b73d8e57e680b0719bb2d9eeaa0.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:41+00:00",
+      "role": "tcgdex_card",
+      "sha256": "4b663a04350db304faeaf384b1c02a2f333e8b73d8e57e680b0719bb2d9eeaa0",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/006"
+    },
+    {
+      "cache_file": "47f5a0f8c56b17112f1a3c0adaf496ff368f4c3f14ea7483f271de5f388faa01.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:42+00:00",
+      "role": "tcgdex_card",
+      "sha256": "47f5a0f8c56b17112f1a3c0adaf496ff368f4c3f14ea7483f271de5f388faa01",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/007"
+    },
+    {
+      "cache_file": "e502a4edd7b2b5813e9731ddf96300e1597245ef86af7c45b00481db87dcd126.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:42+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e502a4edd7b2b5813e9731ddf96300e1597245ef86af7c45b00481db87dcd126",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/008"
+    },
+    {
+      "cache_file": "5c002557b83cd4204edd7006b6158ee3719df68c9ffc322f715f8bfe838ab17e.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:44+00:00",
+      "role": "tcgdex_card",
+      "sha256": "5c002557b83cd4204edd7006b6158ee3719df68c9ffc322f715f8bfe838ab17e",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/009"
+    },
+    {
+      "cache_file": "036a3f7d541cb651aba01c0357876fd1f5087158b5ae307f4babca63d47f00ba.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:45+00:00",
+      "role": "tcgdex_card",
+      "sha256": "036a3f7d541cb651aba01c0357876fd1f5087158b5ae307f4babca63d47f00ba",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/010"
+    },
+    {
+      "cache_file": "e7d75383f1755845ce8da300934c5d4129203dec932f34814ed8bf173c024d7f.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:45+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e7d75383f1755845ce8da300934c5d4129203dec932f34814ed8bf173c024d7f",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/011"
+    },
+    {
+      "cache_file": "e6e7a21141e85a7814552d6196e0c6c1d2f556eb48d5e48cce15e55091663b81.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:46+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e6e7a21141e85a7814552d6196e0c6c1d2f556eb48d5e48cce15e55091663b81",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/012"
+    },
+    {
+      "cache_file": "cd9f35e6f32ed27ee682e0ef7b712bf0db58641dd7bd82c49d32c041671345da.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:46+00:00",
+      "role": "tcgdex_card",
+      "sha256": "cd9f35e6f32ed27ee682e0ef7b712bf0db58641dd7bd82c49d32c041671345da",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/013"
+    },
+    {
+      "cache_file": "8ddd0ab0ca6e0c0a1808fd79bc457265613367d80405d1dbbf39581115ebe634.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:47+00:00",
+      "role": "tcgdex_card",
+      "sha256": "8ddd0ab0ca6e0c0a1808fd79bc457265613367d80405d1dbbf39581115ebe634",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/014"
+    },
+    {
+      "cache_file": "79fd19408f1c2f571a0104c7392c32fe1220224bad37030d63dc777834a3858e.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:48+00:00",
+      "role": "tcgdex_card",
+      "sha256": "79fd19408f1c2f571a0104c7392c32fe1220224bad37030d63dc777834a3858e",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/015"
+    },
+    {
+      "cache_file": "1cd046190629afa3d1a5c7f4cccae9f82898cac33861cc05236de6b52c07bf2e.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:50+00:00",
+      "role": "tcgdex_card",
+      "sha256": "1cd046190629afa3d1a5c7f4cccae9f82898cac33861cc05236de6b52c07bf2e",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/016"
+    },
+    {
+      "cache_file": "5e6a7425db67eddce8da06217dd7e0e913d6ac2a1723cbea151a66a6bc9d7e94.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:50+00:00",
+      "role": "tcgdex_card",
+      "sha256": "5e6a7425db67eddce8da06217dd7e0e913d6ac2a1723cbea151a66a6bc9d7e94",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/017"
+    },
+    {
+      "cache_file": "9c3eeee4e9d83361b70e6c49e1c040ff92584ad7b4045aaab26fc652f596e7aa.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:51+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9c3eeee4e9d83361b70e6c49e1c040ff92584ad7b4045aaab26fc652f596e7aa",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/018"
+    },
+    {
+      "cache_file": "a91c26d45ce1b4a7fb943886de6cb5c2476e54414c50ac23aec83b6c2cd062e9.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:51+00:00",
+      "role": "tcgdex_card",
+      "sha256": "a91c26d45ce1b4a7fb943886de6cb5c2476e54414c50ac23aec83b6c2cd062e9",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/019"
+    },
+    {
+      "cache_file": "567b420dc48f9c7ce8f38aa657482e48c1f7ba4a66246945a962359206c010db.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:52+00:00",
+      "role": "tcgdex_card",
+      "sha256": "567b420dc48f9c7ce8f38aa657482e48c1f7ba4a66246945a962359206c010db",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/020"
+    },
+    {
+      "cache_file": "da2dfb805a564fd68a9fa53babf9710d593ac6d196d423a17af9412de4f3def6.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:55+00:00",
+      "role": "tcgdex_card",
+      "sha256": "da2dfb805a564fd68a9fa53babf9710d593ac6d196d423a17af9412de4f3def6",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/021"
+    },
+    {
+      "cache_file": "399087bccc5fc01344912d8edee15e9bd6814a9eb0934704a4da443be8ca9816.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:55+00:00",
+      "role": "tcgdex_card",
+      "sha256": "399087bccc5fc01344912d8edee15e9bd6814a9eb0934704a4da443be8ca9816",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/022"
+    },
+    {
+      "cache_file": "4fc6e6952abac6f316953b23dc1b0976816b69fed263d762062baf10dc633a81.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:56+00:00",
+      "role": "tcgdex_card",
+      "sha256": "4fc6e6952abac6f316953b23dc1b0976816b69fed263d762062baf10dc633a81",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/023"
+    },
+    {
+      "cache_file": "2f87aa4a31777e66e7957c35adc177712f5c975b233a50d9c6679cbb6f2293bb.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:57+00:00",
+      "role": "tcgdex_card",
+      "sha256": "2f87aa4a31777e66e7957c35adc177712f5c975b233a50d9c6679cbb6f2293bb",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/024"
+    },
+    {
+      "cache_file": "0c22d53935945dfb3ee56583894cb47e2c5c0ad2f2f58dc888bf357c60c7d5fb.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:57+00:00",
+      "role": "tcgdex_card",
+      "sha256": "0c22d53935945dfb3ee56583894cb47e2c5c0ad2f2f58dc888bf357c60c7d5fb",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/025"
+    },
+    {
+      "cache_file": "6bfca908b84fb496166264954b9b1a561178793031887168eefd10c038ab9223.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:58+00:00",
+      "role": "tcgdex_card",
+      "sha256": "6bfca908b84fb496166264954b9b1a561178793031887168eefd10c038ab9223",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/026"
+    },
+    {
+      "cache_file": "2f5962fe4c1ce14332aa33a2d8b8d84706b172b18d095f1a6489a8fb97a63a49.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:58:59+00:00",
+      "role": "tcgdex_card",
+      "sha256": "2f5962fe4c1ce14332aa33a2d8b8d84706b172b18d095f1a6489a8fb97a63a49",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/027"
+    },
+    {
+      "cache_file": "1144253b2a1817cbb237e1eee426fe12226757a05b302601778ccc99fc065d41.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:01+00:00",
+      "role": "tcgdex_card",
+      "sha256": "1144253b2a1817cbb237e1eee426fe12226757a05b302601778ccc99fc065d41",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/028"
+    },
+    {
+      "cache_file": "d618e38f640214a8ff58ee7098dcd40ab7cadafe438fcb8f747029126e1a1e27.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:02+00:00",
+      "role": "tcgdex_card",
+      "sha256": "d618e38f640214a8ff58ee7098dcd40ab7cadafe438fcb8f747029126e1a1e27",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/029"
+    },
+    {
+      "cache_file": "5624932a4c6726d5e26c886f44134a8e2d56f235ac6082e8e0e3945d67727f3a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:02+00:00",
+      "role": "tcgdex_card",
+      "sha256": "5624932a4c6726d5e26c886f44134a8e2d56f235ac6082e8e0e3945d67727f3a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/030"
+    },
+    {
+      "cache_file": "b964a60ffbdf9832cf9d82751017d9b268ac9cca62f8806416b852000df929f6.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:03+00:00",
+      "role": "tcgdex_card",
+      "sha256": "b964a60ffbdf9832cf9d82751017d9b268ac9cca62f8806416b852000df929f6",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/031"
+    },
+    {
+      "cache_file": "12a2a2a94475d8ca815192e52d63c6c2ed446169b3ce24abdf94b0ea0f308a88.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:03+00:00",
+      "role": "tcgdex_card",
+      "sha256": "12a2a2a94475d8ca815192e52d63c6c2ed446169b3ce24abdf94b0ea0f308a88",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/032"
+    },
+    {
+      "cache_file": "d5b9d8d2f577bddaaf989fb09e588b312b752a54ed1f95976af1e5609ba8369c.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:05+00:00",
+      "role": "tcgdex_card",
+      "sha256": "d5b9d8d2f577bddaaf989fb09e588b312b752a54ed1f95976af1e5609ba8369c",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/033"
+    },
+    {
+      "cache_file": "c830e9d470705f156d1e1385c76c000b378c2bd23ff9577c8a9c1ee5f6c2dcec.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:06+00:00",
+      "role": "tcgdex_card",
+      "sha256": "c830e9d470705f156d1e1385c76c000b378c2bd23ff9577c8a9c1ee5f6c2dcec",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/034"
+    },
+    {
+      "cache_file": "e125fe96cd961156d88fa218e640630100dd922c793adf1c875dadf41d137dca.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:07+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e125fe96cd961156d88fa218e640630100dd922c793adf1c875dadf41d137dca",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/035"
+    },
+    {
+      "cache_file": "d07dbfd53df9c87a08566a70b97ca2e46902d4917c3c57e738813a1e82d8e13f.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:08+00:00",
+      "role": "tcgdex_card",
+      "sha256": "d07dbfd53df9c87a08566a70b97ca2e46902d4917c3c57e738813a1e82d8e13f",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/036"
+    },
+    {
+      "cache_file": "259acb9f1f371002324c9e46405cf4d0aaeb027275907bd001c4d835c71ce21e.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:09+00:00",
+      "role": "tcgdex_card",
+      "sha256": "259acb9f1f371002324c9e46405cf4d0aaeb027275907bd001c4d835c71ce21e",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/037"
+    },
+    {
+      "cache_file": "929b695ea3cb87f29a14de47df551539a75b36eed4ba1252ac88659b8f296453.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:11+00:00",
+      "role": "tcgdex_card",
+      "sha256": "929b695ea3cb87f29a14de47df551539a75b36eed4ba1252ac88659b8f296453",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/038"
+    },
+    {
+      "cache_file": "7731cf30f96b03c9a890500e9c5a7582e3e863bfc31c99b0014b7ff2663a43c9.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:11+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7731cf30f96b03c9a890500e9c5a7582e3e863bfc31c99b0014b7ff2663a43c9",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/039"
+    },
+    {
+      "cache_file": "7a754cd4eae932ae42d27294f07219583cae2b08e60923b3fd842777810b54ec.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:12+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7a754cd4eae932ae42d27294f07219583cae2b08e60923b3fd842777810b54ec",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/040"
+    },
+    {
+      "cache_file": "464ba3ef19af072fd0b82f1ffafe92eb6abee57c46ff1b3174d3ef047ceb6e01.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:12+00:00",
+      "role": "tcgdex_card",
+      "sha256": "464ba3ef19af072fd0b82f1ffafe92eb6abee57c46ff1b3174d3ef047ceb6e01",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/041"
+    },
+    {
+      "cache_file": "13084fcd60fc940c745c5c2b380d7b5191bf3b051aa3a3627d62bb7733174bba.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:12+00:00",
+      "role": "tcgdex_card",
+      "sha256": "13084fcd60fc940c745c5c2b380d7b5191bf3b051aa3a3627d62bb7733174bba",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/042"
+    },
+    {
+      "cache_file": "3f34235756abccd11e6aa16905896f9ae78b02fd2265edc03012a1f494fc67ea.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:12+00:00",
+      "role": "tcgdex_card",
+      "sha256": "3f34235756abccd11e6aa16905896f9ae78b02fd2265edc03012a1f494fc67ea",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/043"
+    },
+    {
+      "cache_file": "069cc7420ce6182b02fd01a8372e446e8f30c6794a38c71e656bf59b4baba87e.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:13+00:00",
+      "role": "tcgdex_card",
+      "sha256": "069cc7420ce6182b02fd01a8372e446e8f30c6794a38c71e656bf59b4baba87e",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/044"
+    },
+    {
+      "cache_file": "1632fbfa98c13638a43b6467e701f8e59e8b99430a30d0aa6d0e6b08dbfc4103.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:13+00:00",
+      "role": "tcgdex_card",
+      "sha256": "1632fbfa98c13638a43b6467e701f8e59e8b99430a30d0aa6d0e6b08dbfc4103",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/045"
+    },
+    {
+      "cache_file": "5a3cfbcd1e9cc8b5a1e3fb3510b56259f07d49eae5fc76b51e4d1e91bf2a6399.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:13+00:00",
+      "role": "tcgdex_card",
+      "sha256": "5a3cfbcd1e9cc8b5a1e3fb3510b56259f07d49eae5fc76b51e4d1e91bf2a6399",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/046"
+    },
+    {
+      "cache_file": "54e3a70152865cc2e975e90bc3a40badee4f5a050553b40245d17088edb331b8.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:15+00:00",
+      "role": "tcgdex_card",
+      "sha256": "54e3a70152865cc2e975e90bc3a40badee4f5a050553b40245d17088edb331b8",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/047"
+    },
+    {
+      "cache_file": "e1cca077ec75a10d440e2ad64ae8a3e267fc9f4213bfe6f17d824e87f8cefcd7.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:16+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e1cca077ec75a10d440e2ad64ae8a3e267fc9f4213bfe6f17d824e87f8cefcd7",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/048"
+    },
+    {
+      "cache_file": "f3cbf40ab58ee523971e48ee7339bb7703a0b9658c3358490b3e835f2e72e7cc.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:17+00:00",
+      "role": "tcgdex_card",
+      "sha256": "f3cbf40ab58ee523971e48ee7339bb7703a0b9658c3358490b3e835f2e72e7cc",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/049"
+    },
+    {
+      "cache_file": "c002b579010e13ed104684cb145518b762bd7cdcf824c5e00f36e2da9e63aa7e.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:17+00:00",
+      "role": "tcgdex_card",
+      "sha256": "c002b579010e13ed104684cb145518b762bd7cdcf824c5e00f36e2da9e63aa7e",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/050"
+    },
+    {
+      "cache_file": "88f608851f2a86403d437591726adf3487b3adeba3623c656d73a9c43abae98a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:18+00:00",
+      "role": "tcgdex_card",
+      "sha256": "88f608851f2a86403d437591726adf3487b3adeba3623c656d73a9c43abae98a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/051"
+    },
+    {
+      "cache_file": "80c5670c3bd51c49dca7dd035d8ee18d3757f63819b258a03f5bd8f32c323325.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:20+00:00",
+      "role": "tcgdex_card",
+      "sha256": "80c5670c3bd51c49dca7dd035d8ee18d3757f63819b258a03f5bd8f32c323325",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/052"
+    },
+    {
+      "cache_file": "394cd90d9e38995ec77bc6246d18354e14bf70b4fb365d835f5287a9ebe0b6a3.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:21+00:00",
+      "role": "tcgdex_card",
+      "sha256": "394cd90d9e38995ec77bc6246d18354e14bf70b4fb365d835f5287a9ebe0b6a3",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/053"
+    },
+    {
+      "cache_file": "377b6451804935afc6145068d3ae4f739356967085f1ec47522668dcac883e76.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:21+00:00",
+      "role": "tcgdex_card",
+      "sha256": "377b6451804935afc6145068d3ae4f739356967085f1ec47522668dcac883e76",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/054"
+    },
+    {
+      "cache_file": "cb72fa3c125ba0e91d56c4697098ab44fc92bca905b99a1f61248f0fb95b89d7.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:22+00:00",
+      "role": "tcgdex_card",
+      "sha256": "cb72fa3c125ba0e91d56c4697098ab44fc92bca905b99a1f61248f0fb95b89d7",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/055"
+    },
+    {
+      "cache_file": "b25fa90992788c5f0d2d55abf63c9363abf07983246c13b31b0369ce115a9ebf.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:22+00:00",
+      "role": "tcgdex_card",
+      "sha256": "b25fa90992788c5f0d2d55abf63c9363abf07983246c13b31b0369ce115a9ebf",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/056"
+    },
+    {
+      "cache_file": "565093ad915b8b18a862b8cf2d85b50adee205ccd39d18c86c4c91dbd8782286.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:23+00:00",
+      "role": "tcgdex_card",
+      "sha256": "565093ad915b8b18a862b8cf2d85b50adee205ccd39d18c86c4c91dbd8782286",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/057"
+    },
+    {
+      "cache_file": "ca02a153b826ebe34ad340f86a75e4ca7d4a63ea936f763586c99633be9a199f.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:25+00:00",
+      "role": "tcgdex_card",
+      "sha256": "ca02a153b826ebe34ad340f86a75e4ca7d4a63ea936f763586c99633be9a199f",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/058"
+    },
+    {
+      "cache_file": "1cca619070ddc909fa5b661512eccb796be0746fb51031814f65681c70919e8c.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:26+00:00",
+      "role": "tcgdex_card",
+      "sha256": "1cca619070ddc909fa5b661512eccb796be0746fb51031814f65681c70919e8c",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/059"
+    },
+    {
+      "cache_file": "7ec49dc112c6ff9f63723262e25c32982cd703f40ca5b6d267b8403bf15d0d4b.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:27+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7ec49dc112c6ff9f63723262e25c32982cd703f40ca5b6d267b8403bf15d0d4b",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/060"
+    },
+    {
+      "cache_file": "119cf92d454ea102421b3c49f92a04d78cbeac2dfbaf8180f5cd494e401e1356.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:27+00:00",
+      "role": "tcgdex_card",
+      "sha256": "119cf92d454ea102421b3c49f92a04d78cbeac2dfbaf8180f5cd494e401e1356",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/061"
+    },
+    {
+      "cache_file": "36a801697ebc96fc5ea4ba734f941d8ece3dc5c230ceb91fc59f0e20973caf14.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:29+00:00",
+      "role": "tcgdex_card",
+      "sha256": "36a801697ebc96fc5ea4ba734f941d8ece3dc5c230ceb91fc59f0e20973caf14",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/062"
+    },
+    {
+      "cache_file": "59b8b22f8f47f7c81c8a2ec8bf63c86499245612f655c4c23727401fafe8ad51.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:31+00:00",
+      "role": "tcgdex_card",
+      "sha256": "59b8b22f8f47f7c81c8a2ec8bf63c86499245612f655c4c23727401fafe8ad51",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/063"
+    },
+    {
+      "cache_file": "afa6219a4a5e040b3a536145934064d87f62735b82a1b641e67329f3d51bb2ba.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:31+00:00",
+      "role": "tcgdex_card",
+      "sha256": "afa6219a4a5e040b3a536145934064d87f62735b82a1b641e67329f3d51bb2ba",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/064"
+    },
+    {
+      "cache_file": "0d0fc0b0873d634289acf6d7f9a96af3722ae5d753682ea635f3b3120e3079e7.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:32+00:00",
+      "role": "tcgdex_card",
+      "sha256": "0d0fc0b0873d634289acf6d7f9a96af3722ae5d753682ea635f3b3120e3079e7",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/065"
+    },
+    {
+      "cache_file": "b32af39292b7dfc30c671adb4e16794bc3c003e39a9580faa0faf47466ded0d8.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:32+00:00",
+      "role": "tcgdex_card",
+      "sha256": "b32af39292b7dfc30c671adb4e16794bc3c003e39a9580faa0faf47466ded0d8",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/066"
+    },
+    {
+      "cache_file": "48deb20f63ed177441e406400a288246c0af98977af92eea75358a1baaef3124.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:32+00:00",
+      "role": "tcgdex_card",
+      "sha256": "48deb20f63ed177441e406400a288246c0af98977af92eea75358a1baaef3124",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/067"
+    },
+    {
+      "cache_file": "ab590b1101141df24c97e7f67b3f6c0ffe7448ca82a98b0ad0c47077368ee15e.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:33+00:00",
+      "role": "tcgdex_card",
+      "sha256": "ab590b1101141df24c97e7f67b3f6c0ffe7448ca82a98b0ad0c47077368ee15e",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/068"
+    },
+    {
+      "cache_file": "110b0cfa5091f535dc109cca26d401bbfb6ca7a3808ac0b066d13a1da240c393.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:34+00:00",
+      "role": "tcgdex_card",
+      "sha256": "110b0cfa5091f535dc109cca26d401bbfb6ca7a3808ac0b066d13a1da240c393",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/069"
+    },
+    {
+      "cache_file": "686c6de4c92179ac8f11002d5f0435dd98b5f550f9428d6078593c260ba304ce.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:36+00:00",
+      "role": "tcgdex_card",
+      "sha256": "686c6de4c92179ac8f11002d5f0435dd98b5f550f9428d6078593c260ba304ce",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/070"
+    },
+    {
+      "cache_file": "df01200a87dea8b7684827644a76cb21d0ca08161071fa9c2ae8d667d5658c2c.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:36+00:00",
+      "role": "tcgdex_card",
+      "sha256": "df01200a87dea8b7684827644a76cb21d0ca08161071fa9c2ae8d667d5658c2c",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/071"
+    },
+    {
+      "cache_file": "fac6b67cd73ab596c044fa0c17a48fd992dececa769bbe82a1078a5606e1dadc.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:37+00:00",
+      "role": "tcgdex_card",
+      "sha256": "fac6b67cd73ab596c044fa0c17a48fd992dececa769bbe82a1078a5606e1dadc",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/072"
+    },
+    {
+      "cache_file": "afe890ccb73291218d8f89927f573b70d467c798a86e338a6cc37b0820adad19.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:37+00:00",
+      "role": "tcgdex_card",
+      "sha256": "afe890ccb73291218d8f89927f573b70d467c798a86e338a6cc37b0820adad19",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/073"
+    },
+    {
+      "cache_file": "e6ef27337ee493dbf5fb604f88c3ea55ab5071ad7584c3d3aa5620381073c733.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:40+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e6ef27337ee493dbf5fb604f88c3ea55ab5071ad7584c3d3aa5620381073c733",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/074"
+    },
+    {
+      "cache_file": "b7431683af39fa5e20bed1795f9f72eb6069a0f792282579f8cc2cb4dae8b331.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:42+00:00",
+      "role": "tcgdex_card",
+      "sha256": "b7431683af39fa5e20bed1795f9f72eb6069a0f792282579f8cc2cb4dae8b331",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/075"
+    },
+    {
+      "cache_file": "468ece676ecd6aee98ab5eddd9faa631e9a6f1c702c2bcbc9c36b6ff66f51f52.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:42+00:00",
+      "role": "tcgdex_card",
+      "sha256": "468ece676ecd6aee98ab5eddd9faa631e9a6f1c702c2bcbc9c36b6ff66f51f52",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/076"
+    },
+    {
+      "cache_file": "11386ab2928b97ffd65208f2b6669bcef5fed88f324401b99f4c306d47b9ea04.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:42+00:00",
+      "role": "tcgdex_card",
+      "sha256": "11386ab2928b97ffd65208f2b6669bcef5fed88f324401b99f4c306d47b9ea04",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/077"
+    },
+    {
+      "cache_file": "333ab9789f73284de0f99e9f7542891b69f320e064362fe62d48451b1f84a56d.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:42+00:00",
+      "role": "tcgdex_card",
+      "sha256": "333ab9789f73284de0f99e9f7542891b69f320e064362fe62d48451b1f84a56d",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/078"
+    },
+    {
+      "cache_file": "ad5b1ab954ada63cfc508bf93387c2ec7d7aae0590237fe3eba5f9acda496c94.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:44+00:00",
+      "role": "tcgdex_card",
+      "sha256": "ad5b1ab954ada63cfc508bf93387c2ec7d7aae0590237fe3eba5f9acda496c94",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/079"
+    },
+    {
+      "cache_file": "9b98f3d5947b7ebc85bb7f38ceb04cd0adffdd4b9064986e4f9dd4ab6591438a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:46+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9b98f3d5947b7ebc85bb7f38ceb04cd0adffdd4b9064986e4f9dd4ab6591438a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/080"
+    },
+    {
+      "cache_file": "ca89ba6f41cbc457eb2b32d5c7ad56001ef19380effa02ad7de275e263d2a837.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:46+00:00",
+      "role": "tcgdex_card",
+      "sha256": "ca89ba6f41cbc457eb2b32d5c7ad56001ef19380effa02ad7de275e263d2a837",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/081"
+    },
+    {
+      "cache_file": "4e3c74485b07bf6d3c3c625283ff6b74f3a4e4b2a06511cd2de04e4615dbbc7d.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:47+00:00",
+      "role": "tcgdex_card",
+      "sha256": "4e3c74485b07bf6d3c3c625283ff6b74f3a4e4b2a06511cd2de04e4615dbbc7d",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/082"
+    },
+    {
+      "cache_file": "1628393d2113394ffe52de105dc5692407993172e25a45852b2175426945d9ad.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:47+00:00",
+      "role": "tcgdex_card",
+      "sha256": "1628393d2113394ffe52de105dc5692407993172e25a45852b2175426945d9ad",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/083"
+    },
+    {
+      "cache_file": "fdab1542acc84096c0b65cd36910bee0c152343e64c69654e1741bebe6d5c9d2.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:47+00:00",
+      "role": "tcgdex_card",
+      "sha256": "fdab1542acc84096c0b65cd36910bee0c152343e64c69654e1741bebe6d5c9d2",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/084"
+    },
+    {
+      "cache_file": "8c99632f9de99aeed8db856bd9fe8ac04a1512dc02fc89b595e4df5ceab6b70a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:48+00:00",
+      "role": "tcgdex_card",
+      "sha256": "8c99632f9de99aeed8db856bd9fe8ac04a1512dc02fc89b595e4df5ceab6b70a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/085"
+    },
+    {
+      "cache_file": "162cc26ac15fef1e6cdee1f346ea9cd4544420cd0f1bf1ffbb9d03ed79e8e809.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:50+00:00",
+      "role": "tcgdex_card",
+      "sha256": "162cc26ac15fef1e6cdee1f346ea9cd4544420cd0f1bf1ffbb9d03ed79e8e809",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/086"
+    },
+    {
+      "cache_file": "6a5be7851428f02db329970c9b3e755b5fbe49302be8121f576555e1fee73ffe.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:51+00:00",
+      "role": "tcgdex_card",
+      "sha256": "6a5be7851428f02db329970c9b3e755b5fbe49302be8121f576555e1fee73ffe",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/087"
+    },
+    {
+      "cache_file": "ee4c96d87017aaf301b01ca19342495c1749ace8b33826757f5932b4741ba9c8.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:52+00:00",
+      "role": "tcgdex_card",
+      "sha256": "ee4c96d87017aaf301b01ca19342495c1749ace8b33826757f5932b4741ba9c8",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/088"
+    },
+    {
+      "cache_file": "674fc63b790371f92a4fdc3d6e64431a789a4e64b63e9d93f8513c5a2387cc91.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:53+00:00",
+      "role": "tcgdex_card",
+      "sha256": "674fc63b790371f92a4fdc3d6e64431a789a4e64b63e9d93f8513c5a2387cc91",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/089"
+    },
+    {
+      "cache_file": "466821797767606167d6feb32c47503882c4385f2691ee8a6077110f56be5f9c.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:53+00:00",
+      "role": "tcgdex_card",
+      "sha256": "466821797767606167d6feb32c47503882c4385f2691ee8a6077110f56be5f9c",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/090"
+    },
+    {
+      "cache_file": "9dca9b414a06c11ca5738c50a48536759ae59853e6cef01c3076aed4f172d834.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:53+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9dca9b414a06c11ca5738c50a48536759ae59853e6cef01c3076aed4f172d834",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/091"
+    },
+    {
+      "cache_file": "2e8fae24391bf2ae0d2d32c71e47321634541bf9b700962691a2337fc1461e88.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:54+00:00",
+      "role": "tcgdex_card",
+      "sha256": "2e8fae24391bf2ae0d2d32c71e47321634541bf9b700962691a2337fc1461e88",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/092"
+    },
+    {
+      "cache_file": "5aeeb034a12445f5cbd9407eab9207c7f530f9317aeb6f00f8ea4c175bc101d8.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:56+00:00",
+      "role": "tcgdex_card",
+      "sha256": "5aeeb034a12445f5cbd9407eab9207c7f530f9317aeb6f00f8ea4c175bc101d8",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/093"
+    },
+    {
+      "cache_file": "5e5ab174a1bd10e701b4d0458349f12363cd15fe23d728a72cdc89d0140e938f.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:57+00:00",
+      "role": "tcgdex_card",
+      "sha256": "5e5ab174a1bd10e701b4d0458349f12363cd15fe23d728a72cdc89d0140e938f",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/094"
+    },
+    {
+      "cache_file": "d2fffe4e99b8116803fe6a8e344fba33a814c6bd7696d882319bf9e30f6d9d13.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:58+00:00",
+      "role": "tcgdex_card",
+      "sha256": "d2fffe4e99b8116803fe6a8e344fba33a814c6bd7696d882319bf9e30f6d9d13",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/095"
+    },
+    {
+      "cache_file": "1333be0b801f187636b16de16b24f5dd21628221fb82f6f48adcdcd11acbda81.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:58+00:00",
+      "role": "tcgdex_card",
+      "sha256": "1333be0b801f187636b16de16b24f5dd21628221fb82f6f48adcdcd11acbda81",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/096"
+    },
+    {
+      "cache_file": "3c82a3c5d358f6b0756916728e3fc34c77457736461fdc61350c17f6dbe92ff9.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:59+00:00",
+      "role": "tcgdex_card",
+      "sha256": "3c82a3c5d358f6b0756916728e3fc34c77457736461fdc61350c17f6dbe92ff9",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/097"
+    },
+    {
+      "cache_file": "95b2205a92e8d121e541d05fd1bc437c9ab0d186682de72429566931597a8d1a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T12:59:59+00:00",
+      "role": "tcgdex_card",
+      "sha256": "95b2205a92e8d121e541d05fd1bc437c9ab0d186682de72429566931597a8d1a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/098"
+    },
+    {
+      "cache_file": "6f914f0fe4ad508d4e62590c2b01ab14851cd2def1d7f1062c0b2e56e9f3047e.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:03+00:00",
+      "role": "tcgdex_card",
+      "sha256": "6f914f0fe4ad508d4e62590c2b01ab14851cd2def1d7f1062c0b2e56e9f3047e",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/099"
+    },
+    {
+      "cache_file": "9c675430d9ae2caa953cd9c0aef78c10b6b3b3b6557650e13c319854f1cbdb00.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:03+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9c675430d9ae2caa953cd9c0aef78c10b6b3b3b6557650e13c319854f1cbdb00",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/100"
+    },
+    {
+      "cache_file": "1c8cbbdb47b95250aa5cae75b6ed26c43705c5f5862e33ef6f0db608eaee0b29.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:04+00:00",
+      "role": "tcgdex_card",
+      "sha256": "1c8cbbdb47b95250aa5cae75b6ed26c43705c5f5862e33ef6f0db608eaee0b29",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/101"
+    },
+    {
+      "cache_file": "9b655fff2c1bce5ac4f247f9ad1e0fe443e76b4bb86b236205c966fe1a315e27.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:04+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9b655fff2c1bce5ac4f247f9ad1e0fe443e76b4bb86b236205c966fe1a315e27",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/102"
+    },
+    {
+      "cache_file": "19fd17a532574d64e14b997160c2ac7ea2a4bc02fc0b018d1eb7d5ae8511e6be.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:04+00:00",
+      "role": "tcgdex_card",
+      "sha256": "19fd17a532574d64e14b997160c2ac7ea2a4bc02fc0b018d1eb7d5ae8511e6be",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/103"
+    },
+    {
+      "cache_file": "48907adceb89eb2a44cbab492910e5613e0869d6bdda7798af17b0d19d485ba6.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:04+00:00",
+      "role": "tcgdex_card",
+      "sha256": "48907adceb89eb2a44cbab492910e5613e0869d6bdda7798af17b0d19d485ba6",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/104"
+    },
+    {
+      "cache_file": "7940e03628d0288059fcc07aa0afac3fdd631783a7fbaaad18e0d232b61e82ca.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:05+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7940e03628d0288059fcc07aa0afac3fdd631783a7fbaaad18e0d232b61e82ca",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/105"
+    },
+    {
+      "cache_file": "9a56d1a34f01622a2bdf6a7354d87f366ef58a1fda10966571cdb8e5458ec914.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:07+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9a56d1a34f01622a2bdf6a7354d87f366ef58a1fda10966571cdb8e5458ec914",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/106"
+    },
+    {
+      "cache_file": "999aedf7aaae251a6b4452b4d8605d020ff2308c533730dca6379d5b74adac10.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:08+00:00",
+      "role": "tcgdex_card",
+      "sha256": "999aedf7aaae251a6b4452b4d8605d020ff2308c533730dca6379d5b74adac10",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/107"
+    },
+    {
+      "cache_file": "a2f41e5a3a6b9c065eaa6e5236081c626b19ef5e296f271af31c2831ada8f14f.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:08+00:00",
+      "role": "tcgdex_card",
+      "sha256": "a2f41e5a3a6b9c065eaa6e5236081c626b19ef5e296f271af31c2831ada8f14f",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/108"
+    },
+    {
+      "cache_file": "576b7ee288e8215756c9943b8a09ed8454cdd57dab776df45ae5ab6e1e10c036.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:09+00:00",
+      "role": "tcgdex_card",
+      "sha256": "576b7ee288e8215756c9943b8a09ed8454cdd57dab776df45ae5ab6e1e10c036",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/109"
+    },
+    {
+      "cache_file": "6a93721a0bb65d9c63312facdd4440945cce728ce3cf2f575c63a0a474cdcab9.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:09+00:00",
+      "role": "tcgdex_card",
+      "sha256": "6a93721a0bb65d9c63312facdd4440945cce728ce3cf2f575c63a0a474cdcab9",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/110"
+    },
+    {
+      "cache_file": "34da23008acd9856e9445bfb90c819ad4825c7f9d09b97ad2dae52d4dc6a75f8.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:09+00:00",
+      "role": "tcgdex_card",
+      "sha256": "34da23008acd9856e9445bfb90c819ad4825c7f9d09b97ad2dae52d4dc6a75f8",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/111"
+    },
+    {
+      "cache_file": "484741a4720e040283b83712c49002b826f5bba2483288632adc7c702da884a3.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:10+00:00",
+      "role": "tcgdex_card",
+      "sha256": "484741a4720e040283b83712c49002b826f5bba2483288632adc7c702da884a3",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/112"
+    },
+    {
+      "cache_file": "9b273b9e1a8180139f4e87575fda72c996518272229d3ae57c483571b2c485fd.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:11+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9b273b9e1a8180139f4e87575fda72c996518272229d3ae57c483571b2c485fd",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/113"
+    },
+    {
+      "cache_file": "99d3e691641a087ce597aba7fddbc57aca04cbf9160388239bbca19690472dbd.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:13+00:00",
+      "role": "tcgdex_card",
+      "sha256": "99d3e691641a087ce597aba7fddbc57aca04cbf9160388239bbca19690472dbd",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/114"
+    },
+    {
+      "cache_file": "486a26c8503775414a00f05fc0cf8047c71b4fb10cb2d565c784f248115baed0.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:14+00:00",
+      "role": "tcgdex_card",
+      "sha256": "486a26c8503775414a00f05fc0cf8047c71b4fb10cb2d565c784f248115baed0",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/115"
+    },
+    {
+      "cache_file": "7b3417985094abbb316492ce20aa9c6cdb38001f8d9e060c30958b21a6ba4788.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:15+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7b3417985094abbb316492ce20aa9c6cdb38001f8d9e060c30958b21a6ba4788",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/116"
+    },
+    {
+      "cache_file": "a05e54bd721fbc223a3f783dcde46cfbdb64f1e31877494effa5de0896230efb.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:15+00:00",
+      "role": "tcgdex_card",
+      "sha256": "a05e54bd721fbc223a3f783dcde46cfbdb64f1e31877494effa5de0896230efb",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/117"
+    },
+    {
+      "cache_file": "e31d6c2d38d14794e8e4b89c2795a307959f65f1777c991a744227a2e2d0b3cd.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:16+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e31d6c2d38d14794e8e4b89c2795a307959f65f1777c991a744227a2e2d0b3cd",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/118"
+    },
+    {
+      "cache_file": "594f8be52205ede14611f28f0920315c055c8f4800fe0fb7e525aba615066a96.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:17+00:00",
+      "role": "tcgdex_card",
+      "sha256": "594f8be52205ede14611f28f0920315c055c8f4800fe0fb7e525aba615066a96",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/119"
+    },
+    {
+      "cache_file": "7830c20755e4ab8959b8c79deced2a6c37ce77dcdcf5d1e4eb9df18d8451a311.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:19+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7830c20755e4ab8959b8c79deced2a6c37ce77dcdcf5d1e4eb9df18d8451a311",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/120"
+    },
+    {
+      "cache_file": "19c4f8526d32a1f2b27fb38c0ab49e2c2d30f302f2cc4b3baa07146fa001f7d8.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:19+00:00",
+      "role": "tcgdex_card",
+      "sha256": "19c4f8526d32a1f2b27fb38c0ab49e2c2d30f302f2cc4b3baa07146fa001f7d8",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/121"
+    },
+    {
+      "cache_file": "be5a6f5f022316036da98abe2002d020c3d6991747ee96d1ce6535d87152cf81.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:20+00:00",
+      "role": "tcgdex_card",
+      "sha256": "be5a6f5f022316036da98abe2002d020c3d6991747ee96d1ce6535d87152cf81",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/122"
+    },
+    {
+      "cache_file": "81ca2eb413c9444ec5d8b61c13a313a700b00ec583aed1194779060df24f4b26.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:20+00:00",
+      "role": "tcgdex_card",
+      "sha256": "81ca2eb413c9444ec5d8b61c13a313a700b00ec583aed1194779060df24f4b26",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/123"
+    },
+    {
+      "cache_file": "a5a8e0d8f9d3cf9e91fb889459b4c4841cce62fba90dcb653443f4276a5e5c79.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:22+00:00",
+      "role": "tcgdex_card",
+      "sha256": "a5a8e0d8f9d3cf9e91fb889459b4c4841cce62fba90dcb653443f4276a5e5c79",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/124"
+    },
+    {
+      "cache_file": "c446118811ef13fdb57c5f720fc385ae62e8de1f9b7084f3de47590a844831e3.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:22+00:00",
+      "role": "tcgdex_card",
+      "sha256": "c446118811ef13fdb57c5f720fc385ae62e8de1f9b7084f3de47590a844831e3",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/125"
+    },
+    {
+      "cache_file": "b8b861636ba63fbdf47325a1cb36e69a56c52296f4faf816779a9b1a661733b7.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:22+00:00",
+      "role": "tcgdex_card",
+      "sha256": "b8b861636ba63fbdf47325a1cb36e69a56c52296f4faf816779a9b1a661733b7",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/126"
+    },
+    {
+      "cache_file": "d049ce0b1b488ad9784a7cc1a9fe4f0ee7c24485158b92ce8663af3d1c40a3d3.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:24+00:00",
+      "role": "tcgdex_card",
+      "sha256": "d049ce0b1b488ad9784a7cc1a9fe4f0ee7c24485158b92ce8663af3d1c40a3d3",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/127"
+    },
+    {
+      "cache_file": "f32135cb25b9bdef3e5204433b2a3305d0d46ee18eec23f4bbdf7239ce15277a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:24+00:00",
+      "role": "tcgdex_card",
+      "sha256": "f32135cb25b9bdef3e5204433b2a3305d0d46ee18eec23f4bbdf7239ce15277a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/128"
+    },
+    {
+      "cache_file": "227bdf08f9d6eddaf20ac88f5d624305750c5facae6cd83b8bf9180b5b9ef6f0.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:25+00:00",
+      "role": "tcgdex_card",
+      "sha256": "227bdf08f9d6eddaf20ac88f5d624305750c5facae6cd83b8bf9180b5b9ef6f0",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/129"
+    },
+    {
+      "cache_file": "c333ea29b208ebd723927c02138f7508bb4b8def9de1dffe412a5046552f761e.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:25+00:00",
+      "role": "tcgdex_card",
+      "sha256": "c333ea29b208ebd723927c02138f7508bb4b8def9de1dffe412a5046552f761e",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/130"
+    },
+    {
+      "cache_file": "9a9a4000ea8d3f923e36afb9b06c1e6c0fcf2469b60733913fa36d9047f310d0.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:25+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9a9a4000ea8d3f923e36afb9b06c1e6c0fcf2469b60733913fa36d9047f310d0",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/131"
+    },
+    {
+      "cache_file": "46f0c4f638f333b587ea1f7c56bf7ac2a0a322e8ad2691ec7cec6256944a29f1.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:27+00:00",
+      "role": "tcgdex_card",
+      "sha256": "46f0c4f638f333b587ea1f7c56bf7ac2a0a322e8ad2691ec7cec6256944a29f1",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/132"
+    },
+    {
+      "cache_file": "0da6c6617a8496b63de9d6952ba2a6968322b55f9a5dd41047c836fe682b99a4.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:28+00:00",
+      "role": "tcgdex_card",
+      "sha256": "0da6c6617a8496b63de9d6952ba2a6968322b55f9a5dd41047c836fe682b99a4",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/133"
+    },
+    {
+      "cache_file": "30e88db93168f7b5cfa8d142a86c53dd289616e66e5dac2a2c420dbf3bfeb5f1.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:29+00:00",
+      "role": "tcgdex_card",
+      "sha256": "30e88db93168f7b5cfa8d142a86c53dd289616e66e5dac2a2c420dbf3bfeb5f1",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/134"
+    },
+    {
+      "cache_file": "d306f52acd4cc7cad3d39e4d27778df9229c84a5493a9b7564873b65532b582d.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:29+00:00",
+      "role": "tcgdex_card",
+      "sha256": "d306f52acd4cc7cad3d39e4d27778df9229c84a5493a9b7564873b65532b582d",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/135"
+    },
+    {
+      "cache_file": "9f2ca345a666c36bb5e9b1462dfdcb444893fbaa84e58298fb141104335bc3a1.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:29+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9f2ca345a666c36bb5e9b1462dfdcb444893fbaa84e58298fb141104335bc3a1",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/136"
+    },
+    {
+      "cache_file": "c0548f55476ffa455e336b4e617152a065d660aee865e0b77458ae7109250cbe.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:31+00:00",
+      "role": "tcgdex_card",
+      "sha256": "c0548f55476ffa455e336b4e617152a065d660aee865e0b77458ae7109250cbe",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/137"
+    },
+    {
+      "cache_file": "919aa005b7bf5d98af42d520935ab36c36300ecec4db3607281a1fd2ca3aabfc.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:32+00:00",
+      "role": "tcgdex_card",
+      "sha256": "919aa005b7bf5d98af42d520935ab36c36300ecec4db3607281a1fd2ca3aabfc",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/138"
+    },
+    {
+      "cache_file": "ac8054a4eb4fd6c371c1fa0615fa740dfceed60a55a564517d70b4dc6c191502.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:32+00:00",
+      "role": "tcgdex_card",
+      "sha256": "ac8054a4eb4fd6c371c1fa0615fa740dfceed60a55a564517d70b4dc6c191502",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/139"
+    },
+    {
+      "cache_file": "7e6e7abae1dec6a5c39898abda93104c0efde46e6972dd150fd775a69edd2919.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:33+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7e6e7abae1dec6a5c39898abda93104c0efde46e6972dd150fd775a69edd2919",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/140"
+    },
+    {
+      "cache_file": "6a50c50627895763a52e77f3d452a47cd5a4cbb7e532e82fb97a7011edb0e042.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:33+00:00",
+      "role": "tcgdex_card",
+      "sha256": "6a50c50627895763a52e77f3d452a47cd5a4cbb7e532e82fb97a7011edb0e042",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/141"
+    },
+    {
+      "cache_file": "693e685da8aa1f477c207d3ed5245b75d294d1617a644dd336bffc567625f834.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:33+00:00",
+      "role": "tcgdex_card",
+      "sha256": "693e685da8aa1f477c207d3ed5245b75d294d1617a644dd336bffc567625f834",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/142"
+    },
+    {
+      "cache_file": "179058a6c916f0831bb3177796f73c75c4c6239a22150f000dfe85aa1f428889.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:34+00:00",
+      "role": "tcgdex_card",
+      "sha256": "179058a6c916f0831bb3177796f73c75c4c6239a22150f000dfe85aa1f428889",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/143"
+    },
+    {
+      "cache_file": "77ace539b799672af8002f7d3795d8326325deb37d3dae66ddb9556560f0cc38.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:34+00:00",
+      "role": "tcgdex_card",
+      "sha256": "77ace539b799672af8002f7d3795d8326325deb37d3dae66ddb9556560f0cc38",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/144"
+    },
+    {
+      "cache_file": "d60f8556dc5988724b04327fc31c05a864d0bf4225d97556aff07f868025ab49.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:36+00:00",
+      "role": "tcgdex_card",
+      "sha256": "d60f8556dc5988724b04327fc31c05a864d0bf4225d97556aff07f868025ab49",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/145"
+    },
+    {
+      "cache_file": "382f351e0aca51510c388ec05f93c9b72773dbdda015988ff50b1d5454721876.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:37+00:00",
+      "role": "tcgdex_card",
+      "sha256": "382f351e0aca51510c388ec05f93c9b72773dbdda015988ff50b1d5454721876",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/146"
+    },
+    {
+      "cache_file": "a735331602ee1f56abc307c2616e18db93d0b2684b79c34f372d32fde7bfa8db.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:37+00:00",
+      "role": "tcgdex_card",
+      "sha256": "a735331602ee1f56abc307c2616e18db93d0b2684b79c34f372d32fde7bfa8db",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/147"
+    },
+    {
+      "cache_file": "7d77638f92514e356b1477bc30574e759ebc1f9b1439d620a3a5a0e3e15131d2.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:38+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7d77638f92514e356b1477bc30574e759ebc1f9b1439d620a3a5a0e3e15131d2",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/148"
+    },
+    {
+      "cache_file": "795c50af13b8cb4af6a63a365ad816583891650787b3bac6fe907251dd3d770c.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:39+00:00",
+      "role": "tcgdex_card",
+      "sha256": "795c50af13b8cb4af6a63a365ad816583891650787b3bac6fe907251dd3d770c",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/149"
+    },
+    {
+      "cache_file": "eae22d711667da2ae6c18630eea1c05b65563e7ed8f30f0066f4118c5c903205.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:41+00:00",
+      "role": "tcgdex_card",
+      "sha256": "eae22d711667da2ae6c18630eea1c05b65563e7ed8f30f0066f4118c5c903205",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/150"
+    },
+    {
+      "cache_file": "41b54de02e930c1a21e6328aa2dc22f05fe96bbcf93dfc27dda4b4142cefdc05.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:42+00:00",
+      "role": "tcgdex_card",
+      "sha256": "41b54de02e930c1a21e6328aa2dc22f05fe96bbcf93dfc27dda4b4142cefdc05",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/151"
+    },
+    {
+      "cache_file": "b8f3afa96e72da97a3f04648977014b6d987c1cb264032fb06de2c2e5c69e72b.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:42+00:00",
+      "role": "tcgdex_card",
+      "sha256": "b8f3afa96e72da97a3f04648977014b6d987c1cb264032fb06de2c2e5c69e72b",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/152"
+    },
+    {
+      "cache_file": "e7e416e823a76c9126922052e87dddfeaeb4e2c3ad25a538e15764c0098adead.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:43+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e7e416e823a76c9126922052e87dddfeaeb4e2c3ad25a538e15764c0098adead",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/153"
+    },
+    {
+      "cache_file": "f0e0682a1b7cb131cfc34565f8665c2f6250fe48f2395ce606a4d88dad4201ad.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:43+00:00",
+      "role": "tcgdex_card",
+      "sha256": "f0e0682a1b7cb131cfc34565f8665c2f6250fe48f2395ce606a4d88dad4201ad",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/154"
+    },
+    {
+      "cache_file": "367cdf043aff9bd4699de7370fc85f0e8d5efa6d9d87228f83af04acdde36dbc.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:43+00:00",
+      "role": "tcgdex_card",
+      "sha256": "367cdf043aff9bd4699de7370fc85f0e8d5efa6d9d87228f83af04acdde36dbc",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/155"
+    },
+    {
+      "cache_file": "5566101d110f6a460c5682cc4f2c5a7de7aeea739e9ec40c32465c6f0ce343d6.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:46+00:00",
+      "role": "tcgdex_card",
+      "sha256": "5566101d110f6a460c5682cc4f2c5a7de7aeea739e9ec40c32465c6f0ce343d6",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/156"
+    },
+    {
+      "cache_file": "b1522b8302caafb5a4dbbd1c8ddd58697e3541b315cd982faccae32e7ecdb308.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:46+00:00",
+      "role": "tcgdex_card",
+      "sha256": "b1522b8302caafb5a4dbbd1c8ddd58697e3541b315cd982faccae32e7ecdb308",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/157"
+    },
+    {
+      "cache_file": "65380c79ff044fbc54d058d593def4789e032ff3891def6ae64dc7f5f108f28a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:46+00:00",
+      "role": "tcgdex_card",
+      "sha256": "65380c79ff044fbc54d058d593def4789e032ff3891def6ae64dc7f5f108f28a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/158"
+    },
+    {
+      "cache_file": "b41da4aaea40aa6b4f2f26b534c879f63c75da57c0d81b1945ce94add0aadd30.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:47+00:00",
+      "role": "tcgdex_card",
+      "sha256": "b41da4aaea40aa6b4f2f26b534c879f63c75da57c0d81b1945ce94add0aadd30",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/159"
+    },
+    {
+      "cache_file": "d687795a471af378208c2ffa8d227538126ad8d441a5234364d5d0a98ff6f9ab.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:47+00:00",
+      "role": "tcgdex_card",
+      "sha256": "d687795a471af378208c2ffa8d227538126ad8d441a5234364d5d0a98ff6f9ab",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/160"
+    },
+    {
+      "cache_file": "f1e90d2dd1cdfbf9632c87ae170f46ee6274b4211df5bbbba5ab3aa9081b3360.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:47+00:00",
+      "role": "tcgdex_card",
+      "sha256": "f1e90d2dd1cdfbf9632c87ae170f46ee6274b4211df5bbbba5ab3aa9081b3360",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/161"
+    },
+    {
+      "cache_file": "01695977c507ff2c2e75d26911b911484f319620cc529e7f40e7f362d256279b.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:48+00:00",
+      "role": "tcgdex_card",
+      "sha256": "01695977c507ff2c2e75d26911b911484f319620cc529e7f40e7f362d256279b",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/162"
+    },
+    {
+      "cache_file": "7f3ed3b89d09e83f3901f1938a394a8ec16d53fd9ac137dab9a571291a87e869.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:48+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7f3ed3b89d09e83f3901f1938a394a8ec16d53fd9ac137dab9a571291a87e869",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/163"
+    },
+    {
+      "cache_file": "4e638fca5d60ec10ca6c096972edc93ee39bb8cd602c7c75eeb00fe83d05759d.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:48+00:00",
+      "role": "tcgdex_card",
+      "sha256": "4e638fca5d60ec10ca6c096972edc93ee39bb8cd602c7c75eeb00fe83d05759d",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/164"
+    },
+    {
+      "cache_file": "4b683bfc2feb63af65d218ed11b590c69ed42f1bfe00c12d0121b5ebdc8cead2.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:49+00:00",
+      "role": "tcgdex_card",
+      "sha256": "4b683bfc2feb63af65d218ed11b590c69ed42f1bfe00c12d0121b5ebdc8cead2",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/165"
+    },
+    {
+      "cache_file": "dcfd05e443bd6cab74e122f94962ee921c5ac1c0b5c8c6e2fc246ece0d3d8d88.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:49+00:00",
+      "role": "tcgdex_card",
+      "sha256": "dcfd05e443bd6cab74e122f94962ee921c5ac1c0b5c8c6e2fc246ece0d3d8d88",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/166"
+    },
+    {
+      "cache_file": "ea93d990ffc0e49118c887394144bce6c2a4f7575774e29e9d0f4f9ae99204ce.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:49+00:00",
+      "role": "tcgdex_card",
+      "sha256": "ea93d990ffc0e49118c887394144bce6c2a4f7575774e29e9d0f4f9ae99204ce",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/167"
+    },
+    {
+      "cache_file": "e64917e70352c7fcc22633b3a5045650f517cbd15dc74746d26d7760a3899aa8.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:49+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e64917e70352c7fcc22633b3a5045650f517cbd15dc74746d26d7760a3899aa8",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/168"
+    },
+    {
+      "cache_file": "cbc517d528314ced178fc23ab8a3c1b1f75b72f8aadef0cebbdbfba3c38390b4.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:50+00:00",
+      "role": "tcgdex_card",
+      "sha256": "cbc517d528314ced178fc23ab8a3c1b1f75b72f8aadef0cebbdbfba3c38390b4",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/169"
+    },
+    {
+      "cache_file": "860d338e1c59283f52b013c8212478899f9b47d24a76732e9eafea2ee220aa11.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:51+00:00",
+      "role": "tcgdex_card",
+      "sha256": "860d338e1c59283f52b013c8212478899f9b47d24a76732e9eafea2ee220aa11",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/170"
+    },
+    {
+      "cache_file": "42a4ceb08523c6925d82d53ae6384fcbe2923e4765c7e17a5932a546b2d5eb96.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:51+00:00",
+      "role": "tcgdex_card",
+      "sha256": "42a4ceb08523c6925d82d53ae6384fcbe2923e4765c7e17a5932a546b2d5eb96",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/171"
+    },
+    {
+      "cache_file": "fd910d43e1de5a38c4513f10bff35771fa283b38b1a10c1902cb49e0149fd791.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:51+00:00",
+      "role": "tcgdex_card",
+      "sha256": "fd910d43e1de5a38c4513f10bff35771fa283b38b1a10c1902cb49e0149fd791",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/172"
+    },
+    {
+      "cache_file": "9e0cafadb80c5d98f22a1a2c079867c3fde2db5646d009d20dec851e30a5b46b.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:52+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9e0cafadb80c5d98f22a1a2c079867c3fde2db5646d009d20dec851e30a5b46b",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/173"
+    },
+    {
+      "cache_file": "c348b75541431bd1399dad64365546f439daceeb6f14c087f6c3520f6c836735.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:52+00:00",
+      "role": "tcgdex_card",
+      "sha256": "c348b75541431bd1399dad64365546f439daceeb6f14c087f6c3520f6c836735",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/174"
+    },
+    {
+      "cache_file": "78d5c8560b316926957874655a8e8ca991d05e2b63f4a1dfcaf131bb15b75b0b.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:52+00:00",
+      "role": "tcgdex_card",
+      "sha256": "78d5c8560b316926957874655a8e8ca991d05e2b63f4a1dfcaf131bb15b75b0b",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/175"
+    },
+    {
+      "cache_file": "8d722ad061027161304a19c171c604f80e5993477ffef4c755d00849a5a9ed68.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:54+00:00",
+      "role": "tcgdex_card",
+      "sha256": "8d722ad061027161304a19c171c604f80e5993477ffef4c755d00849a5a9ed68",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/176"
+    },
+    {
+      "cache_file": "e16bd84ba0d70c11f48df782dd1a5532a5eb4f3c6190748903efeb7c77f8f560.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:55+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e16bd84ba0d70c11f48df782dd1a5532a5eb4f3c6190748903efeb7c77f8f560",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/177"
+    },
+    {
+      "cache_file": "bd9ad14250372846034c74e15d33c82a8a68c48f9d862cd59ff5b042fea2b1f1.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:56+00:00",
+      "role": "tcgdex_card",
+      "sha256": "bd9ad14250372846034c74e15d33c82a8a68c48f9d862cd59ff5b042fea2b1f1",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/178"
+    },
+    {
+      "cache_file": "7d49b99b79f59ecf7521888f9520c3fe392b0b5609495bda5ca8b65159fef10a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:56+00:00",
+      "role": "tcgdex_card",
+      "sha256": "7d49b99b79f59ecf7521888f9520c3fe392b0b5609495bda5ca8b65159fef10a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/179"
+    },
+    {
+      "cache_file": "6eac1f23cb88ba49a1266742eabb8051afdee9dfdfba9a30dfae69f065651f8a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:56+00:00",
+      "role": "tcgdex_card",
+      "sha256": "6eac1f23cb88ba49a1266742eabb8051afdee9dfdfba9a30dfae69f065651f8a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/180"
+    },
+    {
+      "cache_file": "71da29ed94ca87e34b1c425351432bf6fb3a4b58f02c59f206469575b2db07ba.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:57+00:00",
+      "role": "tcgdex_card",
+      "sha256": "71da29ed94ca87e34b1c425351432bf6fb3a4b58f02c59f206469575b2db07ba",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/181"
+    },
+    {
+      "cache_file": "9aa15a3d024f7e5dc12e81fd1ab98d8d4d5c17c55b06bcf186f5927cb459d949.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:58+00:00",
+      "role": "tcgdex_card",
+      "sha256": "9aa15a3d024f7e5dc12e81fd1ab98d8d4d5c17c55b06bcf186f5927cb459d949",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/182"
+    },
+    {
+      "cache_file": "45cc68b86ee899c7db846b46f5549c882f9f68861fabb3817d0a76f4dd12cdbb.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:58+00:00",
+      "role": "tcgdex_card",
+      "sha256": "45cc68b86ee899c7db846b46f5549c882f9f68861fabb3817d0a76f4dd12cdbb",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/183"
+    },
+    {
+      "cache_file": "f4946b3058b770706aeee74a94a8c9df46407a0ceb322c23265a3d2009816c06.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:58+00:00",
+      "role": "tcgdex_card",
+      "sha256": "f4946b3058b770706aeee74a94a8c9df46407a0ceb322c23265a3d2009816c06",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/184"
+    },
+    {
+      "cache_file": "429a25e9e932994ce8629102b5f9f462d688e336f574baa4002b5f37e32785f7.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:00:59+00:00",
+      "role": "tcgdex_card",
+      "sha256": "429a25e9e932994ce8629102b5f9f462d688e336f574baa4002b5f37e32785f7",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/185"
+    },
+    {
+      "cache_file": "0a98924fa07d79aad2f91a241042a83436c8adeca94a01f8aa7622a69896a589.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:00+00:00",
+      "role": "tcgdex_card",
+      "sha256": "0a98924fa07d79aad2f91a241042a83436c8adeca94a01f8aa7622a69896a589",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/186"
+    },
+    {
+      "cache_file": "660a98e1642cc33b36d2148c0def9b9857243bb30657f7c1d7cd186d89496af3.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:01+00:00",
+      "role": "tcgdex_card",
+      "sha256": "660a98e1642cc33b36d2148c0def9b9857243bb30657f7c1d7cd186d89496af3",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/187"
+    },
+    {
+      "cache_file": "192443d4f23e736fcc675624dd6403ccb297240b5ad610549f4322112b82a3c5.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:01+00:00",
+      "role": "tcgdex_card",
+      "sha256": "192443d4f23e736fcc675624dd6403ccb297240b5ad610549f4322112b82a3c5",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/188"
+    },
+    {
+      "cache_file": "995212e4bc1648accbc960bb1dd2c212817c0872a0f897f9afe505b8e31f80ed.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:02+00:00",
+      "role": "tcgdex_card",
+      "sha256": "995212e4bc1648accbc960bb1dd2c212817c0872a0f897f9afe505b8e31f80ed",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/189"
+    },
+    {
+      "cache_file": "448329cd3e25e7a52c7344cc6ed2e9108ebe9eae33091b3fed451a7ad8f264ba.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:02+00:00",
+      "role": "tcgdex_card",
+      "sha256": "448329cd3e25e7a52c7344cc6ed2e9108ebe9eae33091b3fed451a7ad8f264ba",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/190"
+    },
+    {
+      "cache_file": "3fd9f0797a7265d7092b58d5557c1a3b9ccf0bbbf3a3d0e5dc8d77a036c56b43.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:02+00:00",
+      "role": "tcgdex_card",
+      "sha256": "3fd9f0797a7265d7092b58d5557c1a3b9ccf0bbbf3a3d0e5dc8d77a036c56b43",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/191"
+    },
+    {
+      "cache_file": "46c3c60b5b2b569fc723920d3fc027e188b72e2d7ed3c3966e8ba7c462d072e5.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:05+00:00",
+      "role": "tcgdex_card",
+      "sha256": "46c3c60b5b2b569fc723920d3fc027e188b72e2d7ed3c3966e8ba7c462d072e5",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/192"
+    },
+    {
+      "cache_file": "dc97a8b466e507da4595be0cae3d218fecdb3510959a31b1a9bf7b172c99050c.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:06+00:00",
+      "role": "tcgdex_card",
+      "sha256": "dc97a8b466e507da4595be0cae3d218fecdb3510959a31b1a9bf7b172c99050c",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/193"
+    },
+    {
+      "cache_file": "2eb9fc15ad2a50c7ee38ee4a080c3463051c400e08b52c2be64f550aa4acc357.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:07+00:00",
+      "role": "tcgdex_card",
+      "sha256": "2eb9fc15ad2a50c7ee38ee4a080c3463051c400e08b52c2be64f550aa4acc357",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/194"
+    },
+    {
+      "cache_file": "d17cb55a45b37f107eea04e0ba7e465103ddf4f9ef0bac95590e49442825015a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:07+00:00",
+      "role": "tcgdex_card",
+      "sha256": "d17cb55a45b37f107eea04e0ba7e465103ddf4f9ef0bac95590e49442825015a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/195"
+    },
+    {
+      "cache_file": "1e3a37c0e4f1437e1dcb8ab0b94d0053c0946d2d75d2e5ce710c39d514530aa2.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:07+00:00",
+      "role": "tcgdex_card",
+      "sha256": "1e3a37c0e4f1437e1dcb8ab0b94d0053c0946d2d75d2e5ce710c39d514530aa2",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/196"
+    },
+    {
+      "cache_file": "de11601c6dd22d57fb6514d05ac8b9af3941a1c8fc8e4cbcf6e3d4838423253a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:08+00:00",
+      "role": "tcgdex_card",
+      "sha256": "de11601c6dd22d57fb6514d05ac8b9af3941a1c8fc8e4cbcf6e3d4838423253a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/197"
+    },
+    {
+      "cache_file": "88cea6f038edd6b4f8a6d43af6c60c702960303743ae5f3b13a9597ab956cb31.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:11+00:00",
+      "role": "tcgdex_card",
+      "sha256": "88cea6f038edd6b4f8a6d43af6c60c702960303743ae5f3b13a9597ab956cb31",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/198"
+    },
+    {
+      "cache_file": "5068e4f2d017be7c00cb72336f10eab90d4e2215cbe071b1d69c26ea6e2a1553.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:12+00:00",
+      "role": "tcgdex_card",
+      "sha256": "5068e4f2d017be7c00cb72336f10eab90d4e2215cbe071b1d69c26ea6e2a1553",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/199"
+    },
+    {
+      "cache_file": "e02094068555f474be80dce0fc0fb522bda2bd976d070b1fc0dbf13e5b1e4a34.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:12+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e02094068555f474be80dce0fc0fb522bda2bd976d070b1fc0dbf13e5b1e4a34",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/200"
+    },
+    {
+      "cache_file": "6c2f71f49d349f6f69fd08e82ca34fc8e009ba861abaf872da15e681ffbb8757.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:13+00:00",
+      "role": "tcgdex_card",
+      "sha256": "6c2f71f49d349f6f69fd08e82ca34fc8e009ba861abaf872da15e681ffbb8757",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/201"
+    },
+    {
+      "cache_file": "ba8c6cf4cca68c5f9945ae0788ac6a1628b0e2267f139f9100f287630f872472.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:14+00:00",
+      "role": "tcgdex_card",
+      "sha256": "ba8c6cf4cca68c5f9945ae0788ac6a1628b0e2267f139f9100f287630f872472",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/202"
+    },
+    {
+      "cache_file": "1e8a9f02c98fabd0d202670f4597024bb69b7183985e94c318b2b50ae43e23b0.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:16+00:00",
+      "role": "tcgdex_card",
+      "sha256": "1e8a9f02c98fabd0d202670f4597024bb69b7183985e94c318b2b50ae43e23b0",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/203"
+    },
+    {
+      "cache_file": "e0e19f4801d26f746b762d534b320e3b566ba8c60429539322b265832d707f7a.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:16+00:00",
+      "role": "tcgdex_card",
+      "sha256": "e0e19f4801d26f746b762d534b320e3b566ba8c60429539322b265832d707f7a",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/204"
+    },
+    {
+      "cache_file": "2954f7c29e7f00419dc7b83cf437fe7e81088cbdef3c01b05b47b6b98f27f06b.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:17+00:00",
+      "role": "tcgdex_card",
+      "sha256": "2954f7c29e7f00419dc7b83cf437fe7e81088cbdef3c01b05b47b6b98f27f06b",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/205"
+    },
+    {
+      "cache_file": "f1ea79b8f2948618d042d8972890d5a41967df0e5f0d82a8972560b4295452af.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:17+00:00",
+      "role": "tcgdex_card",
+      "sha256": "f1ea79b8f2948618d042d8972890d5a41967df0e5f0d82a8972560b4295452af",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/206"
+    },
+    {
+      "cache_file": "c5aedc3d4f8c8d45e7bb7bb49c00c2efd68c883c57f553cf48508aab6b13a0bb.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:01:17+00:00",
+      "role": "tcgdex_card",
+      "sha256": "c5aedc3d4f8c8d45e7bb7bb49c00c2efd68c883c57f553cf48508aab6b13a0bb",
+      "status": "OK",
+      "url": "https://api.tcgdex.net/v2/en/sets/sv03.5/207"
+    },
+    {
+      "cache_file": "a83c679c40a5130348bb7f8ab5ed97c4172d8ec18bb244acb1c3bc8662d0561c.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 502,
+      "retrieved_at": "2026-09-01T13:01:57+00:00",
+      "role": "pokemon_tcg_api_cards",
+      "sha256": "a83c679c40a5130348bb7f8ab5ed97c4172d8ec18bb244acb1c3bc8662d0561c",
+      "status": "ERROR",
+      "url": "https://api.pokemontcg.io/v2/cards?q=set.id%3Asv3pt5&page=1&pageSize=250"
+    },
+    {
+      "cache_file": "3d2c8831361ecafe7cd2815caa1ed6ef4ff66fbcb917b7d4f0e06ecff2c9e4f2.bin",
+      "content_type": "application/json; charset=utf-8",
+      "http_status": 200,
+      "retrieved_at": "2026-09-01T13:02:34+00:00",
+      "role": "pokemon_tcg_api_cards",
+      "sha256": "3d2c8831361ecafe7cd2815caa1ed6ef4ff66fbcb917b7d4f0e06ecff2c9e4f2",
+      "status": "OK",
+      "url": "https://api.pokemontcg.io/v2/cards?q=set.id:sv3pt5&page=1&pageSize=250"
+    }
+  ],
+  "local_catalog": {
+    "finish_counts": {
+      "holo": 81,
+      "normal": 128,
+      "reverse_holo": 153
+    },
+    "numbered_identities": 207,
+    "physical_printings": 362
+  },
+  "offline": true,
+  "route": "all",
+  "source_policy": "No DB writes; no pricing; no USD to EUR conversion; exact identity required."
+}

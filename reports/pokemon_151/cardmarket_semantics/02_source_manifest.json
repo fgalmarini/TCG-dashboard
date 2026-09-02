@@ -1,0 +1,237 @@
+{
+  "external_sources": [
+    {
+      "cache_file": "512551358939e8465f493723d0de7b328ed2cc450f5bdf041309213ebc2dffde.bin",
+      "http_status": 200,
+      "name": "pokemon_help",
+      "role": "current_help",
+      "sha256": "512551358939e8465f493723d0de7b328ed2cc450f5bdf041309213ebc2dffde",
+      "status": "OK",
+      "url": "https://help.cardmarket.com/en/finding-and-listing-pokemon-cards"
+    },
+    {
+      "cache_file": "ae15d674efee97af2f5b16708add17a85a85436e467b9fb287275d3c7b4c197f.bin",
+      "http_status": 410,
+      "name": "article_api",
+      "role": "current_api",
+      "sha256": "ae15d674efee97af2f5b16708add17a85a85436e467b9fb287275d3c7b4c197f",
+      "status": "LEGACY_GONE",
+      "url": "https://api.cardmarket.com/ws/documentation/API_2.0%3AEntities%3AArticle"
+    },
+    {
+      "cache_file": "ae15d674efee97af2f5b16708add17a85a85436e467b9fb287275d3c7b4c197f.bin",
+      "http_status": 410,
+      "name": "category_attributes",
+      "role": "current_api",
+      "sha256": "ae15d674efee97af2f5b16708add17a85a85436e467b9fb287275d3c7b4c197f",
+      "status": "LEGACY_GONE",
+      "url": "https://api.cardmarket.com/ws/documentation/API_2.0%3ACategory_Specific_Attributes"
+    },
+    {
+      "cache_file": "ae15d674efee97af2f5b16708add17a85a85436e467b9fb287275d3c7b4c197f.bin",
+      "http_status": 410,
+      "name": "articles_api",
+      "role": "current_api",
+      "sha256": "ae15d674efee97af2f5b16708add17a85a85436e467b9fb287275d3c7b4c197f",
+      "status": "LEGACY_GONE",
+      "url": "https://api.cardmarket.com/ws/documentation/API_2.0%3AArticles"
+    },
+    {
+      "cache_file": "ae15d674efee97af2f5b16708add17a85a85436e467b9fb287275d3c7b4c197f.bin",
+      "http_status": 410,
+      "name": "legacy_priceguide_api",
+      "role": "legacy_api",
+      "sha256": "ae15d674efee97af2f5b16708add17a85a85436e467b9fb287275d3c7b4c197f",
+      "status": "LEGACY_GONE",
+      "url": "https://api.cardmarket.com/ws/documentation/API_2.0%3APriceGuide"
+    },
+    {
+      "cache_file": "a5187c6a6148c930809fed7b0e707808a8e83575ac7d21ed1f87bab3e0d6954e.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:53+00:00",
+      "role": "product_page_sample",
+      "sha256": "a5187c6a6148c930809fed7b0e707808a8e83575ac7d21ed1f87bab3e0d6954e",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Metapod-V1-MEW011"
+    },
+    {
+      "cache_file": "a8d0244919fb96ed2a768b4b6a3e26ebe42d6c32693ca1349e2dc3c182e06ef3.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:54+00:00",
+      "role": "product_page_sample",
+      "sha256": "a8d0244919fb96ed2a768b4b6a3e26ebe42d6c32693ca1349e2dc3c182e06ef3",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Butterfree-V1-MEW012"
+    },
+    {
+      "cache_file": "065011e8d4c14ebb34b7b46b8889366cd2ad69507512dc44a2e981d9ec2f0f73.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:54+00:00",
+      "role": "product_page_sample",
+      "sha256": "065011e8d4c14ebb34b7b46b8889366cd2ad69507512dc44a2e981d9ec2f0f73",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Weedle-V1-MEW013"
+    },
+    {
+      "cache_file": "e764905deddc53c4e6aaf44fda04ffa3742d9abd5ea779951c73aa7fa31dc10c.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:54+00:00",
+      "role": "product_page_sample",
+      "sha256": "e764905deddc53c4e6aaf44fda04ffa3742d9abd5ea779951c73aa7fa31dc10c",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Kakuna-V1-MEW014"
+    },
+    {
+      "cache_file": "6478431c54d3a0f9ab17f45fe1240608d89e8ad636be5585f7b1c41a1155d3b9.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:55+00:00",
+      "role": "product_page_sample",
+      "sha256": "6478431c54d3a0f9ab17f45fe1240608d89e8ad636be5585f7b1c41a1155d3b9",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Pidgey-V1-MEW016"
+    },
+    {
+      "cache_file": "0af08fc305fd980c513f2ea8470f25d6c9fa0887cc0e7e5d552fccc4fadf3036.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:55+00:00",
+      "role": "product_page_sample",
+      "sha256": "0af08fc305fd980c513f2ea8470f25d6c9fa0887cc0e7e5d552fccc4fadf3036",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Pidgeotto-V1-MEW017"
+    },
+    {
+      "cache_file": "dd5812307751e3722f55b31904f22009be1a5ed7c382e981f8de75e471b59f73.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:55+00:00",
+      "role": "product_page_sample",
+      "sha256": "dd5812307751e3722f55b31904f22009be1a5ed7c382e981f8de75e471b59f73",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Beedrill-V1-MEW015"
+    },
+    {
+      "cache_file": "ddb99ab911869a6360d42420b6de51b177af282068c2c282d72c31dfdc218d7a.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:55+00:00",
+      "role": "product_page_sample",
+      "sha256": "ddb99ab911869a6360d42420b6de51b177af282068c2c282d72c31dfdc218d7a",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Raichu-V1-MEW026"
+    },
+    {
+      "cache_file": "f5057d17ed5c022234dbad390d148770f6369d96322983f26e2b7d2acb4c172e.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:56+00:00",
+      "role": "product_page_sample",
+      "sha256": "f5057d17ed5c022234dbad390d148770f6369d96322983f26e2b7d2acb4c172e",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Vileplume-V1-MEW045"
+    },
+    {
+      "cache_file": "54a18c13fd2b866248b2e482104c13ac9d95b2e6b2718b93dcdb6e73f7db6a1a.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:56+00:00",
+      "role": "product_page_sample",
+      "sha256": "54a18c13fd2b866248b2e482104c13ac9d95b2e6b2718b93dcdb6e73f7db6a1a",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Machamp-V1-MEW068"
+    },
+    {
+      "cache_file": "3abd252acf4d36688fabaa888818174854d5a45a0b38656f31769433953a3ea9.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:56+00:00",
+      "role": "product_page_sample",
+      "sha256": "3abd252acf4d36688fabaa888818174854d5a45a0b38656f31769433953a3ea9",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Switch-V1-MEW206"
+    },
+    {
+      "cache_file": "3fa4b3318acbb709a3a51664447f5174d4ff99c37e4eceef5f2a749630b29aff.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:56+00:00",
+      "role": "product_page_sample",
+      "sha256": "3fa4b3318acbb709a3a51664447f5174d4ff99c37e4eceef5f2a749630b29aff",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Basic-Energy-V1-MEW207"
+    },
+    {
+      "cache_file": "bd795561da4db6a3f9a1a51715893528c896d9072d3a55accd86fbf4800309ed.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:57+00:00",
+      "role": "product_page_sample",
+      "sha256": "bd795561da4db6a3f9a1a51715893528c896d9072d3a55accd86fbf4800309ed",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Pidgeot-V1-MEW018"
+    },
+    {
+      "cache_file": "398714fe2d9cbbdd5dd0b780d71951d97598e9eb0469f5208c54942e379c51af.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:57+00:00",
+      "role": "product_page_sample",
+      "sha256": "398714fe2d9cbbdd5dd0b780d71951d97598e9eb0469f5208c54942e379c51af",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Rattata-V1-MEW019"
+    },
+    {
+      "cache_file": "d0bcd415011bd3ee15df62ec9cf9febd5135c04820999ba40c8586cde2d55502.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:57+00:00",
+      "role": "product_page_sample",
+      "sha256": "d0bcd415011bd3ee15df62ec9cf9febd5135c04820999ba40c8586cde2d55502",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Raticate-V1-MEW020"
+    },
+    {
+      "cache_file": "f22816cb165f88faba897c4e5057977d2ee55fae761da68634f3d165ad0fa27e.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:57+00:00",
+      "role": "product_page_sample",
+      "sha256": "f22816cb165f88faba897c4e5057977d2ee55fae761da68634f3d165ad0fa27e",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Spearow-V1-MEW021"
+    },
+    {
+      "cache_file": "fa9f7362699bb0c5f57a264333043f4620a13ae5b43b20078926682f79f99014.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:58+00:00",
+      "role": "product_page_sample",
+      "sha256": "fa9f7362699bb0c5f57a264333043f4620a13ae5b43b20078926682f79f99014",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Fearow-V1-MEW022"
+    },
+    {
+      "cache_file": "78ad8cf0cc1a5652585506e5726350f60b6881f3e373938e64f5a2a7c993d473.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:58+00:00",
+      "role": "product_page_sample",
+      "sha256": "78ad8cf0cc1a5652585506e5726350f60b6881f3e373938e64f5a2a7c993d473",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Ekans-V1-MEW023"
+    },
+    {
+      "cache_file": "ade0c67da8e597e5ce1012677038530214ba9f46885f56654f5714d9871fdafb.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:58+00:00",
+      "role": "product_page_sample",
+      "sha256": "ade0c67da8e597e5ce1012677038530214ba9f46885f56654f5714d9871fdafb",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Sandshrew-V1-MEW027"
+    },
+    {
+      "cache_file": "0155e830267bb8cae915af45992fe947689a0090e65386bc00e30481c621d6c9.bin",
+      "http_status": 403,
+      "retrieved_at": "2026-09-01T10:38:58+00:00",
+      "role": "product_page_sample",
+      "sha256": "0155e830267bb8cae915af45992fe947689a0090e65386bc00e30481c621d6c9",
+      "status": "BLOCKED",
+      "url": "https://www.cardmarket.com/en/Pokemon/Products/Singles/151/Sandslash-V1-MEW028"
+    }
+  ],
+  "local_sources": {
+    "mapping_report_path": "/Users/facundogalmarini/Desktop/TCG DASHBOARD/reports/pokemon_151/cardmarket_metric_mapping/02_metric_mapping_dry_run.csv",
+    "mapping_report_sha256": "59881006b00b73f4dd0ab961e2cef1590b0d8c9e5a9bdb1dd6e6bda6719b5886",
+    "prices_path": "/Users/facundogalmarini/Desktop/price_guide_6 (1).json",
+    "prices_sha256": "86282c2015adc332db82ce65d162f6cc44dc0bb3208b8bfedd952268ffafa145",
+    "products_path": "/Users/facundogalmarini/Desktop/products_singles_6 (1).json",
+    "products_sha256": "318cdf83b38813443530bb4d14f770ed0c1225be9ad87ddebbbee00b097613b5"
+  }
+}

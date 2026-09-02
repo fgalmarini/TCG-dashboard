@@ -1,0 +1,363 @@
+canonical_id,physical_card_id,collector_number,card_name,finish,treatment,variant_status,evidence,source
+23356,25165,001,Bulbasaur,normal,,CONFIRMED,"Cardmarket candidate ids=733596,720365; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23356,25166,001,Bulbasaur,reverse_holo,,CONFIRMED,"Cardmarket candidate ids=733596,794908; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23357,25167,002,Ivysaur,normal,,CONFIRMED,Cardmarket candidate ids=733597; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23357,25168,002,Ivysaur,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733597; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23358,25169,003,Venusaur ex,holo,,CONFIRMED,Cardmarket candidate ids=733598; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23359,25171,004,Charmander,holo,,CONFIRMED,Cardmarket candidate ids=791827; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23359,25170,004,Charmander,normal,,CONFIRMED,"Cardmarket candidate ids=733599,720366; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23359,25172,004,Charmander,reverse_holo,,CONFIRMED,"Cardmarket candidate ids=733599,759873,794909; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23360,25174,005,Charmeleon,holo,,CONFIRMED,Cardmarket candidate ids=791828; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23360,25173,005,Charmeleon,normal,,CONFIRMED,Cardmarket candidate ids=733600; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23360,25175,005,Charmeleon,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733600; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23361,25176,006,Charizard ex,holo,,CONFIRMED,Cardmarket candidate ids=733601; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23362,25177,007,Squirtle,normal,,CONFIRMED,"Cardmarket candidate ids=733602,721198; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23362,25178,007,Squirtle,reverse_holo,,CONFIRMED,"Cardmarket candidate ids=733602,794910; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23363,25179,008,Wartortle,normal,,CONFIRMED,Cardmarket candidate ids=733603; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23363,25180,008,Wartortle,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733603; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23364,25181,009,Blastoise ex,holo,,CONFIRMED,"Cardmarket candidate ids=733604,816812; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23365,25182,010,Caterpie,normal,,CONFIRMED,Cardmarket candidate ids=733605; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23365,25183,010,Caterpie,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733605; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23366,25184,011,Metapod,normal,,CONFIRMED,Cardmarket candidate ids=733606; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23366,25185,011,Metapod,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733606; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23367,25186,012,Butterfree,normal,,CONFIRMED,Cardmarket candidate ids=733607; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23367,25187,012,Butterfree,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733607; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23368,25188,013,Weedle,normal,,CONFIRMED,Cardmarket candidate ids=733608; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23368,25189,013,Weedle,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733608; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23369,25190,014,Kakuna,normal,,CONFIRMED,Cardmarket candidate ids=733609; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23369,25191,014,Kakuna,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733609; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23370,25192,015,Beedrill,holo,,CONFIRMED,Cardmarket candidate ids=733610; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23370,25193,015,Beedrill,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733610; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23371,25194,016,Pidgey,normal,,CONFIRMED,Cardmarket candidate ids=733611; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23371,25195,016,Pidgey,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733611; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23372,25196,017,Pidgeotto,normal,,CONFIRMED,Cardmarket candidate ids=733612; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23372,25197,017,Pidgeotto,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733612; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23373,25198,018,Pidgeot,normal,,CONFIRMED,Cardmarket candidate ids=733613; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23373,25199,018,Pidgeot,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733613; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23374,25200,019,Rattata,normal,,CONFIRMED,Cardmarket candidate ids=733614; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23374,25201,019,Rattata,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733614; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23375,25202,020,Raticate,normal,,CONFIRMED,Cardmarket candidate ids=733615; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23375,25203,020,Raticate,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733615; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23376,25204,021,Spearow,normal,,CONFIRMED,Cardmarket candidate ids=733616; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23376,25205,021,Spearow,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733616; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23377,25206,022,Fearow,normal,,CONFIRMED,Cardmarket candidate ids=733617; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23377,25207,022,Fearow,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733617; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23378,25208,023,Ekans,normal,,CONFIRMED,Cardmarket candidate ids=733618; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23378,25209,023,Ekans,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733618; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23379,25210,024,Arbok ex,holo,,CONFIRMED,Cardmarket candidate ids=733619; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23380,25211,025,Pikachu,normal,,CONFIRMED,"Cardmarket candidate ids=733620,748474,845404; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23380,25212,025,Pikachu,reverse_holo,,CONFIRMED,"Cardmarket candidate ids=733620,794911; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23381,25213,026,Raichu,holo,,CONFIRMED,"Cardmarket candidate ids=733621,864950; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23381,25214,026,Raichu,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733621; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23382,25215,027,Sandshrew,normal,,CONFIRMED,Cardmarket candidate ids=733622; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23382,25216,027,Sandshrew,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733622; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23383,25217,028,Sandslash,normal,,CONFIRMED,Cardmarket candidate ids=733623; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23383,25218,028,Sandslash,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733623; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23384,25219,029,Nidoran♀,normal,,CONFIRMED,Cardmarket candidate ids=733624; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23384,25220,029,Nidoran♀,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733624; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23385,25221,030,Nidorina,normal,,CONFIRMED,Cardmarket candidate ids=733625; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23385,25222,030,Nidorina,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733625; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23386,25223,031,Nidoqueen,normal,,CONFIRMED,Cardmarket candidate ids=733626; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23386,25224,031,Nidoqueen,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733626; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23387,25225,032,Nidoran♂,normal,,CONFIRMED,Cardmarket candidate ids=733627; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23387,25226,032,Nidoran♂,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733627; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23388,25227,033,Nidorino,normal,,CONFIRMED,Cardmarket candidate ids=733628; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23388,25228,033,Nidorino,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733628; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23389,25229,034,Nidoking,holo,,CONFIRMED,Cardmarket candidate ids=733629; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23389,25230,034,Nidoking,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733629; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23390,25231,035,Clefairy,normal,,CONFIRMED,Cardmarket candidate ids=733630; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23390,25232,035,Clefairy,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733630; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23391,25233,036,Clefable,normal,,CONFIRMED,Cardmarket candidate ids=733631; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23391,25234,036,Clefable,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733631; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23392,25235,037,Vulpix,normal,,CONFIRMED,Cardmarket candidate ids=733632; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23392,25236,037,Vulpix,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733632; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23393,25237,038,Ninetales ex,holo,,CONFIRMED,Cardmarket candidate ids=733633; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23394,25238,039,Jigglypuff,normal,,CONFIRMED,Cardmarket candidate ids=733634; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23394,25239,039,Jigglypuff,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733634; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23395,25240,040,Wigglytuff ex,holo,,CONFIRMED,Cardmarket candidate ids=733635; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23396,25241,041,Zubat,normal,,CONFIRMED,Cardmarket candidate ids=733636; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23396,25242,041,Zubat,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733636; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23397,25243,042,Golbat,normal,,CONFIRMED,Cardmarket candidate ids=733637; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23397,25244,042,Golbat,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733637; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23398,25245,043,Oddish,normal,,CONFIRMED,Cardmarket candidate ids=733638; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23398,25246,043,Oddish,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733638; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23399,25247,044,Gloom,normal,,CONFIRMED,Cardmarket candidate ids=733639; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23399,25248,044,Gloom,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733639; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23400,25249,045,Vileplume,holo,,CONFIRMED,Cardmarket candidate ids=733640; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23400,25250,045,Vileplume,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733640; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23401,25251,046,Paras,normal,,CONFIRMED,Cardmarket candidate ids=733641; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23401,25252,046,Paras,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733641; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23402,25253,047,Parasect,normal,,CONFIRMED,Cardmarket candidate ids=733642; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23402,25254,047,Parasect,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733642; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23403,25255,048,Venonat,normal,,CONFIRMED,Cardmarket candidate ids=733643; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23403,25256,048,Venonat,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733643; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23404,25257,049,Venomoth,normal,,CONFIRMED,Cardmarket candidate ids=733644; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23404,25258,049,Venomoth,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733644; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23405,25259,050,Diglett,normal,,CONFIRMED,Cardmarket candidate ids=733645; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23405,25260,050,Diglett,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733645; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23406,25261,051,Dugtrio,normal,,CONFIRMED,Cardmarket candidate ids=733646; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23406,25262,051,Dugtrio,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733646; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23407,25263,052,Meowth,normal,,CONFIRMED,Cardmarket candidate ids=733647; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23407,25264,052,Meowth,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733647; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23408,25265,053,Persian,normal,,CONFIRMED,Cardmarket candidate ids=733648; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23408,25266,053,Persian,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733648; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23409,25267,054,Psyduck,normal,,CONFIRMED,Cardmarket candidate ids=733649; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23409,25268,054,Psyduck,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733649; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23410,25269,055,Golduck,normal,,CONFIRMED,Cardmarket candidate ids=733650; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23410,25270,055,Golduck,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733650; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23411,25271,056,Mankey,normal,,CONFIRMED,Cardmarket candidate ids=733651; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23411,25272,056,Mankey,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733651; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23412,25273,057,Primeape,normal,,CONFIRMED,Cardmarket candidate ids=733652; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23412,25274,057,Primeape,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733652; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23413,25275,058,Growlithe,normal,,CONFIRMED,Cardmarket candidate ids=733653; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23413,25276,058,Growlithe,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733653; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23414,25277,059,Arcanine,normal,,CONFIRMED,Cardmarket candidate ids=733654; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23414,25278,059,Arcanine,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733654; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23415,25279,060,Poliwag,normal,,CONFIRMED,Cardmarket candidate ids=733655; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23415,25280,060,Poliwag,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733655; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23416,25281,061,Poliwhirl,normal,,CONFIRMED,Cardmarket candidate ids=733656; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23416,25282,061,Poliwhirl,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733656; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23417,25283,062,Poliwrath,normal,,CONFIRMED,Cardmarket candidate ids=733657; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23417,25284,062,Poliwrath,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733657; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23418,25285,063,Abra,normal,,CONFIRMED,Cardmarket candidate ids=733658; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23418,25286,063,Abra,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733658; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23419,25287,064,Kadabra,normal,,CONFIRMED,Cardmarket candidate ids=733659; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23419,25288,064,Kadabra,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733659; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23420,25289,065,Alakazam ex,holo,,CONFIRMED,Cardmarket candidate ids=733660; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23421,25290,066,Machop,normal,,CONFIRMED,Cardmarket candidate ids=733661; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23421,25291,066,Machop,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733661; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23422,25292,067,Machoke,normal,,CONFIRMED,Cardmarket candidate ids=733662; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23422,25293,067,Machoke,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733662; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23423,25294,068,Machamp,holo,,CONFIRMED,"Cardmarket candidate ids=733663,864951; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23423,25295,068,Machamp,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733663; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23424,25296,069,Bellsprout,normal,,CONFIRMED,Cardmarket candidate ids=733664; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23424,25297,069,Bellsprout,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733664; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23425,25298,070,Weepinbell,normal,,CONFIRMED,Cardmarket candidate ids=733665; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23425,25299,070,Weepinbell,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733665; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23426,25300,071,Victreebel,normal,,CONFIRMED,Cardmarket candidate ids=733666; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23426,25301,071,Victreebel,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733666; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23427,25302,072,Tentacool,normal,,CONFIRMED,Cardmarket candidate ids=733667; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23427,25303,072,Tentacool,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733667; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23428,25304,073,Tentacruel,normal,,CONFIRMED,Cardmarket candidate ids=733668; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23428,25305,073,Tentacruel,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733668; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23429,25306,074,Geodude,normal,,CONFIRMED,Cardmarket candidate ids=733669; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23429,25307,074,Geodude,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733669; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23430,25308,075,Graveler,normal,,CONFIRMED,Cardmarket candidate ids=733670; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23430,25309,075,Graveler,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733670; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23431,25310,076,Golem ex,holo,,CONFIRMED,Cardmarket candidate ids=733671; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23432,25311,077,Ponyta,normal,,CONFIRMED,Cardmarket candidate ids=733672; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23432,25312,077,Ponyta,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733672; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23433,25313,078,Rapidash,normal,,CONFIRMED,Cardmarket candidate ids=733673; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23433,25314,078,Rapidash,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733673; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23434,25315,079,Slowpoke,normal,,CONFIRMED,Cardmarket candidate ids=733674; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23434,25316,079,Slowpoke,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733674; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23435,25317,080,Slowbro,normal,,CONFIRMED,Cardmarket candidate ids=733675; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23435,25318,080,Slowbro,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733675; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23436,25319,081,Magnemite,normal,,CONFIRMED,Cardmarket candidate ids=733676; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23436,25320,081,Magnemite,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733676; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23437,25321,082,Magneton,normal,,CONFIRMED,Cardmarket candidate ids=733677; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23437,25322,082,Magneton,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733677; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23438,25323,083,Farfetch’d,normal,,CONFIRMED,Cardmarket candidate ids=733678; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23438,25324,083,Farfetch’d,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733678; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23439,25325,084,Doduo,normal,,CONFIRMED,Cardmarket candidate ids=733679; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23439,25326,084,Doduo,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733679; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23440,25327,085,Dodrio,holo,,CONFIRMED,Cardmarket candidate ids=733680; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23440,25328,085,Dodrio,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733680; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23441,25329,086,Seel,normal,,CONFIRMED,Cardmarket candidate ids=733681; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23441,25330,086,Seel,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733681; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23442,25331,087,Dewgong,normal,,CONFIRMED,Cardmarket candidate ids=733682; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23442,25332,087,Dewgong,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733682; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23443,25333,088,Grimer,normal,,CONFIRMED,Cardmarket candidate ids=733683; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23443,25334,088,Grimer,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733683; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23444,25335,089,Muk,normal,,CONFIRMED,Cardmarket candidate ids=733684; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23444,25336,089,Muk,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733684; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23445,25337,090,Shellder,normal,,CONFIRMED,Cardmarket candidate ids=733685; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23445,25338,090,Shellder,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733685; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23446,25339,091,Cloyster,normal,,CONFIRMED,Cardmarket candidate ids=733686; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23446,25340,091,Cloyster,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733686; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23447,25341,092,Gastly,normal,,CONFIRMED,Cardmarket candidate ids=733687; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23447,25342,092,Gastly,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733687; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23448,25343,093,Haunter,normal,,CONFIRMED,Cardmarket candidate ids=733688; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23448,25344,093,Haunter,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733688; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23449,25345,094,Gengar,holo,,CONFIRMED,"Cardmarket candidate ids=733689,861151; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23449,25346,094,Gengar,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733689; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23450,25347,095,Onix,normal,,CONFIRMED,Cardmarket candidate ids=733690; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23450,25348,095,Onix,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733690; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23451,25349,096,Drowzee,normal,,CONFIRMED,Cardmarket candidate ids=733691; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23451,25350,096,Drowzee,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733691; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23452,25351,097,Hypno,normal,,CONFIRMED,Cardmarket candidate ids=733692; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23452,25352,097,Hypno,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733692; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23453,25353,098,Krabby,normal,,CONFIRMED,Cardmarket candidate ids=733693; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23453,25354,098,Krabby,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733693; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23454,25355,099,Kingler,normal,,CONFIRMED,Cardmarket candidate ids=733694; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23454,25356,099,Kingler,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733694; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23455,25357,100,Voltorb,normal,,CONFIRMED,Cardmarket candidate ids=733695; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23455,25358,100,Voltorb,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733695; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23456,25359,101,Electrode,holo,,CONFIRMED,Cardmarket candidate ids=733696; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23456,25360,101,Electrode,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733696; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23457,25361,102,Exeggcute,normal,,CONFIRMED,Cardmarket candidate ids=733697; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23457,25362,102,Exeggcute,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733697; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23458,25363,103,Exeggutor,normal,,CONFIRMED,Cardmarket candidate ids=733698; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23458,25364,103,Exeggutor,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733698; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23459,25365,104,Cubone,normal,,CONFIRMED,Cardmarket candidate ids=733699; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23459,25366,104,Cubone,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733699; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23460,25367,105,Marowak,holo,,CONFIRMED,Cardmarket candidate ids=733700; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23460,25368,105,Marowak,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733700; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23461,25369,106,Hitmonlee,normal,,CONFIRMED,Cardmarket candidate ids=733701; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23461,25370,106,Hitmonlee,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733701; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23462,25371,107,Hitmonchan,normal,,CONFIRMED,Cardmarket candidate ids=733702; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23462,25372,107,Hitmonchan,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733702; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23463,25373,108,Lickitung,normal,,CONFIRMED,Cardmarket candidate ids=733703; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23463,25374,108,Lickitung,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733703; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23464,25375,109,Koffing,normal,,CONFIRMED,Cardmarket candidate ids=733704; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23464,25376,109,Koffing,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733704; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23465,25377,110,Weezing,holo,,CONFIRMED,Cardmarket candidate ids=733705; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23465,25378,110,Weezing,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733705; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23466,25379,111,Rhyhorn,normal,,CONFIRMED,Cardmarket candidate ids=733706; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23466,25380,111,Rhyhorn,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733706; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23467,25381,112,Rhydon,normal,,CONFIRMED,Cardmarket candidate ids=733707; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23467,25382,112,Rhydon,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733707; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23468,25383,113,Chansey,holo,,CONFIRMED,Cardmarket candidate ids=733708; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23468,25384,113,Chansey,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733708; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23469,25385,114,Tangela,normal,,CONFIRMED,Cardmarket candidate ids=733709; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23469,25386,114,Tangela,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733709; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23470,25387,115,Kangaskhan ex,holo,,CONFIRMED,Cardmarket candidate ids=733710; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23471,25388,116,Horsea,normal,,CONFIRMED,Cardmarket candidate ids=733711; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23471,25389,116,Horsea,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733711; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23472,25390,117,Seadra,normal,,CONFIRMED,Cardmarket candidate ids=733712; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23472,25391,117,Seadra,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733712; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23473,25392,118,Goldeen,normal,,CONFIRMED,Cardmarket candidate ids=733713; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23473,25393,118,Goldeen,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733713; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23474,25394,119,Seaking,normal,,CONFIRMED,Cardmarket candidate ids=733714; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23474,25395,119,Seaking,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733714; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23475,25396,120,Staryu,normal,,CONFIRMED,Cardmarket candidate ids=733715; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23475,25397,120,Staryu,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733715; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23476,25398,121,Starmie,holo,,CONFIRMED,Cardmarket candidate ids=733716; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23476,25399,121,Starmie,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733716; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23477,25400,122,Mr. Mime,holo,,CONFIRMED,Cardmarket candidate ids=733717; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23477,25401,122,Mr. Mime,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733717; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23478,25402,123,Scyther,normal,,CONFIRMED,Cardmarket candidate ids=733718; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23478,25403,123,Scyther,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733718; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23479,25404,124,Jynx ex,holo,,CONFIRMED,Cardmarket candidate ids=733719; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23480,25405,125,Electabuzz,normal,,CONFIRMED,Cardmarket candidate ids=733720; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23480,25406,125,Electabuzz,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733720; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23481,25407,126,Magmar,normal,,CONFIRMED,Cardmarket candidate ids=733721; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23481,25408,126,Magmar,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733721; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23482,25409,127,Pinsir,normal,,CONFIRMED,Cardmarket candidate ids=733722; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23482,25410,127,Pinsir,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733722; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23483,25411,128,Tauros,normal,,CONFIRMED,Cardmarket candidate ids=733723; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23483,25412,128,Tauros,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733723; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23484,25413,129,Magikarp,normal,,CONFIRMED,Cardmarket candidate ids=733724; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23484,25414,129,Magikarp,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733724; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23485,25415,130,Gyarados,holo,,CONFIRMED,Cardmarket candidate ids=733725; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23485,25416,130,Gyarados,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733725; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23486,25417,131,Lapras,normal,,CONFIRMED,Cardmarket candidate ids=733726; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23486,25418,131,Lapras,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733726; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23487,25419,132,Ditto,holo,,CONFIRMED,Cardmarket candidate ids=733727; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23487,25420,132,Ditto,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733727; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23488,25421,133,Eevee,normal,,CONFIRMED,"Cardmarket candidate ids=733728,748475,845405; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23488,25422,133,Eevee,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733728; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23489,25423,134,Vaporeon,holo,,CONFIRMED,Cardmarket candidate ids=733729; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23489,25424,134,Vaporeon,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733729; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23490,25425,135,Jolteon,holo,,CONFIRMED,Cardmarket candidate ids=733730; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23490,25426,135,Jolteon,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733730; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23491,25427,136,Flareon,holo,,CONFIRMED,Cardmarket candidate ids=733731; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23491,25428,136,Flareon,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733731; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23492,25429,137,Porygon,normal,,CONFIRMED,Cardmarket candidate ids=733732; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23492,25430,137,Porygon,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733732; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23493,25431,138,Omanyte,normal,,CONFIRMED,Cardmarket candidate ids=733733; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23493,25432,138,Omanyte,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733733; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23494,25433,139,Omastar,holo,,CONFIRMED,Cardmarket candidate ids=733734; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23494,25434,139,Omastar,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733734; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23495,25435,140,Kabuto,normal,,CONFIRMED,Cardmarket candidate ids=733735; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23495,25436,140,Kabuto,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733735; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23496,25437,141,Kabutops,holo,,CONFIRMED,Cardmarket candidate ids=733736; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23496,25438,141,Kabutops,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733736; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23497,25439,142,Aerodactyl,holo,,CONFIRMED,Cardmarket candidate ids=733737; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23497,25440,142,Aerodactyl,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733737; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23498,25441,143,Snorlax,normal,,CONFIRMED,Cardmarket candidate ids=733738; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23498,25442,143,Snorlax,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733738; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23499,25443,144,Articuno,holo,,CONFIRMED,Cardmarket candidate ids=733739; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23499,25444,144,Articuno,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733739; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23500,25445,145,Zapdos ex,holo,,CONFIRMED,Cardmarket candidate ids=733740; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23501,25446,146,Moltres,holo,,CONFIRMED,Cardmarket candidate ids=733741; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23501,25447,146,Moltres,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733741; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23502,25448,147,Dratini,normal,,CONFIRMED,Cardmarket candidate ids=733742; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23502,25449,147,Dratini,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733742; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23503,25450,148,Dragonair,normal,,CONFIRMED,Cardmarket candidate ids=733743; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23503,25451,148,Dragonair,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733743; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23504,25452,149,Dragonite,holo,,CONFIRMED,"Cardmarket candidate ids=733744,864952; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23504,25453,149,Dragonite,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733744; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23505,25454,150,Mewtwo,holo,,CONFIRMED,Cardmarket candidate ids=733745; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23505,25455,150,Mewtwo,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733745; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23506,25456,151,Mew ex,holo,,CONFIRMED,Cardmarket candidate ids=733746; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23507,25457,152,Antique Dome Fossil,normal,,CONFIRMED,Cardmarket candidate ids=733747; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23507,25458,152,Antique Dome Fossil,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733747; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23508,25459,153,Antique Helix Fossil,normal,,CONFIRMED,Cardmarket candidate ids=733748; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23508,25460,153,Antique Helix Fossil,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733748; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23509,25461,154,Antique Old Amber,normal,,CONFIRMED,Cardmarket candidate ids=733749; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23509,25462,154,Antique Old Amber,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733749; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23510,25463,155,Big Air Balloon,normal,,CONFIRMED,Cardmarket candidate ids=733750; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23510,25464,155,Big Air Balloon,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733750; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23511,25465,156,Bill’s Transfer,normal,,CONFIRMED,Cardmarket candidate ids=733751; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23511,25466,156,Bill’s Transfer,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733751; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23512,25467,157,Cycling Road,normal,,CONFIRMED,Cardmarket candidate ids=733752; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23512,25468,157,Cycling Road,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733752; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23513,25469,158,Daisy’s Help,normal,,CONFIRMED,Cardmarket candidate ids=733753; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23513,25470,158,Daisy’s Help,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733753; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23514,25471,159,Energy Sticker,normal,,CONFIRMED,Cardmarket candidate ids=733754; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23514,25472,159,Energy Sticker,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733754; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23515,25473,160,Erika’s Invitation,normal,,CONFIRMED,Cardmarket candidate ids=733755; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23515,25474,160,Erika’s Invitation,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733755; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23516,25475,161,Giovanni’s Charisma,normal,,CONFIRMED,Cardmarket candidate ids=733756; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23516,25476,161,Giovanni’s Charisma,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733756; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23517,25477,162,Grabber,normal,,CONFIRMED,Cardmarket candidate ids=733757; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23517,25478,162,Grabber,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733757; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23518,25479,163,Leftovers,normal,,CONFIRMED,Cardmarket candidate ids=733758; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23518,25480,163,Leftovers,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733758; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23519,25481,164,Protective Goggles,normal,,CONFIRMED,Cardmarket candidate ids=733759; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23519,25482,164,Protective Goggles,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733759; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23520,25483,165,Rigid Band,normal,,CONFIRMED,Cardmarket candidate ids=733760; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23520,25484,165,Rigid Band,reverse_holo,,CONFIRMED,Cardmarket candidate ids=733760; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23521,25485,166,Bulbasaur,holo,,CONFIRMED,Cardmarket candidate ids=733761; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23522,25486,167,Ivysaur,holo,,CONFIRMED,Cardmarket candidate ids=733762; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23523,25487,168,Charmander,holo,,CONFIRMED,Cardmarket candidate ids=733763; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23524,25488,169,Charmeleon,holo,,CONFIRMED,Cardmarket candidate ids=733764; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23525,25489,170,Squirtle,holo,,CONFIRMED,Cardmarket candidate ids=733765; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23526,25490,171,Wartortle,holo,,CONFIRMED,Cardmarket candidate ids=733766; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23527,25491,172,Caterpie,holo,,CONFIRMED,Cardmarket candidate ids=733767; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23528,25492,173,Pikachu,holo,,CONFIRMED,Cardmarket candidate ids=733768; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23529,25493,174,Nidoking,holo,,CONFIRMED,Cardmarket candidate ids=733769; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23530,25494,175,Psyduck,holo,,CONFIRMED,Cardmarket candidate ids=733770; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23531,25495,176,Poliwhirl,holo,,CONFIRMED,Cardmarket candidate ids=733771; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23532,25496,177,Machoke,holo,,CONFIRMED,Cardmarket candidate ids=733772; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23533,25497,178,Tangela,holo,,CONFIRMED,Cardmarket candidate ids=733773; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23534,25498,179,Mr. Mime,holo,,CONFIRMED,Cardmarket candidate ids=733774; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23535,25499,180,Omanyte,holo,,CONFIRMED,Cardmarket candidate ids=733775; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23536,25500,181,Dragonair,holo,,CONFIRMED,Cardmarket candidate ids=733776; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23537,25501,182,Venusaur ex,holo,,CONFIRMED,Cardmarket candidate ids=733777; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23538,25502,183,Charizard ex,holo,,CONFIRMED,Cardmarket candidate ids=733778; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23539,25503,184,Blastoise ex,holo,,CONFIRMED,Cardmarket candidate ids=733779; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23540,25504,185,Arbok ex,holo,,CONFIRMED,Cardmarket candidate ids=733780; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23541,25505,186,Ninetales ex,holo,,CONFIRMED,Cardmarket candidate ids=733781; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23542,25506,187,Wigglytuff ex,holo,,CONFIRMED,Cardmarket candidate ids=733782; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23543,25507,188,Alakazam ex,holo,,CONFIRMED,Cardmarket candidate ids=733783; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23544,25508,189,Golem ex,holo,,CONFIRMED,Cardmarket candidate ids=733784; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23545,25509,190,Kangaskhan ex,holo,,CONFIRMED,Cardmarket candidate ids=733785; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23546,25510,191,Jynx ex,holo,,CONFIRMED,Cardmarket candidate ids=733786; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23547,25511,192,Zapdos ex,holo,,CONFIRMED,Cardmarket candidate ids=733787; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23548,25512,193,Mew ex,holo,,CONFIRMED,Cardmarket candidate ids=733788; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23549,25513,194,Bill’s Transfer,holo,,CONFIRMED,Cardmarket candidate ids=733789; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23550,25514,195,Daisy’s Help,holo,,CONFIRMED,Cardmarket candidate ids=733790; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23551,25515,196,Erika’s Invitation,holo,,CONFIRMED,Cardmarket candidate ids=733791; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23552,25516,197,Giovanni’s Charisma,holo,,CONFIRMED,Cardmarket candidate ids=733792; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23553,25517,198,Venusaur ex,holo,,CONFIRMED,Cardmarket candidate ids=733793; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23554,25518,199,Charizard ex,holo,,CONFIRMED,Cardmarket candidate ids=733794; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23555,25519,200,Blastoise ex,holo,,CONFIRMED,Cardmarket candidate ids=733795; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23556,25520,201,Alakazam ex,holo,,CONFIRMED,Cardmarket candidate ids=733796; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23557,25521,202,Zapdos ex,holo,,CONFIRMED,Cardmarket candidate ids=733797; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23558,25522,203,Erika’s Invitation,holo,,CONFIRMED,Cardmarket candidate ids=733798; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23559,25523,204,Giovanni’s Charisma,holo,,CONFIRMED,Cardmarket candidate ids=733799; local_target_ids=none; finish is separate from rarity.,tcgdex.variants + tcgdex.variants_detailed
+23560,25524,205,Mew ex,holo,,CONFIRMED,"Cardmarket candidate ids=720951,733800,814545; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23561,25525,206,Switch,holo,,CONFIRMED,"Cardmarket candidate ids=733801,733801; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed
+23562,25526,207,Basic Energy,holo,,CONFIRMED,"Cardmarket candidate ids=733802,733802; local_target_ids=none; finish is separate from rarity.",tcgdex.variants + tcgdex.variants_detailed

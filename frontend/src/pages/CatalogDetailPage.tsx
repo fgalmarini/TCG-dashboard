@@ -3,6 +3,7 @@ import { CardArt, ImageReferenceNote } from '@/components/collection/CardImage'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
 import { MarketPrice } from '@/components/shared/MarketPrice'
+import { SecondaryMarketPrice } from '@/components/shared/SecondaryMarketPrice'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { fetchCatalogItem } from '@/lib/api'
@@ -36,6 +37,9 @@ export function CatalogDetailPage() {
             <Field label="Release" value={item.expansion_name ?? formatSetCode(item.set_code)} />
             <Field label="Original release" value={original?.expansion_name ?? formatSetCode(original?.set_code) ?? 'Sin validar'} />
             <Field label="Language" value={item.language?.toUpperCase()} />
+            <Field label="Artist" value={item.artist} />
+            <Field label="Rarity" value={item.rarity} />
+            <Field label="Finish" value={item.finish} />
             <Field label="Release kind" value={item.release_kind} />
             <Field label="Art kind" value={item.art_kind} />
             <Field label="Printings" value={String(item.printing_count)} />
@@ -51,6 +55,9 @@ export function CatalogDetailPage() {
             <Field label="Lowest price" value={item.lowest_price === null ? null : `${item.lowest_price} ${item.price_currency ?? ''}`} />
             <Field label="Median price" value={item.median_price === null ? null : `${item.median_price} ${item.price_currency ?? ''}`} />
             <Field label="Confidence" value={item.price_confidence} />
+            <div className="sm:col-span-2">
+              <SecondaryMarketPrice sources={item.price_sources} detail />
+            </div>
           </CardContent>
         </Card>
       </div>

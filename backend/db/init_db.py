@@ -59,6 +59,72 @@ def ensure_pricing_columns(conn: sqlite3.Connection) -> None:
         if not valid:
             raise ValueError(f"Invalid printing resolution scope at id={row[0]}")
 
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS market_price_observations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            card_id INTEGER NOT NULL REFERENCES cards(id),
+            provider TEXT NOT NULL,
+            market TEXT NOT NULL,
+            metric TEXT NOT NULL,
+            value REAL NOT NULL CHECK (value > 0),
+            currency TEXT NOT NULL,
+            source_updated_at TEXT,
+            observed_at TEXT NOT NULL,
+            snapshot_key TEXT NOT NULL,
+            provenance TEXT NOT NULL,
+            confidence TEXT,
+            source_variant TEXT,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(card_id, provider, market, metric, currency, snapshot_key)
+        )
+    """)
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_market_price_observations_card_source ON market_price_observations(card_id, provider, market, observed_at DESC)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_market_price_observations_snapshot ON market_price_observations(snapshot_key, provider, market)")
+
+
+def ensure_canonical_only_cardmarket_scopes(conn: sqlite3.Connection) -> None:
+    """Allow a canonical Cardmarket mapping without inferring a physical finish.
+
+    Existing rows are copied byte-for-byte for all finish fields.  This is an
+    additive compatibility migration for databases created before 004B.
+    """
+    columns = {row[1]: row for row in conn.execute("PRAGMA table_info(cardmarket_product_printing_scopes)")}
+    if not columns or columns["finish_scope"][3] == 0:
+        return
+    conn.execute("PRAGMA foreign_keys=OFF")
+    try:
+        conn.execute("""
+            CREATE TABLE cardmarket_product_printing_scopes_004b (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                cardmarket_product_id INTEGER NOT NULL UNIQUE REFERENCES cardmarket_products (id),
+                canonical_card_id INTEGER NOT NULL REFERENCES canonical_cards (id),
+                card_id INTEGER REFERENCES cards (id),
+                finish_scope TEXT CHECK (finish_scope IN ('single', 'multiple', 'unknown')),
+                compatible_finishes TEXT,
+                numbered_identity_status TEXT NOT NULL CHECK (numbered_identity_status IN ('EXACT', 'PROBABLE', 'AMBIGUOUS', 'MISMATCH', 'UNRESOLVED')),
+                finish_mapping_status TEXT NOT NULL CHECK (finish_mapping_status IN ('EXACT_SINGLE', 'EXACT_MULTIPLE', 'SUPPORTED', 'AMBIGUOUS', 'UNKNOWN', 'NOT_APPLICABLE')),
+                mapping_status TEXT NOT NULL CHECK (mapping_status IN ('EXACT', 'PROBABLE', 'AMBIGUOUS', 'MISMATCH', 'UNRESOLVED')),
+                mapping_confidence TEXT NOT NULL,
+                mapping_method TEXT NOT NULL,
+                evidence TEXT NOT NULL,
+                provenance TEXT NOT NULL,
+                pricing_eligible INTEGER NOT NULL DEFAULT 0 CHECK (pricing_eligible IN (0, 1)),
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        conn.execute("""INSERT INTO cardmarket_product_printing_scopes_004b
+            SELECT id, cardmarket_product_id, canonical_card_id, card_id, finish_scope,
+                   compatible_finishes, numbered_identity_status, finish_mapping_status,
+                   mapping_status, mapping_confidence, mapping_method, evidence,
+                   provenance, pricing_eligible, created_at, updated_at
+              FROM cardmarket_product_printing_scopes""")
+        conn.execute("DROP TABLE cardmarket_product_printing_scopes")
+        conn.execute("ALTER TABLE cardmarket_product_printing_scopes_004b RENAME TO cardmarket_product_printing_scopes")
+        conn.execute("CREATE INDEX idx_cardmarket_product_scope_canonical ON cardmarket_product_printing_scopes (canonical_card_id, finish_scope)")
+    finally:
+        conn.execute("PRAGMA foreign_keys=ON")
+
 
 def init_db(db_path: Path) -> None:
     schema_sql = (DB_DIR / "schema.sql").read_text()
@@ -70,6 +136,8 @@ def init_db(db_path: Path) -> None:
         conn.executescript(schema_sql)
         conn.executescript(seed_sql)
         ensure_pricing_columns(conn)
+        conn.commit()
+        ensure_canonical_only_cardmarket_scopes(conn)
         conn.commit()
 
         tables = conn.execute(

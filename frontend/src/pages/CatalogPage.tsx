@@ -10,10 +10,11 @@ import { CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { addToCollection, addToWishlist, fetchCatalog, fetchCatalogOptions, removeFromWishlist } from '@/lib/api'
-import { GAME_OPTIONS, LANGUAGE_OPTIONS } from '@/lib/types'
+import { catalogCapabilities, GAME_OPTIONS, LANGUAGE_OPTIONS } from '@/lib/types'
 import type { CatalogOptionsResponse, CatalogQueryParams } from '@/lib/types'
 import { useApi } from '@/lib/useApi'
 import { CardActions, CardIdentity, CardMetadata, CardPrice, TradingCard } from '@/components/shared/TradingCard'
+import { SecondaryMarketPrice } from '@/components/shared/SecondaryMarketPrice'
 import { cardImageUrl, formatSetCode } from '@/lib/format'
 
 const ALL = '__all__'
@@ -143,17 +144,20 @@ export function CatalogPage() {
                         <Badge variant="outline" className="text-[10px]">{item.ownership_status}</Badge>
                       </div>
                       </CardMetadata>
-                      <CardPrice><MarketPrice value={item.current_price} currency={item.price_currency} /></CardPrice>
-                      <CardActions>
+                      <CardPrice>
+                        <MarketPrice value={item.current_price} currency={item.price_currency} />
+                        <SecondaryMarketPrice sources={item.price_sources} />
+                      </CardPrice>
+                      {(catalogCapabilities(item.game_code).collection_enabled || catalogCapabilities(item.game_code).wishlist_enabled) && <CardActions>
                         <div className="flex flex-col gap-1">
-                        <Button type="button" size="sm" variant={item.owned ? 'secondary' : 'outline'} onClick={() => changeCollection(item.id)}>
+                        {catalogCapabilities(item.game_code).collection_enabled && <Button type="button" size="sm" variant={item.owned ? 'secondary' : 'outline'} onClick={() => changeCollection(item.id)}>
                           {item.owned ? 'Add copy to Collection' : 'Add to Collection'}
-                        </Button>
-                        <Button type="button" size="sm" variant={item.wishlist ? 'secondary' : 'outline'} onClick={() => changeWishlist(item.id, item.wishlist)}>
+                        </Button>}
+                        {catalogCapabilities(item.game_code).wishlist_enabled && <Button type="button" size="sm" variant={item.wishlist ? 'secondary' : 'outline'} onClick={() => changeWishlist(item.id, item.wishlist)}>
                           {item.wishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
-                        </Button>
+                        </Button>}
                         </div>
-                      </CardActions>
+                      </CardActions>}
                     </div>
                   </CardContent>
                 </TradingCard>
@@ -161,7 +165,7 @@ export function CatalogPage() {
             </div>
           )}
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{data.total} cartas</span>
+            <span className="text-muted-foreground">{data.identity_total ?? data.total} identidades · {data.total} printings</span>
             <div className="flex gap-2">
               <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage(page - 1)}>Anterior</Button>
               <Button size="sm" variant="outline" disabled={page * data.page_size >= data.total} onClick={() => setPage(page + 1)}>Siguiente</Button>

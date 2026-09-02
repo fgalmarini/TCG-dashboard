@@ -53,6 +53,23 @@ class ApiTest(unittest.TestCase):
         self.assertEqual(data["top_cards"][0]["price_variation"], 0.1)
         self.assertEqual(data["top_cards"][0]["image"]["source"], "scryfall")
 
+    def test_secondary_observations_never_enter_overview_or_collection_valuation(self):
+        before = self.client.get("/api/overview").json()
+        conn = connect(self.db_path)
+        conn.execute("""
+            INSERT INTO market_price_observations
+              (card_id, provider, market, metric, value, currency, source_updated_at,
+               observed_at, snapshot_key, provenance, confidence, source_variant)
+            VALUES (?, 'pokemon_tcg_api', 'tcgplayer', 'market', 999.0, 'USD',
+                    '2026/09/01', '2026-09-01T13:02:34+00:00', 'secondary-fixture', '{}', 'medium', 'normal')
+        """, (self.ids["card_a_id"],))
+        conn.commit()
+        conn.close()
+        after = self.client.get("/api/overview").json()
+        self.assertEqual(after["total_market_value"], before["total_market_value"])
+        item = next(item for item in self.client.get("/api/collection").json()["items"] if item["id"] == self.ids["row1_id"])
+        self.assertEqual(item["market_value"], 11.0)
+
     def test_collection_endpoint_no_filters_returns_all_rows(self):
         resp = self.client.get("/api/collection")
         self.assertEqual(resp.status_code, 200)

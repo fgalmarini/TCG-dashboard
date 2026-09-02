@@ -1,0 +1,15 @@
+field,source_rows,populated_rows,coverage_percent,source_or_inference
+name,207,207,100.0,source
+rarity,207,207,100.0,source
+artist,207,206,99.52,source
+image,207,207,100.0,source
+HP,207,188,90.82,source
+type,207,186,89.86,source
+stage,207,207,100.0,source
+is_ex,207,207,100.0,source
+Pokédex,207,185,89.37,source
+attacks,207,207,100.0,source
+abilities,207,207,100.0,source
+weaknesses,207,181,87.44,source
+retreat,207,185,89.37,source
+regulation_mark,207,206,99.52,source

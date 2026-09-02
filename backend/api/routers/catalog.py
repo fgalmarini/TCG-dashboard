@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, Query
 from ..db import get_db
 from ..queries import (
     build_catalog_filters,
+    count_catalog_identities,
     count_catalog_rows,
     fetch_catalog_detail,
     fetch_catalog_options,
@@ -31,7 +32,7 @@ def list_catalog(
     search: str | None = None,
     ownership: str | None = Query(None, pattern="^(owned|not_owned|wishlist)$"),
     rarity: str | None = None,
-    finish: str | None = Query(None, pattern="^(nonfoil|foil|etched)$"),
+    finish: str | None = Query(None, pattern="^(nonfoil|foil|etched|normal|holo|reverse_holo)$"),
     treatment: str | None = None,
     page: int = Query(1, ge=1),
     page_size: int = Query(24, ge=1, le=100),
@@ -43,11 +44,12 @@ def list_catalog(
         rarity=rarity, finish=finish, treatment=treatment,
     )
     total = count_catalog_rows(conn, where_sql, params)
+    identity_total = count_catalog_identities(conn, where_sql, params)
     offset = (page - 1) * page_size
     rows = fetch_catalog_rows(conn, where_sql, params, page_size, offset)
     return CatalogListResponse(
         items=[CatalogItemOut.from_row(row) for row in rows],
-        total=total, page=page, page_size=page_size,
+        total=total, identity_total=identity_total, page=page, page_size=page_size,
     )
 
 

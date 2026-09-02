@@ -158,6 +158,104 @@ Multi-TCG Foundation + One Piece Catalog (`2026-08-27`):
   sets, printing detail, reprint counts and pricing provenance. One Piece Collection
   entry remains disabled.
 
+Pokémon Scarlet & Violet—151 Catalog Foundation (`2026-09-01`):
+
+- `games.pokemon` is active and the generic catalog now exposes set `mew` / Scarlet &
+  Violet—151, with Cardmarket expansion `5328` preserved only as set-level identity.
+- The audited official checklist imported exactly 207 canonical numbered identities and
+  all numbers `001–207`; same-name alternate numbers remain separate identities.
+- 362 physical printings were imported from 362 `CONFIRMED` finish observations:
+  128 normal, 81 holo and 153 reverse holo. The 23 `SUPPORTED` treatment observations
+  remain provenance-only and were not promoted.
+- 362 exact TCGdex image records are present, keyed by the numbered printing. No image
+  fallback by Pokémon name/artwork is used.
+- Pokémon has 137 canonical Cardmarket `EXACT` mappings, 73 canonical
+  `AMBIGUOUS` mappings, 0 price snapshots, 0 pricing resolutions and 0 populated
+  current/market values. The 73 ambiguous products remain intentionally deferred
+  to controlled human review.
+- Collection and Wishlist actions are disabled for Pokémon through catalog capabilities;
+  Magic and One Piece behavior is unchanged. Catalog API returns both physical-row and
+  distinct-identity counts.
+- Import was applied on a validated SQLite copy with a backup; second dry-run is a
+  no-op, database integrity and foreign-key checks pass.
+
+Pokémon 151 Cardmarket Exact Mapping (`2026-09-01`):
+
+- All 210 local Cardmarket products for expansion `5328` were re-evaluated against
+  the authoritative 001 catalog: 137 `EXACT`, 73 `AMBIGUOUS`, 0 `PROBABLE`, 0
+  `MISMATCH` and 0 `UNRESOLVED`. The 137 result is evidence-driven, not a quota.
+- `cardmarket_products` remains source inventory independent of mapping state.
+  The generic `cardmarket_product_printing_scopes` relation preserves canonical
+  identity, nullable physical target, finish scope, compatible finishes, evidence
+  and `pricing_eligible=0`.
+- The 137 exact mappings are authoritative at canonical level; none is forced onto
+  a physical `card_id` because current finish evidence is multi-scope or unknown.
+  The remaining 73 products are present only in mapping reports/manual review.
+- No Cardmarket price data, price history, pricing resolution, current value,
+  Collection or Wishlist row was changed. Magic and One Piece remain unchanged.
+- Mapping apply used a validated SQLite copy and backup; post-apply dry-run reports
+  zero new products and zero new mappings. This canonical mapping remains separate
+  from physical finish pricing.
+
+Pokémon 151 Cardmarket Finish Semantics (`2026-09-01`):
+
+- `POKEMON-151-002C` reviewed the 137 canonical `EXACT` products as 270 independent
+  metric families: 137 `base` and 133 `foil`. The 73 canonical `AMBIGUOUS` products
+  produced no metric rows.
+- The local Price Guide snapshot is authoritative for field presence: `low`, `trend`,
+  `avg1`, `avg7`, `avg30` and `low-holo`, `trend-holo`, `avg1-holo`, `avg7-holo`,
+  `avg30-holo`. No numeric metric was persisted or converted into a current price.
+- Result: 0 `EXACT`, 0 `SUPPORTED`, 266 `AMBIGUOUS`, 4 `UNRESOLVED`, 0 `MISMATCH`
+  and 0 `pricing_eligible`. No global `base=normal` or `foil=reverse_holo` rule was
+  applied; exclusivity remains unproven.
+- Current Cardmarket Help Center semantics were cached successfully. The direct API
+  documentation/legacy PriceGuide URLs returned `410 Gone`, and the 20 sampled
+  public product pages returned `403 BLOCKED`; no bypass or undocumented request was
+  attempted. Legacy documentation was not used as sole `EXACT` evidence.
+- Apply required `--offline` and consumed only the cached, hashed evidence. It wrote
+  only the metric relation schema/status state on a validated SQLite copy, inserted
+  0 new metric rows, and left prices, snapshots, resolutions, Collection, Wishlist,
+  Magic and One Piece unchanged. The operation is idempotent.
+
+Pokémon 151 Reverse Holo Pricing Source Resolution (`2026-09-01`):
+
+- `POKEMON-151-002D` was executed as a read-only source audit. It reviewed all 207
+  numbered identities and all 362 physical printings without writing SQLite or
+  enabling pricing.
+- Route 1 Cardmarket public-page automation is `BLOCKED` for the 20-card sample
+  (`403`). Reverse Holo remains a listing attribute, but direct finish-specific Low
+  was not demonstrated and no bypass/manual automation was added.
+- Pokémon TCG API returned current data for all 207 identities through cached bulk /
+  documented individual-card fallback. `reverseHoloLow` is present in `207/207`
+  responses and positive in `149/207`; positive Cardmarket-derived Reverse coverage
+  intersects `142` local reverse printings after exact identity validation.
+- Pokémon TCG API TCGplayer coverage is finish-specific for 123 normal, 72 holo and
+  146 reverse identities with usable values. TCGdex independently returned 207 card
+  records and finish-specific TCGplayer coverage for 123 normal, 72 holo and 148
+  reverse identities. Source identity mismatches remain reported rather than merged.
+- The recommendation is `OPTION C`: Cardmarket direct exact-finish EUR remains
+  primary; Cardmarket-derived external Reverse is classified separately; TCGplayer
+  remains USD secondary reference; unsupported Reverse dashboard prices remain NULL.
+- All API/page/document responses were cached with URL, timestamp, HTTP status and
+  SHA-256. A second offline run reproduced the same result. No price, snapshot,
+  resolution, Collection, Wishlist, Magic or One Piece data changed. `POKEMON-151-003`
+  was not executed.
+
+Pokémon 151 Metric → Finish Resolution (`2026-09-01`):
+
+- The 137 canonical `EXACT` products were evaluated independently by metric family:
+  137 `base` and 133 `foil` relationships, for 270 metric relationships total.
+- The local Price Guide exposes only the real columns `low`, `trend`, `avg1`,
+  `avg7`, `avg30` and their `-holo` counterparts. Numeric values were not stored.
+- 266 metric relationships remain `AMBIGUOUS` and 4 `UNRESOLVED`; 0 were promoted
+  to `EXACT` or `pricing_eligible` because no product-level Cardmarket evidence
+  distinguishes a metric family from a physical finish.
+- The generic `cardmarket_product_metric_mappings` relation stores one row per
+  product/family and preserves candidate cards and provenance. The 73 canonical
+  `AMBIGUOUS` products remain untouched.
+- No prices, snapshots, resolutions, Collection, Wishlist, Magic or One Piece rows
+  changed. Apply used a validated SQLite copy with backup and is idempotent.
+
 ## Display Currency
 
 - Market prices are displayed in their stored source currency (current providers: EUR).
@@ -275,3 +373,66 @@ avoid changing Trading/Analytics/CARDMADNESS scope during this phase.
   schema, migration validation and writers.
 - The production DB SHA-256 remains
   `38959ecb8224c9c4e06c00dbc7ccda37d17660c828b72be0418f1419c1437aff`.
+
+## Pokémon 151 TCGplayer Secondary Pricing (`2026-09-01`)
+
+- `POKEMON-151-003` is implemented using the generic
+  `market_price_observations` table. It stores one positive metric per physical
+  printing and source snapshot, with explicit provider, underlying market,
+  currency, `source_updated_at`, local `observed_at` and `snapshot_key`.
+- Pokémon TCG API is the persistence authority for TCGplayer USD observations;
+  TCGdex is retained as a cross-check. Exact coverage is `339/362`: `121/128`
+  normal, `72/81` holo and `146/153` reverse holo. `1,676` metric observations
+  were imported: low, market, mid and high for all eligible printings, plus
+  direct_low where documented and present.
+- Numeric differences are diagnostic only. The reports include p50, p75, p90
+  and max distributions; `20%` remains a `diagnostic_threshold_candidate` and
+  does not block exact identity/finish mappings. TCGdex identity or finish
+  conflicts remain blocked.
+- TCGplayer observations never participate in Overview, Collection, Wishlist,
+  Top Cards, valuation, P&L, ROI, `current_price` or `market_value`. Cardmarket
+  remains the primary valuation source and all USD values remain unconverted.
+- Apply completed on a validated temporary SQLite copy with backup. Integrity
+  check and foreign-key check pass. The second apply is a no-op. DB SHA-256:
+  `e2336e47d414f10729ab4d1f78cffbb941d23f4b0dc8e57fe7282c5d4b8e2633` before,
+  `bce907591a43dbbff620fced5ef192fa08c94d303aa14991d486077706f25b73` after.
+
+## Pokémon 151 Cardmarket Manual Mapping Resolution (`2026-09-01`)
+
+- Manual review workflow prepared: COMPLETE. The sole editable source is
+  `reports/pokemon_151/cardmarket_manual_resolution/03_manual_review.csv`, with
+  exactly 73 rows and `approved=false` by default.
+- Manual mappings actually resolved: `0` in the current source cut. All 73
+  products remain pending human approval; generating the workspace does not
+  count a product as reviewed or resolved.
+- The apply gate validates immutable CSV evidence, candidate membership,
+  duplicate `idProduct` rows and the protected existing 137 EXACT mappings.
+  With zero valid approvals, apply is a true NO-OP: no backup, SQLite copy,
+  transaction or database replacement; the DB SHA remains unchanged.
+- No Cardmarket prices, physical finishes, metric mappings, `pricing_eligible`,
+  TCGplayer observations, Magic, One Piece, Collection or Wishlist data changed.
+
+## Pokémon 151 Foundation & Pricing Discovery — Consolidated Closeout (`2026-09-02`)
+
+- `POKEMON-151-000`, `000B`, `001`, `002`, `002B`, `002C`, `002D`, `003` and
+  `004B` are COMPLETE for the implemented scope.
+- Catalog: `207/207` canonical identities, `362` physical printings (`128`
+  normal, `81` holo, `153` reverse holo) and `362/362` exact TCGdex images.
+- Cardmarket: `210` products, `137` canonical `EXACT`, `73` canonical
+  `AMBIGUOUS`, `0` exact physical metric mappings and `0` pricing-eligible
+  mappings. The 73 unresolved products are a known source limitation, not a
+  system defect, and remain deferred rather than guessed.
+- TCGplayer: `339/362` physical printings with `1,676` secondary observations in
+  USD, stored through `market_price_observations` with Pokémon TCG API authority
+  and TCGdex cross-check only.
+- Primary pricing policy is unchanged: exact Cardmarket Low for the physical
+  printing is the only source for `current_price` and `market_value`; otherwise
+  both remain `NULL`. TCGplayer never enters valuation or primary-price fallback.
+- Protected behavior: Magic, One Piece, Collection, Wishlist, existing mappings,
+  Cardmarket pricing and TCGplayer observations are unchanged by closeout.
+- Audit evidence is retained under `reports/pokemon_151/` in the directories
+  `cardmarket_discovery`, `identity_discovery`, `catalog_import`,
+  `cardmarket_mapping`, `cardmarket_metric_mapping`, `cardmarket_semantics`,
+  `finish_pricing_sources`, `tcgplayer_pricing` and `cardmarket_manual_resolution`.
+- Deferred: resolve the 73 Cardmarket ambiguous products only when deterministic
+  Cardmarket-specific or otherwise trustworthy evidence becomes available.

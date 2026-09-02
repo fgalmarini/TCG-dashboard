@@ -15,7 +15,10 @@ EXPECTED_TABLES = {
     "cards",
     "cardmarket_products",
     "cardmarket_product_mappings",
+    "cardmarket_product_printing_scopes",
+    "cardmarket_product_metric_mappings",
     "market_price_history",
+    "market_price_observations",
     "card_images",
     "collection_items",
     "wishlist_items",
@@ -103,6 +106,16 @@ class SchemaTest(unittest.TestCase):
                 if set(cols) == {"cardmarket_product_id", "observed_at"}:
                     found = True
         self.assertTrue(found, "falta UNIQUE(cardmarket_product_id, observed_at) en market_price_history")
+
+    def test_market_price_observations_are_source_neutral_and_idempotent(self):
+        columns = {row[1] for row in self.conn.execute("PRAGMA table_info(market_price_observations)")}
+        self.assertTrue({"card_id", "provider", "market", "metric", "value", "currency", "source_updated_at", "observed_at", "snapshot_key", "provenance", "confidence"}.issubset(columns))
+        indexes = self.conn.execute("PRAGMA index_list(market_price_observations)").fetchall()
+        unique_columns = []
+        for index in indexes:
+            if index[2] == 1:
+                unique_columns.append({row[2] for row in self.conn.execute(f"PRAGMA index_info({index[1]})")})
+        self.assertIn({"card_id", "provider", "market", "metric", "currency", "snapshot_key"}, unique_columns)
 
     def test_seed_data(self):
         games = {r[0] for r in self.conn.execute("SELECT code FROM games")}

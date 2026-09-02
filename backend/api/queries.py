@@ -10,7 +10,10 @@ nunca el nombre de columna crudo del query param).
 
 import re
 import sqlite3
+import json
+from collections import defaultdict
 from dataclasses import dataclass, field
+from typing import Any
 
 # --- Query base compartida ----------------------------------------------------------
 # CTE de "ultimo snapshot de precio por producto": UNIQUE(cardmarket_product_id,
@@ -438,7 +441,7 @@ def fetch_exact_images(conn: sqlite3.Connection, card_ids: list[int]) -> dict[in
               JOIN cards c ON c.id = ci.card_id
               LEFT JOIN languages l ON l.id = c.language_id
              WHERE ci.card_id IN ({placeholders})
-               AND source IN ('scryfall', 'cardtrader')
+               AND source IN ('scryfall', 'cardtrader', 'tcgdex')
                AND ci.status = 'resolved'
                AND ci.match_quality = 'exact'
                AND (ci.image_url_small IS NOT NULL OR ci.image_url_large IS NOT NULL)
@@ -759,6 +762,8 @@ class CatalogRow:
     canonical_card_id: int | None
     game_code: str
     name: str
+    artist: str | None
+    metadata: dict | None
     set_code: str | None
     expansion_name: str | None
     card_number: str | None
@@ -789,6 +794,7 @@ class CatalogRow:
     owned: bool
     wishlist: bool
     wishlist_item_id: int | None
+    price_sources: list["PriceSourceData"] = field(default_factory=list)
     image: CardImageData | None = None
 
     @property
@@ -846,9 +852,18 @@ class WishlistRow:
 
 
 def _catalog_row(row: sqlite3.Row) -> CatalogRow:
+    metadata = None
+    if row["canonical_metadata"]:
+        try:
+            parsed = json.loads(row["canonical_metadata"])
+            metadata = parsed if isinstance(parsed, dict) else None
+        except (TypeError, json.JSONDecodeError):
+            metadata = None
+    pokemon_metadata = metadata.get("pokemon") if metadata else None
+    artist = pokemon_metadata.get("artist") if isinstance(pokemon_metadata, dict) else None
     return CatalogRow(
         id=row["id"], canonical_card_id=row["canonical_card_id"], game_code=row["game_code"],
-        name=row["name"], set_code=row["set_code"],
+        name=row["name"], artist=artist, metadata=metadata, set_code=row["set_code"],
         expansion_name=row["expansion_name"], card_number=row["card_number"],
         rarity=row["rarity"], finish=row["finish"], treatment=row["treatment"],
         language=row["language"], release_kind=row["release_kind"], art_kind=row["art_kind"],
@@ -863,6 +878,58 @@ def _catalog_row(row: sqlite3.Row) -> CatalogRow:
         cardmarket_avg30=row["cardmarket_avg30"], source_currency=row["source_currency"],
         wishlist=bool(row["wishlist"]), wishlist_item_id=row["wishlist_item_id"],
     )
+
+
+@dataclass
+class PriceSourceData:
+    """Generic source payload kept separate from the primary Cardmarket price."""
+
+    role: str
+    provider: str
+    market: str
+    currency: str
+    source_variant: str | None
+    metrics: dict[str, float]
+    source_updated_at: str | None
+    observed_at: str
+    provenance: str
+    confidence: str | None
+
+
+def fetch_price_sources(conn: sqlite3.Connection, card_ids: list[int]) -> dict[int, list[PriceSourceData]]:
+    if not card_ids:
+        return {}
+    if not conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='market_price_observations'").fetchone():
+        return {}
+    placeholders = ",".join("?" for _ in card_ids)
+    rows = conn.execute(f"""
+        SELECT o.*
+          FROM market_price_observations o
+         WHERE o.card_id IN ({placeholders})
+         ORDER BY o.card_id, o.provider, o.market, o.currency,
+                  COALESCE(o.source_updated_at, ''), o.observed_at, o.id
+    """, card_ids).fetchall()
+    grouped: dict[tuple, dict[str, Any]] = {}
+    for row in rows:
+        key = (row["card_id"], row["provider"], row["market"], row["currency"], row["source_variant"], row["snapshot_key"])
+        grouped.setdefault(key, {"row": row, "metrics": {}})["metrics"][row["metric"]] = row["value"]
+    latest: dict[tuple, dict[str, Any]] = {}
+    for key, payload in grouped.items():
+        identity = key[:-1]
+        row = payload["row"]
+        ordering = (row["source_updated_at"] or "", row["observed_at"] or "", row["id"])
+        previous = latest.get(identity)
+        if previous is None or ordering > previous["ordering"]:
+            latest[identity] = {"ordering": ordering, **payload}
+    result: dict[int, list[PriceSourceData]] = defaultdict(list)
+    for payload in latest.values():
+        row = payload["row"]
+        result[row["card_id"]].append(PriceSourceData(
+            role="secondary", provider=row["provider"], market=row["market"], currency=row["currency"],
+            source_variant=row["source_variant"], metrics=payload["metrics"], source_updated_at=row["source_updated_at"],
+            observed_at=row["observed_at"], provenance=row["provenance"], confidence=row["confidence"],
+        ))
+    return result
 
 
 def build_catalog_filters(
@@ -918,6 +985,7 @@ def fetch_catalog_rows(
 ) -> list[CatalogRow]:
     sql = _pricing_schema_sql(conn, _CARD_PRICE_CTE) + f"""
         SELECT c.id, c.canonical_card_id, g.code AS game_code, c.name,
+               cc.metadata AS canonical_metadata,
                COALESCE(s.code, c.set_code, e.set_code) AS set_code,
                COALESCE(s.name, e.name) AS expansion_name, c.card_number,
                c.rarity, c.finish, c.treatment, l.code AS language,
@@ -937,6 +1005,7 @@ def fetch_catalog_rows(
           FROM cards c
           JOIN expansions e ON e.id = c.expansion_id
           JOIN games g ON g.id = c.game_id
+          LEFT JOIN canonical_cards cc ON cc.id = c.canonical_card_id
           LEFT JOIN sets s ON s.id = c.set_id
           LEFT JOIN languages l ON l.id = c.language_id
           LEFT JOIN card_price cp ON cp.card_id = c.id
@@ -945,6 +1014,9 @@ def fetch_catalog_rows(
          LIMIT ? OFFSET ?"""
     rows = conn.execute(sql, [*where_params, limit, offset]).fetchall()
     result = [_catalog_row(row) for row in rows]
+    secondary = fetch_price_sources(conn, [row.id for row in result])
+    for row in result:
+        row.price_sources = secondary.get(row.id, [])
     images = fetch_exact_images(conn, sorted({row.id for row in result}))
     for row in result:
         row.image = images.get(row.id)
@@ -954,6 +1026,16 @@ def fetch_catalog_rows(
 def count_catalog_rows(conn: sqlite3.Connection, where_sql: str, where_params: list) -> int:
     row = conn.execute(
         _pricing_schema_sql(conn, _CARD_PRICE_CTE) + f"SELECT COUNT(*) FROM cards c JOIN expansions e ON e.id=c.expansion_id JOIN games g ON g.id=c.game_id LEFT JOIN sets s ON s.id=c.set_id LEFT JOIN languages l ON l.id=c.language_id {where_sql}",
+        where_params,
+    ).fetchone()
+    return row[0]
+
+
+def count_catalog_identities(conn: sqlite3.Connection, where_sql: str, where_params: list) -> int:
+    row = conn.execute(
+        _pricing_schema_sql(conn, _CARD_PRICE_CTE)
+        + "SELECT COUNT(DISTINCT COALESCE(c.canonical_card_id, c.id)) FROM cards c JOIN expansions e ON e.id=c.expansion_id JOIN games g ON g.id=c.game_id LEFT JOIN sets s ON s.id=c.set_id LEFT JOIN languages l ON l.id=c.language_id LEFT JOIN canonical_cards cc ON cc.id=c.canonical_card_id "
+        + where_sql,
         where_params,
     ).fetchone()
     return row[0]

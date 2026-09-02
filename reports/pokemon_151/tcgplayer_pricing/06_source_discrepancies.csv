@@ -1,0 +1,109 @@
+card_id,collector_number,card_name,finish,comparison_status,difference_low,difference_market,api_low,tcgdex_low,api_market,tcgdex_market,api_updated_at,tcgdex_updated_at,possible_cause,review_recommendation
+25166,001,Bulbasaur,reverse_holo,MINOR_DIFFERENCE,0.0,0.04878048780487796,0.09,0.09,0.41,0.39,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25167,002,Ivysaur,normal,MINOR_DIFFERENCE,0.0,0.03703703703703707,0.04,0.04,0.27,0.26,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25171,004,Charmander,holo,IDENTITY_CONFLICT,,,,,,,2026/09/01,2026-08-14T19:11:56+01:00,identity/finish evidence conflict,block persistence and review mapping
+25170,004,Charmander,normal,MINOR_DIFFERENCE,0.0,0.04166666666666659,0.01,0.01,0.24,0.23,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25172,004,Charmander,reverse_holo,MINOR_DIFFERENCE,0.0,0.026315789473684233,0.1,0.1,0.37,0.38,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25174,005,Charmeleon,holo,IDENTITY_CONFLICT,,,,,,,2026/09/01,2026-08-14T19:11:56+01:00,identity/finish evidence conflict,block persistence and review mapping
+25173,005,Charmeleon,normal,MINOR_DIFFERENCE,0.0,0.04166666666666659,0.02,0.02,0.23,0.24,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25179,008,Wartortle,normal,MINOR_DIFFERENCE,0.11111111111111106,0.03846153846153849,0.09,0.08,0.26,0.25,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25180,008,Wartortle,reverse_holo,MINOR_DIFFERENCE,0.0,0.03571428571428574,0.22,0.22,0.56,0.54,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25181,009,Blastoise ex,holo,MINOR_DIFFERENCE,0.0,0.036423841059602606,1.0,1.0,2.91,3.02,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25182,010,Caterpie,normal,MINOR_DIFFERENCE,0.0,0.050000000000000044,0.01,0.01,0.19,0.2,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25186,012,Butterfree,normal,MINOR_DIFFERENCE,0.0,0.0454545454545455,0.01,0.01,0.22,0.21,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25188,013,Weedle,normal,MINOR_DIFFERENCE,0.0,0.050000000000000044,0.01,0.01,0.19,0.2,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25198,018,Pidgeot,normal,MINOR_DIFFERENCE,0.0,0.09523809523809519,0.01,0.01,0.19,0.21,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25210,024,Arbok ex,holo,MINOR_DIFFERENCE,0.0,0.010526315789473694,0.57,0.57,1.9,1.88,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25211,025,Pikachu,normal,MINOR_DIFFERENCE,0.0,0.034482758620689495,0.01,0.01,0.29,0.28,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25212,025,Pikachu,reverse_holo,MINOR_DIFFERENCE,0.0,0.015503875968992262,0.2,0.2,1.27,1.29,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25219,029,Nidoran♀,normal,IDENTITY_CONFLICT,0.0,0.0,0.05,0.05,0.29,0.29,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25220,029,Nidoran♀,reverse_holo,IDENTITY_CONFLICT,0.0,0.0,1.0,1.0,1.67,1.67,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25225,032,Nidoran♂,normal,IDENTITY_CONFLICT,0.0,0.0,0.06,0.06,0.23,0.23,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25226,032,Nidoran♂,reverse_holo,IDENTITY_CONFLICT,0.0,0.0,1.25,1.25,3.0,3.0,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25237,038,Ninetales ex,holo,MINOR_DIFFERENCE,0.0,0.02192982456140343,1.0,1.0,2.23,2.28,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25239,039,Jigglypuff,reverse_holo,MINOR_DIFFERENCE,0.0,0.03125000000000003,0.1,0.1,0.32,0.31,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25240,040,Wigglytuff ex,holo,MINOR_DIFFERENCE,0.0,0.03378378378378381,0.3,0.3,1.43,1.48,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25245,043,Oddish,normal,MINOR_DIFFERENCE,0.0,0.058823529411764754,0.01,0.01,0.17,0.16,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25260,050,Diglett,reverse_holo,MATERIAL_DIFFERENCE,0.8750000000000001,0.0,0.01,0.08,0.26,0.26,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25264,052,Meowth,reverse_holo,MINOR_DIFFERENCE,0.0,0.03846153846153849,0.09,0.09,0.25,0.26,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25267,054,Psyduck,normal,MINOR_DIFFERENCE,0.0,0.03703703703703707,0.03,0.03,0.27,0.26,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25277,059,Arcanine,normal,MINOR_DIFFERENCE,0.0,0.040000000000000036,0.04,0.04,0.25,0.24,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25285,063,Abra,normal,MINOR_DIFFERENCE,0.0,0.058823529411764754,0.01,0.01,0.17,0.16,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25287,064,Kadabra,normal,MINOR_DIFFERENCE,0.0,0.040000000000000036,0.03,0.03,0.24,0.25,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25289,065,Alakazam ex,holo,MINOR_DIFFERENCE,0.0,0.01673640167364018,0.75,0.75,2.39,2.35,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25293,067,Machoke,reverse_holo,MINOR_DIFFERENCE,0.0,0.03125000000000003,0.05,0.05,0.32,0.31,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25294,068,Machamp,holo,MINOR_DIFFERENCE,0.0,0.03703703703703707,0.07,0.07,0.27,0.26,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25295,068,Machamp,reverse_holo,MINOR_DIFFERENCE,0.0,0.01111111111111112,0.55,0.55,0.9,0.89,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25310,076,Golem ex,holo,MINOR_DIFFERENCE,0.0,0.017241379310344845,0.5,0.5,1.14,1.16,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25314,078,Rapidash,reverse_holo,MINOR_DIFFERENCE,0.0,0.04166666666666659,0.06,0.06,0.23,0.24,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25317,080,Slowbro,normal,MINOR_DIFFERENCE,0.0,0.14814814814814817,0.03,0.03,0.23,0.27,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25318,080,Slowbro,reverse_holo,MINOR_DIFFERENCE,0.0,0.1052631578947368,0.09,0.09,0.34,0.38,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25319,081,Magnemite,normal,MATERIAL_DIFFERENCE,0.3333333333333333,0.058823529411764754,0.02,0.03,0.17,0.16,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25323,083,Farfetch’d,normal,IDENTITY_CONFLICT,0.0,0.0,0.01,0.01,0.15,0.15,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25324,083,Farfetch’d,reverse_holo,IDENTITY_CONFLICT,0.0,0.0,0.1,0.1,0.26,0.26,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25325,084,Doduo,normal,MINOR_DIFFERENCE,0.0,0.07142857142857148,0.01,0.01,0.13,0.14,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25327,085,Dodrio,holo,MINOR_DIFFERENCE,0.0,0.09375000000000008,0.05,0.05,0.32,0.29,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25341,092,Gastly,normal,MINOR_DIFFERENCE,0.0,0.04761904761904753,0.01,0.01,0.2,0.21,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25345,094,Gengar,holo,MINOR_DIFFERENCE,0.0,0.007067137809187285,1.25,1.25,2.83,2.81,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25346,094,Gengar,reverse_holo,MINOR_DIFFERENCE,0.025974025974025997,0.036729857819905065,6.0,6.16,8.44,8.13,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25352,097,Hypno,reverse_holo,MINOR_DIFFERENCE,0.0,0.025641025641025664,0.87,0.87,1.52,1.56,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25360,101,Electrode,reverse_holo,MINOR_DIFFERENCE,0.0,0.018181818181818063,0.9,0.9,1.65,1.62,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25370,106,Hitmonlee,reverse_holo,MATERIAL_DIFFERENCE,0.29213483146067415,0.0,0.63,0.89,2.52,2.52,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25381,112,Rhydon,normal,MINOR_DIFFERENCE,0.0,0.04761904761904753,0.01,0.01,0.2,0.21,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25383,113,Chansey,holo,MINOR_DIFFERENCE,0.0,0.055555555555555455,0.07,0.07,0.34,0.36,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25387,115,Kangaskhan ex,holo,MINOR_DIFFERENCE,0.2,0.023076923076923096,0.52,0.65,1.27,1.3,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25401,122,Mr. Mime,reverse_holo,MINOR_DIFFERENCE,0.0,0.02985074626865674,0.18,0.18,0.65,0.67,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25411,128,Tauros,normal,MINOR_DIFFERENCE,0.0,0.15,0.01,0.01,0.17,0.2,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25414,129,Magikarp,reverse_holo,MINOR_DIFFERENCE,0.07692307692307698,0.0,0.13,0.12,0.33,0.33,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25418,131,Lapras,reverse_holo,MINOR_DIFFERENCE,0.0,0.015706806282722526,1.2,1.2,1.91,1.88,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25419,132,Ditto,holo,MINOR_DIFFERENCE,0.0,0.012195121951219388,0.29,0.29,0.81,0.82,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25420,132,Ditto,reverse_holo,MINOR_DIFFERENCE,0.0,0.01980198019801982,1.25,1.25,1.98,2.02,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25422,133,Eevee,reverse_holo,MINOR_DIFFERENCE,0.0,0.0555555555555556,0.1,0.1,0.54,0.51,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25428,136,Flareon,reverse_holo,MATERIAL_DIFFERENCE,0.5633802816901409,0.0,0.71,0.31,1.73,1.73,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25437,141,Kabutops,holo,MINOR_DIFFERENCE,0.0,0.03703703703703707,0.02,0.02,0.26,0.27,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25438,141,Kabutops,reverse_holo,MINOR_DIFFERENCE,0.0,0.029045643153527086,0.62,0.62,2.41,2.34,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25439,142,Aerodactyl,holo,MINOR_DIFFERENCE,0.0,0.025000000000000022,0.1,0.1,0.39,0.4,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25440,142,Aerodactyl,reverse_holo,MINOR_DIFFERENCE,0.0,0.016260162601626032,0.5,0.5,1.21,1.23,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25441,143,Snorlax,normal,MINOR_DIFFERENCE,0.0,0.15624999999999997,0.03,0.03,0.27,0.32,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25444,144,Articuno,reverse_holo,MINOR_DIFFERENCE,0.0,0.008403361344537823,0.66,0.66,1.18,1.19,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25445,145,Zapdos ex,holo,MATERIAL_DIFFERENCE,0.22680412371134018,0.009523809523809532,0.75,0.97,2.08,2.1,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25446,146,Moltres,holo,MINOR_DIFFERENCE,0.0,0.03125000000000003,0.1,0.1,0.31,0.32,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25453,149,Dragonite,reverse_holo,MINOR_DIFFERENCE,0.0,0.01872659176029956,0.75,0.75,2.62,2.67,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25456,151,Mew ex,holo,MINOR_DIFFERENCE,0.08499999999999996,0.0,6.0,5.49,9.73,9.73,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25457,152,Antique Dome Fossil,normal,MINOR_DIFFERENCE,0.0,0.04347826086956525,0.04,0.04,0.22,0.23,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25459,153,Antique Helix Fossil,normal,MINOR_DIFFERENCE,0.0,0.0454545454545455,0.03,0.03,0.22,0.21,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25465,156,Bill’s Transfer,normal,IDENTITY_CONFLICT,0.0,0.0454545454545455,0.01,0.01,0.21,0.22,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25466,156,Bill’s Transfer,reverse_holo,IDENTITY_CONFLICT,0.0,0.0,0.21,0.21,0.62,0.62,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25469,158,Daisy’s Help,normal,IDENTITY_CONFLICT,0.0,0.0,0.01,0.01,0.22,0.22,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25470,158,Daisy’s Help,reverse_holo,IDENTITY_CONFLICT,0.0,0.0,0.25,0.25,0.63,0.63,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25473,160,Erika’s Invitation,normal,IDENTITY_CONFLICT,0.0,0.0,0.02,0.02,0.2,0.2,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25474,160,Erika’s Invitation,reverse_holo,IDENTITY_CONFLICT,0.0,0.0,0.5,0.5,0.92,0.92,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25475,161,Giovanni’s Charisma,normal,IDENTITY_CONFLICT,0.0,0.04166666666666659,0.01,0.01,0.23,0.24,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25476,161,Giovanni’s Charisma,reverse_holo,IDENTITY_CONFLICT,0.0,0.0,0.6,0.6,1.01,1.01,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25479,163,Leftovers,normal,MINOR_DIFFERENCE,0.0,0.04347826086956525,0.01,0.01,0.22,0.23,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25487,168,Charmander,holo,MINOR_DIFFERENCE,0.010134684624616495,0.0,74.23,74.99,94.32,94.32,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25488,169,Charmeleon,holo,MINOR_DIFFERENCE,0.0,0.00035155563367908466,51.67,51.67,56.89,56.87,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25489,170,Squirtle,holo,MINOR_DIFFERENCE,0.0,0.002248339294839028,84.98,84.98,97.63,97.85,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25490,171,Wartortle,holo,MINOR_DIFFERENCE,0.0,0.0008017960230916798,46.98,46.98,62.36,62.31,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25491,172,Caterpie,holo,MINOR_DIFFERENCE,0.0006086427267192946,0.0,16.43,16.42,19.79,19.79,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25492,173,Pikachu,holo,MINOR_DIFFERENCE,0.013892747985551542,0.00200779496870204,70.98,71.98,84.5,84.67,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25493,174,Nidoking,holo,MINOR_DIFFERENCE,0.0,0.004271476032273368,16.5,16.5,20.98,21.07,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25495,176,Poliwhirl,holo,MINOR_DIFFERENCE,0.08380490433845324,0.0004664179104478341,34.0,37.11,42.86,42.88,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25496,177,Machoke,holo,MINOR_DIFFERENCE,0.0136986301369863,0.0,18.0,18.25,22.5,22.5,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25500,181,Dragonair,holo,MINOR_DIFFERENCE,0.0,0.009865824782951855,38.99,38.99,50.68,50.18,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25501,182,Venusaur ex,holo,MINOR_DIFFERENCE,0.0,0.002099370188943272,10.65,10.65,14.26,14.29,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25504,185,Arbok ex,holo,MINOR_DIFFERENCE,0.09090909090909094,0.0,4.5,4.95,6.83,6.83,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25506,187,Wigglytuff ex,holo,MINOR_DIFFERENCE,0.0,0.005681818181818262,5.0,5.0,8.8,8.75,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25507,188,Alakazam ex,holo,MINOR_DIFFERENCE,0.001253132832080285,0.0,7.98,7.97,10.75,10.75,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25508,189,Golem ex,holo,MINOR_DIFFERENCE,0.14000000000000004,0.0,4.3,5.0,7.27,7.27,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25509,190,Kangaskhan ex,holo,MINOR_DIFFERENCE,0.0,0.001724137931034446,4.5,4.5,5.8,5.79,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25513,194,Bill’s Transfer,holo,IDENTITY_CONFLICT,0.0,0.0,1.8,1.8,3.36,3.36,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25514,195,Daisy’s Help,holo,IDENTITY_CONFLICT,0.0,0.0,1.5,1.5,2.9,2.9,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25515,196,Erika’s Invitation,holo,IDENTITY_CONFLICT,0.0,0.0,4.39,4.39,6.32,6.32,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25516,197,Giovanni’s Charisma,holo,IDENTITY_CONFLICT,0.13583815028901727,0.0,3.46,2.99,5.36,5.36,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25518,199,Charizard ex,holo,MINOR_DIFFERENCE,0.00018615618503925498,0.0,322.31,322.25,368.57,368.57,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25519,200,Blastoise ex,holo,MINOR_DIFFERENCE,0.0,0.00042649985783339687,122.38,122.38,140.62,140.68,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25522,203,Erika’s Invitation,holo,IDENTITY_CONFLICT,0.0,0.0,14.59,14.59,16.13,16.13,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25523,204,Giovanni’s Charisma,holo,IDENTITY_CONFLICT,0.0023219814241485573,0.0,12.89,12.92,14.55,14.55,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping
+25525,206,Switch,holo,MINOR_DIFFERENCE,0.16666666666666663,0.0,1.2,1.0,2.64,2.64,2026/09/01,2026-09-01T12:00:20.170Z,refresh timing or source rounding,persist API authority and flag
+25526,207,Basic Energy,holo,IDENTITY_CONFLICT,0.0,0.0,3.47,3.47,4.48,4.48,2026/09/01,2026-09-01T12:00:20.170Z,identity/finish evidence conflict,block persistence and review mapping

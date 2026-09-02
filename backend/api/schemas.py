@@ -19,6 +19,19 @@ from .queries import (
     WishlistRow,
 )
 
+
+class PriceSourceOut(BaseModel):
+    role: str
+    provider: str
+    market: str
+    currency: str
+    source_variant: str | None
+    metrics: dict[str, float]
+    source_updated_at: str | None
+    observed_at: str
+    provenance: str
+    confidence: str | None
+
 # --- /api/overview ---------------------------------------------------------------
 
 
@@ -369,6 +382,8 @@ class CatalogItemOut(BaseModel):
     canonical_card_id: int | None
     game_code: str
     name: str
+    artist: str | None = None
+    metadata: dict | None = None
     set_code: str | None
     expansion_name: str | None
     card_number: str | None
@@ -405,13 +420,14 @@ class CatalogItemOut(BaseModel):
     owned: bool
     wishlist: bool
     wishlist_item_id: int | None
+    price_sources: list[PriceSourceOut] = Field(default_factory=list)
     image: CardImageOut | None
 
     @classmethod
     def from_row(cls, row: CatalogRow) -> "CatalogItemOut":
         return cls(
             id=row.id, canonical_card_id=row.canonical_card_id, game_code=row.game_code,
-            name=row.name, set_code=row.set_code,
+            name=row.name, artist=row.artist, metadata=row.metadata, set_code=row.set_code,
             expansion_name=row.expansion_name, card_number=row.card_number,
             rarity=row.rarity, finish=row.finish, treatment=row.treatment,
             language=row.language, release_kind=row.release_kind, art_kind=row.art_kind,
@@ -432,6 +448,7 @@ class CatalogItemOut(BaseModel):
             median_price=row.median_price, price_confidence=row.price_confidence,
             ownership_status=row.ownership_status, owned=row.owned,
             wishlist=row.wishlist, wishlist_item_id=row.wishlist_item_id,
+            price_sources=[PriceSourceOut.model_validate(source.__dict__) for source in row.price_sources],
             image=CardImageOut.from_data(row.image),
         )
 
@@ -439,6 +456,7 @@ class CatalogItemOut(BaseModel):
 class CatalogListResponse(BaseModel):
     items: list[CatalogItemOut]
     total: int
+    identity_total: int | None = None
     page: int
     page_size: int
 

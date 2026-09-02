@@ -1,0 +1,208 @@
+canonical_id,game,set,collector_number,card_name,rarity,category,artist,image_status,metadata_status,physical_printing_count
+23356,pokemon,mew,001,Bulbasaur,Common,Pokemon,Yuu Nishida,resolved,complete,2
+23357,pokemon,mew,002,Ivysaur,Uncommon,Pokemon,Yuu Nishida,resolved,complete,2
+23358,pokemon,mew,003,Venusaur ex,Double rare,Pokemon,5ban Graphics,resolved,complete,1
+23359,pokemon,mew,004,Charmander,Common,Pokemon,GIDORA,resolved,complete,3
+23360,pokemon,mew,005,Charmeleon,Uncommon,Pokemon,GIDORA,resolved,complete,3
+23361,pokemon,mew,006,Charizard ex,Double rare,Pokemon,PLANETA Mochizuki,resolved,complete,1
+23362,pokemon,mew,007,Squirtle,Common,Pokemon,kantaro,resolved,complete,2
+23363,pokemon,mew,008,Wartortle,Uncommon,Pokemon,kantaro,resolved,complete,2
+23364,pokemon,mew,009,Blastoise ex,Double rare,Pokemon,PLANETA Yamashita,resolved,complete,1
+23365,pokemon,mew,010,Caterpie,Common,Pokemon,Tika Matsuno,resolved,complete,2
+23366,pokemon,mew,011,Metapod,Common,Pokemon,Tika Matsuno,resolved,complete,2
+23367,pokemon,mew,012,Butterfree,Uncommon,Pokemon,Tika Matsuno,resolved,complete,2
+23368,pokemon,mew,013,Weedle,Common,Pokemon,nisimono,resolved,complete,2
+23369,pokemon,mew,014,Kakuna,Common,Pokemon,nisimono,resolved,complete,2
+23370,pokemon,mew,015,Beedrill,Rare,Pokemon,nisimono,resolved,complete,2
+23371,pokemon,mew,016,Pidgey,Common,Pokemon,Oswaldo KATO,resolved,complete,2
+23372,pokemon,mew,017,Pidgeotto,Common,Pokemon,Oswaldo KATO,resolved,complete,2
+23373,pokemon,mew,018,Pidgeot,Uncommon,Pokemon,Oswaldo KATO,resolved,complete,2
+23374,pokemon,mew,019,Rattata,Common,Pokemon,sowsow,resolved,complete,2
+23375,pokemon,mew,020,Raticate,Uncommon,Pokemon,sowsow,resolved,complete,2
+23376,pokemon,mew,021,Spearow,Common,Pokemon,Gemi,resolved,complete,2
+23377,pokemon,mew,022,Fearow,Uncommon,Pokemon,Gemi,resolved,complete,2
+23378,pokemon,mew,023,Ekans,Common,Pokemon,Kedamahadaitai Yawarakai,resolved,complete,2
+23379,pokemon,mew,024,Arbok ex,Double rare,Pokemon,Eske Yoshinob,resolved,complete,1
+23380,pokemon,mew,025,Pikachu,Common,Pokemon,Naoyo Kimura,resolved,complete,2
+23381,pokemon,mew,026,Raichu,Rare,Pokemon,Naoyo Kimura,resolved,complete,2
+23382,pokemon,mew,027,Sandshrew,Common,Pokemon,kodama,resolved,complete,2
+23383,pokemon,mew,028,Sandslash,Uncommon,Pokemon,kodama,resolved,complete,2
+23384,pokemon,mew,029,Nidoran♀,Common,Pokemon,Teeziro,resolved,complete,2
+23385,pokemon,mew,030,Nidorina,Uncommon,Pokemon,Teeziro,resolved,complete,2
+23386,pokemon,mew,031,Nidoqueen,Uncommon,Pokemon,Teeziro,resolved,complete,2
+23387,pokemon,mew,032,Nidoran♂,Common,Pokemon,Shiburingaru,resolved,complete,2
+23388,pokemon,mew,033,Nidorino,Uncommon,Pokemon,Shiburingaru,resolved,complete,2
+23389,pokemon,mew,034,Nidoking,Rare,Pokemon,Shiburingaru,resolved,complete,2
+23390,pokemon,mew,035,Clefairy,Common,Pokemon,ryoma uratsuka,resolved,complete,2
+23391,pokemon,mew,036,Clefable,Uncommon,Pokemon,ryoma uratsuka,resolved,complete,2
+23392,pokemon,mew,037,Vulpix,Common,Pokemon,kawayoo,resolved,complete,2
+23393,pokemon,mew,038,Ninetales ex,Double rare,Pokemon,kawayoo,resolved,complete,1
+23394,pokemon,mew,039,Jigglypuff,Common,Pokemon,saino misaki,resolved,complete,2
+23395,pokemon,mew,040,Wigglytuff ex,Double rare,Pokemon,Saki Hayashiro,resolved,complete,1
+23396,pokemon,mew,041,Zubat,Common,Pokemon,Scav,resolved,complete,2
+23397,pokemon,mew,042,Golbat,Uncommon,Pokemon,Scav,resolved,complete,2
+23398,pokemon,mew,043,Oddish,Common,Pokemon,Sekio,resolved,complete,2
+23399,pokemon,mew,044,Gloom,Uncommon,Pokemon,Sekio,resolved,complete,2
+23400,pokemon,mew,045,Vileplume,Rare,Pokemon,Sekio,resolved,complete,2
+23401,pokemon,mew,046,Paras,Common,Pokemon,Yoriyuki Ikegami,resolved,complete,2
+23402,pokemon,mew,047,Parasect,Uncommon,Pokemon,Yoriyuki Ikegami,resolved,complete,2
+23403,pokemon,mew,048,Venonat,Common,Pokemon,Kagemaru Himeno,resolved,complete,2
+23404,pokemon,mew,049,Venomoth,Uncommon,Pokemon,Kagemaru Himeno,resolved,complete,2
+23405,pokemon,mew,050,Diglett,Common,Pokemon,Miki Tanaka,resolved,complete,2
+23406,pokemon,mew,051,Dugtrio,Uncommon,Pokemon,Miki Tanaka,resolved,complete,2
+23407,pokemon,mew,052,Meowth,Common,Pokemon,Naoki Saito,resolved,complete,2
+23408,pokemon,mew,053,Persian,Uncommon,Pokemon,Naoki Saito,resolved,complete,2
+23409,pokemon,mew,054,Psyduck,Common,Pokemon,Taira Akitsu,resolved,complete,2
+23410,pokemon,mew,055,Golduck,Uncommon,Pokemon,Taira Akitsu,resolved,complete,2
+23411,pokemon,mew,056,Mankey,Common,Pokemon,Mina Nakai,resolved,complete,2
+23412,pokemon,mew,057,Primeape,Uncommon,Pokemon,Mina Nakai,resolved,complete,2
+23413,pokemon,mew,058,Growlithe,Common,Pokemon,Atsushi Furusawa,resolved,complete,2
+23414,pokemon,mew,059,Arcanine,Uncommon,Pokemon,Atsushi Furusawa,resolved,complete,2
+23415,pokemon,mew,060,Poliwag,Common,Pokemon,Kurata So,resolved,complete,2
+23416,pokemon,mew,061,Poliwhirl,Common,Pokemon,Kurata So,resolved,complete,2
+23417,pokemon,mew,062,Poliwrath,Uncommon,Pokemon,Kurata So,resolved,complete,2
+23418,pokemon,mew,063,Abra,Common,Pokemon,Mitsuhiro Arita,resolved,complete,2
+23419,pokemon,mew,064,Kadabra,Uncommon,Pokemon,Mitsuhiro Arita,resolved,complete,2
+23420,pokemon,mew,065,Alakazam ex,Double rare,Pokemon,Mitsuhiro Arita,resolved,complete,1
+23421,pokemon,mew,066,Machop,Common,Pokemon,Ryuta Fuse,resolved,complete,2
+23422,pokemon,mew,067,Machoke,Uncommon,Pokemon,Ryuta Fuse,resolved,complete,2
+23423,pokemon,mew,068,Machamp,Rare,Pokemon,Ryuta Fuse,resolved,complete,2
+23424,pokemon,mew,069,Bellsprout,Common,Pokemon,Jerky,resolved,complete,2
+23425,pokemon,mew,070,Weepinbell,Common,Pokemon,Jerky,resolved,complete,2
+23426,pokemon,mew,071,Victreebel,Uncommon,Pokemon,Jerky,resolved,complete,2
+23427,pokemon,mew,072,Tentacool,Common,Pokemon,miki kudo,resolved,complete,2
+23428,pokemon,mew,073,Tentacruel,Uncommon,Pokemon,miki kudo,resolved,complete,2
+23429,pokemon,mew,074,Geodude,Common,Pokemon,Uta,resolved,complete,2
+23430,pokemon,mew,075,Graveler,Uncommon,Pokemon,Uta,resolved,complete,2
+23431,pokemon,mew,076,Golem ex,Double rare,Pokemon,Uta,resolved,complete,1
+23432,pokemon,mew,077,Ponyta,Common,Pokemon,Nurikabe,resolved,complete,2
+23433,pokemon,mew,078,Rapidash,Uncommon,Pokemon,Nurikabe,resolved,complete,2
+23434,pokemon,mew,079,Slowpoke,Common,Pokemon,OKACHEKE,resolved,complete,2
+23435,pokemon,mew,080,Slowbro,Uncommon,Pokemon,OKACHEKE,resolved,complete,2
+23436,pokemon,mew,081,Magnemite,Common,Pokemon,Yuka Morii,resolved,complete,2
+23437,pokemon,mew,082,Magneton,Uncommon,Pokemon,Yuka Morii,resolved,complete,2
+23438,pokemon,mew,083,Farfetch’d,Common,Pokemon,KG-2000,resolved,complete,2
+23439,pokemon,mew,084,Doduo,Common,Pokemon,Anesaki Dynamic,resolved,complete,2
+23440,pokemon,mew,085,Dodrio,Rare,Pokemon,Anesaki Dynamic,resolved,complete,2
+23441,pokemon,mew,086,Seel,Common,Pokemon,aoki,resolved,complete,2
+23442,pokemon,mew,087,Dewgong,Uncommon,Pokemon,aoki,resolved,complete,2
+23443,pokemon,mew,088,Grimer,Common,Pokemon,Nisota Niso,resolved,complete,2
+23444,pokemon,mew,089,Muk,Uncommon,Pokemon,Nisota Niso,resolved,complete,2
+23445,pokemon,mew,090,Shellder,Common,Pokemon,Nelnal,resolved,complete,2
+23446,pokemon,mew,091,Cloyster,Uncommon,Pokemon,Nelnal,resolved,complete,2
+23447,pokemon,mew,092,Gastly,Common,Pokemon,Tomokazu Komiya,resolved,complete,2
+23448,pokemon,mew,093,Haunter,Uncommon,Pokemon,Tomokazu Komiya,resolved,complete,2
+23449,pokemon,mew,094,Gengar,Rare,Pokemon,Tomokazu Komiya,resolved,complete,2
+23450,pokemon,mew,095,Onix,Uncommon,Pokemon,Shin Nagasawa,resolved,complete,2
+23451,pokemon,mew,096,Drowzee,Common,Pokemon,Mousho,resolved,complete,2
+23452,pokemon,mew,097,Hypno,Uncommon,Pokemon,Mousho,resolved,complete,2
+23453,pokemon,mew,098,Krabby,Common,Pokemon,Yukiko Baba,resolved,complete,2
+23454,pokemon,mew,099,Kingler,Uncommon,Pokemon,Yukiko Baba,resolved,complete,2
+23455,pokemon,mew,100,Voltorb,Common,Pokemon,nagimiso,resolved,complete,2
+23456,pokemon,mew,101,Electrode,Rare,Pokemon,nagimiso,resolved,complete,2
+23457,pokemon,mew,102,Exeggcute,Common,Pokemon,Shigenori Negishi,resolved,complete,2
+23458,pokemon,mew,103,Exeggutor,Uncommon,Pokemon,Shigenori Negishi,resolved,complete,2
+23459,pokemon,mew,104,Cubone,Common,Pokemon,Shinya Komatsu,resolved,complete,2
+23460,pokemon,mew,105,Marowak,Rare,Pokemon,Shinya Komatsu,resolved,complete,2
+23461,pokemon,mew,106,Hitmonlee,Uncommon,Pokemon,Hitoshi Ariga,resolved,complete,2
+23462,pokemon,mew,107,Hitmonchan,Uncommon,Pokemon,DOM,resolved,complete,2
+23463,pokemon,mew,108,Lickitung,Common,Pokemon,Saya Tsuruta,resolved,complete,2
+23464,pokemon,mew,109,Koffing,Common,Pokemon,Shibuzoh.,resolved,complete,2
+23465,pokemon,mew,110,Weezing,Rare,Pokemon,Shibuzoh.,resolved,complete,2
+23466,pokemon,mew,111,Rhyhorn,Common,Pokemon,GOSSAN,resolved,complete,2
+23467,pokemon,mew,112,Rhydon,Uncommon,Pokemon,GOSSAN,resolved,complete,2
+23468,pokemon,mew,113,Chansey,Rare,Pokemon,Taiga Kayama,resolved,complete,2
+23469,pokemon,mew,114,Tangela,Common,Pokemon,Aya Kusube,resolved,complete,2
+23470,pokemon,mew,115,Kangaskhan ex,Double rare,Pokemon,N-DESIGN Inc.,resolved,complete,1
+23471,pokemon,mew,116,Horsea,Common,Pokemon,aspara,resolved,complete,2
+23472,pokemon,mew,117,Seadra,Uncommon,Pokemon,aspara,resolved,complete,2
+23473,pokemon,mew,118,Goldeen,Common,Pokemon,SIE NANAHARA,resolved,complete,2
+23474,pokemon,mew,119,Seaking,Uncommon,Pokemon,SIE NANAHARA,resolved,complete,2
+23475,pokemon,mew,120,Staryu,Common,Pokemon,Arai Kiriko,resolved,complete,2
+23476,pokemon,mew,121,Starmie,Rare,Pokemon,Arai Kiriko,resolved,complete,2
+23477,pokemon,mew,122,Mr. Mime,Rare,Pokemon,OOYAMA,resolved,complete,2
+23478,pokemon,mew,123,Scyther,Uncommon,Pokemon,Hideki Ishikawa,resolved,complete,2
+23479,pokemon,mew,124,Jynx ex,Double rare,Pokemon,Ayaka Yoshida,resolved,complete,1
+23480,pokemon,mew,125,Electabuzz,Common,Pokemon,NC Empire,resolved,complete,2
+23481,pokemon,mew,126,Magmar,Common,Pokemon,Toshinao Aoki,resolved,complete,2
+23482,pokemon,mew,127,Pinsir,Uncommon,Pokemon,Yuya Oka,resolved,complete,2
+23483,pokemon,mew,128,Tauros,Uncommon,Pokemon,Takeshi Nakamura,resolved,complete,2
+23484,pokemon,mew,129,Magikarp,Common,Pokemon,Kouki Saitou,resolved,complete,2
+23485,pokemon,mew,130,Gyarados,Rare,Pokemon,Kouki Saitou,resolved,complete,2
+23486,pokemon,mew,131,Lapras,Uncommon,Pokemon,LINNE,resolved,complete,2
+23487,pokemon,mew,132,Ditto,Rare,Pokemon,KIYOTAKA OSHIYAMA,resolved,complete,2
+23488,pokemon,mew,133,Eevee,Common,Pokemon,Narumi Sato,resolved,complete,2
+23489,pokemon,mew,134,Vaporeon,Rare,Pokemon,kirisAki,resolved,complete,2
+23490,pokemon,mew,135,Jolteon,Rare,Pokemon,sui,resolved,complete,2
+23491,pokemon,mew,136,Flareon,Rare,Pokemon,Ryota Murayama,resolved,complete,2
+23492,pokemon,mew,137,Porygon,Common,Pokemon,5ban Graphics,resolved,complete,2
+23493,pokemon,mew,138,Omanyte,Uncommon,Pokemon,Akira Komayama,resolved,complete,2
+23494,pokemon,mew,139,Omastar,Rare,Pokemon,Akira Komayama,resolved,complete,2
+23495,pokemon,mew,140,Kabuto,Uncommon,Pokemon,Souichirou Gunjima,resolved,complete,2
+23496,pokemon,mew,141,Kabutops,Rare,Pokemon,Souichirou Gunjima,resolved,complete,2
+23497,pokemon,mew,142,Aerodactyl,Rare,Pokemon,Shinji Kanda,resolved,complete,2
+23498,pokemon,mew,143,Snorlax,Uncommon,Pokemon,HYOGONOSUKE,resolved,complete,2
+23499,pokemon,mew,144,Articuno,Rare,Pokemon,chibi,resolved,complete,2
+23500,pokemon,mew,145,Zapdos ex,Double rare,Pokemon,takuyoa,resolved,complete,1
+23501,pokemon,mew,146,Moltres,Rare,Pokemon,KEIICHIRO ITO,resolved,complete,2
+23502,pokemon,mew,147,Dratini,Common,Pokemon,Sanosuke Sakuma,resolved,complete,2
+23503,pokemon,mew,148,Dragonair,Uncommon,Pokemon,Sanosuke Sakuma,resolved,complete,2
+23504,pokemon,mew,149,Dragonite,Rare,Pokemon,Sanosuke Sakuma,resolved,complete,2
+23505,pokemon,mew,150,Mewtwo,Rare,Pokemon,AKIRA EGAWA,resolved,complete,2
+23506,pokemon,mew,151,Mew ex,Double rare,Pokemon,aky CG Works,resolved,complete,1
+23507,pokemon,mew,152,Antique Dome Fossil,Common,Trainer,AYUMI ODASHIMA,resolved,complete,2
+23508,pokemon,mew,153,Antique Helix Fossil,Common,Trainer,AYUMI ODASHIMA,resolved,complete,2
+23509,pokemon,mew,154,Antique Old Amber,Common,Trainer,AYUMI ODASHIMA,resolved,complete,2
+23510,pokemon,mew,155,Big Air Balloon,Uncommon,Trainer,Toyste Beach,resolved,complete,2
+23511,pokemon,mew,156,Bill’s Transfer,Uncommon,Trainer,GIDORA,resolved,complete,2
+23512,pokemon,mew,157,Cycling Road,Uncommon,Trainer,Oswaldo KATO,resolved,complete,2
+23513,pokemon,mew,158,Daisy’s Help,Uncommon,Trainer,Tomomi Kaneko,resolved,complete,2
+23514,pokemon,mew,159,Energy Sticker,Uncommon,Trainer,Ayaka Yoshida,resolved,complete,2
+23515,pokemon,mew,160,Erika’s Invitation,Uncommon,Trainer,saino misaki,resolved,complete,2
+23516,pokemon,mew,161,Giovanni’s Charisma,Uncommon,Trainer,hncl,resolved,complete,2
+23517,pokemon,mew,162,Grabber,Uncommon,Trainer,inose yukie,resolved,complete,2
+23518,pokemon,mew,163,Leftovers,Uncommon,Trainer,Studio Bora Inc.,resolved,complete,2
+23519,pokemon,mew,164,Protective Goggles,Uncommon,Trainer,Toyste Beach,resolved,complete,2
+23520,pokemon,mew,165,Rigid Band,Uncommon,Trainer,Toyste Beach,resolved,complete,2
+23521,pokemon,mew,166,Bulbasaur,Illustration rare,Pokemon,Yoriyuki Ikegami,resolved,complete,1
+23522,pokemon,mew,167,Ivysaur,Illustration rare,Pokemon,Yoriyuki Ikegami,resolved,complete,1
+23523,pokemon,mew,168,Charmander,Illustration rare,Pokemon,miki kudo,resolved,complete,1
+23524,pokemon,mew,169,Charmeleon,Illustration rare,Pokemon,miki kudo,resolved,complete,1
+23525,pokemon,mew,170,Squirtle,Illustration rare,Pokemon,Mitsuhiro Arita,resolved,complete,1
+23526,pokemon,mew,171,Wartortle,Illustration rare,Pokemon,Mitsuhiro Arita,resolved,complete,1
+23527,pokemon,mew,172,Caterpie,Illustration rare,Pokemon,Teeziro,resolved,complete,1
+23528,pokemon,mew,173,Pikachu,Illustration rare,Pokemon,Hiroyuki Yamamoto,resolved,complete,1
+23529,pokemon,mew,174,Nidoking,Illustration rare,Pokemon,Misaki Hashimoto,resolved,complete,1
+23530,pokemon,mew,175,Psyduck,Illustration rare,Pokemon,Whisker,resolved,complete,1
+23531,pokemon,mew,176,Poliwhirl,Illustration rare,Pokemon,Gemi,resolved,complete,1
+23532,pokemon,mew,177,Machoke,Illustration rare,Pokemon,Tetsu Kayama,resolved,complete,1
+23533,pokemon,mew,178,Tangela,Illustration rare,Pokemon,Oswaldo KATO,resolved,complete,1
+23534,pokemon,mew,179,Mr. Mime,Illustration rare,Pokemon,OKACHEKE,resolved,complete,1
+23535,pokemon,mew,180,Omanyte,Illustration rare,Pokemon,Yano Keiji,resolved,complete,1
+23536,pokemon,mew,181,Dragonair,Illustration rare,Pokemon,rika,resolved,complete,1
+23537,pokemon,mew,182,Venusaur ex,Ultra Rare,Pokemon,PLANETA Yamashita,resolved,complete,1
+23538,pokemon,mew,183,Charizard ex,Ultra Rare,Pokemon,PLANETA Mochizuki,resolved,complete,1
+23539,pokemon,mew,184,Blastoise ex,Ultra Rare,Pokemon,PLANETA Yamashita,resolved,complete,1
+23540,pokemon,mew,185,Arbok ex,Ultra Rare,Pokemon,Eske Yoshinob,resolved,complete,1
+23541,pokemon,mew,186,Ninetales ex,Ultra Rare,Pokemon,PLANETA Tsuji,resolved,complete,1
+23542,pokemon,mew,187,Wigglytuff ex,Ultra Rare,Pokemon,Saki Hayashiro,resolved,complete,1
+23543,pokemon,mew,188,Alakazam ex,Ultra Rare,Pokemon,PLANETA Tsuji,resolved,complete,1
+23544,pokemon,mew,189,Golem ex,Ultra Rare,Pokemon,PLANETA Igarashi,resolved,complete,1
+23545,pokemon,mew,190,Kangaskhan ex,Ultra Rare,Pokemon,N-DESIGN Inc.,resolved,complete,1
+23546,pokemon,mew,191,Jynx ex,Ultra Rare,Pokemon,Ayaka Yoshida,resolved,complete,1
+23547,pokemon,mew,192,Zapdos ex,Ultra Rare,Pokemon,takuyoa,resolved,complete,1
+23548,pokemon,mew,193,Mew ex,Ultra Rare,Pokemon,aky CG Works,resolved,complete,1
+23549,pokemon,mew,194,Bill’s Transfer,Ultra Rare,Trainer,GIDORA,resolved,complete,1
+23550,pokemon,mew,195,Daisy’s Help,Ultra Rare,Trainer,Fumie Kittaka,resolved,complete,1
+23551,pokemon,mew,196,Erika’s Invitation,Ultra Rare,Trainer,saino misaki,resolved,complete,1
+23552,pokemon,mew,197,Giovanni’s Charisma,Ultra Rare,Trainer,hncl,resolved,complete,1
+23553,pokemon,mew,198,Venusaur ex,Special illustration rare,Pokemon,Yoriyuki Ikegami,resolved,complete,1
+23554,pokemon,mew,199,Charizard ex,Special illustration rare,Pokemon,miki kudo,resolved,complete,1
+23555,pokemon,mew,200,Blastoise ex,Special illustration rare,Pokemon,Mitsuhiro Arita,resolved,complete,1
+23556,pokemon,mew,201,Alakazam ex,Special illustration rare,Pokemon,Shinya Komatsu,resolved,complete,1
+23557,pokemon,mew,202,Zapdos ex,Special illustration rare,Pokemon,Shiburingaru,resolved,complete,1
+23558,pokemon,mew,203,Erika’s Invitation,Special illustration rare,Trainer,Cona Nitanda,resolved,complete,1
+23559,pokemon,mew,204,Giovanni’s Charisma,Special illustration rare,Trainer,Hideki Ishikawa,resolved,complete,1
+23560,pokemon,mew,205,Mew ex,Hyper rare,Pokemon,aky CG Works,resolved,complete,1
+23561,pokemon,mew,206,Switch,Hyper rare,Trainer,Studio Bora Inc.,resolved,complete,1
+23562,pokemon,mew,207,Basic Energy,Hyper rare,Energy,,resolved,complete,1

@@ -131,6 +131,25 @@ Use relational tables. Avoid storing the collection as one large JSON object.
 Cards, sets/expansions, Cardmarket products, product mappings, price history,
 collection entries and want-list entries should remain separate relational concepts.
 
+`cardmarket_products` is source inventory and does not imply a resolved printing.
+When one commercial product covers a canonical card across multiple physical
+finishes, `cardmarket_product_printing_scopes` stores the canonical target, an
+optional physical `card_id`, finish scope, compatible finishes, evidence and
+`pricing_eligible`. A mapping can therefore be authoritative without becoming
+price-eligible or being forced onto one physical printing.
+
+When a product exposes separate Cardmarket metric families, such as `base` and
+`foil`, `cardmarket_product_metric_mappings` stores one relationship per product
+and metric family. It keeps canonical status, metric status, candidate physical
+cards, source metric column names, evidence and `pricing_eligible` separate. It
+does not store numeric prices and never implies that a metric was applied. A
+`pricing_eligible` relationship requires product identity, canonical identity,
+physical `card_id`, metric family and evidence of metric exclusivity; compatibility
+alone is insufficient. Sampled product-page patterns may document a `SUPPORTED`
+observation but never promote unobserved products to `EXACT`. Metric resolution is
+offline-at-apply: external evidence is fetched, cached, hashed and reported before
+any database copy is changed.
+
 The schema must support multiple copies of the same card without duplicating the card
 definition.
 
@@ -220,6 +239,21 @@ Scryfall or CardTrader. Provider calls are restricted to backend maintenance/bac
 processes, with Cardmarket Product ID matching, HTTPS validation and a finite image
 host allowlist derived from the validated CardTrader catalog.
 
+The Pokémon 151 finish-source audit is read-only and cache-first. Cardmarket public
+listing access may document Reverse Holo semantics but must not be treated as a
+finish-specific price unless the filtered listing result is reproducible. Structured
+sources may be recorded as explicit secondary provenance: `source=pokemon_tcg_api`
+with `underlying_market=cardmarket` for Cardmarket-derived Reverse fields, or
+`source=tcgplayer` with `source_currency=USD` for finish-specific reference values.
+Neither source silently populates Cardmarket EUR `current_price`.
+
+Pokémon 151 TCGplayer secondary observations are stored in the generic
+`market_price_observations` table, keyed by physical `cards.id`, provider, underlying
+market, metric, currency and source snapshot. `source_updated_at` remains the
+provider timestamp and `observed_at` records local ingestion. Catalog reads may show
+these observations as a clearly secondary USD reference; Overview, Collection,
+Wishlist, Top Cards and all valuation/P&L/ROI queries deliberately exclude them.
+
 ## Cardmarket Role
 
 Cardmarket is the primary source for European market prices.
@@ -231,6 +265,11 @@ explicitly say not to ask the user for them.
 Important price metrics should remain separate when present, such as low, average,
 trend, 1-day average, 7-day average and 30-day average. Do not invent fields not
 provided by the data source.
+
+For Pokémon 151, `reverseHolo*` fields from an external structured source remain a
+separate candidate until exact identity, physical finish and source semantics are
+reviewed. A present field with value zero is unavailable for pricing purposes, and
+USD values are never converted implicitly to EUR.
 
 ## Scryfall Role
 
@@ -254,7 +293,8 @@ It is not scraped and is not a runtime dependency.
 - Supabase/PostgreSQL is deferred and should be treated as its own future phase.
 - Collection editing is still performed via CSV/script flow, not the web UI.
 - Trading, Analytics and CARDMADNESS are later phases.
-- Pokémon remains inactive but can reuse the neutral model and provider interfaces.
+- Pokémon 151 catalog is active in the neutral model; Collection/Wishlist actions
+  remain disabled for Pokémon and no Pokémon primary pricing is populated.
 - No scrapers or private Cardmarket API integrations are in scope.
 
 ## Scoped Pricing Resolution (`2026-08-31`)
@@ -274,3 +314,17 @@ history. Cardmarket product and history tables remain global source tables, but
 writes are limited to product IDs selected by the active target. The additive
 Wishlist migration is validated only on temporary copies/fixtures; it is not run
 against the production SQLite database in this sprint.
+
+## Pokémon 151 Manual Cardmarket Resolution
+
+`POKEMON-151-004B` resolves only the canonical numbered identity of the 73
+remaining Pokémon 151 Cardmarket products. The controlled review workspace is
+`reports/pokemon_151/cardmarket_manual_resolution/03_manual_review.csv`; only
+`approved`, `approved_collector_number` and `review_notes` are editable.
+
+The apply gate verifies immutable evidence, requires the approved number to be
+one of the presented candidates, and protects the existing 137 EXACT mappings
+with a dynamically computed before/after hash. Canonical promotion never
+infers or overwrites physical card or finish information and never enables
+pricing. With zero valid approvals, apply is a true NO-OP and does not create
+or replace a SQLite database.

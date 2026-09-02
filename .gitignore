@@ -8,6 +8,11 @@ backups/pricing/
 backend/scripts/.collection_import_state.json
 backend/scripts/collection-ambiguous-review*.csv
 backend/scripts/.scryfall-cache/
+backend/scripts/.pokemon_151_identity_cache/
+backend/scripts/.pokemon_151_cardmarket_semantics_cache/
+backend/scripts/.pokemon_151_finish_pricing_cache/
+reports/pokemon_151/catalog_import/backups/
+reports/pokemon_151/cardmarket_mapping/backups/
 
 # Fase 6 -- frontend (Vite + React)
 frontend/node_modules/

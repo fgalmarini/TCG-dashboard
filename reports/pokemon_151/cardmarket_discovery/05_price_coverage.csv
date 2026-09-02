@@ -1,0 +1,19 @@
+metric,count,denominator,notes
+total Cardmarket products,210,210,denominator
+products found in Price Guide,210,210,idProduct join exists; duplicate joins included
+products with exact single Price Guide entry,210,210,safe one-to-one join
+products missing in Price Guide,0,210,no idProduct match
+products with duplicate Price Guide entries,0,210,requires manual/source review
+products with Low,210,210,non-NULL value after strict idProduct join
+products with Trend,210,210,non-NULL value after strict idProduct join
+products with AVG1,210,210,non-NULL value after strict idProduct join
+products with AVG7,210,210,non-NULL value after strict idProduct join
+products with AVG30,210,210,non-NULL value after strict idProduct join
+products with Low-holo,153,210,non-NULL value after strict idProduct join
+products with Trend-holo,210,210,non-NULL value after strict idProduct join
+products with AVG1-holo,153,210,non-NULL value after strict idProduct join
+products with AVG7-holo,153,210,non-NULL value after strict idProduct join
+products with AVG30-holo,153,210,non-NULL value after strict idProduct join
+Low = 0,0,210,flag only; no fallback or correction applied
+Low < 0,0,210,flag only; no fallback or correction applied
+available-item information,0,210,field absent from both source schemas

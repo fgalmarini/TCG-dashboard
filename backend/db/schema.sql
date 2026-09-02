@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS cards (
     set_code                TEXT,
     normalized_name         TEXT,
     rarity                  TEXT,
-    finish                  TEXT CHECK (finish IS NULL OR finish IN ('nonfoil', 'foil', 'etched')),
+    finish                  TEXT CHECK (finish IS NULL OR finish IN ('nonfoil', 'foil', 'etched', 'normal', 'holo', 'reverse_holo')),
     treatment               TEXT,
     language_id             INTEGER REFERENCES languages (id),
     scryfall_id             TEXT,
@@ -198,6 +198,61 @@ CREATE TABLE IF NOT EXISTS cardmarket_product_mappings (
     notes                   TEXT
 );
 
+-- Generic product-to-canonical scope for providers whose commercial product can
+-- cover several physical finishes. ``card_id`` remains nullable so a broader
+-- product is never forced onto one physical printing.
+CREATE TABLE IF NOT EXISTS cardmarket_product_printing_scopes (
+    id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+    cardmarket_product_id INTEGER NOT NULL UNIQUE REFERENCES cardmarket_products (id),
+    canonical_card_id     INTEGER NOT NULL REFERENCES canonical_cards (id),
+    card_id               INTEGER REFERENCES cards (id),
+    finish_scope          TEXT CHECK (finish_scope IN ('single', 'multiple', 'unknown')),
+    compatible_finishes   TEXT,
+    numbered_identity_status TEXT NOT NULL CHECK (numbered_identity_status IN ('EXACT', 'PROBABLE', 'AMBIGUOUS', 'MISMATCH', 'UNRESOLVED')),
+    finish_mapping_status TEXT NOT NULL CHECK (finish_mapping_status IN ('EXACT_SINGLE', 'EXACT_MULTIPLE', 'SUPPORTED', 'AMBIGUOUS', 'UNKNOWN', 'NOT_APPLICABLE')),
+    mapping_status        TEXT NOT NULL CHECK (mapping_status IN ('EXACT', 'PROBABLE', 'AMBIGUOUS', 'MISMATCH', 'UNRESOLVED')),
+    mapping_confidence    TEXT NOT NULL,
+    mapping_method        TEXT NOT NULL,
+    evidence              TEXT NOT NULL,
+    provenance            TEXT NOT NULL,
+    pricing_eligible      INTEGER NOT NULL DEFAULT 0 CHECK (pricing_eligible IN (0, 1)),
+    created_at            TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at            TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_cardmarket_product_scope_canonical
+    ON cardmarket_product_printing_scopes (canonical_card_id, finish_scope);
+
+-- A commercial product may expose independent base/foil metric families while
+-- still covering multiple physical finishes. Keep those relationships separate
+-- from the canonical product scope and never infer a price from this table.
+CREATE TABLE IF NOT EXISTS cardmarket_product_metric_mappings (
+    id                       INTEGER PRIMARY KEY AUTOINCREMENT,
+    cardmarket_product_id    INTEGER NOT NULL REFERENCES cardmarket_products (id),
+    canonical_card_id        INTEGER NOT NULL REFERENCES canonical_cards (id),
+    card_id                  INTEGER REFERENCES cards (id),
+    metric_family            TEXT NOT NULL CHECK (metric_family IN ('base', 'foil')),
+    canonical_mapping_status TEXT NOT NULL CHECK (canonical_mapping_status IN ('EXACT', 'PROBABLE', 'AMBIGUOUS', 'MISMATCH', 'UNRESOLVED')),
+    metric_mapping_status    TEXT NOT NULL CHECK (metric_mapping_status IN ('EXACT', 'SUPPORTED', 'AMBIGUOUS', 'UNRESOLVED', 'MISMATCH')),
+    pricing_eligible         INTEGER NOT NULL DEFAULT 0 CHECK (pricing_eligible IN (0, 1)),
+    candidate_card_ids       TEXT NOT NULL,
+    compatible_finishes      TEXT NOT NULL,
+    metric_columns           TEXT NOT NULL,
+    mapping_method            TEXT NOT NULL,
+    confidence               TEXT NOT NULL,
+    evidence                 TEXT NOT NULL,
+    provenance               TEXT NOT NULL,
+    created_at               TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at               TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (cardmarket_product_id, metric_family)
+);
+
+CREATE INDEX IF NOT EXISTS idx_cardmarket_product_metric_mapping_status
+    ON cardmarket_product_metric_mappings (metric_mapping_status, pricing_eligible);
+
+CREATE INDEX IF NOT EXISTS idx_cardmarket_product_metric_canonical
+    ON cardmarket_product_metric_mappings (canonical_card_id, metric_family);
+
 CREATE TABLE IF NOT EXISTS market_price_history (
     id                      INTEGER PRIMARY KEY AUTOINCREMENT,
     cardmarket_product_id   INTEGER NOT NULL REFERENCES cardmarket_products (id),
@@ -226,6 +281,33 @@ CREATE TABLE IF NOT EXISTS market_price_history (
 
 CREATE INDEX IF NOT EXISTS idx_market_price_history_product_observed
     ON market_price_history (cardmarket_product_id, observed_at DESC);
+
+-- Generic source-neutral observations for secondary and future market sources.
+-- This table is intentionally independent from Cardmarket product history and
+-- printing_price_resolutions, which remains the primary valuation path.
+CREATE TABLE IF NOT EXISTS market_price_observations (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    card_id             INTEGER NOT NULL REFERENCES cards (id),
+    provider            TEXT NOT NULL,
+    market              TEXT NOT NULL,
+    metric              TEXT NOT NULL,
+    value               REAL NOT NULL CHECK (value > 0),
+    currency            TEXT NOT NULL,
+    source_updated_at   TEXT,
+    observed_at         TEXT NOT NULL,
+    snapshot_key        TEXT NOT NULL,
+    provenance          TEXT NOT NULL,
+    confidence          TEXT,
+    source_variant      TEXT,
+    created_at          TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (card_id, provider, market, metric, currency, snapshot_key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_market_price_observations_card_source
+    ON market_price_observations (card_id, provider, market, observed_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_market_price_observations_snapshot
+    ON market_price_observations (snapshot_key, provider, market);
 
 CREATE TABLE IF NOT EXISTS printing_price_resolutions (
     id                INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -318,7 +400,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_collection_override_current
 CREATE TABLE IF NOT EXISTS card_images (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     card_id         INTEGER NOT NULL REFERENCES cards (id),
-    source          TEXT NOT NULL CHECK (source IN ('scryfall', 'cardtrader', 'manual')),
+    source          TEXT NOT NULL CHECK (source IN ('scryfall', 'cardtrader', 'tcgdex', 'manual')),
     source_card_id  TEXT,
     source_variant  TEXT,
     source_collector_number TEXT,

@@ -1,0 +1,26 @@
+metric_type,field,total,populated,missing,coverage_percent,source,notes
+official_207_field,collector_number,207,207,0,100.0,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,card_name,207,207,0,100.0,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,rarity,207,207,0,100.0,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,category,207,207,0,100.0,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,pokemon_species,207,185,22,89.37,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,hp,207,188,19,90.82,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,pokemon_type,207,186,21,89.86,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,stage,207,207,0,100.0,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,evolves_from,207,95,112,45.89,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,artist,207,206,1,99.52,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,regulation_mark,207,206,1,99.52,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,attacks,207,185,22,89.37,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,has_normal,207,207,0,100.0,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,has_holo,207,207,0,100.0,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+official_207_field,has_reverse_holo,207,207,0,100.0,official + TCGdex/API as available,Null is preserved when a field is inapplicable or unavailable.
+Cardmarket mapping status,AMBIGUOUS,210,73,137,34.76,computed audit,One row per Cardmarket product.
+Cardmarket mapping status,PROBABLE,210,137,73,65.24,computed audit,One row per Cardmarket product.
+finish status,AMBIGUOUS,210,135,75,64.29,computed audit,One row per Cardmarket product.
+finish status,SUPPORTED,210,2,208,0.95,computed audit,One row per Cardmarket product.
+finish status,UNKNOWN,210,73,137,34.76,computed audit,One row per Cardmarket product.
+treatment status,UNKNOWN,210,210,0,100.0,computed audit,One row per Cardmarket product.
+variant_matrix,supported_variant_rows,207,385,,,TCGdex,Rows are emitted only for explicitly supported/confirmed variants.
+source_status,official,1,1,0,100,official,cached
+source_status,pokemon_tcg_api,1,1,0,100,pokemon_tcg_api,cached
+source_status,tcgdex_set,1,1,0,100,tcgdex_set,cached

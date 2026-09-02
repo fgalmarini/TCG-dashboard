@@ -174,6 +174,8 @@ export interface CatalogItem {
   canonical_card_id: number | null
   game_code: string
   name: string
+  artist?: string | null
+  metadata?: Record<string, unknown> | null
   set_code: string | null
   expansion_name: string | null
   card_number: string | null
@@ -210,12 +212,27 @@ export interface CatalogItem {
   owned: boolean
   wishlist: boolean
   wishlist_item_id: number | null
+  price_sources: PriceSource[]
   image: CardImage | null
+}
+
+export interface PriceSource {
+  role: string
+  provider: string
+  market: string
+  currency: string
+  source_variant: string | null
+  metrics: Record<string, number>
+  source_updated_at: string | null
+  observed_at: string
+  provenance: string
+  confidence: string | null
 }
 
 export interface CatalogListResponse {
   items: CatalogItem[]
   total: number
+  identity_total?: number | null
   page: number
   page_size: number
 }
@@ -227,7 +244,7 @@ export interface CatalogQueryParams {
   search?: string
   ownership?: 'owned' | 'not_owned' | 'wishlist'
   rarity?: string
-  finish?: 'nonfoil' | 'foil' | 'etched'
+  finish?: 'nonfoil' | 'foil' | 'etched' | 'normal' | 'holo' | 'reverse_holo'
   treatment?: string
   page?: number
   page_size?: number
@@ -325,9 +342,20 @@ export interface CollectionMatchContext {
 }
 
 export const GAME_OPTIONS = [
+  { value: 'pokemon', label: 'Pokémon' },
   { value: 'magic', label: 'Magic' },
   { value: 'one_piece', label: 'One Piece' },
 ] as const
+
+export const CATALOG_CAPABILITIES: Record<string, { collection_enabled: boolean; wishlist_enabled: boolean }> = {
+  pokemon: { collection_enabled: false, wishlist_enabled: false },
+  magic: { collection_enabled: true, wishlist_enabled: true },
+  one_piece: { collection_enabled: true, wishlist_enabled: true },
+}
+
+export function catalogCapabilities(gameCode: string) {
+  return CATALOG_CAPABILITIES[gameCode] ?? { collection_enabled: true, wishlist_enabled: true }
+}
 
 export const LANGUAGE_OPTIONS = [
   { value: 'en', label: 'English' },

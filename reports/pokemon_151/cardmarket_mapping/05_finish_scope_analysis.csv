@@ -1,0 +1,211 @@
+idProduct,matched_collector_number,internal_available_finishes,Cardmarket_base_price_metrics,Cardmarket_foil_price_metrics,finish_scope,compatible_finishes,finish_evidence,finish_confidence
+719442,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719444,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719445,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719446,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719447,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719448,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719449,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719450,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719451,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719452,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719453,011,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719454,012,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719455,013,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719456,014,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719457,015,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719458,016,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719459,017,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719460,018,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719461,019,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719462,020,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719463,021,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719464,022,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719465,023,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719466,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719467,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719468,026,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719469,027,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719470,028,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719471,029,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719472,030,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719473,031,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719474,032,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719475,033,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719476,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719477,035,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719478,036,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719479,037,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719480,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719481,039,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719482,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719483,041,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719484,042,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719485,043,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719486,044,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719487,045,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719488,046,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719489,047,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719490,048,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719491,049,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719492,050,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719493,051,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719494,052,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719495,053,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719496,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719497,055,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719498,056,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719499,057,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719500,058,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719501,059,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719502,060,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719503,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719504,062,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719505,063,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719506,064,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719507,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719508,066,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719509,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719510,068,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719511,069,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719512,070,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719513,071,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719514,072,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719515,073,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719516,074,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719517,075,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719518,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719519,077,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719520,078,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719521,079,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719522,080,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719523,081,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719524,082,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719525,083,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719526,084,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719527,085,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719528,086,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719529,087,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719530,088,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719531,089,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719543,090,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719544,091,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719545,092,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719546,093,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719547,094,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719548,095,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719549,096,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719550,097,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719551,098,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719552,099,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719553,100,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719554,101,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719555,102,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719556,103,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719557,104,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719558,105,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719559,106,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719560,107,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719561,108,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719562,109,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719563,110,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719564,111,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719565,112,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719566,113,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719567,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719568,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719569,116,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719570,117,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719571,118,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719572,119,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719573,120,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719574,121,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719575,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719576,123,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719577,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719578,125,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719579,126,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719580,127,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719581,128,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719582,129,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719583,130,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719584,131,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719585,132,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719586,133,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719587,134,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719588,135,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719589,136,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719590,137,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719591,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719592,139,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719593,140,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719594,141,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719595,142,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719596,143,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719597,144,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719598,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719599,146,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719600,147,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719601,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719602,149,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719603,150,"[""holo"",""reverse_holo""]",True,True,multiple,"[""holo"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719604,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719605,159,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719606,162,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719607,153,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719608,152,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719609,154,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719610,164,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719611,155,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719612,165,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719613,163,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719614,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719615,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719616,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719617,,[],True,True,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719618,157,"[""normal"",""reverse_holo""]",True,True,multiple,"[""normal"",""reverse_holo""]",Cardmarket Price Guide exposes base and foil metric families under one idProduct; internal finishes are listed without assigning numeric prices.,MEDIUM
+719619,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719620,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719621,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719622,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719623,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719624,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719625,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719626,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719627,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719628,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719629,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719630,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719631,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719632,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719633,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719634,143,"[""normal"",""reverse_holo""]",True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719635,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719636,150,"[""holo"",""reverse_holo""]",True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719637,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719638,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719639,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719640,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719641,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719642,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719643,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719644,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719645,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719646,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719647,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719648,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719649,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719650,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719651,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719652,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719653,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719654,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719655,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719656,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719657,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719658,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719659,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719660,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719661,,[],True,False,unknown,[],No deterministic Cardmarket-to-internal finish relationship established.,LOW
+719662,206,"[""holo""]",True,False,unknown,"[""holo""]",structured card-level finish support; Cardmarket idProduct link remains non-direct,MEDIUM
+719663,207,"[""holo""]",True,False,unknown,"[""holo""]",structured card-level finish support; Cardmarket idProduct link remains non-direct,MEDIUM
