@@ -5,6 +5,9 @@ import type { CardImage } from './types'
 
 const dateFormatter = new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium' })
 const dateTimeFormatter = new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeStyle: 'short' })
+const TCGDEX_ASSET_HOST = 'https://assets.tcgdex.net/'
+const IMAGE_EXTENSION_RE = /\.(?:png|jpe?g|webp)$/i
+const TCGDEX_QUALITY_RE = /\/(?:low|high)\.(?:png|jpe?g|webp)$/i
 
 export function formatCurrency(value: number | null | undefined, currency = 'EUR'): string {
   if (value === null || value === undefined) return '—'
@@ -27,9 +30,21 @@ export function formatSetCode(value: string | null | undefined): string | null {
   return value ? value.toUpperCase() : null
 }
 
+export function normalizeImageAssetUrl(
+  value: string | null | undefined,
+  quality: 'low' | 'high' = 'high',
+): string | null {
+  if (!value) return null
+  const url = value.trim()
+  if (!url) return null
+  if (!url.startsWith(TCGDEX_ASSET_HOST)) return url
+  if (TCGDEX_QUALITY_RE.test(url) || IMAGE_EXTENSION_RE.test(url)) return url
+  return `${url.replace(/\/+$/, '')}/${quality}.webp`
+}
+
 export function cardImageUrl(image: CardImage | null, faceIndex = 0): string | null {
   const face = image?.faces?.[faceIndex] ?? null
-  return face?.large_url ?? face?.small_url ?? null
+  return normalizeImageAssetUrl(face?.large_url ?? face?.small_url, 'high')
 }
 
 export function formatDate(value: string | null | undefined): string {
