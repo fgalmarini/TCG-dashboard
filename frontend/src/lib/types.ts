@@ -348,7 +348,7 @@ export const GAME_OPTIONS = [
 ] as const
 
 export const CATALOG_CAPABILITIES: Record<string, { collection_enabled: boolean; wishlist_enabled: boolean }> = {
-  pokemon: { collection_enabled: false, wishlist_enabled: false },
+  pokemon: { collection_enabled: true, wishlist_enabled: true },
   magic: { collection_enabled: true, wishlist_enabled: true },
   one_piece: { collection_enabled: true, wishlist_enabled: true },
 }

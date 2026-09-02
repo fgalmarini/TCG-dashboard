@@ -8,12 +8,11 @@ from pathlib import Path
 import import_pokemon_151
 import resolve_pokemon_151_cardmarket as canonical_resolver
 import resolve_pokemon_151_metric_mappings as metric_resolver
+from pokemon_151_test_sources import make_cardmarket_sources
 
 
 ROOT = Path(__file__).resolve().parents[2]
 DISCOVERY = ROOT / "reports/pokemon_151/identity_discovery"
-PRODUCTS = Path("/Users/facundogalmarini/Desktop/products_singles_6 (1).json")
-PRICES = Path("/Users/facundogalmarini/Desktop/price_guide_6 (1).json")
 
 
 class Pokemon151MetricMappingTest(unittest.TestCase):
@@ -27,14 +26,15 @@ class Pokemon151MetricMappingTest(unittest.TestCase):
         conn.commit()
         conn.close()
         import_pokemon_151.run(self.db, DISCOVERY, self.root / "catalog-reports", self.root / "catalog-backups", True)
-        canonical_resolver.run(self.db, PRODUCTS, PRICES, DISCOVERY, self.root / "mapping-reports", self.root / "mapping-backups", True)
+        self.products, self.prices = make_cardmarket_sources(self.root, DISCOVERY)
+        canonical_resolver.run(self.db, self.products, self.prices, DISCOVERY, self.root / "mapping-reports", self.root / "mapping-backups", True)
 
     def tearDown(self):
         self.tmp.cleanup()
 
     def test_dry_run_is_read_only_and_uses_real_metric_columns(self):
         before = hashlib.sha256(self.db.read_bytes()).hexdigest()
-        result = metric_resolver.run(self.db, PRODUCTS, PRICES, DISCOVERY, self.root / "reports", self.root / "backups", False)
+        result = metric_resolver.run(self.db, self.products, self.prices, DISCOVERY, self.root / "reports", self.root / "backups", False)
         self.assertEqual(result["canonical_exact_products"], 137)
         self.assertEqual(result["canonical_ambiguous_products_excluded"], 73)
         self.assertEqual(result["metric_mappings_reviewed"], 270)
@@ -50,7 +50,7 @@ class Pokemon151MetricMappingTest(unittest.TestCase):
         self.assertNotIn("current_price", report)
 
     def test_apply_persists_only_metric_relationships(self):
-        result = metric_resolver.run(self.db, PRODUCTS, PRICES, DISCOVERY, self.root / "reports", self.root / "backups", True)
+        result = metric_resolver.run(self.db, self.products, self.prices, DISCOVERY, self.root / "reports", self.root / "backups", True)
         self.assertEqual(result["metric_rows"], 270)
         self.assertEqual(result["metric_exact"], 0)
         self.assertEqual(result["metric_ambiguous"], 266)
@@ -69,7 +69,7 @@ class Pokemon151MetricMappingTest(unittest.TestCase):
         conn.close()
 
     def test_ambiguous_canonical_products_are_untouched(self):
-        metric_resolver.run(self.db, PRODUCTS, PRICES, DISCOVERY, self.root / "reports", self.root / "backups", True)
+        metric_resolver.run(self.db, self.products, self.prices, DISCOVERY, self.root / "reports", self.root / "backups", True)
         mapping_rows = list(csv_rows(DISCOVERY / "03_cardmarket_mapping.csv"))
         ambiguous_ids = {int(row["cardmarket_product_id"]) for row in mapping_rows if row["mapping_status"] == "AMBIGUOUS"}
         conn = sqlite3.connect(self.db)
@@ -83,8 +83,8 @@ class Pokemon151MetricMappingTest(unittest.TestCase):
         conn.close()
 
     def test_second_apply_is_idempotent(self):
-        metric_resolver.run(self.db, PRODUCTS, PRICES, DISCOVERY, self.root / "reports", self.root / "backups", True)
-        second = metric_resolver.run(self.db, PRODUCTS, PRICES, DISCOVERY, self.root / "reports-2", self.root / "backups-2", False)
+        metric_resolver.run(self.db, self.products, self.prices, DISCOVERY, self.root / "reports", self.root / "backups", True)
+        second = metric_resolver.run(self.db, self.products, self.prices, DISCOVERY, self.root / "reports-2", self.root / "backups-2", False)
         self.assertEqual(second["new_metric_rows"], 0)
 
 
