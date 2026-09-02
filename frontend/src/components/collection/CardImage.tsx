@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ImageOff } from 'lucide-react'
 import type { CardImage as CardImageData, CardImageFace } from '@/lib/types'
+import { normalizeImageAssetUrl } from '@/lib/format'
 import { cn } from '@/lib/utils'
 
 function ImagePlaceholder({ className }: { className?: string }) {
@@ -44,7 +45,7 @@ export function CardThumbnail({ image, alt }: { image: CardImageData | null; alt
   const face = firstFace(image)
   return (
     <RemoteImage
-      src={face?.small_url ?? face?.large_url}
+      src={normalizeImageAssetUrl(face?.small_url ?? face?.large_url, 'low')}
       alt={face ? alt : ''}
       className="h-14 w-10 shrink-0 rounded-sm"
     />
@@ -63,7 +64,7 @@ export function CardArt({
   const face = image?.faces?.[faceIndex] ?? null
   return (
     <RemoteImage
-      src={face?.large_url ?? face?.small_url}
+      src={normalizeImageAssetUrl(face?.large_url ?? face?.small_url, 'high')}
       alt={face ? alt : ''}
       className="aspect-[0.716] w-full max-w-sm rounded-md"
     />
