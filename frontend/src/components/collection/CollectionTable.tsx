@@ -18,7 +18,7 @@ export function CollectionTable({ items, onRemove }: { items: CollectionItem[]; 
   const navigate = useNavigate()
 
   if (items.length === 0) {
-    return <p className="py-8 text-center text-sm text-muted-foreground">No hay cartas que coincidan con los filtros.</p>
+    return <p className="py-8 text-center text-sm text-muted-foreground">No cards match the selected filters.</p>
   }
 
   return (
@@ -26,14 +26,14 @@ export function CollectionTable({ items, onRemove }: { items: CollectionItem[]; 
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-14">Img</TableHead>
-            <TableHead>Carta</TableHead>
+            <TableHead className="w-14">Image</TableHead>
+            <TableHead>Card</TableHead>
             <TableHead>Set</TableHead>
             <TableHead>#</TableHead>
-            <TableHead>Cond.</TableHead>
-            <TableHead className="text-right">Cant.</TableHead>
-            <TableHead className="text-right">Costo</TableHead>
-            <TableHead className="text-right">Valor de mercado</TableHead>
+            <TableHead>Condition</TableHead>
+            <TableHead className="text-right">Qty.</TableHead>
+            <TableHead className="text-right">Cost</TableHead>
+            <TableHead className="text-right">Market value</TableHead>
             <TableHead>Status</TableHead>
             <TableHead />
           </TableRow>
@@ -53,7 +53,7 @@ export function CollectionTable({ items, onRemove }: { items: CollectionItem[]; 
                   <span className="truncate">{item.display_name}</span>
                   {item.manual_entry && (
                     <Badge variant="secondary" className="shrink-0">
-                      Alta manual
+                      Manual entry
                     </Badge>
                   )}
                   {item.reprint_count > 0 && <Badge variant="secondary" className="shrink-0">Reprints: {item.reprint_count}</Badge>}

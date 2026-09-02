@@ -62,14 +62,14 @@ export function CatalogPage() {
       }
       reload()
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : 'No se pudo actualizar la wishlist.')
+      setActionError(err instanceof Error ? err.message : 'Unable to update the wishlist.')
     }
   }
 
   async function changeCollection(cardId: number) {
     setActionError(null)
     try { await addToCollection(cardId); reload() }
-    catch (err) { setActionError(err instanceof Error ? err.message : 'No se pudo agregar a Collection.') }
+    catch (err) { setActionError(err instanceof Error ? err.message : 'Unable to add the card to Collection.') }
   }
 
   function resetPage<T>(setter: (value: T) => void) {
@@ -83,33 +83,33 @@ export function CatalogPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold">Catalog</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Printings físicos por juego, release, variante e idioma</p>
+        <p className="mt-1 text-sm text-muted-foreground">Physical printings by game, release, variant, and language</p>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <Input placeholder="Buscar por nombre o número..." value={search} onChange={(event) => resetPage(setSearch)(event.target.value)} className="sm:w-64" />
+        <Input placeholder="Search by name or number..." value={search} onChange={(event) => resetPage(setSearch)(event.target.value)} className="sm:w-64" />
         <Select value={game} onValueChange={(value) => { setGame(value); setSets(''); setLanguage(''); setPage(1) }}>
-          <SelectTrigger className="sm:w-40"><SelectValue placeholder="Juego" /></SelectTrigger>
+          <SelectTrigger className="sm:w-40"><SelectValue placeholder="Game" /></SelectTrigger>
           <SelectContent>{GAME_OPTIONS.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectContent>
         </Select>
         <Select value={language || ALL} onValueChange={(value) => resetPage(setLanguage)(value === ALL ? '' : value)}>
-          <SelectTrigger className="sm:w-40"><SelectValue placeholder="Idioma" /></SelectTrigger>
+          <SelectTrigger className="sm:w-40"><SelectValue placeholder="Language" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value={ALL}>Todos los idiomas</SelectItem>
+            <SelectItem value={ALL}>All languages</SelectItem>
             {(options?.languages.length ? options.languages : LANGUAGE_OPTIONS).map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={sets || ALL} onValueChange={(value) => resetPage(setSets)(value === ALL ? '' : value)}>
           <SelectTrigger className="sm:w-40"><SelectValue placeholder="Set" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value={ALL}>Todos los sets</SelectItem>
+            <SelectItem value={ALL}>All sets</SelectItem>
             {(options?.sets ?? []).map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}
           </SelectContent>
         </Select>
         <Select value={ownership ?? ALL} onValueChange={(value) => resetPage(setOwnership)(value === ALL ? undefined : value as CatalogQueryParams['ownership'])}>
           <SelectTrigger className="sm:w-44"><SelectValue placeholder="Ownership" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value={ALL}>Todas</SelectItem>
+            <SelectItem value={ALL}>All</SelectItem>
             <SelectItem value="owned">Owned</SelectItem>
             <SelectItem value="not_owned">Not owned</SelectItem>
             <SelectItem value="wishlist">Wishlist</SelectItem>
@@ -118,12 +118,13 @@ export function CatalogPage() {
       </div>
 
       {actionError && <p className="text-sm text-destructive">{actionError}</p>}
-      {loading && <LoadingState label="Cargando catálogo" />}
-      {error && !loading && <ErrorState message={error} onRetry={reload} />}
-      {data && !loading && !error && (
+      {loading && !data && <LoadingState label="Loading catalog" />}
+      {error && !data && <ErrorState message={error} onRetry={reload} />}
+      {error && data && <ErrorState message={error} onRetry={reload} />}
+      {data && !loading && (
         <>
           {data.items.length === 0 ? (
-            <p className="py-8 text-center text-sm text-muted-foreground">No hay cartas que coincidan con los filtros.</p>
+            <p className="py-8 text-center text-sm text-muted-foreground">No cards match the selected filters.</p>
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {data.items.map((item) => (
@@ -165,10 +166,10 @@ export function CatalogPage() {
             </div>
           )}
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{data.identity_total ?? data.total} identidades · {data.total} printings</span>
+            <span className="text-muted-foreground">{data.identity_total ?? data.total} identities · {data.total} printings</span>
             <div className="flex gap-2">
-              <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage(page - 1)}>Anterior</Button>
-              <Button size="sm" variant="outline" disabled={page * data.page_size >= data.total} onClick={() => setPage(page + 1)}>Siguiente</Button>
+              <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</Button>
+              <Button size="sm" variant="outline" disabled={page * data.page_size >= data.total} onClick={() => setPage(page + 1)}>Next</Button>
             </div>
           </div>
         </>

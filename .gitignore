@@ -19,6 +19,7 @@ frontend/node_modules/
 frontend/dist/
 .env
 .env.local
+.env.event.local
 .DS_Store
 backups/
 *.numbers

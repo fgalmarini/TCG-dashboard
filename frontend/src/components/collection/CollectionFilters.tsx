@@ -4,9 +4,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { GAME_OPTIONS, LANGUAGE_OPTIONS, STATUS_OPTIONS, type SortOption } from '@/lib/types'
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
-  { value: 'nombre', label: 'Nombre' },
-  { value: 'valor', label: 'Valor de mercado' },
-  { value: 'fecha', label: 'Fecha de compra' },
+  { value: 'nombre', label: 'Name' },
+  { value: 'valor', label: 'Market value' },
+  { value: 'fecha', label: 'Purchase date' },
 ]
 
 const ALL_VALUE = '__all__'
@@ -54,7 +54,7 @@ export function CollectionFilters({
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <Input
-        placeholder="Buscar por nombre o nota..."
+        placeholder="Search by name or note..."
         value={searchDraft}
         onChange={(e) => setSearchDraft(e.target.value)}
         className="sm:w-64"
@@ -65,7 +65,7 @@ export function CollectionFilters({
           <SelectValue placeholder="TCG" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={ALL_VALUE}>Todos los TCG</SelectItem>
+          <SelectItem value={ALL_VALUE}>All TCGs</SelectItem>
           {GAME_OPTIONS.map((option) => (
             <SelectItem key={option.value} value={option.value}>
               {option.label}
@@ -75,9 +75,9 @@ export function CollectionFilters({
       </Select>
 
       <Select value={language || ALL_VALUE} onValueChange={(v) => onLanguageChange(v === ALL_VALUE ? '' : v)}>
-        <SelectTrigger className="sm:w-40"><SelectValue placeholder="Idioma" /></SelectTrigger>
+        <SelectTrigger className="sm:w-40"><SelectValue placeholder="Language" /></SelectTrigger>
         <SelectContent>
-          <SelectItem value={ALL_VALUE}>Todos los idiomas</SelectItem>
+          <SelectItem value={ALL_VALUE}>All languages</SelectItem>
           {LANGUAGE_OPTIONS.map((option) => (
             <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
           ))}
@@ -89,7 +89,7 @@ export function CollectionFilters({
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={ALL_VALUE}>Todos los status</SelectItem>
+          <SelectItem value={ALL_VALUE}>All statuses</SelectItem>
           {STATUS_OPTIONS.map((option) => (
             <SelectItem key={option} value={option}>
               {option}
@@ -100,12 +100,12 @@ export function CollectionFilters({
 
       <Select value={sort} onValueChange={(v) => onSortChange(v as SortOption)}>
         <SelectTrigger className="sm:w-48">
-          <SelectValue placeholder="Ordenar por" />
+          <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>
           {SORT_OPTIONS.map((option) => (
             <SelectItem key={option.value} value={option.value}>
-              Ordenar por: {option.label}
+              Sort by: {option.label}
             </SelectItem>
           ))}
         </SelectContent>

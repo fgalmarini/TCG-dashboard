@@ -5,19 +5,19 @@ import type { OverviewResponse } from '@/lib/types'
 export function SummaryCards({ overview }: { overview: OverviewResponse }) {
   const items = [
     {
-      label: 'Costo total',
+      label: 'Total cost',
       value: formatCurrency(overview.total_cost),
-      sub: `${overview.cost_basis_row_count} de ${overview.unique_cards} cartas con costo registrado`,
+      sub: `${overview.cost_basis_row_count} of ${overview.unique_cards} cards with a recorded cost`,
     },
     {
-      label: 'Valor de mercado',
+      label: 'Market value',
       value: formatCurrency(overview.total_market_value),
-      sub: `${overview.market_value_row_count} de ${overview.unique_cards} cartas con precio`,
+      sub: `${overview.market_value_row_count} of ${overview.unique_cards} cards with a price`,
     },
     {
-      label: 'Total de cartas',
+      label: 'Total cards',
       value: String(overview.total_cards),
-      sub: `${overview.unique_cards} filas unicas en la coleccion`,
+      sub: `${overview.unique_cards} unique rows in the collection`,
     },
   ]
 

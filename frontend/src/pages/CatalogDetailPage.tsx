@@ -14,8 +14,9 @@ export function CatalogDetailPage() {
   const id = Number(useParams().id)
   const { data, error, loading, reload } = useApi(() => fetchCatalogItem(id), [id])
 
-  if (loading) return <LoadingState label="Cargando printing" />
-  if (error || !data) return <ErrorState message={error ?? 'Printing no encontrado.'} onRetry={reload} />
+  if (loading && !data) return <LoadingState label="Loading printing" />
+  if (error && !data) return <ErrorState message={error} onRetry={reload} />
+  if (!data) return <ErrorState message="Printing not found." onRetry={reload} />
 
   const item = data.printing
   const original = data.printings.find((printing) => printing.release_kind === 'original')
@@ -35,7 +36,7 @@ export function CatalogDetailPage() {
           <CardContent className="grid gap-4 p-5 sm:grid-cols-2">
             <Field label="Game" value={item.game_code} />
             <Field label="Release" value={item.expansion_name ?? formatSetCode(item.set_code)} />
-            <Field label="Original release" value={original?.expansion_name ?? formatSetCode(original?.set_code) ?? 'Sin validar'} />
+          <Field label="Original release" value={original?.expansion_name ?? formatSetCode(original?.set_code) ?? 'Not validated'} />
             <Field label="Language" value={item.language?.toUpperCase()} />
             <Field label="Artist" value={item.artist} />
             <Field label="Rarity" value={item.rarity} />

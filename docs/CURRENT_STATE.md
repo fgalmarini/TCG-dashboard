@@ -4,10 +4,21 @@
 
 Current phase: Phase 7.
 
+`TCG-MOBILE-001` Event Mobile Access is implemented. Event Mode runs FastAPI and
+Vite locally, exposes one same-origin URL through a Cloudflare Named Tunnel protected
+by Cloudflare Access, and keeps SQLite local. Use `docs/EVENT_MOBILE_ACCESS.md` for
+one-time setup and event operation.
+
 Phase 6 is closed. Magic LOTR Catalog + Wishlist v1 and Wishlist Planning Mode are
 implemented. Multi-TCG Foundation + One Piece Catalog is implemented with a validated
 database cut at `2026-08-27`. The next recommended task is historical market data:
 repeated price snapshots and price-trend charts.
+
+TCG-UX-001 Interaction Stability & English UI (`2026-09-02`): inline mutations now
+use `useApi` background refreshes that preserve the current content and approximate
+scroll position. The dashboard UI is English-only, and Collection Card Data uses the
+ordered, non-empty metadata presentation without displaying Condition. No backend,
+database, pricing, mapping or collection/wishlist model changes were made.
 
 ## Closed Work
 
@@ -422,6 +433,11 @@ avoid changing Trading/Analytics/CARDMADNESS scope during this phase.
   `AMBIGUOUS`, `0` exact physical metric mappings and `0` pricing-eligible
   mappings. The 73 unresolved products are a known source limitation, not a
   system defect, and remain deferred rather than guessed.
+- The live DB also retains the later `004B` canonical-scope apply: all `210`
+  products have canonical scope rows, while physical finish evidence remains
+  non-exclusive and pricing eligibility remains `0`. The `002C` metric audit
+  tests therefore use the immutable pre-`004B` DB backup as their explicit
+  137-product baseline.
 - TCGplayer: `339/362` physical printings with `1,676` secondary observations in
   USD, stored through `market_price_observations` with Pokémon TCG API authority
   and TCGdex cross-check only.

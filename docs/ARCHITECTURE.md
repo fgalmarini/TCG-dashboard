@@ -96,6 +96,11 @@ currency, method, sample metrics, confidence and evaluated external ID.
 
 The current frontend lives in `frontend/` and runs locally on `http://localhost:3000`.
 
+For Event Mobile Access, the frontend binds to `127.0.0.1:3000` and proxies `/api/*`
+to the private FastAPI process at `127.0.0.1:8000`. Cloudflare Tunnel and Cloudflare
+Access expose and protect only the frontend origin. Cloudflare is transport and
+authentication only; application state and SQLite remain local.
+
 Collection, Catalog and Wishlist reads are game-generic and filter by game/language.
 One Piece personal Collection entry remains disabled; collection editing, Trading,
 Analytics and CARDMADNESS remain deferred.
@@ -103,6 +108,9 @@ Analytics and CARDMADNESS remain deferred.
 ## Backend
 
 The current API lives in `backend/api/` and runs locally on `http://localhost:8000`.
+
+Event Mode keeps FastAPI private on `127.0.0.1:8000`; it is never configured as a
+separate Cloudflare Tunnel origin.
 
 Overview, Collection and Catalog reads are read-only except for the explicit manual
 Collection catalog resolver. Wishlist writes are scoped to `POST`, `PATCH`, `DELETE`,

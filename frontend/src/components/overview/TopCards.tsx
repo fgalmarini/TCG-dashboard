@@ -16,7 +16,7 @@ export function TopCards({ cards, limit, onLimitChange }: { cards: TopCard[]; li
     <section className="space-y-3" aria-labelledby="top-cards-title">
       <div className="flex items-center justify-between gap-3">
         <h2 id="top-cards-title" className="text-lg font-semibold">Top Cards</h2>
-        <div className="inline-flex rounded-md border bg-background p-1" aria-label="Cantidad de Top Cards">
+        <div className="inline-flex rounded-md border bg-background p-1" aria-label="Number of top cards">
           {[3, 5, 10].map((value) => (
             <button
               key={value}
@@ -32,7 +32,7 @@ export function TopCards({ cards, limit, onLimitChange }: { cards: TopCard[]; li
         </div>
       </div>
       {visibleCards.length === 0 ? (
-        <Card><CardContent className="py-8 text-center text-sm text-muted-foreground">No hay cartas con precio actual.</CardContent></Card>
+        <Card><CardContent className="py-8 text-center text-sm text-muted-foreground">No cards have a current price.</CardContent></Card>
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {visibleCards.map((card) => (

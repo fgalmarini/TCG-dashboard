@@ -15,7 +15,7 @@ import type {
   CollectionMatchContext,
 } from './types'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? window.location.origin
 
 export class ApiError extends Error {
   status: number
@@ -40,12 +40,12 @@ async function request<T>(path: string, params?: Record<string, string | number 
   try {
     response = await fetch(url.toString())
   } catch {
-    throw new ApiError('No se pudo conectar con la API (backend/api corriendo en :8000?).', 0)
+    throw new ApiError('Unable to connect to the API.', 0)
   }
 
   if (!response.ok) {
     if (response.status === 404) {
-      throw new ApiError('No encontrado.', 404)
+      throw new ApiError('Not found.', 404)
     }
     throw new ApiError(`Error de la API (${response.status}).`, response.status)
   }
@@ -95,7 +95,7 @@ async function mutate<T>(path: string, method: string, body?: unknown): Promise<
       body: body ? JSON.stringify(body) : undefined,
     })
   } catch {
-    throw new ApiError('No se pudo conectar con la API (backend/api corriendo en :8000?).', 0)
+    throw new ApiError('Unable to connect to the API.', 0)
   }
   if (!response.ok) {
     throw new ApiError(`Error de la API (${response.status}).`, response.status)

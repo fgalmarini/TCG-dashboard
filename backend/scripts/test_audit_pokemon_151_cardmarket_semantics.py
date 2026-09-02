@@ -11,7 +11,10 @@ from pokemon_151_test_sources import make_cardmarket_sources
 
 
 ROOT = Path(__file__).resolve().parents[2]
-DB = ROOT / "backend/db/tcg_dashboard.db"
+# 002C audits the canonical-EXACT baseline before the later 004B review apply.
+# The live project DB intentionally contains the post-004B canonical scope state,
+# so this test must use the immutable pre-004B backup rather than the live DB.
+DB = ROOT / "reports/pokemon_151/cardmarket_manual_resolution/backups/tcg_dashboard.before_pokemon_151_004b.db"
 MAPPING_DIR = ROOT / "reports/pokemon_151/cardmarket_metric_mapping"
 CACHE = ROOT / "backend/scripts/.pokemon_151_cardmarket_semantics_cache"
 

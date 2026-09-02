@@ -83,10 +83,11 @@ export function CollectionPage() {
         onSortChange={resetToFirstPage(setSort)}
       />
 
-      {loading && <LoadingState label="Cargando coleccion" />}
-      {error && !loading && <ErrorState message={error} onRetry={reload} />}
+      {loading && !data && <LoadingState label="Loading collection" />}
+      {error && !data && <ErrorState message={error} onRetry={reload} />}
+      {error && data && <ErrorState message={error} onRetry={reload} />}
 
-      {data && !loading && !error && (
+      {data && !loading && (
         <>
           {viewMode === 'table' ? <CollectionTable items={data.items} onRemove={removeItem} /> : <CollectionGrid items={data.items} onRemove={removeItem} />}
           <Pagination

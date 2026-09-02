@@ -21,7 +21,7 @@ export function Pagination({ page, pageSize, total, onPageChange, onPageSizeChan
   return (
     <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <span>Filas por pagina</span>
+        <span>Rows per page</span>
         <Select value={String(pageSize)} onValueChange={(v) => onPageSizeChange(Number(v))}>
           <SelectTrigger className="w-20">
             <SelectValue />
@@ -38,13 +38,13 @@ export function Pagination({ page, pageSize, total, onPageChange, onPageSizeChan
 
       <div className="flex items-center gap-3">
         <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
-          Anterior
+          Previous
         </Button>
         <span className="text-sm text-muted-foreground">
-          Pagina {page} de {totalPages} ({total} cartas)
+          Page {page} of {totalPages} ({total} cards)
         </span>
         <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>
-          Siguiente
+          Next
         </Button>
       </div>
     </div>

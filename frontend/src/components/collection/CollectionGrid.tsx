@@ -12,7 +12,7 @@ export function CollectionGrid({ items, onRemove }: { items: CollectionItem[]; o
   const navigate = useNavigate()
 
   if (items.length === 0) {
-    return <p className="py-8 text-center text-sm text-muted-foreground">No hay cartas que coincidan con los filtros.</p>
+    return <p className="py-8 text-center text-sm text-muted-foreground">No cards match the selected filters.</p>
   }
 
   return (

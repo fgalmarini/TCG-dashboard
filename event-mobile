@@ -1,0 +1,131 @@
+#!/bin/sh
+set -eu
+
+PROJECT_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+EVENT_ENV_FILE="$PROJECT_ROOT/.env.event.local"
+BACKEND_PID=
+FRONTEND_PID=
+TUNNEL_PID=
+
+die() {
+  printf '%s\n' "Event Mode error: $*" >&2
+  exit 1
+}
+
+process_running() {
+  process_pid=$1
+  kill -0 "$process_pid" 2>/dev/null || return 1
+  process_state=$(ps -p "$process_pid" -o state= 2>/dev/null | tr -d ' ' || true)
+  case "$process_state" in
+    *Z*) return 1 ;;
+  esac
+  return 0
+}
+
+stop_process() {
+  process_pid=$1
+  [ -n "$process_pid" ] || return 0
+
+  if process_running "$process_pid"; then
+    kill -TERM "$process_pid" 2>/dev/null || true
+    wait_count=0
+    while process_running "$process_pid" && [ "$wait_count" -lt 20 ]; do
+      sleep 0.1
+      wait_count=$((wait_count + 1))
+    done
+    if process_running "$process_pid"; then
+      kill -KILL "$process_pid" 2>/dev/null || true
+    fi
+  fi
+  wait "$process_pid" 2>/dev/null || true
+}
+
+cleanup() {
+  exit_status=$?
+  trap - EXIT INT TERM
+  stop_process "$TUNNEL_PID"
+  stop_process "$FRONTEND_PID"
+  stop_process "$BACKEND_PID"
+  exit "$exit_status"
+}
+
+on_signal() {
+  exit 130
+}
+
+wait_for_url() {
+  health_url=$1
+  process_pid=$2
+  attempt=0
+
+  while [ "$attempt" -lt 120 ]; do
+    if ! process_running "$process_pid"; then
+      die "process $process_pid stopped before $health_url became available."
+    fi
+    if curl -fsS --max-time 2 "$health_url" >/dev/null 2>&1; then
+      return 0
+    fi
+    attempt=$((attempt + 1))
+    sleep 0.25
+  done
+
+  die "timed out waiting for $health_url."
+}
+
+[ -f "$EVENT_ENV_FILE" ] || die "missing $EVENT_ENV_FILE (copy .env.event.example first)."
+
+set -a
+# shellcheck disable=SC1090
+. "$EVENT_ENV_FILE"
+set +a
+
+[ -n "${TCG_CF_TUNNEL_NAME:-}" ] || die "TCG_CF_TUNNEL_NAME is required."
+[ -n "${TCG_EVENT_URL:-}" ] || die "TCG_EVENT_URL is required."
+[ -n "${TCG_EVENT_HOST:-}" ] || die "TCG_EVENT_HOST is required."
+
+command -v python3 >/dev/null 2>&1 || die "python3 is not installed or is not on PATH."
+command -v npm >/dev/null 2>&1 || die "npm is not installed or is not on PATH."
+command -v cloudflared >/dev/null 2>&1 || die "cloudflared is not installed or is not on PATH."
+command -v curl >/dev/null 2>&1 || die "curl is required for health checks."
+
+python3 -c 'import uvicorn' >/dev/null 2>&1 || die "uvicorn is unavailable to python3; install backend/api/requirements.txt."
+[ -x "$PROJECT_ROOT/frontend/node_modules/.bin/vite" ] || die "frontend dependencies are missing; run npm install in frontend/."
+
+trap on_signal INT TERM
+trap cleanup EXIT
+
+(
+  cd "$PROJECT_ROOT/backend"
+  exec python3 -m uvicorn api.main:app --host 127.0.0.1 --port 8000
+) &
+BACKEND_PID=$!
+wait_for_url "http://127.0.0.1:8000/health" "$BACKEND_PID"
+
+(
+  cd "$PROJECT_ROOT/frontend"
+  exec npm run dev -- --host 127.0.0.1
+) &
+FRONTEND_PID=$!
+wait_for_url "http://127.0.0.1:3000/" "$FRONTEND_PID"
+
+(
+  cd "$PROJECT_ROOT"
+  exec cloudflared tunnel run "$TCG_CF_TUNNEL_NAME"
+) &
+TUNNEL_PID=$!
+sleep 1
+process_running "$TUNNEL_PID" || die "cloudflared tunnel stopped during startup."
+
+printf '\nTCG DASHBOARD — EVENT MODE\n\n'
+printf 'Backend:   http://127.0.0.1:8000\n'
+printf 'Frontend:  http://127.0.0.1:3000\n'
+printf 'Tunnel:    running\n\n'
+printf 'Mobile:\n%s\n\n' "$TCG_EVENT_URL"
+printf 'Press Ctrl+C to stop Event Mode.\n'
+
+while :; do
+  process_running "$BACKEND_PID" || die "backend stopped unexpectedly."
+  process_running "$FRONTEND_PID" || die "frontend stopped unexpectedly."
+  process_running "$TUNNEL_PID" || die "cloudflared tunnel stopped unexpectedly."
+  sleep 1
+done

@@ -5,7 +5,7 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry: () 
     <div className="flex flex-col items-center gap-3 rounded-lg border border-destructive/30 bg-destructive/5 p-6 text-center">
       <p className="text-sm text-destructive">{message}</p>
       <Button variant="outline" size="sm" onClick={onRetry}>
-        Reintentar
+        Retry
       </Button>
     </div>
   )

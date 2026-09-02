@@ -30,7 +30,7 @@ export function NavBar() {
             Wishlist
           </NavLink>
         </nav>
-        <Button variant="ghost" size="icon" onClick={() => setIsDark(!isDark)} aria-label="Cambiar tema">
+        <Button variant="ghost" size="icon" onClick={() => setIsDark(!isDark)} aria-label="Toggle theme">
           {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
         </Button>
       </div>

@@ -18,7 +18,7 @@ export function ValueByTcgChart({ valueByTcg }: { valueByTcg: OverviewResponse['
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Valor de mercado por TCG</CardTitle>
+        <CardTitle>Market value by TCG</CardTitle>
       </CardHeader>
       <CardContent className="h-72">
         <ResponsiveContainer width="100%" height="100%">
@@ -30,7 +30,7 @@ export function ValueByTcgChart({ valueByTcg }: { valueByTcg: OverviewResponse['
               formatter={(value) => formatCurrency(typeof value === 'number' ? value : Number(value))}
               contentStyle={{ background: 'var(--popover)', border: '1px solid var(--border)', borderRadius: 8 }}
             />
-            <Bar dataKey="market_value" name="Valor de mercado" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="market_value" name="Market value" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

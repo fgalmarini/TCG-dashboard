@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton'
 
-export function LoadingState({ label = 'Cargando…' }: { label?: string }) {
+export function LoadingState({ label = 'Loading…' }: { label?: string }) {
   return (
     <div className="space-y-3" role="status" aria-label={label}>
       <Skeleton className="h-8 w-1/3" />

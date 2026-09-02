@@ -3,8 +3,8 @@
 
 import type { CardImage } from './types'
 
-const dateFormatter = new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium' })
-const dateTimeFormatter = new Intl.DateTimeFormat('es-AR', { dateStyle: 'medium', timeStyle: 'short' })
+const dateFormatter = new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium' })
+const dateTimeFormatter = new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
 const TCGDEX_ASSET_HOST = 'https://assets.tcgdex.net/'
 const IMAGE_EXTENSION_RE = /\.(?:png|jpe?g|webp)$/i
 const TCGDEX_QUALITY_RE = /\/(?:low|high)\.(?:png|jpe?g|webp)$/i

@@ -183,7 +183,7 @@ export function WishlistPage() {
       if (action === 'restore') await restoreWishlist(item.id)
       reload()
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : 'No se pudo actualizar la wishlist.')
+      setActionError(err instanceof Error ? err.message : 'Unable to update the wishlist.')
     } finally {
       setPendingIds((ids) => {
         const next = new Set(ids)
@@ -198,7 +198,7 @@ export function WishlistPage() {
       const target = field === 'target_price' ? value : item.target_price
       const max = field === 'max_price' ? value : item.max_price
       if (target !== null && max !== null && target > max) {
-        setActionError('Target Price no puede ser mayor que Max Price.')
+        setActionError('Target Price cannot be greater than Max Price.')
         return
       }
       await saveItem(item.id, { [field]: value })
@@ -211,7 +211,7 @@ export function WishlistPage() {
       await updateWishlist(id, payload)
       reload()
     } catch (err) {
-      setActionError(err instanceof Error ? err.message : 'No se pudo guardar el item.')
+      setActionError(err instanceof Error ? err.message : 'Unable to save the item.')
     }
   }
 
@@ -233,7 +233,7 @@ export function WishlistPage() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold">Wishlist</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Planificación de compras Multi-TCG por printing e idioma</p>
+          <p className="mt-1 text-sm text-muted-foreground">Multi-TCG purchase planning by printing and language</p>
         </div>
         <div className="inline-flex w-fit rounded-md border bg-background p-1">
           <Button type="button" size="sm" variant={!buyingMode ? 'secondary' : 'ghost'} onClick={() => setBuyingMode(false)}>Wishlist</Button>
@@ -266,7 +266,7 @@ export function WishlistPage() {
           <SelectContent><SelectItem value={ALL}>All games</SelectItem>{GAME_OPTIONS.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectContent>
         </Select>
         <Select value={language || ALL} onValueChange={(value) => setLanguage(value === ALL ? '' : value)}>
-          <SelectTrigger className="sm:w-36"><SelectValue placeholder="Idioma" /></SelectTrigger>
+          <SelectTrigger className="sm:w-36"><SelectValue placeholder="Language" /></SelectTrigger>
           <SelectContent><SelectItem value={ALL}>All languages</SelectItem>{(options?.languages.length ? options.languages : LANGUAGE_OPTIONS).map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectContent>
         </Select>
         <Select value={sets || ALL} onValueChange={(value) => setSets(value === ALL ? '' : value)}>
@@ -293,10 +293,11 @@ export function WishlistPage() {
       </div>
 
       {actionError && <p className="text-sm text-destructive">{actionError}</p>}
-      {loading && <LoadingState label="Cargando wishlist" />}
-      {error && !loading && <ErrorState message={error} onRetry={reload} />}
-      {data && !loading && !error && (
-        visibleItems.length === 0 ? <p className="py-8 text-center text-sm text-muted-foreground">No hay items que coincidan con los filtros.</p> :
+      {loading && !data && <LoadingState label="Loading wishlist" />}
+      {error && !data && <ErrorState message={error} onRetry={reload} />}
+      {error && data && <ErrorState message={error} onRetry={reload} />}
+      {data && !loading && (
+        visibleItems.length === 0 ? <p className="py-8 text-center text-sm text-muted-foreground">No items match the selected filters.</p> :
           <div className="space-y-3">
             {visibleItems.map((item) => <WishlistCard key={item.id} item={item} buyingMode={buyingMode} pending={pendingIds.has(item.id)} onAction={runAction} onSavePrice={onSavePrice} onSavePriority={onSavePriority} />)}
           </div>
