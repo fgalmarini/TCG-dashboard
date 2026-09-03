@@ -9,5 +9,5 @@ Uniqueness:
 Temporal semantics:
 `source_updated_at` is supplied by Pokémon TCG API; `observed_at` is the audited snapshot acquisition time.
 
-Database SHA before: `bce907591a43dbbff620fced5ef192fa08c94d303aa14991d486077706f25b73`
+Database SHA before: `5975a033c76bf7939bc23d4f8eae7339116c6973b7305f4563d93fabec7a57a8`
 Database SHA after: `not applied`

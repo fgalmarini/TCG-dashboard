@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { CardThumbnail } from '@/components/collection/CardImage'
 import { MarketPrice } from '@/components/shared/MarketPrice'
+import { SecondaryMarketPrice } from '@/components/shared/SecondaryMarketPrice'
 import { formatCurrency } from '@/lib/format'
 import type { CollectionItem } from '@/lib/types'
 import { Button } from '@/components/ui/button'
@@ -66,6 +67,7 @@ export function CollectionTable({ items, onRemove }: { items: CollectionItem[]; 
               <TableCell className="text-right tabular-nums">{formatCurrency(item.purchase_price)}</TableCell>
               <TableCell className="text-right tabular-nums">
                 <MarketPrice value={item.market_value} />
+                <SecondaryMarketPrice sources={item.price_sources} />
               </TableCell>
               <TableCell>
                 <Badge variant="outline">{item.status}</Badge>

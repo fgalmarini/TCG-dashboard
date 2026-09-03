@@ -52,6 +52,11 @@ Printing (cards.id)
   └── One Piece: validated Cardmarket id + Low -> null
 ```
 
+Collection may additionally expose the latest `market_price_observations` grouped by
+provider, market and source variant. These observations preserve their source currency
+and remain secondary display data; they never enter Cardmarket valuation or portfolio
+calculations.
+
 ## Multi-TCG Domain
 
 `cards.id` is the stable internal identity of a physical printing. A provider ID never
@@ -178,6 +183,9 @@ replace an old price with a new price as the only record.
 The current market value is Cardmarket Low. Trend and averages remain separate
 informational metrics. A current `printing_price_resolutions` row, including a NULL
 price, has priority over all historical rows; CardTrader is never a pricing fallback.
+The Magic LOTR catalog pricing updater processes the 2,305 principal LTR/LTC printings;
+the 45 active Art Series printings remain a separate scope and are not refreshed by
+that run.
 
 Initial update cadence is approximately weekly, with manual updates allowed. Failed or
 ambiguous mappings must be reported instead of silently discarded.

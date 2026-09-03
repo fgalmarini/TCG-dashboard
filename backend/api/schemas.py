@@ -163,6 +163,7 @@ class CollectionItemOut(BaseModel):
     art_kind: str | None
     printing_count: int
     reprint_count: int
+    price_sources: list[PriceSourceOut] = Field(default_factory=list)
     condition: str | None
     quantity: int
     purchase_price: float | None
@@ -206,6 +207,7 @@ class CollectionItemOut(BaseModel):
             art_kind=row.art_kind,
             printing_count=row.printing_count,
             reprint_count=row.reprint_count,
+            price_sources=[PriceSourceOut.model_validate(source.__dict__) for source in row.price_sources],
             condition=row.condition,
             quantity=row.quantity,
             purchase_price=row.purchase_price,
@@ -279,6 +281,7 @@ class CollectionItemDetailOut(BaseModel):
     art_kind: str | None
     printing_count: int
     reprint_count: int
+    price_sources: list[PriceSourceOut] = Field(default_factory=list)
     condition: str | None
     grading_company: str | None
     grade: float | None
@@ -354,6 +357,7 @@ class CollectionItemDetailOut(BaseModel):
             art_kind=row.art_kind,
             printing_count=row.printing_count,
             reprint_count=row.reprint_count,
+            price_sources=[PriceSourceOut.model_validate(source.__dict__) for source in row.price_sources],
             condition=row.condition,
             grading_company=row.grading_company,
             grade=row.grade,

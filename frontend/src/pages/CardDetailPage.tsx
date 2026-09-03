@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
+import { SecondaryMarketPrice } from '@/components/shared/SecondaryMarketPrice'
 import { fetchCollectionItem, fetchMatchCandidates, resolveCollectionMatch } from '@/lib/api'
 import { formatCurrency, formatDate, formatDateTime, formatPercent, formatSetCode } from '@/lib/format'
 import { Input } from '@/components/ui/input'
@@ -232,6 +233,7 @@ export function CardDetailPage() {
                     No market price (manual entry or product without a Cardmarket snapshot yet).
                   </p>
                 )}
+                <SecondaryMarketPrice sources={data.price_sources} detail />
               </CardContent>
             </Card>
           </div>

@@ -69,6 +69,11 @@ class ApiTest(unittest.TestCase):
         self.assertEqual(after["total_market_value"], before["total_market_value"])
         item = next(item for item in self.client.get("/api/collection").json()["items"] if item["id"] == self.ids["row1_id"])
         self.assertEqual(item["market_value"], 11.0)
+        self.assertEqual(item["price_sources"][0]["provider"], "pokemon_tcg_api")
+        self.assertEqual(item["price_sources"][0]["market"], "tcgplayer")
+        self.assertEqual(item["price_sources"][0]["currency"], "USD")
+        detail = self.client.get(f"/api/collection/{self.ids['row1_id']}").json()
+        self.assertEqual(detail["price_sources"][0]["metrics"]["market"], 999.0)
 
     def test_collection_endpoint_no_filters_returns_all_rows(self):
         resp = self.client.get("/api/collection")

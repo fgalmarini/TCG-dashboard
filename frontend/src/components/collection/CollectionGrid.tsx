@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { CardContent } from '@/components/ui/card'
 import { CardArt } from '@/components/collection/CardImage'
 import { MarketPrice } from '@/components/shared/MarketPrice'
+import { SecondaryMarketPrice } from '@/components/shared/SecondaryMarketPrice'
 import { CardActions, CardIdentity, CardMetadata, CardPrice, TradingCard } from '@/components/shared/TradingCard'
 import { cardImageUrl, formatSetCode } from '@/lib/format'
 import type { CollectionItem } from '@/lib/types'
@@ -43,6 +44,7 @@ export function CollectionGrid({ items, onRemove }: { items: CollectionItem[]; o
                   <MarketPrice value={item.market_value} />
                   <Badge variant="outline" className="text-[10px]">{item.status}</Badge>
                 </div>
+                <SecondaryMarketPrice sources={item.price_sources} />
               </CardPrice>
               <CardActions>
                 <Button type="button" size="sm" variant="ghost" className="w-full text-destructive" onClick={(event) => { event.stopPropagation(); onRemove(item.id) }}>Remove from Collection</Button>

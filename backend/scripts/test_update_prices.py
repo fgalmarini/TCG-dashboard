@@ -211,6 +211,21 @@ class UpdatePricesTest(unittest.TestCase):
         self.assertEqual(conn.execute("SELECT COUNT(*) FROM wishlist_items").fetchone()[0], 0)
         conn.close()
 
+    def test_catalog_apply_is_allowed_for_the_productive_database_gate(self):
+        with patch.object(update_prices, "DEFAULT_DB_PATH", self.db):
+            report, code = self._run("apply", games=("magic",), scope="catalog")
+        self.assertEqual(code, 0)
+        self.assertEqual(report.transaction, "COMMITTED")
+        self.assertEqual(report.game_reports["magic"].printings_checked, 1)
+        conn = sqlite3.connect(self.db)
+        try:
+            row = conn.execute(
+                "SELECT current_price, resolution_scope, collection_item_id, wishlist_item_id FROM printing_price_resolutions WHERE card_id=1 AND is_current=1"
+            ).fetchone()
+            self.assertEqual(tuple(row), (1.0, "global", None, None))
+        finally:
+            conn.close()
+
     def test_game_filter_only_downloads_and_processes_selected_game(self):
         requested = []
 

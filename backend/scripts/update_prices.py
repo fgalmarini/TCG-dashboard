@@ -666,7 +666,7 @@ def _build_scope_work(
 
     if scope != "catalog":
         raise WorkflowError(f"Unknown concrete scope: {scope}")
-    cards_list = audit.load_cards(conn, games)
+    cards_list = audit.load_cards(conn, games, exclude_magic_art_series=True)
     external = audit.load_external_ids(conn)
     mappings = audit.load_mappings(conn)
     resolutions, histories = audit.load_current_prices(conn)
@@ -1228,8 +1228,8 @@ def run_workflow(*, mode: str, games: tuple[str, ...], scope: str = "all", wishl
     try:
         if not db_path.is_file():
             raise WorkflowError(f"Database does not exist: {db_path.resolve()}")
-        if mode == "apply" and db_path.resolve() == DEFAULT_DB_PATH.resolve() and scope != "wishlist":
-            raise WorkflowError("Productive apply is enabled only for --scope wishlist with the pre-apply gate")
+        if mode == "apply" and db_path.resolve() == DEFAULT_DB_PATH.resolve() and scope not in {"wishlist", "catalog"}:
+            raise WorkflowError("Productive apply is enabled only for --scope wishlist or --scope catalog with its pre-apply gate")
         original = _connect(db_path)
         try:
             report.integrity, report.foreign_keys = _validate_database(original)

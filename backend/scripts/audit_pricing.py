@@ -311,12 +311,15 @@ def load_cards(
     games: tuple[str, ...],
     card_ids: set[int] | None = None,
     include_inactive: bool = False,
+    exclude_magic_art_series: bool = False,
 ) -> list[dict]:
     placeholders = ",".join("?" for _ in games)
     clauses = [f"g.code IN ({placeholders})"]
     params: list[Any] = list(games)
     if not include_inactive:
         clauses.append("c.catalog_status='active'")
+    if exclude_magic_art_series:
+        clauses.append("(g.code <> 'magic' OR c.source_variant IS NULL OR c.source_variant NOT IN ('art_series', 'art_series_gold_stamped'))")
     if card_ids is not None:
         if not card_ids:
             return []
@@ -633,6 +636,60 @@ def _product_matches_card(card: dict, product: dict, game: str, expansion_names:
     return not reasons, sorted(set(reasons))
 
 
+def _magic_local_expansion_candidates(
+    card: dict,
+    products: dict[int, dict],
+    expansion_names: dict[int, str | None] | None,
+    stored_ids: list[int],
+) -> tuple[list[int], dict[str, Any]]:
+    """Recover a non-authoritative Magic hint only with local expansion evidence.
+
+    The Scryfall Cardmarket id is useful for finding a product family, but it is
+    not trusted as the printing identity.  The local 5387 expansion is the bulk
+    repair scope; an already mapped local-expansion product permits the same
+    conservative fallback for the two known conflicting LTR rows.
+    """
+    local_expansion = card.get("cardmarket_id_expansion")
+    if local_expansion is None:
+        return [], {}
+    local_expansion = int(local_expansion)
+    local_mapped_ids = [
+        product_id for product_id in stored_ids
+        if products.get(product_id, {}).get("idExpansion") == local_expansion
+    ]
+    if local_expansion != 5387 and not local_mapped_ids:
+        return [], {}
+
+    raw_id = None
+    try:
+        raw_id = json.loads(card.get("scryfall_raw") or "{}").get("cardmarket_id")
+    except (TypeError, json.JSONDecodeError):
+        pass
+    if raw_id is None:
+        return [], {}
+    hinted = products.get(int(raw_id))
+    if not hinted or hinted.get("idExpansion") == local_expansion:
+        return [], {}
+
+    candidates: list[int] = []
+    for product_id, product in products.items():
+        if product.get("idExpansion") != local_expansion:
+            continue
+        matches, reasons = _product_matches_card(card, product, "magic", expansion_names)
+        treatment_only_uncertainty = set(reasons) <= {"unproven_treatment"}
+        if (matches or treatment_only_uncertainty) and product.get("idMetacard") == hinted.get("idMetacard"):
+            candidates.append(product_id)
+    evidence = {
+        "recovery": "local_expansion_after_non_authoritative_scryfall_hint",
+        "scryfall_hint_product_id": int(raw_id),
+        "scryfall_hint_expansion_id": hinted.get("idExpansion"),
+        "local_expansion_id": local_expansion,
+        "local_mapped_product_ids": sorted(local_mapped_ids),
+        "local_expansion_candidates": sorted(set(candidates)),
+    }
+    return sorted(set(candidates)), evidence
+
+
 def resolve_identity(card: dict, game: str, products: dict[int, dict], external: dict[int, list[dict]], mappings: dict[int, list[dict]], expansion_names: dict[int, str | None] | None = None) -> IdentityResult:
     valid_stored, all_stored, provenance = _cardmarket_candidate_ids(card, external, mappings, products, game)
     evidence: dict[str, Any] = {"stored_ids": all_stored, **provenance, "validated_stored_ids": valid_stored}
@@ -643,6 +700,13 @@ def resolve_identity(card: dict, game: str, products: dict[int, dict], external:
     if game == "magic" and raw_id is not None and mapped_ids and any(mapped_id != int(raw_id) for mapped_id in mapped_ids):
         evidence["mapped_ids"] = mapped_ids
         evidence["mapping_conflicts_with_scryfall_id"] = True
+        recovery_candidates, recovery_evidence = _magic_local_expansion_candidates(card, products, expansion_names, mapped_ids)
+        if len(recovery_candidates) == 1:
+            evidence.update(recovery_evidence)
+            return IdentityResult("EXACT", recovery_candidates[0], all_stored, recovery_candidates, "validated local expansion candidate supersedes Scryfall hint", evidence)
+        if len(recovery_candidates) > 1:
+            evidence.update(recovery_evidence)
+            return IdentityResult("AMBIGUOUS", None, all_stored, recovery_candidates, "multiple local expansion candidates remain", evidence, "ambiguous_identity")
         return IdentityResult("MISMATCH", None, all_stored, valid_stored, "current mapping differs from stored Scryfall Cardmarket id", evidence, "wrong_cardmarket_id")
     valid_matches = []
     for product_id in valid_stored:
@@ -665,6 +729,13 @@ def resolve_identity(card: dict, game: str, products: dict[int, dict], external:
             return IdentityResult("EXACT", resolved, all_stored, candidates, price_reason, evidence)
         hard_mismatch_reasons = [reason for reason in mismatch_reasons if reason not in {"unproven_finish", "unproven_treatment"}]
         if hard_mismatch_reasons:
+            recovery_candidates, recovery_evidence = _magic_local_expansion_candidates(card, products, expansion_names, valid_stored)
+            if len(recovery_candidates) == 1:
+                evidence.update(recovery_evidence)
+                return IdentityResult("EXACT", recovery_candidates[0], all_stored, recovery_candidates, "validated local expansion candidate supersedes Scryfall hint", evidence)
+            if len(recovery_candidates) > 1:
+                evidence.update(recovery_evidence)
+                return IdentityResult("AMBIGUOUS", None, all_stored, recovery_candidates, "multiple local expansion candidates remain", evidence, "ambiguous_identity")
             return IdentityResult("MISMATCH", None, all_stored, valid_stored, "stored product identity conflicts with local printing", {**evidence, "mismatch_reasons": sorted(set(mismatch_reasons))}, "wrong_cardmarket_id")
         if mismatch_reasons:
             return IdentityResult("AMBIGUOUS", None, all_stored, valid_stored, "Cardmarket bulk data does not prove finish/treatment", {**evidence, "ambiguity_reasons": sorted(set(mismatch_reasons))}, "ambiguous_identity")
@@ -1539,7 +1610,7 @@ def audit(*, db_path: Path, source_dir: Path | None, output_dir: Path, games: tu
             collection_resolutions = load_collection_current_prices(conn)
             audit_rows, collection = collection_audit_rows(conn, games, snapshots, collection_resolutions)
         else:
-            cards = load_cards(conn, games)
+            cards = load_cards(conn, games, exclude_magic_art_series=True)
             collection = load_collection(conn)
             audit_rows: dict[str, list[dict]] = {game: [] for game in games}
             for game in GAME_ORDER:

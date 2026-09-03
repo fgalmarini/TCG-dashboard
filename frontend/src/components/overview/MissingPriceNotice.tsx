@@ -6,8 +6,8 @@ export function MissingPriceNotice({ count, uniqueCards }: { count: number; uniq
   return (
     <Card className="border-amber-500/40 bg-amber-500/10">
       <CardContent className="py-4 text-sm text-amber-800 dark:text-amber-300">
-        {count} of {uniqueCards} cards have no market price (manual entry or product without a Cardmarket
-        snapshot yet) — no monetary value is assigned and they are excluded from the market value total.
+        {count} of {uniqueCards} collection entries currently have no market value and are excluded from the
+        collection total.
       </CardContent>
     </Card>
   )

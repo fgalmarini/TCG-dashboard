@@ -45,5 +45,7 @@ Included: Magic LOTR LTR/LTC physical printings, variants, Showcase, Borderless,
 Extended Art, Surge Foil, Prerelease, Realms & Relics and Scene cards when identifiable
 from source metadata/collector ranges.
 
-Excluded: tokens, Art Series, digital cards, Secret Lair, sealed products, Pokémon,
-One Piece, currency conversion and mass catalog price refresh.
+Excluded from the principal pricing scope: tokens, Art Series, digital cards, Secret
+Lair and sealed products. Art Series remain a separate active catalog scope with their
+own Cardmarket identity and treatment evidence. Pokémon, One Piece, currency conversion
+and mass catalog price refresh remain outside this decision.

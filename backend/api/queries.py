@@ -312,6 +312,7 @@ class CollectionRow:
     resolution_method: str | None
     printing_count: int
     reprint_count: int
+    price_sources: list["PriceSourceData"] = field(default_factory=list)
     image: CardImageData | None = None
 
     @property
@@ -408,6 +409,10 @@ def fetch_collection_rows(
     sql = _build_query(conn, _COLLECTION_COLUMNS, where_sql, order_by_sql, limit_offset_sql)
     rows = conn.execute(sql, params).fetchall()
     collection_rows = [_row_to_collection_row(r) for r in rows]
+    secondary = fetch_price_sources(conn, [row.card_id for row in collection_rows if row.card_id is not None])
+    for row in collection_rows:
+        if row.card_id is not None:
+            row.price_sources = secondary.get(row.card_id, [])
     if include_images:
         attach_exact_images(conn, collection_rows)
     return collection_rows

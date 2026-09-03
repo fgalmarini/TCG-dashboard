@@ -99,6 +99,47 @@ class AuditPricingTest(unittest.TestCase):
         self.assertTrue(row["identity_mismatch"])
         conn.close()
 
+    def test_magic_scryfall_hint_can_resolve_unique_local_expansion_candidate(self):
+        card = {
+            "id": 10,
+            "name": "Ring",
+            "card_number": "1",
+            "cardmarket_id_expansion": 5387,
+            "expansion_name": "The Lord of the Rings: Tales of Middle-earth Commander",
+            "finish": "nonfoil",
+            "scryfall_raw": json.dumps({"cardmarket_id": 900}),
+        }
+        products = {
+            900: {"idProduct": 900, "name": "Ring (1)", "parsed_name": "Ring", "card_number": "1", "idExpansion": 5489, "idMetacard": 77},
+            901: {"idProduct": 901, "name": "Ring (1)", "parsed_name": "Ring", "card_number": "1", "idExpansion": 5387, "idMetacard": 77},
+        }
+        identity = audit_pricing.resolve_identity(
+            card, "magic", products, {}, {}, {5489: "Different set", 5387: "The Lord of the Rings: Tales of Middle-earth Commander"}
+        )
+        self.assertEqual(identity.status, "EXACT")
+        self.assertEqual(identity.resolved_id, 901)
+        self.assertEqual(identity.evidence["scryfall_hint_product_id"], 900)
+        self.assertEqual(identity.evidence["local_expansion_candidates"], [901])
+
+    def test_magic_scryfall_hint_keeps_multiple_local_candidates_ambiguous(self):
+        card = {
+            "id": 11,
+            "name": "Ring",
+            "card_number": "1",
+            "cardmarket_id_expansion": 5387,
+            "expansion_name": "LTC",
+            "finish": "nonfoil",
+            "scryfall_raw": json.dumps({"cardmarket_id": 900}),
+        }
+        products = {
+            900: {"idProduct": 900, "name": "Ring (1)", "parsed_name": "Ring", "card_number": "1", "idExpansion": 5489, "idMetacard": 77},
+            901: {"idProduct": 901, "name": "Ring (1)", "parsed_name": "Ring", "card_number": "1", "idExpansion": 5387, "idMetacard": 77},
+            902: {"idProduct": 902, "name": "Ring (1)", "parsed_name": "Ring", "card_number": "1", "idExpansion": 5387, "idMetacard": 77},
+        }
+        identity = audit_pricing.resolve_identity(card, "magic", products, {}, {}, {5489: "Other", 5387: "LTC"})
+        self.assertEqual(identity.status, "AMBIGUOUS")
+        self.assertEqual(identity.candidates, [901, 902])
+
     def test_magic_foil_uses_foil_metric_and_flags_dashboard_metric(self):
         conn = sqlite3.connect(self.db)
         conn.execute("DELETE FROM cardmarket_product_mappings WHERE card_id=2")

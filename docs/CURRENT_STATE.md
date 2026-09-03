@@ -20,6 +20,19 @@ scroll position. The dashboard UI is English-only, and Collection Card Data uses
 ordered, non-empty metadata presentation without displaying Condition. No backend,
 database, pricing, mapping or collection/wishlist model changes were made.
 
+Pricing catalog coverage update (`2026-09-02`): the existing `./update-prices` workflow
+now permits a productive `--scope catalog --apply` run. Its Magic catalog worklist
+excludes the 45 active Art Series printings and targets the 2,305 principal LTR/LTC
+printings. Pokémon 151 TCGplayer observations remain visible only as secondary USD
+references in Catalog; they remain excluded from Collection, Overview and EUR valuation.
+
+Pricing catalog resolution update (`2026-09-03`): the read-only Magic audit now treats
+Scryfall Cardmarket IDs as non-authoritative hints and recovers only candidates proven
+by the local expansion, compatible printing identity and finish metric. The dry-run
+result is 970 EXACT, 1,153 AMBIGUOUS, 120 MISMATCH and 62 UNPRICED across the 2,305
+principal printings; no apply was run. Pokémon 151 TCGplayer observations are now also
+exposed in Collection as secondary USD data without changing Cardmarket-based valuation.
+
 ## Closed Work
 
 - Phase 1: initial documentation and architecture.

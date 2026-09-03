@@ -59,6 +59,7 @@ export interface CollectionItem {
   art_kind: string | null
   printing_count: number
   reprint_count: number
+  price_sources: PriceSource[]
   condition: string | null
   quantity: number
   purchase_price: number | null
@@ -138,6 +139,7 @@ export interface CollectionItemDetail {
   art_kind: string | null
   printing_count: number
   reprint_count: number
+  price_sources: PriceSource[]
   condition: string | null
   grading_company: string | null
   grade: number | null
