@@ -17,6 +17,8 @@ import type {
 } from './types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? window.location.origin
+const READ_RETRY_STATUSES = new Set([500, 502, 503, 504])
+const READ_RETRY_DELAY_MS = 250
 
 export class ApiError extends Error {
   status: number
@@ -25,6 +27,10 @@ export class ApiError extends Error {
     super(message)
     this.status = status
   }
+}
+
+function wait(ms: number): Promise<void> {
+  return new Promise((resolve) => window.setTimeout(resolve, ms))
 }
 
 async function request<T>(path: string, params?: Record<string, string | number | boolean | undefined>): Promise<T> {
@@ -37,21 +43,33 @@ async function request<T>(path: string, params?: Record<string, string | number 
     }
   }
 
-  let response: Response
-  try {
-    response = await fetch(url.toString())
-  } catch {
-    throw new ApiError('Unable to connect to the API.', 0)
-  }
-
-  if (!response.ok) {
-    if (response.status === 404) {
-      throw new ApiError('Not found.', 404)
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    let response: Response
+    try {
+      response = await fetch(url.toString())
+    } catch {
+      if (attempt === 0) {
+        await wait(READ_RETRY_DELAY_MS)
+        continue
+      }
+      throw new ApiError('Unable to connect to the API.', 0)
     }
-    throw new ApiError(`Error de la API (${response.status}).`, response.status)
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new ApiError('Not found.', 404)
+      }
+      if (attempt === 0 && READ_RETRY_STATUSES.has(response.status)) {
+        await wait(READ_RETRY_DELAY_MS)
+        continue
+      }
+      throw new ApiError(`Error de la API (${response.status}).`, response.status)
+    }
+
+    return (await response.json()) as T
   }
 
-  return (await response.json()) as T
+  throw new ApiError('Unable to connect to the API.', 0)
 }
 
 export function fetchOverview(): Promise<OverviewResponse> {
