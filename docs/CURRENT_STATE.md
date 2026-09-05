@@ -24,7 +24,7 @@ Pricing catalog coverage update (`2026-09-02`): the existing `./update-prices` w
 now permits a productive `--scope catalog --apply` run. Its Magic catalog worklist
 excludes the 45 active Art Series printings and targets the 2,305 principal LTR/LTC
 printings. Pokémon 151 TCGplayer observations remain visible only as secondary USD
-references in Catalog; they remain excluded from Collection, Overview and EUR valuation.
+references in Catalog and Collection; they remain excluded from Overview and EUR valuation.
 
 Pricing catalog resolution update (`2026-09-03`): the read-only Magic audit now treats
 Scryfall Cardmarket IDs as non-authoritative hints and recovers only candidates proven
@@ -41,7 +41,7 @@ exposed in Collection as secondary USD data without changing Cardmarket-based va
 - Phase 4: Cardmarket importer in `backend/importer/`.
 - Additive Magic/Scryfall revision: Magic catalog backfill via Scryfall metadata.
 - Phase 5: manual collection loading via CSV/script flow.
-- Phase 6: basic dashboard with Overview and read-only Collection browsing.
+- Phase 6: basic dashboard with Overview and Collection browsing.
 - Additive Card Images revision: remote image metadata and exact CardTrader fallback,
   without renumbering the roadmap.
 
@@ -70,8 +70,9 @@ Phase 5 collection loading:
 
 Phase 6 dashboard:
 
-- `backend/api/` added as FastAPI API; Overview/Collection/Catalog are read-only and
-  Wishlist has the explicitly scoped write operations.
+- `backend/api/` added as FastAPI API; Overview/Catalog remain read-only, Collection
+  has a strictly limited ownership-metadata PATCH, and Wishlist has its explicitly
+  scoped write operations.
 - `frontend/` added as Vite/React/TypeScript/Tailwind/shadcn/ui/Recharts app.
 - Verified `GET /api/overview`: `total_cards=101`, `unique_cards=98`,
   `cards_without_market_value.count=19`, `roi=-0.5212`.
@@ -316,7 +317,7 @@ local temporary copy, followed by `PRAGMA integrity_check` and
 - Trading, Trade Binder and Trade Calculator.
 - Analytics and best/worst performer views.
 - CARDMADNESS Mode.
-- Collection-item editing from the web.
+- Catalog identity changes from the web, including future `Change printing` operations.
 - Supabase/PostgreSQL migration.
 - Scrapers or private Cardmarket API access.
 

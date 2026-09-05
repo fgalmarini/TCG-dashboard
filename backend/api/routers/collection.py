@@ -1,5 +1,4 @@
-"""GET /api/collection, GET /api/collection/{id} -- ver
-fase6-dashboard-basico-sprint-contract.md seccion 3. Solo lectura."""
+"""Collection reads plus strictly scoped ownership-metadata mutations."""
 
 import sqlite3
 
@@ -21,9 +20,23 @@ from ..schemas import (
     CollectionMatchContextOut,
     ResolveMatchIn,
     AddToCollectionIn,
+    CollectionItemUpdateIn,
 )
 
 router = APIRouter(prefix="/api", tags=["collection"])
+
+COLLECTION_UPDATE_COLUMNS = {
+    "quantity": "quantity",
+    "status": "status",
+    "condition": "condition",
+    "purchase_price": "purchase_price",
+    "purchase_currency": "purchase_currency",
+    "purchase_date": "purchase_date",
+    "trade_value": "trade_value",
+    "grading_company": "grading_company",
+    "grade": "grade",
+    "notes": "notes",
+}
 
 
 @router.get("/collection", response_model=CollectionListResponse)
@@ -181,6 +194,30 @@ def get_collection_item(item_id: int, conn: sqlite3.Connection = Depends(get_db)
     if row is None:
         raise HTTPException(status_code=404, detail=f"collection_items.id={item_id} no encontrado")
     return CollectionItemDetailOut.from_row(row)
+
+
+@router.patch("/collection/{item_id}", response_model=CollectionItemDetailOut)
+def update_collection_item(
+    item_id: int,
+    payload: CollectionItemUpdateIn,
+    conn: sqlite3.Connection = Depends(get_db),
+) -> CollectionItemDetailOut:
+    exists = conn.execute("SELECT 1 FROM collection_items WHERE id=?", (item_id,)).fetchone()
+    if exists is None:
+        raise HTTPException(status_code=404, detail=f"collection_items.id={item_id} no encontrado")
+
+    updates = payload.model_dump(exclude_unset=True)
+    if updates:
+        assignments = [f"{COLLECTION_UPDATE_COLUMNS[key]}=?" for key in updates]
+        conn.execute(
+            f"UPDATE collection_items SET {', '.join(assignments)} WHERE id=?",
+            [*updates.values(), item_id],
+        )
+        conn.commit()
+
+    result = fetch_collection_row_by_id(conn, item_id)
+    assert result is not None
+    return CollectionItemDetailOut.from_row(result)
 
 @router.delete("/collection/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
 def remove_collection_item(item_id: int, conn: sqlite3.Connection = Depends(get_db)) -> Response:

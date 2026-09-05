@@ -1,8 +1,8 @@
 """FastAPI app -- backend/api/, dashboard, catalog and wishlist.
 
 Arranque: `uvicorn api.main:app --reload --port 8000` desde `backend/`.
-Collection editing sigue siendo via backend/scripts/load_collection.py/CSV; la única
-excepción adicional es el resolver manual de matches de catálogo.
+Collection editing via API is limited to ownership metadata; catalog identity remains
+protected. The resolver manual de matches de catálogo is a separate operation.
 """
 
 from fastapi import FastAPI

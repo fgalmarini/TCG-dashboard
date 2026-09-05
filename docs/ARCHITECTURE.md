@@ -15,7 +15,7 @@ Backend:
 
 - Python
 - FastAPI
-- Direct `sqlite3` access for the read-only API
+- Direct `sqlite3` access for the local API
 
 Database:
 
@@ -107,7 +107,8 @@ Access expose and protect only the frontend origin. Cloudflare is transport and
 authentication only; application state and SQLite remain local.
 
 Collection, Catalog and Wishlist reads are game-generic and filter by game/language.
-One Piece personal Collection entry remains disabled; collection editing, Trading,
+Collection supports only ownership-metadata edits through a strict item PATCH. One
+Piece personal Collection entry remains disabled; catalog identity changes, Trading,
 Analytics and CARDMADNESS remain deferred.
 
 ## Backend
@@ -117,10 +118,10 @@ The current API lives in `backend/api/` and runs locally on `http://localhost:80
 Event Mode keeps FastAPI private on `127.0.0.1:8000`; it is never configured as a
 separate Cloudflare Tunnel origin.
 
-Overview, Collection and Catalog reads are read-only except for the explicit manual
-Collection catalog resolver. Wishlist writes are scoped to `POST`, `PATCH`, `DELETE`,
-`mark-acquired` and `restore`; Collection editing otherwise still uses the CSV/script
-flow.
+Overview and Catalog reads are read-only except for their explicitly scoped actions.
+Collection writes are limited to `PATCH /api/collection/{item_id}` ownership metadata
+and the separate manual catalog-match resolver. Wishlist writes are scoped to `POST`,
+`PATCH`, `DELETE`, `mark-acquired` and `restore`.
 
 Importer and maintenance scripts live separately:
 
@@ -307,7 +308,9 @@ It is not scraped and is not a runtime dependency.
 
 - Local-first SQLite remains the active storage engine.
 - Supabase/PostgreSQL is deferred and should be treated as its own future phase.
-- Collection editing is still performed via CSV/script flow, not the web UI.
+- Collection ownership metadata is editable via the strict item PATCH; changing card,
+  language, finish, treatment, mappings or other catalog identity still uses controlled
+  workflows and is not supported by the Collection editor.
 - Trading, Analytics and CARDMADNESS are later phases.
 - Pokémon 151 catalog is active in the neutral model; Collection/Wishlist actions
   remain disabled for Pokémon and no Pokémon primary pricing is populated.

@@ -6,7 +6,7 @@ exposes the planning operations for this sprint.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .queries import (
     CardImageData,
@@ -237,6 +237,27 @@ class CollectionListResponse(BaseModel):
     total: int
     page: int
     page_size: int
+
+
+class CollectionItemUpdateIn(BaseModel):
+    """Strict ownership-metadata patch for one collection item.
+
+    Catalog identity and pricing/mapping fields are intentionally absent.  Extra
+    fields are rejected so a PATCH cannot silently become mass assignment.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    quantity: int | None = Field(None, ge=1)
+    status: str | None = Field(None, pattern="^(KEEP|HOLD|TRADE|SELL|WANT)$")
+    condition: str | None = Field(None, pattern="^(NM|EX|GD|LP|PL|PO)$")
+    purchase_price: float | None = Field(None, ge=0)
+    purchase_currency: str | None = None
+    purchase_date: str | None = None
+    trade_value: float | None = Field(None, ge=0)
+    grading_company: str | None = Field(None, pattern="^(PSA|BGS|CGC|Other)$")
+    grade: float | None = None
+    notes: str | None = None
 
 
 class MarketPriceOut(BaseModel):

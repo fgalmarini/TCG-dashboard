@@ -161,6 +161,84 @@ class ApiTest(unittest.TestCase):
         response = self.client.get(f"/api/collection/{self.ids['row1_id']}")
         self.assertIsNone(response.json()["market_price"])
 
+    def test_patch_collection_item_updates_allowed_fields(self):
+        payload = {
+            "quantity": 3,
+            "status": "TRADE",
+            "condition": "LP",
+            "purchase_price": 7.5,
+            "purchase_currency": "EUR",
+            "purchase_date": "2026-02-03",
+            "trade_value": 9.0,
+            "grading_company": "PSA",
+            "grade": 9.5,
+            "notes": "Keep in trade binder",
+        }
+        response = self.client.patch(f"/api/collection/{self.ids['row1_id']}", json=payload)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        for key, value in payload.items():
+            self.assertEqual(data[key], value)
+
+        conn = connect(self.db_path)
+        row = conn.execute(
+            "SELECT card_id, cardmarket_product_id, quantity, status FROM collection_items WHERE id=?",
+            (self.ids["row1_id"],),
+        ).fetchone()
+        mapping = conn.execute(
+            "SELECT card_id FROM cardmarket_product_mappings WHERE cardmarket_product_id=?",
+            (self.ids["product_a_id"],),
+        ).fetchone()
+        conn.close()
+        self.assertEqual(row["card_id"], self.ids["card_a_id"])
+        self.assertEqual(row["cardmarket_product_id"], self.ids["product_a_id"])
+        self.assertEqual(row["quantity"], 3)
+        self.assertEqual(row["status"], "TRADE")
+        self.assertEqual(mapping["card_id"], self.ids["card_a_id"])
+
+    def test_patch_collection_item_is_partial(self):
+        response = self.client.patch(
+            f"/api/collection/{self.ids['row1_id']}",
+            json={"notes": "Only this field changes"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["notes"], "Only this field changes")
+        self.assertEqual(data["quantity"], 2)
+        self.assertEqual(data["status"], "KEEP")
+        self.assertEqual(data["purchase_price"], 5.0)
+
+    def test_patch_collection_item_rejects_invalid_values(self):
+        item_url = f"/api/collection/{self.ids['row1_id']}"
+        self.assertEqual(self.client.patch(item_url, json={"quantity": 0}).status_code, 422)
+        self.assertEqual(self.client.patch(item_url, json={"status": "INVALID"}).status_code, 422)
+        self.assertEqual(self.client.patch(item_url, json={"purchase_price": -1}).status_code, 422)
+        self.assertEqual(self.client.patch(item_url, json={"trade_value": -0.01}).status_code, 422)
+
+    def test_patch_collection_item_returns_404_for_missing_item(self):
+        response = self.client.patch("/api/collection/999999", json={"quantity": 2})
+        self.assertEqual(response.status_code, 404)
+
+    def test_patch_collection_item_rejects_identity_fields_and_preserves_mapping(self):
+        response = self.client.patch(
+            f"/api/collection/{self.ids['row1_id']}",
+            json={"card_id": self.ids["card_b_id"]},
+        )
+        self.assertEqual(response.status_code, 422)
+        conn = connect(self.db_path)
+        row = conn.execute(
+            "SELECT card_id, cardmarket_product_id FROM collection_items WHERE id=?",
+            (self.ids["row1_id"],),
+        ).fetchone()
+        mapping = conn.execute(
+            "SELECT card_id FROM cardmarket_product_mappings WHERE cardmarket_product_id=?",
+            (self.ids["product_a_id"],),
+        ).fetchone()
+        conn.close()
+        self.assertEqual(row["card_id"], self.ids["card_a_id"])
+        self.assertEqual(row["cardmarket_product_id"], self.ids["product_a_id"])
+        self.assertEqual(mapping["card_id"], self.ids["card_a_id"])
+
 
 if __name__ == "__main__":
     unittest.main()

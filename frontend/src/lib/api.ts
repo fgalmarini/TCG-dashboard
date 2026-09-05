@@ -1,4 +1,4 @@
-// Cliente API tipado para backend/api/ (Fase 6, solo lectura).
+// Cliente API tipado para backend/api/.
 
 import type {
   CollectionItemDetail,
@@ -13,6 +13,7 @@ import type {
   WishlistListResponse,
   WishlistQueryParams,
   CollectionMatchContext,
+  CollectionItemUpdatePayload,
 } from './types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? window.location.origin
@@ -63,6 +64,10 @@ export function fetchCollection(params: CollectionQueryParams): Promise<Collecti
 
 export function fetchCollectionItem(id: number): Promise<CollectionItemDetail> {
   return request<CollectionItemDetail>(`/api/collection/${id}`)
+}
+
+export function updateCollectionItem(id: number, payload: CollectionItemUpdatePayload): Promise<CollectionItemDetail> {
+  return mutate<CollectionItemDetail>(`/api/collection/${id}`, 'PATCH', payload)
 }
 
 export function removeFromCollection(id: number): Promise<void> {

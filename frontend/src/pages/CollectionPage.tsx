@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Grid3X3, Table2 } from 'lucide-react'
 import { CollectionFilters } from '@/components/collection/CollectionFilters'
 import { CollectionGrid } from '@/components/collection/CollectionGrid'
+import { CollectionEditDialog } from '@/components/collection/CollectionEditDialog'
 import { CollectionTable } from '@/components/collection/CollectionTable'
 import { Pagination } from '@/components/collection/Pagination'
 import { ErrorState } from '@/components/shared/ErrorState'
@@ -22,16 +23,31 @@ export function CollectionPage() {
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(20)
   const [viewMode, setViewMode] = useState<ViewMode>('table')
+  const [editingItemId, setEditingItemId] = useState<number | null>(null)
+  const pendingScrollY = useRef<number | null>(null)
 
-  const { data, error, loading, reload } = useApi(
+  const { data, error, loading, refreshing, reload } = useApi(
     () => fetchCollection({ game, language, status, search, sort, page, page_size: pageSize }),
     [game, language, status, search, sort, page, pageSize],
   )
+
+  useEffect(() => {
+    if (pendingScrollY.current === null || !data || loading || refreshing) return
+    const scrollY = pendingScrollY.current
+    pendingScrollY.current = null
+    requestAnimationFrame(() => window.scrollTo({ top: scrollY }))
+  }, [data, loading, refreshing])
 
   async function removeItem(itemId: number) {
     const confirmed = window.confirm('Remove this card from your collection?\n\nThis will remove the card and its quantity from Collection.\nThe catalog entry will not be affected.')
     if (!confirmed) return
     await removeFromCollection(itemId)
+    pendingScrollY.current = window.scrollY
+    reload()
+  }
+
+  function handleSaved() {
+    pendingScrollY.current = window.scrollY
     reload()
   }
 
@@ -89,7 +105,7 @@ export function CollectionPage() {
 
       {data && !loading && (
         <>
-          {viewMode === 'table' ? <CollectionTable items={data.items} onRemove={removeItem} /> : <CollectionGrid items={data.items} onRemove={removeItem} />}
+          {viewMode === 'table' ? <CollectionTable items={data.items} onRemove={removeItem} onEdit={setEditingItemId} /> : <CollectionGrid items={data.items} onRemove={removeItem} onEdit={setEditingItemId} />}
           <Pagination
             page={data.page}
             pageSize={data.page_size}
@@ -102,6 +118,12 @@ export function CollectionPage() {
           />
         </>
       )}
+      <CollectionEditDialog
+        itemId={editingItemId}
+        open={editingItemId !== null}
+        onOpenChange={(open) => { if (!open) setEditingItemId(null) }}
+        onSaved={handleSaved}
+      />
     </div>
   )
 }

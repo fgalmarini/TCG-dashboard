@@ -1,4 +1,4 @@
-// Tipos espejo de backend/api/schemas.py -- Fase 6 (solo lectura).
+// Tipos espejo de backend/api/schemas.py.
 
 export interface CardsWithoutMarketValue {
   count: number
@@ -157,6 +157,19 @@ export interface CollectionItemDetail {
   unrealized_pl: number | null
   roi: number | null
   image: CardImage | null
+}
+
+export type CollectionItemUpdatePayload = {
+  quantity?: number
+  status?: string
+  condition?: string | null
+  purchase_price?: number | null
+  purchase_currency?: string | null
+  purchase_date?: string | null
+  trade_value?: number | null
+  grading_company?: string | null
+  grade?: number | null
+  notes?: string | null
 }
 
 export type SortOption = 'nombre' | 'valor' | 'fecha'
@@ -381,6 +394,8 @@ export interface CatalogDetailResponse {
 }
 
 export const STATUS_OPTIONS = ['KEEP', 'HOLD', 'TRADE', 'SELL', 'WANT'] as const
+export const CONDITION_OPTIONS = ['NM', 'EX', 'GD', 'LP', 'PL', 'PO'] as const
+export const GRADING_COMPANY_OPTIONS = ['PSA', 'BGS', 'CGC', 'Other'] as const
 
 export const GAME_LABELS: Record<string, string> = {
   magic: 'Magic',

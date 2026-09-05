@@ -9,7 +9,7 @@ import { cardImageUrl, formatSetCode } from '@/lib/format'
 import type { CollectionItem } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 
-export function CollectionGrid({ items, onRemove }: { items: CollectionItem[]; onRemove: (id: number) => void }) {
+export function CollectionGrid({ items, onRemove, onEdit }: { items: CollectionItem[]; onRemove: (id: number) => void; onEdit: (id: number) => void }) {
   const navigate = useNavigate()
 
   if (items.length === 0) {
@@ -47,7 +47,10 @@ export function CollectionGrid({ items, onRemove }: { items: CollectionItem[]; o
                 <SecondaryMarketPrice sources={item.price_sources} />
               </CardPrice>
               <CardActions>
-                <Button type="button" size="sm" variant="ghost" className="w-full text-destructive" onClick={(event) => { event.stopPropagation(); onRemove(item.id) }}>Remove from Collection</Button>
+                <div className="flex gap-1">
+                  <Button type="button" size="sm" variant="ghost" className="flex-1" onClick={(event) => { event.stopPropagation(); onEdit(item.id) }}>Edit</Button>
+                  <Button type="button" size="sm" variant="ghost" className="flex-1 text-destructive" onClick={(event) => { event.stopPropagation(); onRemove(item.id) }}>Remove</Button>
+                </div>
               </CardActions>
             </div>
           </CardContent>
