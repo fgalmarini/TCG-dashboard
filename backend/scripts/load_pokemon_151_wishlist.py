@@ -9,7 +9,8 @@ Rules:
 - Prefer English when language metadata exists.
 - One exact active printing must resolve for every requested card.
 - Existing wanted rows are updated; missing rows are inserted.
-- Historical acquired/removed rows are not silently restored.
+- Historical removed rows are restored to wanted.
+- Historical acquired rows block the load so an owned card is not silently re-added.
 - target_price = user supplied "Bueno".
 - max_price = user supplied "Caro".
 """
@@ -117,10 +118,20 @@ def main() -> int:
 
         print(f"Resolved: {len(resolved)}/{len(WISHLIST)}")
         for card, target_price, max_price in resolved:
+            historical = conn.execute(
+                "SELECT id, status FROM wishlist_items WHERE card_id=? AND status IN ('wanted','acquired','removed') ORDER BY id DESC LIMIT 1",
+                (card["id"],),
+            ).fetchone()
+            status = historical["status"] if historical else "new"
             print(
                 f"  {card['name']} {card['card_number']} | card_id={card['id']} | "
-                f"target=EUR {target_price:.2f} | max=EUR {max_price:.2f}"
+                f"target=EUR {target_price:.2f} | max=EUR {max_price:.2f} | wishlist={status}"
             )
+            if historical and historical["status"] == "acquired":
+                raise RuntimeError(
+                    f"Historical wishlist row exists for {card['name']} (status=acquired, id={historical['id']}); "
+                    "not re-adding an acquired card automatically."
+                )
 
         if not args.apply:
             print("\nDRY-RUN: no database changes. Re-run with --apply to write.")
@@ -129,6 +140,7 @@ def main() -> int:
         conn.execute("BEGIN IMMEDIATE")
         inserted = 0
         updated = 0
+        restored = 0
 
         for card, target_price, max_price in resolved:
             wanted = conn.execute(
@@ -157,10 +169,31 @@ def main() -> int:
                 "SELECT id, status FROM wishlist_items WHERE card_id=? AND status IN ('acquired','removed') ORDER BY id DESC LIMIT 1",
                 (card["id"],),
             ).fetchone()
-            if historical:
+
+            if historical and historical["status"] == "removed":
+                conn.execute(
+                    """
+                    UPDATE wishlist_items
+                    SET quantity_wanted=1,
+                        priority='medium',
+                        target_price=?,
+                        max_price=?,
+                        currency='EUR',
+                        status='wanted',
+                        acquired_at=NULL,
+                        removed_at=NULL,
+                        updated_at=CURRENT_TIMESTAMP
+                    WHERE id=?
+                    """,
+                    (target_price, max_price, historical["id"]),
+                )
+                restored += 1
+                continue
+
+            if historical and historical["status"] == "acquired":
                 raise RuntimeError(
-                    f"Historical wishlist row exists for {card['name']} (status={historical['status']}, id={historical['id']}); "
-                    "not restoring automatically."
+                    f"Historical wishlist row exists for {card['name']} (status=acquired, id={historical['id']}); "
+                    "not re-adding an acquired card automatically."
                 )
 
             conn.execute(
@@ -176,7 +209,9 @@ def main() -> int:
             inserted += 1
 
         conn.commit()
-        print(f"\nAPPLIED: inserted={inserted}, updated={updated}, total={len(resolved)}")
+        print(
+            f"\nAPPLIED: inserted={inserted}, updated={updated}, restored={restored}, total={len(resolved)}"
+        )
         return 0
     except Exception:
         if conn.in_transaction:
