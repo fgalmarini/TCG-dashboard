@@ -1,0 +1,163 @@
+#!/bin/sh
+set -eu
+
+PROJECT_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+BACKEND_PID=
+FRONTEND_PID=
+TUNNEL_PID=
+CAFFEINATE_PID=
+TMP_DIR=
+
+process_running() {
+  process_pid=$1
+  kill -0 "$process_pid" 2>/dev/null || return 1
+  process_state=$(ps -p "$process_pid" -o state= 2>/dev/null | tr -d ' ' || true)
+  case "$process_state" in
+    *Z*) return 1 ;;
+  esac
+  return 0
+}
+
+stop_process() {
+  process_pid=$1
+  [ -n "$process_pid" ] || return 0
+
+  if process_running "$process_pid"; then
+    kill -TERM "$process_pid" 2>/dev/null || true
+    wait_count=0
+    while process_running "$process_pid" && [ "$wait_count" -lt 20 ]; do
+      sleep 0.1
+      wait_count=$((wait_count + 1))
+    done
+    if process_running "$process_pid"; then
+      kill -KILL "$process_pid" 2>/dev/null || true
+    fi
+  fi
+  wait "$process_pid" 2>/dev/null || true
+}
+
+cleanup() {
+  exit_status=$?
+  trap - EXIT INT TERM
+  stop_process "$TUNNEL_PID"
+  stop_process "$FRONTEND_PID"
+  stop_process "$BACKEND_PID"
+  stop_process "$CAFFEINATE_PID"
+  [ -z "$TMP_DIR" ] || rm -rf "$TMP_DIR"
+  exit "$exit_status"
+}
+
+on_signal() {
+  exit 130
+}
+
+wait_for_url() {
+  health_url=$1
+  process_pid=$2
+  attempt=0
+
+  while [ "$attempt" -lt 120 ]; do
+    if ! process_running "$process_pid"; then
+      printf '%s\n' "Event Quick error: process $process_pid stopped before $health_url became available." >&2
+      exit 1
+    fi
+    if curl -fsS --max-time 2 "$health_url" >/dev/null 2>&1; then
+      return 0
+    fi
+    attempt=$((attempt + 1))
+    sleep 0.25
+  done
+
+  printf '%s\n' "Event Quick error: timed out waiting for $health_url." >&2
+  exit 1
+}
+
+command -v python3 >/dev/null 2>&1 || { echo "Event Quick error: python3 is not installed." >&2; exit 1; }
+command -v npm >/dev/null 2>&1 || { echo "Event Quick error: npm is not installed." >&2; exit 1; }
+command -v cloudflared >/dev/null 2>&1 || { echo "Event Quick error: cloudflared is not installed. Run: brew install cloudflared" >&2; exit 1; }
+command -v curl >/dev/null 2>&1 || { echo "Event Quick error: curl is required." >&2; exit 1; }
+
+python3 -c 'import uvicorn' >/dev/null 2>&1 || { echo "Event Quick error: uvicorn is unavailable to python3." >&2; exit 1; }
+[ -x "$PROJECT_ROOT/frontend/node_modules/.bin/vite" ] || { echo "Event Quick error: frontend dependencies are missing; run npm install in frontend/." >&2; exit 1; }
+
+if [ -f "$HOME/.cloudflared/config.yml" ] || [ -f "$HOME/.cloudflared/config.yaml" ]; then
+  echo "Event Quick error: Cloudflare Quick Tunnels may not start while ~/.cloudflared/config.yml or config.yaml exists." >&2
+  echo "Rename that file temporarily, then run ./event-quick again." >&2
+  exit 1
+fi
+
+TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/tcg-event-quick.XXXXXX")
+TUNNEL_LOG="$TMP_DIR/cloudflared.log"
+
+trap on_signal INT TERM
+trap cleanup EXIT
+
+# Keep macOS awake while Event Quick is running. The lid must remain open.
+if command -v caffeinate >/dev/null 2>&1; then
+  caffeinate -i -w $$ >/dev/null 2>&1 &
+  CAFFEINATE_PID=$!
+fi
+
+(
+  cd "$PROJECT_ROOT/backend"
+  exec python3 -m uvicorn api.main:app --host 127.0.0.1 --port 8000
+) &
+BACKEND_PID=$!
+wait_for_url "http://127.0.0.1:8000/health" "$BACKEND_PID"
+
+(
+  cd "$PROJECT_ROOT/frontend"
+  export TCG_EVENT_HOST=.trycloudflare.com
+  exec npm run dev -- --host 127.0.0.1
+) &
+FRONTEND_PID=$!
+wait_for_url "http://127.0.0.1:3000/" "$FRONTEND_PID"
+
+cloudflared tunnel --url http://127.0.0.1:3000 >"$TUNNEL_LOG" 2>&1 &
+TUNNEL_PID=$!
+
+MOBILE_URL=
+attempt=0
+while [ "$attempt" -lt 120 ]; do
+  if ! process_running "$TUNNEL_PID"; then
+    cat "$TUNNEL_LOG" >&2 || true
+    echo "Event Quick error: cloudflared stopped before creating a public URL." >&2
+    exit 1
+  fi
+  MOBILE_URL=$(grep -Eo 'https://[A-Za-z0-9.-]+\.trycloudflare\.com' "$TUNNEL_LOG" | head -n 1 || true)
+  [ -z "$MOBILE_URL" ] || break
+  attempt=$((attempt + 1))
+  sleep 0.25
+done
+
+[ -n "$MOBILE_URL" ] || {
+  cat "$TUNNEL_LOG" >&2 || true
+  echo "Event Quick error: no trycloudflare.com URL was created." >&2
+  exit 1
+}
+
+# Allow a brief DNS/edge warm-up before showing the URL as ready.
+attempt=0
+while [ "$attempt" -lt 60 ]; do
+  if curl -fsS --max-time 3 "$MOBILE_URL/" >/dev/null 2>&1; then
+    break
+  fi
+  attempt=$((attempt + 1))
+  sleep 1
+done
+
+printf '\nTCG DASHBOARD — QUICK EVENT MODE\n\n'
+printf 'Backend:   http://127.0.0.1:8000\n'
+printf 'Frontend:  http://127.0.0.1:3000\n'
+printf 'Tunnel:    running\n'
+printf 'Mac awake: %s\n\n' "$( [ -n "$CAFFEINATE_PID" ] && echo yes || echo no )"
+printf 'OPEN THIS ON YOUR PHONE:\n%s\n\n' "$MOBILE_URL"
+printf 'Keep this Terminal open and the Mac lid open. Press Ctrl+C when finished.\n'
+printf 'The URL is temporary and public to anyone who has it.\n\n'
+
+while :; do
+  process_running "$BACKEND_PID" || { echo "Event Quick error: backend stopped unexpectedly." >&2; exit 1; }
+  process_running "$FRONTEND_PID" || { echo "Event Quick error: frontend stopped unexpectedly." >&2; exit 1; }
+  process_running "$TUNNEL_PID" || { echo "Event Quick error: cloudflared tunnel stopped unexpectedly." >&2; exit 1; }
+  sleep 1
+done
