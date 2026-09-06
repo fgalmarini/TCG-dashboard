@@ -1,5 +1,10 @@
 """Provider boundaries shared by the Multi-TCG domain.
 
+Provider-specific authentication, endpoint construction and local documentation now
+live under ``backend/integrations/<provider>/``. This module remains the game-generic
+protocol boundary for legacy/importer callers until runtime provider migration is
+completed.
+
 The dashboard API consumes normalized database rows only. Implementations may perform
 network I/O in maintenance/import commands, never during an API request.
 """
@@ -34,6 +39,7 @@ class MagicCatalogAdapter:
 
     The established importer remains the implementation because it already provides
     controlled fixtures/cache, physical-card filtering and exact Scryfall identity.
+    New Scryfall auth/request policy belongs in ``backend/integrations/scryfall``.
     """
 
     code = "magic"
