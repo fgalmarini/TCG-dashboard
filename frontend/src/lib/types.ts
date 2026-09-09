@@ -65,6 +65,12 @@ export interface CollectionItem {
   purchase_price: number | null
   /** Cardmarket Low vigente. null = sin resolución vigente (nunca 0). */
   market_value: number | null
+  valuation_status?: 'EXACT' | 'ESTIMATED' | null
+  valuation_method?: string | null
+  valuation_value?: number | null
+  valuation_reason?: string | null
+  valuation_currency?: string | null
+  valuation_source?: string | null
   cardmarket_low?: number | null
   cardmarket_trend?: number | null
   source_currency?: string | null
@@ -96,6 +102,12 @@ export interface MarketPriceValue {
   source: string
   currency: string
   resolution_method: string | null
+  valuation_status?: 'EXACT' | 'ESTIMATED' | null
+  valuation_method?: string | null
+  valuation_value?: number | null
+  reason?: string | null
+  valuation_currency?: string | null
+  valuation_source?: string | null
   estimated_dealer_cash?: number | null
   estimated_dealer_cash_min?: number | null
   estimated_dealer_cash_max?: number | null
@@ -203,6 +215,12 @@ export interface CatalogItem {
   printing_count: number
   reprint_count: number
   current_price: number | null
+  valuation_status?: 'EXACT' | 'ESTIMATED' | null
+  valuation_method?: string | null
+  valuation_value?: number | null
+  valuation_reason?: string | null
+  valuation_currency?: string | null
+  valuation_source?: string | null
   cardmarket_low?: number | null
   cardmarket_trend?: number | null
   cardmarket_avg1?: number | null
@@ -287,6 +305,12 @@ export interface WishlistItem {
   acquired_at: string | null
   removed_at: string | null
   current_price: number | null
+  valuation_status?: 'EXACT' | 'ESTIMATED' | null
+  valuation_method?: string | null
+  valuation_value?: number | null
+  valuation_reason?: string | null
+  valuation_currency?: string | null
+  valuation_source?: string | null
   cardmarket_low?: number | null
   cardmarket_trend?: number | null
   cardmarket_avg1?: number | null

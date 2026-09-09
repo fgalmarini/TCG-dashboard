@@ -49,6 +49,10 @@ class SchemaTest(unittest.TestCase):
         table_names = {r[0] for r in rows}
         self.assertTrue(EXPECTED_TABLES.issubset(table_names))
 
+    def test_valuation_fields_are_additive(self):
+        columns = {row[1] for row in self.conn.execute("PRAGMA table_info(printing_price_resolutions)")}
+        self.assertTrue({"valuation_status", "valuation_method", "valuation_value", "reason"}.issubset(columns))
+
     def test_cards_have_legacy_and_catalog_identity_indexes(self):
         indexes = self.conn.execute("PRAGMA index_list(cards)").fetchall()
         names = {idx[1] for idx in indexes if idx[2] == 1}

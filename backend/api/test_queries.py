@@ -37,6 +37,89 @@ class QueriesTest(unittest.TestCase):
         )
         self.conn.commit()
 
+    def _insert_valuation(self, *, card_id, language_id=1, value=12.5,
+                          scope="global", collection_item_id=None,
+                          wishlist_item_id=None, resolved_at="2026-01-12T00:00:00"):
+        self.conn.execute(
+            """INSERT INTO printing_price_resolutions
+               (card_id, language_id, resolved_at, currency, source,
+                resolution_method, resolution_scope, collection_item_id,
+                wishlist_item_id, is_current, valuation_status,
+                valuation_method, valuation_value, source_currency)
+               VALUES (?, ?, ?, 'EUR', 'cardmarket',
+                       'cardmarket_exact_language', ?, ?, ?, 0, 'ESTIMATED',
+                       'CARDMARKET_AVG30', ?, 'EUR')""",
+            (card_id, language_id, resolved_at, scope, collection_item_id,
+             wishlist_item_id, value),
+        )
+        self.conn.commit()
+
+    def test_collection_consumes_global_valuation_without_changing_legacy_market_value(self):
+        self._insert_valuation(card_id=self.ids["card_a_id"], value=42.0)
+        row = queries.fetch_collection_row_by_id(self.conn, self.ids["row1_id"])
+        self.assertEqual(row.valuation_value, 42.0)
+        self.assertEqual(row.valuation_status, "ESTIMATED")
+        self.assertEqual(row.valuation_method, "CARDMARKET_AVG30")
+        self.assertEqual(row.valuation_currency, "EUR")
+        self.assertEqual(row.valuation_source, "cardmarket")
+        self.assertEqual(row.market_trend, 11.0)
+
+    def test_collection_scoped_valuation_precedes_global_only_for_same_item(self):
+        self._insert_valuation(card_id=self.ids["card_a_id"], value=42.0)
+        self._insert_valuation(
+            card_id=self.ids["card_a_id"], value=99.0,
+            scope="collection", collection_item_id=self.ids["row1_id"],
+            resolved_at="2026-01-13T00:00:00",
+        )
+        rows = queries.fetch_collection_rows(self.conn)
+        row1 = next(row for row in rows if row.id == self.ids["row1_id"])
+        row4 = next(row for row in rows if row.id == self.ids["row4_id"])
+        self.assertEqual(row1.valuation_value, 99.0)
+        self.assertEqual(row4.valuation_value, 42.0)
+
+    def test_wishlist_uses_card_language_when_item_language_is_null(self):
+        self.conn.execute("UPDATE cards SET language_id=1 WHERE id=?", (self.ids["card_a_id"],))
+        self.conn.commit()
+        self._insert_valuation(card_id=self.ids["card_a_id"], value=42.0)
+        self.conn.execute(
+            "INSERT INTO wishlist_items (card_id, language_id, quantity_wanted, status) VALUES (?, NULL, 1, 'wanted')",
+            (self.ids["card_a_id"],),
+        )
+        self.conn.commit()
+        row = queries.fetch_wishlist_rows(self.conn, status="wanted", game="magic")[-1]
+        self.assertEqual(row.valuation_value, 42.0)
+
+    def test_wishlist_scoped_valuation_does_not_leak_to_another_item(self):
+        self.conn.execute(
+            "INSERT INTO wishlist_items (card_id, language_id, quantity_wanted, status) VALUES (?, 1, 1, 'wanted')",
+            (self.ids["card_a_id"],),
+        )
+        first_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        self.conn.execute(
+            "INSERT INTO wishlist_items (card_id, language_id, quantity_wanted, status) VALUES (?, 1, 1, 'wanted')",
+            (self.ids["card_b_id"],),
+        )
+        second_id = self.conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        self._insert_valuation(card_id=self.ids["card_a_id"], value=42.0, scope="wishlist", wishlist_item_id=first_id)
+        self.conn.commit()
+        row = next(row for row in queries.fetch_wishlist_rows(self.conn, status="wanted", game="magic") if row.id == second_id)
+        self.assertIsNone(row.valuation_value)
+
+    def test_collection_and_wishlist_valuation_consumption_is_set_based(self):
+        self._insert_valuation(card_id=self.ids["card_a_id"], value=42.0)
+        statements = []
+        self.conn.set_trace_callback(statements.append)
+        try:
+            queries.fetch_collection_rows(self.conn)
+            queries.fetch_wishlist_rows(self.conn, status="wanted")
+        finally:
+            self.conn.set_trace_callback(None)
+        valuation_selects = [
+            statement for statement in statements
+            if "global_valuation" in statement and "printing_price_resolutions" in statement
+        ]
+        self.assertEqual(len(valuation_selects), 2)
+
     def test_collection_one_row_with_multiple_historical_resolutions(self):
         card_id = self.ids["card_a_id"]
         self._insert_resolution(card_id=card_id, resolved_at="2026-01-01T00:00:00", current_price=8.0, is_current=0)

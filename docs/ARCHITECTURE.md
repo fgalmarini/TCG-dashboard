@@ -181,9 +181,12 @@ presentation metadata and never changes language, identity or pricing.
 Market prices must be stored as historical snapshots. The application should not
 replace an old price with a new price as the only record.
 
-The current market value is Cardmarket Low. Trend and averages remain separate
-informational metrics. A current `printing_price_resolutions` row, including a NULL
-price, has priority over all historical rows; CardTrader is never a pricing fallback.
+The legacy `current_price` remains Cardmarket Low during VAL-AVG30-005. Avg30 is stored
+separately as additive `valuation_value` with `valuation_status` and
+`valuation_method`; it does not yet replace portfolio calculations or visible values.
+Trend and averages remain separate informational metrics. A current
+`printing_price_resolutions` row, including a NULL price, has priority over all
+historical rows; CardTrader is never a pricing fallback.
 The Magic LOTR catalog pricing updater processes the 2,305 principal LTR/LTC printings;
 the 45 active Art Series printings remain a separate scope and are not refreshed by
 that run.

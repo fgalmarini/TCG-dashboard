@@ -79,6 +79,14 @@ PRIMARY invalid + FALLBACK invalid
 
 Never promote historical data to `current_price` merely because both providers fail.
 
+## Valuation metric
+
+During VAL-AVG30-005, `current_price` retains its existing Low-based semantics. A
+validated Cardmarket product may additionally produce `valuation_value` from `avg30`
+with `valuation_status=ESTIMATED` and `valuation_method=CARDMARKET_AVG30`, subject to
+the existing physical-printing identity and metric-mapping evidence. This additive
+field is not consumed by portfolio calculations or visible dashboard values yet.
+
 ## Pokémon — TCGdex
 
 Use TCGdex for identity support, sets, collector numbers, variants, metadata and images.

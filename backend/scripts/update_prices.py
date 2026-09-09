@@ -202,7 +202,7 @@ def _validate_resolution_scope_invariants(conn: sqlite3.Connection) -> None:
 def ensure_pricing_schema(conn: sqlite3.Connection) -> None:
     additions = {
         "market_price_history": {"source": "TEXT NOT NULL DEFAULT 'cardmarket'", "source_currency": "TEXT NOT NULL DEFAULT 'EUR'", "source_snapshot_created_at": "TEXT", "source_snapshot_sha256": "TEXT", "source_manifest_id": "TEXT", "provenance": "TEXT"},
-        "printing_price_resolutions": {"cardmarket_product_id": "INTEGER REFERENCES cardmarket_products(id)", "collection_item_id": "INTEGER REFERENCES collection_items(id)", "wishlist_item_id": "INTEGER REFERENCES wishlist_items(id)", "resolution_scope": "TEXT NOT NULL DEFAULT 'global' CHECK (resolution_scope IN ('global','collection','wishlist'))", "match_status": "TEXT", "is_current": "INTEGER NOT NULL DEFAULT 0", "selected_metric": "TEXT", "cardmarket_low": "REAL", "cardmarket_trend": "REAL", "cardmarket_avg1": "REAL", "cardmarket_avg7": "REAL", "cardmarket_avg30": "REAL", "cardmarket_foil_low": "REAL", "cardmarket_foil_trend": "REAL", "cardmarket_foil_avg1": "REAL", "cardmarket_foil_avg7": "REAL", "cardmarket_foil_avg30": "REAL", "source_currency": "TEXT", "source_snapshot_created_at": "TEXT", "source_snapshot_sha256": "TEXT", "source_manifest_id": "TEXT", "provenance": "TEXT"},
+        "printing_price_resolutions": {"cardmarket_product_id": "INTEGER REFERENCES cardmarket_products(id)", "collection_item_id": "INTEGER REFERENCES collection_items(id)", "wishlist_item_id": "INTEGER REFERENCES wishlist_items(id)", "resolution_scope": "TEXT NOT NULL DEFAULT 'global' CHECK (resolution_scope IN ('global','collection','wishlist'))", "match_status": "TEXT", "is_current": "INTEGER NOT NULL DEFAULT 0", "selected_metric": "TEXT", "cardmarket_low": "REAL", "cardmarket_trend": "REAL", "cardmarket_avg1": "REAL", "cardmarket_avg7": "REAL", "cardmarket_avg30": "REAL", "cardmarket_foil_low": "REAL", "cardmarket_foil_trend": "REAL", "cardmarket_foil_avg1": "REAL", "cardmarket_foil_avg7": "REAL", "cardmarket_foil_avg30": "REAL", "valuation_status": "TEXT CHECK (valuation_status IS NULL OR valuation_status IN ('EXACT','ESTIMATED'))", "valuation_method": "TEXT", "valuation_value": "REAL", "reason": "TEXT", "source_currency": "TEXT", "source_snapshot_created_at": "TEXT", "source_snapshot_sha256": "TEXT", "source_manifest_id": "TEXT", "provenance": "TEXT"},
     }
     for table, fields in additions.items():
         existing = {row[1] for row in conn.execute(f"PRAGMA table_info({table})")}
@@ -987,6 +987,25 @@ def _ensure_local_product(conn: sqlite3.Connection, product: dict) -> int:
     return int(cursor.lastrowid)
 
 
+def _valuation_fields(row: dict) -> tuple[str | None, str | None, float | None, str | None]:
+    """Build the additive Avg30 valuation without changing legacy Low fields."""
+    status = row["match_status"]
+    foil = row.get("cardmarket_metric_used") == "Foil Low"
+    avg30 = row.get("avg30_alt" if foil else "avg30")
+    if status in {"EXACT", "UNPRICED"} and audit.usable(avg30):
+        return "ESTIMATED", "CARDMARKET_AVG30", float(avg30), None
+    if status in {"EXACT", "UNPRICED"}:
+        return None, None, None, "MISSING_AVG30"
+    text = " ".join(str(row.get(key) or "").casefold() for key in ("match_reason", "primary_cause"))
+    if "finish" in text or "foil" in text or "holo" in text:
+        reason = "FINISH_UNRESOLVED"
+    elif "language" in text or "idioma" in text:
+        reason = "LANGUAGE_UNRESOLVED"
+    else:
+        reason = "IDENTITY_UNRESOLVED"
+    return None, None, None, reason
+
+
 def _resolution_payload(row: dict, manifest: dict, snapshot: audit.SourceSnapshot, conn: sqlite3.Connection) -> dict:
     status = row["match_status"]
     resolved = row.get("resolved_cardmarket_id") if status in {"EXACT", "UNPRICED"} else None
@@ -998,7 +1017,8 @@ def _resolution_payload(row: dict, manifest: dict, snapshot: audit.SourceSnapsho
     scope = row.get("cardmarket_language_scope") or "unknown"
     if scope not in {"exact", "mixed", "unknown"}:
         scope = "unknown"
-    return {"cardmarket_product_id": _local_product_id(conn, resolved), "external_id": str(resolved) if resolved is not None else None, "match_status": status, "current_price": float(current) if audit.usable(current) else None, "selected_metric": "Foil Low" if foil else "Low", "cardmarket_low": row.get("low"), "cardmarket_trend": row.get("trend"), "cardmarket_avg1": row.get("avg1"), "cardmarket_avg7": row.get("avg7"), "cardmarket_avg30": row.get("avg30"), "cardmarket_foil_low": row.get("low_alt"), "cardmarket_foil_trend": row.get("trend_alt"), "cardmarket_foil_avg1": row.get("avg1_alt"), "cardmarket_foil_avg7": row.get("avg7_alt"), "cardmarket_foil_avg30": row.get("avg30_alt"), "source_currency": "EUR", "source_snapshot_created_at": snapshot.created_at, "source_snapshot_sha256": snapshot.sha256, "source_manifest_id": manifest["manifest_id"], "provenance": json.dumps(provenance, sort_keys=True), "confidence": "high" if status == "EXACT" else None, "currency": "EUR", "source": "cardmarket", "resolution_method": "cardmarket_exact_language" if status in {"EXACT", "UNPRICED"} else "no_exact_language_price", "price_type": "low", "language_scope": scope}
+    valuation_status, valuation_method, valuation_value, reason = _valuation_fields(row)
+    return {"cardmarket_product_id": _local_product_id(conn, resolved), "external_id": str(resolved) if resolved is not None else None, "match_status": status, "current_price": float(current) if audit.usable(current) else None, "selected_metric": "Foil Low" if foil else "Low", "cardmarket_low": row.get("low"), "cardmarket_trend": row.get("trend"), "cardmarket_avg1": row.get("avg1"), "cardmarket_avg7": row.get("avg7"), "cardmarket_avg30": row.get("avg30"), "cardmarket_foil_low": row.get("low_alt"), "cardmarket_foil_trend": row.get("trend_alt"), "cardmarket_foil_avg1": row.get("avg1_alt"), "cardmarket_foil_avg7": row.get("avg7_alt"), "cardmarket_foil_avg30": row.get("avg30_alt"), "valuation_status": valuation_status, "valuation_method": valuation_method, "valuation_value": valuation_value, "reason": reason, "source_currency": "EUR", "source_snapshot_created_at": snapshot.created_at, "source_snapshot_sha256": snapshot.sha256, "source_manifest_id": manifest["manifest_id"], "provenance": json.dumps(provenance, sort_keys=True), "confidence": "high" if status == "EXACT" else None, "currency": "EUR", "source": "cardmarket", "resolution_method": "cardmarket_exact_language" if status in {"EXACT", "UNPRICED"} else "no_exact_language_price", "price_type": "low", "language_scope": scope}
 
 
 def _sync_collection_override(conn: sqlite3.Connection, row: dict, card: dict, payload: dict, resolved_at: str) -> None:
@@ -1033,7 +1053,7 @@ def _sync_collection_override(conn: sqlite3.Connection, row: dict, card: dict, p
 
 
 def _resolution_equal(old: sqlite3.Row, new: dict) -> bool:
-    fields = ("cardmarket_product_id", "match_status", "current_price", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "cardmarket_foil_low", "cardmarket_foil_trend", "cardmarket_foil_avg1", "cardmarket_foil_avg7", "cardmarket_foil_avg30", "source_currency", "source_snapshot_created_at", "source_snapshot_sha256", "source_manifest_id", "provenance", "source", "resolution_method")
+    fields = ("cardmarket_product_id", "match_status", "current_price", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "cardmarket_foil_low", "cardmarket_foil_trend", "cardmarket_foil_avg1", "cardmarket_foil_avg7", "cardmarket_foil_avg30", "valuation_status", "valuation_method", "valuation_value", "reason", "source_currency", "source_snapshot_created_at", "source_snapshot_sha256", "source_manifest_id", "provenance", "source", "resolution_method")
     return all(old[field] == new.get(field) for field in fields if field in old.keys())
 
 
@@ -1086,8 +1106,8 @@ def _write_resolution(conn: sqlite3.Connection, card: dict, row: dict, payload: 
         conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE wishlist_item_id=? AND collection_item_id IS NULL AND is_current=1", (wishlist_item_id,))
     else:
         conn.execute("UPDATE printing_price_resolutions SET is_current=0 WHERE card_id=? AND language_id=? AND collection_item_id IS NULL AND wishlist_item_id IS NULL AND is_current=1", (card["id"], card.get("language_id")))
-    columns = ("card_id", "collection_item_id", "wishlist_item_id", "resolution_scope", "language_id", "resolved_at", "current_price", "currency", "source", "price_type", "resolution_method", "external_id", "price_confidence", "language_scope", "metadata", "cardmarket_product_id", "match_status", "is_current", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "cardmarket_foil_low", "cardmarket_foil_trend", "cardmarket_foil_avg1", "cardmarket_foil_avg7", "cardmarket_foil_avg30", "source_currency", "source_snapshot_created_at", "source_snapshot_sha256", "source_manifest_id", "provenance")
-    values = (card["id"], collection_item_id, wishlist_item_id, resolution_scope, card.get("language_id"), resolved_at, payload["current_price"], payload["currency"], payload["source"], payload["price_type"], payload["resolution_method"], payload["external_id"], payload["confidence"], payload["language_scope"], payload["provenance"], payload["cardmarket_product_id"], payload["match_status"], 1, payload["selected_metric"], payload["cardmarket_low"], payload["cardmarket_trend"], payload["cardmarket_avg1"], payload["cardmarket_avg7"], payload["cardmarket_avg30"], payload["cardmarket_foil_low"], payload["cardmarket_foil_trend"], payload["cardmarket_foil_avg1"], payload["cardmarket_foil_avg7"], payload["cardmarket_foil_avg30"], payload["source_currency"], payload["source_snapshot_created_at"], payload["source_snapshot_sha256"], payload["source_manifest_id"], payload["provenance"])
+    columns = ("card_id", "collection_item_id", "wishlist_item_id", "resolution_scope", "language_id", "resolved_at", "current_price", "currency", "source", "price_type", "resolution_method", "external_id", "price_confidence", "language_scope", "metadata", "cardmarket_product_id", "match_status", "is_current", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "cardmarket_foil_low", "cardmarket_foil_trend", "cardmarket_foil_avg1", "cardmarket_foil_avg7", "cardmarket_foil_avg30", "valuation_status", "valuation_method", "valuation_value", "reason", "source_currency", "source_snapshot_created_at", "source_snapshot_sha256", "source_manifest_id", "provenance")
+    values = (card["id"], collection_item_id, wishlist_item_id, resolution_scope, card.get("language_id"), resolved_at, payload["current_price"], payload["currency"], payload["source"], payload["price_type"], payload["resolution_method"], payload["external_id"], payload["confidence"], payload["language_scope"], payload["provenance"], payload["cardmarket_product_id"], payload["match_status"], 1, payload["selected_metric"], payload["cardmarket_low"], payload["cardmarket_trend"], payload["cardmarket_avg1"], payload["cardmarket_avg7"], payload["cardmarket_avg30"], payload["cardmarket_foil_low"], payload["cardmarket_foil_trend"], payload["cardmarket_foil_avg1"], payload["cardmarket_foil_avg7"], payload["cardmarket_foil_avg30"], payload["valuation_status"], payload["valuation_method"], payload["valuation_value"], payload["reason"], payload["source_currency"], payload["source_snapshot_created_at"], payload["source_snapshot_sha256"], payload["source_manifest_id"], payload["provenance"])
     placeholders = ",".join("?" for _ in columns)
     conn.execute(f"INSERT INTO printing_price_resolutions ({','.join(columns)}) VALUES ({placeholders})", values)
     report.prices_changed += 1

@@ -109,6 +109,31 @@ class UpdatePricesTest(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
+    def test_avg30_valuation_is_additive_and_does_not_replace_legacy_low(self):
+        estimated = update_prices._valuation_fields({"match_status": "EXACT", "avg30": 68.4})
+        self.assertEqual(estimated, ("ESTIMATED", "CARDMARKET_AVG30", 68.4, None))
+        missing = update_prices._valuation_fields({"match_status": "EXACT", "avg30": None})
+        self.assertEqual(missing, (None, None, None, "MISSING_AVG30"))
+
+    def test_ambiguous_identity_gets_explicit_valuation_reason(self):
+        self.assertEqual(
+            update_prices._valuation_fields({"match_status": "AMBIGUOUS", "match_reason": "finish not proven"})[-1],
+            "FINISH_UNRESOLVED",
+        )
+        self.assertEqual(
+            update_prices._valuation_fields({"match_status": "AMBIGUOUS", "match_reason": "language not proven"})[-1],
+            "LANGUAGE_UNRESOLVED",
+        )
+
+    def test_foil_valuation_uses_foil_avg30(self):
+        self.assertEqual(
+            update_prices._valuation_fields({
+                "match_status": "EXACT", "cardmarket_metric_used": "Foil Low",
+                "avg30": 10.0, "avg30_alt": 68.4,
+            }),
+            ("ESTIMATED", "CARDMARKET_AVG30", 68.4, None),
+        )
+
     def _write_sources(self):
         for game, game_id, price_guides in (
             ("magic", 1, [{"idProduct": 500, "low": 1.0, "avg": 1.5, "trend": 2.0}]),

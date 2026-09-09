@@ -4,6 +4,12 @@
 
 Current phase: Phase 7.
 
+VAL-AVG30-005 adds an additive valuation foundation. `printing_price_resolutions` can
+store `valuation_status`, `valuation_method`, `valuation_value` and `reason` derived
+from the existing identity/mapping model. `current_price` remains legacy Low-based;
+the dashboard and portfolio calculations are intentionally unchanged. Activation of
+Avg30 as the economic value requires a later contract.
+
 `TCG-MOBILE-001` Event Mobile Access is implemented. Event Mode runs FastAPI and
 Vite locally, exposes one same-origin URL through a Cloudflare Named Tunnel protected
 by Cloudflare Access, and keeps SQLite local. Use `docs/EVENT_MOBILE_ACCESS.md` for
@@ -466,3 +472,61 @@ avoid changing Trading/Analytics/CARDMADNESS scope during this phase.
   `finish_pricing_sources`, `tcgplayer_pricing` and `cardmarket_manual_resolution`.
 - Deferred: resolve the 73 Cardmarket ambiguous products only when deterministic
   Cardmarket-specific or otherwise trustworthy evidence becomes available.
+
+## VAL-AVG30-007 Guarded Partial Backfill (`2026-09-09`)
+
+- Se aplicó únicamente el manifest global de Magic/base de VAL-AVG30-006C.
+- La migración aditiva de las columnas `valuation_*` se validó sobre una copia temporal
+  antes del reemplazo seguro de la DB.
+- Resultado: `367` resoluciones `ESTIMATED` persistidas, `0` rechazadas y segunda
+  ejecución idempotente (`0` inserts, `367` unchanged).
+- `current_price`, métricas legacy, `is_current` legacy, Collection, Wishlist,
+  Overview, P/L y ROI no fueron modificados. `PRAGMA integrity_check` y
+  `PRAGMA foreign_key_check` pasan.
+- Apply report: `reports/valuation/avg30_backfill/2026-09-09/`.
+
+## VAL-AVG30-006 Resolver Dry Run (`2026-09-08`)
+
+- Resolver local, determinístico y read-only implementado en
+  `backend/valuation/avg30_resolver.py`, con comando
+  `backend/scripts/resolve_avg30.py`.
+- El run usa observaciones hasta `as_of`, informa antigüedad y no modifica la DB,
+  `current_price` ni cálculos productivos.
+- Reporte: `reports/valuation/avg30_resolver/2026-09-08/`.
+- Resultado: `367` valuaciones elegibles, todas `ESTIMATED`, con cobertura `12.27%`
+  en `catalog:magic`; los demás scopes/juegos no tienen cobertura elegible. La
+  recomendación global es `NOT_READY_FOR_BACKFILL`; Magic catalog queda listo de
+  forma específica.
+
+## VAL-AVG30-008 Global Valuation Consumption (`2026-09-09`)
+
+- **CLOSED / READY_FOR_VALUATION_UI**: Collection y Wishlist exponen de forma
+  aditiva los seis campos `valuation_status`, `valuation_method`, `valuation_value`,
+  `valuation_currency`, `valuation_source` y `valuation_reason`.
+- Baseline validado: `367` global valuations, `0` scoped valuations, Collection
+  `68/97` compatible y Wishlist `wanted` `0` compatible de `18` filas.
+- Pokémon permanece `NULL` y One Piece permanece `NULL`; no se relajan reglas de
+  identidad, idioma o finish para aumentar cobertura.
+- El consumo usa precedencia scope-aware `scoped → global → NULL`, con idioma
+  efectivo explícito y consultas set-based. 008 no creó valuaciones scoped.
+- `current_price`, `market_value`, Overview, P/L, ROI y `WishlistSummary` siguen
+  completamente legacy. `valuation_value` no es alias ni reemplazo de esos valores.
+- La simulación y los reportes de valuación son informativos; no activan todavía
+  Avg30 como valor económico principal ni modifican la DB productiva.
+
+## VAL-UX-009 Valuation UI Consumption (`2026-09-09`)
+
+- **CLOSED**: Collection y Wishlist consumen de forma aditiva
+  `valuation_status`, `valuation_method`, `valuation_value`, `valuation_currency`,
+  `valuation_source` y `valuation_reason`.
+- Collection muestra por separado `Market price` y `Estimated valuation`; los
+  valores `ESTIMATED` se identifican explícitamente y las valuaciones nulas se
+  muestran como `—` junto con su motivo cuando existe. Wishlist conserva el
+  mismo comportamiento sin convertir `NULL` en cero.
+- Baseline conservado: `367` valuaciones globales, `0` scoped, Collection
+  `68/97` compatible y Wishlist `wanted` `0/18` compatible. Pokémon y One Piece
+  continúan sin valuación.
+- `current_price`, `market_value`, Overview, P/L, ROI, `WishlistSummary`,
+  filtros, ordenamientos y estimaciones dealer/trade siguen siendo legacy.
+  `valuation_value` no participa todavía en totals ni en ningún cálculo
+  productivo. No se modificó la DB ni se crearon valuaciones scoped.

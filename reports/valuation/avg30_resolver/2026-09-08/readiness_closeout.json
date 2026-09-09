@@ -1,0 +1,937 @@
+{
+  "run": {
+    "as_of": "2026-09-08",
+    "source_results": "/Users/facundogalmarini/Projects/TCG DASHBOARD/reports/valuation/avg30_resolver/2026-09-08/results.json",
+    "db": "/Users/facundogalmarini/Projects/TCG DASHBOARD/backend/db/tcg_dashboard.db",
+    "read_only": true,
+    "generated_at": "2026-09-08T21:11:04+00:00"
+  },
+  "resolver_correctness": "RESOLVER_VALID",
+  "backfill_readiness": "NOT_READY_FOR_BACKFILL",
+  "not_ready_causes": [
+    {
+      "code": "DATA_COVERAGE_BLOCK",
+      "scope": "catalog",
+      "games": [
+        "pokemon"
+      ],
+      "rows": 362,
+      "example": "Pokémon 151: Ivysaur, sin Product ID",
+      "blocks_367": false,
+      "detail": "PRODUCT_UNRESOLVED en el catálogo Pokémon; no invalida las 367 filas Magic seguras."
+    },
+    {
+      "code": "SCOPE_SPECIFIC_BLOCK",
+      "scope": "collection/wishlist",
+      "games": [
+        "magic",
+        "pokemon",
+        "one_piece"
+      ],
+      "rows": 164,
+      "example": "Collection Magic: Frodo Baggins / 38677; One Piece: Borsalino / 2367",
+      "blocks_367": false,
+      "detail": "Scopes operativos sin filas elegibles; impiden readiness global/all-scopes, no las 367 catalog:magic."
+    },
+    {
+      "code": "SYSTEMIC_IDENTITY_BLOCK",
+      "scope": "catalog/collection/wishlist",
+      "games": [
+        "magic",
+        "one_piece",
+        "pokemon"
+      ],
+      "rows": 1050,
+      "example": "Collection One Piece: Borsalino / 2367",
+      "blocks_367": false,
+      "detail": "Ambigüedad o producto no demostrable, correctamente retenido como NULL."
+    },
+    {
+      "code": "MISSING_PROVENANCE",
+      "scope": "catalog:magic",
+      "games": [
+        "magic"
+      ],
+      "rows": 67,
+      "example": "Product 21 / Tom Bombadil (sin provenance, hash ni manifest en la observación)",
+      "blocks_367": false,
+      "affected_eligible_rows": 67,
+      "detail": "Estas filas fueron elegibles, pero no son auditables para backfill hasta completar provenance; no invalida las otras elegibles."
+    }
+  ],
+  "eligible": {
+    "total": 367,
+    "by_scope": {
+      "catalog": 367
+    },
+    "by_game": {
+      "magic": 367
+    },
+    "by_status": {
+      "ESTIMATED": 367
+    },
+    "by_metric_family": {
+      "base": 367
+    },
+    "missing_provenance": 67
+  },
+  "nulls": {
+    "total": 3150,
+    "by_reason": {
+      "FINISH_UNRESOLVED": 14,
+      "IDENTITY_UNRESOLVED": 1050,
+      "LANGUAGE_UNRESOLVED": 97,
+      "MISSING_AVG30": 303,
+      "PRODUCT_UNRESOLVED": 1686
+    },
+    "expected_acceptable": {
+      "FINISH_UNRESOLVED": 14,
+      "LANGUAGE_UNRESOLVED": 97,
+      "MISSING_AVG30": 303
+    },
+    "unexpected_blockers": {
+      "PRODUCT_UNRESOLVED": 1686,
+      "IDENTITY_UNRESOLVED": 1050
+    },
+    "note": "PRODUCT_UNRESOLVED e IDENTITY_UNRESOLVED son bloqueos de cobertura/identidad, no fallos no clasificados del resolver."
+  },
+  "readiness_by_scope": {
+    "Collection": "NOT_READY",
+    "Wishlist": "NOT_READY",
+    "Pokémon 151": "NOT_READY",
+    "Magic LOTR": "READY_FOR_PARTIAL_BACKFILL (catalog:magic; provenance completa requerida)"
+  },
+  "coverage": {
+    "collection": {
+      "total": 125,
+      "eligible_rows": 0,
+      "ineligible_rows": 125,
+      "eligible_units": 0,
+      "unvalued_units": 128,
+      "coverage_percent": 0.0
+    },
+    "wishlist": {
+      "total": 39,
+      "eligible_rows": 0,
+      "ineligible_rows": 39,
+      "eligible_units": 0,
+      "unvalued_units": 39,
+      "coverage_percent": 0.0
+    },
+    "pokemon": {
+      "total": 387,
+      "eligible_rows": 0,
+      "ineligible_rows": 387,
+      "eligible_units": 0,
+      "unvalued_units": 387,
+      "coverage_percent": 0.0
+    },
+    "magic": {
+      "total": 3107,
+      "eligible_rows": 367,
+      "ineligible_rows": 2740,
+      "eligible_units": 367,
+      "unvalued_units": 2743,
+      "coverage_percent": 11.8
+    },
+    "one_piece": {
+      "total": 23,
+      "eligible_rows": 0,
+      "ineligible_rows": 23,
+      "eligible_units": 0,
+      "unvalued_units": 23,
+      "coverage_percent": 0.0
+    }
+  },
+  "portfolio": {
+    "collection_total": {
+      "legacy_portfolio_value": 223.78,
+      "proposed_estimated_portfolio_value": 0,
+      "absolute_difference": -223.78,
+      "percentage_difference": -100.0,
+      "percentage_difference_reason": null,
+      "valued_units": 0,
+      "unvalued_units": 128,
+      "coverage_percent": 0.0
+    },
+    "wishlist_total": {
+      "legacy_portfolio_value": 155.25,
+      "proposed_estimated_portfolio_value": 0,
+      "absolute_difference": -155.25,
+      "percentage_difference": -100.0,
+      "percentage_difference_reason": null,
+      "valued_units": 0,
+      "unvalued_units": 39,
+      "coverage_percent": 0.0
+    },
+    "collection_by_game": {
+      "magic": {
+        "total": 3107,
+        "eligible_rows": 367,
+        "ineligible_rows": 2740,
+        "eligible_units": 367,
+        "unvalued_units": 2743,
+        "coverage_percent": 11.8
+      },
+      "pokemon": {
+        "total": 387,
+        "eligible_rows": 0,
+        "ineligible_rows": 387,
+        "eligible_units": 0,
+        "unvalued_units": 387,
+        "coverage_percent": 0.0
+      },
+      "one_piece": {
+        "total": 23,
+        "eligible_rows": 0,
+        "ineligible_rows": 23,
+        "eligible_units": 0,
+        "unvalued_units": 23,
+        "coverage_percent": 0.0
+      }
+    }
+  },
+  "sample_eligible": [
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 1,
+      "card_name": "Gandalf the Grey",
+      "cardmarket_product_id": 1,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.34,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 2,
+      "card_name": "The One Ring",
+      "cardmarket_product_id": 2,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 84.1,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 3,
+      "card_name": "Plains",
+      "cardmarket_product_id": 3,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.33,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 4,
+      "card_name": "Island",
+      "cardmarket_product_id": 4,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.36,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 5,
+      "card_name": "Swamp",
+      "cardmarket_product_id": 5,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.46,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 6,
+      "card_name": "Mountain",
+      "cardmarket_product_id": 6,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.35,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 7,
+      "card_name": "Forest",
+      "cardmarket_product_id": 7,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.48,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 9,
+      "card_name": "Frodo, Sauron's Bane",
+      "cardmarket_product_id": 9,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.25,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 10,
+      "card_name": "Reprieve",
+      "cardmarket_product_id": 10,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.66,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 11,
+      "card_name": "Samwise the Stouthearted",
+      "cardmarket_product_id": 11,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.14,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 12,
+      "card_name": "You Cannot Pass!",
+      "cardmarket_product_id": 12,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.11,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 13,
+      "card_name": "Gollum, Patient Plotter",
+      "cardmarket_product_id": 13,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.11,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 14,
+      "card_name": "Tom Bombadil",
+      "cardmarket_product_id": 14,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 3.45,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 15,
+      "card_name": "Mount Doom",
+      "cardmarket_product_id": 15,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 6.76,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 16,
+      "card_name": "The Shire",
+      "cardmarket_product_id": 16,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 1.62,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 21,
+      "card_name": "Tom Bombadil",
+      "cardmarket_product_id": 21,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 3.47,
+      "observation_observed_at": "2026-08-29T02:41:58+0200",
+      "observation_age_days": 10,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": false,
+        "source_snapshot_sha256": null,
+        "source_manifest_id": null
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 27,
+      "card_name": "Bill the Pony",
+      "cardmarket_product_id": 27,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.11,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 28,
+      "card_name": "Boromir, Warden of the Tower",
+      "cardmarket_product_id": 28,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 5.53,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 29,
+      "card_name": "Dúnedain Blade",
+      "cardmarket_product_id": 29,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.06,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    },
+    {
+      "scope": "catalog",
+      "game": "magic",
+      "card_id": 30,
+      "card_name": "Eastfarthing Farmer",
+      "cardmarket_product_id": 30,
+      "finish": null,
+      "language": 1,
+      "metric_family": "base",
+      "metric_name": "avg30",
+      "valuation_status": "ESTIMATED",
+      "valuation_method": "CARDMARKET_AVG30",
+      "valuation_value": 0.07,
+      "observation_observed_at": "2026-09-03T02:46:06+0200",
+      "observation_age_days": 5,
+      "observation_source": "cardmarket",
+      "identity_evidence": {
+        "product_valid": true,
+        "canonical_valid": true,
+        "language_compatible": true,
+        "finish_compatible": true,
+        "variant_compatible": true,
+        "metric_family": "base",
+        "exact_evidence": false,
+        "identity_blocked": false,
+        "product_mapping_status": "mapped",
+        "scope_mapping_status": null,
+        "metric_mapping_status": null,
+        "pricing_eligible": false,
+        "metric_exact": false
+      },
+      "provenance": {
+        "available": true,
+        "source_snapshot_sha256": "71e357b507bea02846f5efab9e66116fefb04292e6a53a27c4aac872f262cbe8",
+        "source_manifest_id": "fc89b218bc4b9c872be47c851f0320e4f43365973c1f410dbf32d4bbeb07bae1"
+      }
+    }
+  ],
+  "recommendation": "Las 367 filas son técnicamente resolubles, pero el backfill debe esperar hasta excluir/completar las 67 sin provenance. Si se delimita explícitamente a catalog:magic con provenance completa, puede hacerse un backfill parcial seguro dejando el resto NULL."
+}

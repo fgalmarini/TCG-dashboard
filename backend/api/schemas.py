@@ -168,6 +168,12 @@ class CollectionItemOut(BaseModel):
     quantity: int
     purchase_price: float | None
     market_value: float | None = Field(None, description="Cardmarket Low vigente. None = sin resolución vigente/precio (nunca 0).")
+    valuation_status: str | None = None
+    valuation_method: str | None = None
+    valuation_value: float | None = None
+    valuation_reason: str | None = None
+    valuation_currency: str | None = None
+    valuation_source: str | None = None
     cardmarket_low: float | None = None
     cardmarket_trend: float | None = None
     cardmarket_avg1: float | None = None
@@ -212,6 +218,9 @@ class CollectionItemOut(BaseModel):
             quantity=row.quantity,
             purchase_price=row.purchase_price,
             market_value=row.market_trend,
+            valuation_status=row.valuation_status, valuation_method=row.valuation_method,
+            valuation_value=row.valuation_value, valuation_reason=row.valuation_reason,
+            valuation_currency=row.valuation_currency, valuation_source=row.valuation_source,
             cardmarket_low=row.cardmarket_low,
             cardmarket_trend=row.cardmarket_trend,
             source_currency=row.source_currency,
@@ -274,6 +283,12 @@ class MarketPriceOut(BaseModel):
     source: str = "cardmarket"
     currency: str = "EUR"
     resolution_method: str | None = None
+    valuation_status: str | None = None
+    valuation_method: str | None = None
+    valuation_value: float | None = None
+    reason: str | None = None
+    valuation_currency: str | None = None
+    valuation_source: str | None = None
     estimated_dealer_cash: float | None = None
     estimated_dealer_cash_min: float | None = None
     estimated_dealer_cash_max: float | None = None
@@ -345,6 +360,12 @@ class CollectionItemDetailOut(BaseModel):
                 source=row.price_source or "cardmarket",
                 currency=row.price_currency or "EUR",
                 resolution_method=row.resolution_method,
+                valuation_status=row.valuation_status,
+                valuation_method=row.valuation_method,
+                valuation_value=row.valuation_value,
+                reason=row.valuation_reason,
+                valuation_currency=row.valuation_currency,
+                valuation_source=row.valuation_source,
                 estimated_dealer_cash=round(row.market_trend * .70, 2) if row.market_trend is not None else None,
                 estimated_dealer_cash_min=round(row.market_trend * .60, 2) if row.market_trend is not None else None,
                 estimated_dealer_cash_max=round(row.market_trend * .75, 2) if row.market_trend is not None else None,
@@ -421,6 +442,12 @@ class CatalogItemOut(BaseModel):
     printing_count: int
     reprint_count: int
     current_price: float | None
+    valuation_status: str | None = None
+    valuation_method: str | None = None
+    valuation_value: float | None = None
+    valuation_reason: str | None = None
+    valuation_currency: str | None = None
+    valuation_source: str | None = None
     cardmarket_low: float | None = None
     cardmarket_trend: float | None = None
     cardmarket_avg1: float | None = None
@@ -458,6 +485,9 @@ class CatalogItemOut(BaseModel):
             language=row.language, release_kind=row.release_kind, art_kind=row.art_kind,
             printing_count=row.printing_count, reprint_count=row.reprint_count,
             current_price=row.current_price, price_source=row.price_source,
+            valuation_status=row.valuation_status, valuation_method=row.valuation_method,
+            valuation_value=row.valuation_value, valuation_reason=row.valuation_reason,
+            valuation_currency=row.valuation_currency, valuation_source=row.valuation_source,
             cardmarket_low=row.cardmarket_low, cardmarket_trend=row.cardmarket_trend,
             cardmarket_avg1=row.cardmarket_avg1, cardmarket_avg7=row.cardmarket_avg7,
             cardmarket_avg30=row.cardmarket_avg30, source_currency=row.source_currency,
@@ -527,6 +557,12 @@ class WishlistItemOut(BaseModel):
     acquired_at: str | None
     removed_at: str | None
     current_price: float | None
+    valuation_status: str | None = None
+    valuation_method: str | None = None
+    valuation_value: float | None = None
+    valuation_reason: str | None = None
+    valuation_currency: str | None = None
+    valuation_source: str | None = None
     cardmarket_low: float | None = None
     cardmarket_trend: float | None = None
     cardmarket_avg1: float | None = None
@@ -562,6 +598,9 @@ class WishlistItemOut(BaseModel):
             max_price=row.max_price, currency=row.currency, notes=row.notes,
             status=row.status, acquired_at=row.acquired_at, removed_at=row.removed_at,
             current_price=row.current_price, language=row.language,
+            valuation_status=row.valuation_status, valuation_method=row.valuation_method,
+            valuation_value=row.valuation_value, valuation_reason=row.valuation_reason,
+            valuation_currency=row.valuation_currency, valuation_source=row.valuation_source,
             cardmarket_low=row.cardmarket_low, cardmarket_trend=row.cardmarket_trend,
             cardmarket_avg1=row.cardmarket_avg1, cardmarket_avg7=row.cardmarket_avg7,
             cardmarket_avg30=row.cardmarket_avg30,

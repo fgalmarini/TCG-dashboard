@@ -3,6 +3,7 @@ import { CardThumbnail } from '@/components/collection/CardImage'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
 import { MarketPrice } from '@/components/shared/MarketPrice'
+import { ValuationDisplay } from '@/components/shared/ValuationDisplay'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -88,6 +89,15 @@ function WishlistCard({
             <span className="text-muted-foreground">Current</span>
             <MarketPrice value={item.current_price} currency={item.price_currency} />
             {status && <Badge variant={status.variant}>{status.label}</Badge>}
+            <ValuationDisplay
+              status={item.valuation_status}
+              method={item.valuation_method}
+              value={item.valuation_value}
+              currency={item.valuation_currency}
+              source={item.valuation_source}
+              reason={item.valuation_reason}
+              compact
+            />
           </div>
           {buyingMode ? (
             <div className="flex flex-wrap gap-4 text-sm">

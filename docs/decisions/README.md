@@ -16,5 +16,6 @@ ADRs are the primary human index.
 | [TCG-DEC-007](TCG-DEC-007-magic-lotr-catalog-wishlist.md) | Magic LOTR catalog and wishlist | Implemented |
 | [TCG-DEC-008](TCG-DEC-008-multi-tcg-one-piece-foundation.md) | Multi-TCG foundation and One Piece provider policy | Implemented |
 | [TCG-DEC-009](TCG-DEC-009-external-data-provider-policy.md) | External provider roles, fallback and authentication co-location | Accepted; runtime migration pending |
+| [TCG-DEC-010](TCG-DEC-010-avg30-resolver-dry-run.md) | Temporal Avg30 resolver dry-run and backfill readiness criteria | Accepted |
 | [POKEMON-151](POKEMON-151-pricing-and-cardmarket-limitations.md) | Pokémon 151 catalog, Cardmarket limitations and TCGplayer secondary pricing policy | Implemented |
 | [TCG-MOBILE-001](TCG-MOBILE-001-event-mobile-access.md) | Single public origin with local Vite proxy and private FastAPI | Implemented |

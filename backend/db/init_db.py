@@ -31,6 +31,8 @@ def ensure_pricing_columns(conn: sqlite3.Connection) -> None:
             "cardmarket_avg1": "REAL", "cardmarket_avg7": "REAL", "cardmarket_avg30": "REAL",
             "cardmarket_foil_low": "REAL", "cardmarket_foil_trend": "REAL", "cardmarket_foil_avg1": "REAL",
             "cardmarket_foil_avg7": "REAL", "cardmarket_foil_avg30": "REAL", "source_currency": "TEXT",
+            "valuation_status": "TEXT CHECK (valuation_status IS NULL OR valuation_status IN ('EXACT','ESTIMATED'))",
+            "valuation_method": "TEXT", "valuation_value": "REAL", "reason": "TEXT",
             "source_snapshot_created_at": "TEXT", "source_snapshot_sha256": "TEXT",
             "source_manifest_id": "TEXT", "provenance": "TEXT",
         },

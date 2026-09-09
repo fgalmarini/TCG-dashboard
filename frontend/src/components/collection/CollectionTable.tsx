@@ -13,6 +13,7 @@ import { formatCurrency } from '@/lib/format'
 import type { CollectionItem } from '@/lib/types'
 import { getCollectionMarketDisplay } from '@/lib/collectionPricing'
 import { Button } from '@/components/ui/button'
+import { ValuationDisplay } from '@/components/shared/ValuationDisplay'
 
 export function CollectionTable({ items, onRemove, onEdit }: { items: CollectionItem[]; onRemove: (id: number) => void; onEdit: (id: number) => void }) {
   const navigate = useNavigate()
@@ -33,6 +34,7 @@ export function CollectionTable({ items, onRemove, onEdit }: { items: Collection
             <TableHead className="w-16 text-center">Qty.</TableHead>
             <TableHead className="w-24 text-center">Cost</TableHead>
             <TableHead className="w-36 text-center">Market value</TableHead>
+            <TableHead className="w-36 text-center">Estimated valuation</TableHead>
             <TableHead className="w-24 text-center">Status</TableHead>
             <TableHead className="w-36 text-center">Actions</TableHead>
           </TableRow>
@@ -72,6 +74,17 @@ export function CollectionTable({ items, onRemove, onEdit }: { items: Collection
                     </div>
                   )
                 })()}
+              </TableCell>
+              <TableCell className="text-right">
+                <ValuationDisplay
+                  status={item.valuation_status}
+                  method={item.valuation_method}
+                  value={item.valuation_value}
+                  currency={item.valuation_currency}
+                  source={item.valuation_source}
+                  reason={item.valuation_reason}
+                  compact
+                />
               </TableCell>
               <TableCell className="text-center">
                 <Badge variant="outline">{item.status}</Badge>

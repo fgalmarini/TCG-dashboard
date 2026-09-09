@@ -8,6 +8,7 @@ import { CardActions, CardIdentity, CardMetadata, CardPrice, TradingCard } from 
 import { cardImageUrl, formatSetCode } from '@/lib/format'
 import type { CollectionItem } from '@/lib/types'
 import { Button } from '@/components/ui/button'
+import { ValuationDisplay } from '@/components/shared/ValuationDisplay'
 
 export function CollectionGrid({ items, onRemove, onEdit }: { items: CollectionItem[]; onRemove: (id: number) => void; onEdit: (id: number) => void }) {
   const navigate = useNavigate()
@@ -41,9 +42,21 @@ export function CollectionGrid({ items, onRemove, onEdit }: { items: CollectionI
               </CardMetadata>
               <CardPrice>
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <MarketPrice value={item.market_value} />
+                  <div>
+                    <p className="text-xs text-muted-foreground">Market price</p>
+                    <MarketPrice value={item.market_value} />
+                  </div>
                   <Badge variant="outline" className="text-[10px]">{item.status}</Badge>
                 </div>
+                <ValuationDisplay
+                  status={item.valuation_status}
+                  method={item.valuation_method}
+                  value={item.valuation_value}
+                  currency={item.valuation_currency}
+                  source={item.valuation_source}
+                  reason={item.valuation_reason}
+                  compact
+                />
                 <SecondaryMarketPrice sources={item.price_sources} />
               </CardPrice>
               <CardActions>

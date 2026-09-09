@@ -15,6 +15,13 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any
 
+try:
+    from backend.valuation.avg30_resolver import USABLE_VALUATION_SQL
+except ModuleNotFoundError:  # Running the API with ``cwd=backend``.
+    from valuation.avg30_resolver import USABLE_VALUATION_SQL
+
+_USABLE_VALUATION_R2_SQL = USABLE_VALUATION_SQL.replace("r.", "r2.")
+
 # --- Query base compartida ----------------------------------------------------------
 # CTE de "ultimo snapshot de precio por producto": UNIQUE(cardmarket_product_id,
 # observed_at) en market_price_history ya garantiza que MAX(observed_at) no tenga
@@ -60,6 +67,7 @@ WITH latest_price AS (
            r.match_status, r.selected_metric, r.cardmarket_low,
            r.cardmarket_trend, r.cardmarket_avg1, r.cardmarket_avg7,
            r.cardmarket_avg30, r.source_currency,
+           r.valuation_status, r.valuation_method, r.valuation_value, r.reason,
            (
                SELECT r2.current_price
                  FROM printing_price_resolutions r2
@@ -86,6 +94,7 @@ WITH latest_price AS (
            r.resolved_at, r.match_status, r.selected_metric,
            r.cardmarket_low, r.cardmarket_trend, r.cardmarket_avg1,
            r.cardmarket_avg7, r.cardmarket_avg30, r.source_currency,
+           r.valuation_status, r.valuation_method, r.valuation_value, r.reason,
            (
                SELECT r2.current_price
                  FROM printing_price_resolutions r2
@@ -104,14 +113,53 @@ WITH latest_price AS (
        AND r.collection_item_id IS NOT NULL
        AND r.wishlist_item_id IS NULL
        AND COALESCE(r.source, 'cardmarket') = 'cardmarket'
+), global_valuation AS (
+    SELECT id, card_id, language_id, valuation_status, valuation_method,
+           valuation_value, reason, valuation_currency, valuation_source
+      FROM (
+            SELECT r.id, r.card_id, r.language_id, r.valuation_status,
+                   r.valuation_method, r.valuation_value, r.reason,
+                   COALESCE(r.source_currency, r.currency) AS valuation_currency,
+                   r.source AS valuation_source,
+                   ROW_NUMBER() OVER (
+                       PARTITION BY r.card_id, r.language_id
+                       ORDER BY r.resolved_at DESC, r.id DESC
+                   ) AS row_number
+              FROM printing_price_resolutions r
+             WHERE r.resolution_scope = 'global'
+               AND r.collection_item_id IS NULL
+               AND r.wishlist_item_id IS NULL
+               AND {usable_valuation}
+           )
+     WHERE row_number = 1
+), collection_valuation AS (
+    SELECT id, collection_item_id, card_id, language_id, valuation_status,
+           valuation_method, valuation_value, reason, valuation_currency,
+           valuation_source
+      FROM (
+            SELECT r.id, r.collection_item_id, r.card_id, r.language_id,
+                   r.valuation_status, r.valuation_method, r.valuation_value,
+                   r.reason, COALESCE(r.source_currency, r.currency) AS valuation_currency,
+                   r.source AS valuation_source,
+                   ROW_NUMBER() OVER (
+                       PARTITION BY r.collection_item_id, r.card_id, r.language_id
+                       ORDER BY r.resolved_at DESC, r.id DESC
+                   ) AS row_number
+              FROM printing_price_resolutions r
+             WHERE r.resolution_scope = 'collection'
+               AND r.collection_item_id IS NOT NULL
+               AND r.wishlist_item_id IS NULL
+               AND {usable_valuation}
+           )
+     WHERE row_number = 1
 )
-"""
+""".format(usable_valuation=USABLE_VALUATION_SQL)
 
 # Columnas completas de una fila de collection_items + joins. Los dos LEFT JOIN
 # (card_id, cardmarket_product_id) son independientes a proposito -- una fila puede
 # tener producto sin tener card_id resoluble o viceversa, no asumir que uno implica
 # el otro.
-_COLLECTION_COLUMNS = """
+_COLLECTION_COLUMNS = f"""
     ci.id, ci.card_id, ci.cardmarket_product_id, ci.language_id, ci.condition,
     ci.grading_company, ci.grade, ci.quantity, ci.purchase_price, ci.purchase_currency,
     ci.purchase_date, ci.trade_value, ci.status, ci.manual_entry, ci.manual_entry_note,
@@ -137,6 +185,23 @@ _COLLECTION_COLUMNS = """
     CASE WHEN cr.id IS NOT NULL THEN cr.source WHEN pr.id IS NOT NULL THEN pr.source ELSE 'cardmarket' END AS price_source,
     CASE WHEN cr.id IS NOT NULL THEN COALESCE(cr.source_currency, cr.currency) WHEN pr.id IS NOT NULL THEN COALESCE(pr.source_currency, pr.currency) ELSE 'EUR' END AS price_currency,
     CASE WHEN cr.id IS NOT NULL THEN cr.resolution_method WHEN pr.id IS NOT NULL THEN pr.resolution_method ELSE 'cardmarket_price_guide' END AS resolution_method,
+    CASE WHEN cv.id IS NOT NULL THEN cv.valuation_status WHEN gv.id IS NOT NULL THEN gv.valuation_status ELSE NULL END AS valuation_status,
+    CASE WHEN cv.id IS NOT NULL THEN cv.valuation_method WHEN gv.id IS NOT NULL THEN gv.valuation_method ELSE NULL END AS valuation_method,
+    CASE WHEN cv.id IS NOT NULL THEN cv.valuation_value WHEN gv.id IS NOT NULL THEN gv.valuation_value ELSE NULL END AS valuation_value,
+    CASE WHEN cv.id IS NOT NULL THEN cv.reason WHEN gv.id IS NOT NULL THEN gv.reason
+         WHEN ci.card_id IS NULL OR ci.language_id IS NULL THEN 'PRODUCT_UNRESOLVED'
+         WHEN EXISTS (
+             SELECT 1 FROM printing_price_resolutions r2
+              WHERE r2.card_id = ci.card_id
+                AND r2.language_id <> ci.language_id
+                AND r2.resolution_scope = 'global'
+                AND r2.collection_item_id IS NULL
+                AND r2.wishlist_item_id IS NULL
+                AND {_USABLE_VALUATION_R2_SQL}
+         ) THEN 'LANGUAGE_UNRESOLVED'
+         ELSE 'NO_VALUATION' END AS valuation_reason,
+    CASE WHEN cv.id IS NOT NULL THEN cv.valuation_currency WHEN gv.id IS NOT NULL THEN gv.valuation_currency ELSE NULL END AS valuation_currency,
+    CASE WHEN cv.id IS NOT NULL THEN cv.valuation_source WHEN gv.id IS NOT NULL THEN gv.valuation_source ELSE NULL END AS valuation_source,
     CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_low WHEN pr.id IS NOT NULL THEN pr.cardmarket_low ELSE lp.low END AS cardmarket_low,
     CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_trend WHEN pr.id IS NOT NULL THEN pr.cardmarket_trend ELSE CASE WHEN lower(c.finish) = 'foil' THEN lp.trend_alt_value ELSE lp.trend_base END END AS cardmarket_trend,
     CASE WHEN cr.id IS NOT NULL THEN cr.cardmarket_avg1 WHEN pr.id IS NOT NULL THEN pr.cardmarket_avg1 ELSE lp.avg END AS cardmarket_avg1,
@@ -162,6 +227,13 @@ _FROM_JOINS = """
            ON pr.card_id = c.id AND COALESCE(pr.language_id, ci.language_id, -1) = COALESCE(c.language_id, ci.language_id, -1)
     LEFT JOIN latest_collection_resolution cr
            ON cr.collection_item_id = ci.id
+    LEFT JOIN collection_valuation cv
+           ON cv.collection_item_id = ci.id
+          AND cv.card_id = ci.card_id
+          AND cv.language_id = ci.language_id
+    LEFT JOIN global_valuation gv
+           ON gv.card_id = ci.card_id
+          AND gv.language_id = ci.language_id
 """
 
 
@@ -209,14 +281,15 @@ def _pricing_schema_sql(conn: sqlite3.Connection, sql: str) -> str:
         # additive resolution columns.  Replace collection-scoped references
         # before the generic `r.` substitutions so `cr.cardmarket_*` is never
         # accidentally transformed into `cNULL`.
-        for column in ("match_status", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "source_currency"):
+        for column in ("match_status", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "valuation_status", "valuation_method", "valuation_value", "reason", "source_currency"):
             sql = sql.replace(f"cr.{column}", "NULL")
         sql = sql.replace("r.is_current = 1", legacy_current).replace("r0.is_current = 1", "1=0")
-    # The API is also usable during the additive migration window.  Missing
+    # The API is also usable during the additive migration window. Missing
     # resolution metadata is reported as NULL until update-prices applies it.
-        for column in ("match_status", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "cardmarket_foil_low", "cardmarket_foil_trend", "cardmarket_foil_avg1", "cardmarket_foil_avg7", "cardmarket_foil_avg30"):
-            if column not in columns:
-                sql = sql.replace(f"pr.{column}", "NULL").replace(f"r.{column}", "NULL")
+    for column in ("match_status", "selected_metric", "cardmarket_low", "cardmarket_trend", "cardmarket_avg1", "cardmarket_avg7", "cardmarket_avg30", "valuation_status", "valuation_method", "valuation_value", "reason", "cardmarket_foil_low", "cardmarket_foil_trend", "cardmarket_foil_avg1", "cardmarket_foil_avg7", "cardmarket_foil_avg30"):
+        if column not in columns:
+            for alias in ("pr", "cr", "r", "r2"):
+                sql = sql.replace(f"{alias}.{column}", "NULL")
     if "source_currency" not in columns:
         sql = sql.replace("pr.source_currency", "pr.currency").replace("r.source_currency", "r.currency")
     return sql
@@ -310,6 +383,12 @@ class CollectionRow:
     price_source: str | None
     price_currency: str | None
     resolution_method: str | None
+    valuation_status: str | None
+    valuation_method: str | None
+    valuation_value: float | None
+    valuation_reason: str | None
+    valuation_currency: str | None
+    valuation_source: str | None
     printing_count: int
     reprint_count: int
     price_sources: list["PriceSourceData"] = field(default_factory=list)
@@ -387,6 +466,9 @@ def _row_to_collection_row(row: sqlite3.Row) -> CollectionRow:
         price_source=row["price_source"],
         price_currency=row["price_currency"],
         resolution_method=row["resolution_method"],
+        valuation_status=row["valuation_status"], valuation_method=row["valuation_method"],
+        valuation_value=row["valuation_value"], valuation_reason=row["valuation_reason"],
+        valuation_currency=row["valuation_currency"], valuation_source=row["valuation_source"],
         printing_count=row["printing_count"],
         reprint_count=row["reprint_count"],
     )
@@ -697,6 +779,7 @@ WITH latest_price AS (
            r.external_id, r.sample_size, r.lowest_price, r.median_price,
            r.price_confidence, r.cardmarket_low, r.cardmarket_trend,
            r.cardmarket_avg1, r.cardmarket_avg7, r.cardmarket_avg30,
+           r.valuation_status, r.valuation_method, r.valuation_value, r.reason,
            r.source_currency
      FROM printing_price_resolutions r
      WHERE r.is_current = 1
@@ -728,12 +811,52 @@ WITH latest_price AS (
                 THEN CASE WHEN r.selected_metric = 'Foil Low'
                           THEN r.cardmarket_foil_avg30 ELSE r.cardmarket_avg30 END
            END AS selected_avg30,
+           r.valuation_status, r.valuation_method, r.valuation_value, r.reason,
            r.source_currency
       FROM printing_price_resolutions r
      WHERE r.is_current = 1
        AND r.collection_item_id IS NULL
        AND r.wishlist_item_id IS NOT NULL
        AND COALESCE(r.source, 'cardmarket') = 'cardmarket'
+), global_valuation AS (
+    SELECT id, card_id, language_id, valuation_status, valuation_method,
+           valuation_value, reason, valuation_currency, valuation_source
+      FROM (
+            SELECT r.id, r.card_id, r.language_id, r.valuation_status,
+                   r.valuation_method, r.valuation_value, r.reason,
+                   COALESCE(r.source_currency, r.currency) AS valuation_currency,
+                   r.source AS valuation_source,
+                   ROW_NUMBER() OVER (
+                       PARTITION BY r.card_id, r.language_id
+                       ORDER BY r.resolved_at DESC, r.id DESC
+                   ) AS row_number
+              FROM printing_price_resolutions r
+             WHERE r.resolution_scope = 'global'
+               AND r.collection_item_id IS NULL
+               AND r.wishlist_item_id IS NULL
+               AND {usable_valuation}
+           )
+     WHERE row_number = 1
+), wishlist_valuation AS (
+    SELECT id, wishlist_item_id, card_id, language_id, valuation_status,
+           valuation_method, valuation_value, reason, valuation_currency,
+           valuation_source
+      FROM (
+            SELECT r.id, r.wishlist_item_id, r.card_id, r.language_id,
+                   r.valuation_status, r.valuation_method, r.valuation_value,
+                   r.reason, COALESCE(r.source_currency, r.currency) AS valuation_currency,
+                   r.source AS valuation_source,
+                   ROW_NUMBER() OVER (
+                       PARTITION BY r.wishlist_item_id, r.card_id, r.language_id
+                       ORDER BY r.resolved_at DESC, r.id DESC
+                   ) AS row_number
+              FROM printing_price_resolutions r
+             WHERE r.resolution_scope = 'wishlist'
+               AND r.wishlist_item_id IS NOT NULL
+               AND r.collection_item_id IS NULL
+               AND {usable_valuation}
+           )
+     WHERE row_number = 1
 ), card_price AS (
     SELECT c.id AS card_id,
            CASE WHEN r.card_id IS NOT NULL THEN r.current_price ELSE CASE WHEN lower(c.finish) = 'foil' THEN lp.low_alt ELSE l.current_price END END AS current_price,
@@ -750,15 +873,23 @@ WITH latest_price AS (
            CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_trend ELSE NULL END AS cardmarket_trend,
            CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_avg1 ELSE NULL END AS cardmarket_avg1,
            CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_avg7 ELSE NULL END AS cardmarket_avg7,
-           CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_avg30 ELSE NULL END AS cardmarket_avg30
+           CASE WHEN r.card_id IS NOT NULL THEN r.cardmarket_avg30 ELSE NULL END AS cardmarket_avg30,
+           gv.valuation_status AS valuation_status,
+           gv.valuation_method AS valuation_method,
+           gv.valuation_value AS valuation_value,
+           gv.reason AS valuation_reason,
+           gv.valuation_currency AS valuation_currency,
+           gv.valuation_source AS valuation_source
       FROM cards c
       JOIN games g ON g.id = c.game_id
       LEFT JOIN legacy_card_price l ON l.card_id = c.id
       LEFT JOIN latest_price lp ON lp.cardmarket_product_id = (SELECT cardmarket_product_id FROM single_product sp2 WHERE sp2.card_id = c.id)
       LEFT JOIN latest_resolution r
              ON r.card_id = c.id AND COALESCE(r.language_id, -1) = COALESCE(c.language_id, -1)
+      LEFT JOIN global_valuation gv
+             ON gv.card_id = c.id AND gv.language_id = c.language_id
 )
-"""
+""".format(usable_valuation=USABLE_VALUATION_SQL)
 
 
 @dataclass
@@ -784,6 +915,12 @@ class CatalogRow:
     price_observed_at: str | None
     price_source: str | None
     resolution_method: str | None
+    valuation_status: str | None
+    valuation_method: str | None
+    valuation_value: float | None
+    valuation_reason: str | None
+    valuation_currency: str | None
+    valuation_source: str | None
     price_currency: str | None
     price_external_id: str | None
     price_sample_size: int
@@ -843,6 +980,12 @@ class WishlistRow:
     current_price: float | None
     source: str | None
     resolution_method: str | None
+    valuation_status: str | None
+    valuation_method: str | None
+    valuation_value: float | None
+    valuation_reason: str | None
+    valuation_currency: str | None
+    valuation_source: str | None
     price_currency: str | None
     cardmarket_low: float | None
     cardmarket_trend: float | None
@@ -874,13 +1017,17 @@ def _catalog_row(row: sqlite3.Row) -> CatalogRow:
         language=row["language"], release_kind=row["release_kind"], art_kind=row["art_kind"],
         printing_count=row["printing_count"], reprint_count=row["reprint_count"],
         current_price=row["current_price"], price_observed_at=row["price_observed_at"],
-        price_source=row["price_source"], resolution_method=row["resolution_method"], owned=bool(row["owned"]),
+        price_source=row["price_source"], resolution_method=row["resolution_method"],
+        valuation_status=row["valuation_status"], valuation_method=row["valuation_method"],
+        valuation_value=row["valuation_value"], valuation_reason=row["valuation_reason"],
+        valuation_currency=row["valuation_currency"], valuation_source=row["valuation_source"], owned=bool(row["owned"]),
         price_currency=row["price_currency"], price_external_id=row["price_external_id"],
         price_sample_size=row["price_sample_size"], lowest_price=row["lowest_price"],
         median_price=row["median_price"], price_confidence=row["price_confidence"],
         cardmarket_low=row["cardmarket_low"], cardmarket_trend=row["cardmarket_trend"],
         cardmarket_avg1=row["cardmarket_avg1"], cardmarket_avg7=row["cardmarket_avg7"],
-        cardmarket_avg30=row["cardmarket_avg30"], source_currency=row["source_currency"],
+        cardmarket_avg30=row["cardmarket_avg30"],
+        source_currency=row["source_currency"],
         wishlist=bool(row["wishlist"]), wishlist_item_id=row["wishlist_item_id"],
     )
 
@@ -1003,7 +1150,10 @@ def fetch_catalog_rows(
                cp.sample_size AS price_sample_size, cp.lowest_price,
                cp.median_price, cp.price_confidence,
                cp.cardmarket_low, cp.cardmarket_trend, cp.cardmarket_avg1,
-               cp.cardmarket_avg7, cp.cardmarket_avg30, cp.currency AS source_currency,
+               cp.cardmarket_avg7, cp.cardmarket_avg30,
+               cp.valuation_status, cp.valuation_method, cp.valuation_value, cp.valuation_reason,
+               cp.valuation_currency, cp.valuation_source,
+               cp.currency AS source_currency,
                EXISTS (SELECT 1 FROM collection_items ci WHERE ci.card_id = c.id) AS owned,
                EXISTS (SELECT 1 FROM wishlist_items wi WHERE wi.card_id = c.id AND wi.status = 'wanted') AS wishlist,
                (SELECT wi.id FROM wishlist_items wi WHERE wi.card_id = c.id AND wi.status = 'wanted' ORDER BY wi.id LIMIT 1) AS wishlist_item_id
@@ -1107,7 +1257,11 @@ def _wishlist_row(row: sqlite3.Row) -> WishlistRow:
         price_currency=row["price_currency"],
         cardmarket_low=row["cardmarket_low"], cardmarket_trend=row["cardmarket_trend"],
         cardmarket_avg1=row["cardmarket_avg1"], cardmarket_avg7=row["cardmarket_avg7"],
-        cardmarket_avg30=row["cardmarket_avg30"], source_currency=row["source_currency"],
+        cardmarket_avg30=row["cardmarket_avg30"],
+        valuation_status=row["valuation_status"], valuation_method=row["valuation_method"],
+        valuation_value=row["valuation_value"], valuation_reason=row["valuation_reason"],
+        valuation_currency=row["valuation_currency"], valuation_source=row["valuation_source"],
+        source_currency=row["source_currency"],
         matched=bool(row["matched"]), acquired_at=row["acquired_at"],
         removed_at=row["removed_at"],
     )
@@ -1131,6 +1285,13 @@ _WISHLIST_FROM = """
           LEFT JOIN languages l ON l.id = c.language_id
           LEFT JOIN card_price cp ON cp.card_id = c.id
           LEFT JOIN latest_wishlist_resolution wr ON wr.wishlist_item_id = wi.id
+          LEFT JOIN wishlist_valuation wv
+                 ON wv.wishlist_item_id = wi.id
+                AND wv.card_id = wi.card_id
+                AND wv.language_id = COALESCE(wi.language_id, c.language_id)
+          LEFT JOIN global_valuation gv
+                 ON gv.card_id = wi.card_id
+                AND gv.language_id = COALESCE(wi.language_id, c.language_id)
 """
 
 
@@ -1211,6 +1372,23 @@ def _wishlist_select_body(where_sql: str = "", order_by_sql: str = "") -> str:
                CASE WHEN wr.id IS NOT NULL THEN wr.selected_avg1 ELSE cp.cardmarket_avg1 END AS cardmarket_avg1,
                CASE WHEN wr.id IS NOT NULL THEN wr.selected_avg7 ELSE cp.cardmarket_avg7 END AS cardmarket_avg7,
                CASE WHEN wr.id IS NOT NULL THEN wr.selected_avg30 ELSE cp.cardmarket_avg30 END AS cardmarket_avg30,
+               CASE WHEN wv.id IS NOT NULL THEN wv.valuation_status ELSE gv.valuation_status END AS valuation_status,
+               CASE WHEN wv.id IS NOT NULL THEN wv.valuation_method ELSE gv.valuation_method END AS valuation_method,
+               CASE WHEN wv.id IS NOT NULL THEN wv.valuation_value ELSE gv.valuation_value END AS valuation_value,
+               CASE WHEN wv.id IS NOT NULL THEN wv.reason WHEN gv.id IS NOT NULL THEN gv.reason
+                    WHEN COALESCE(wi.language_id, c.language_id) IS NULL THEN 'LANGUAGE_UNRESOLVED'
+                    WHEN EXISTS (
+                        SELECT 1 FROM printing_price_resolutions r2
+                         WHERE r2.card_id = wi.card_id
+                           AND r2.language_id <> COALESCE(wi.language_id, c.language_id)
+                           AND r2.resolution_scope = 'global'
+                           AND r2.collection_item_id IS NULL
+                           AND r2.wishlist_item_id IS NULL
+                           AND {_USABLE_VALUATION_R2_SQL}
+                    ) THEN 'LANGUAGE_UNRESOLVED'
+                    ELSE 'NO_VALUATION' END AS valuation_reason,
+               CASE WHEN wv.id IS NOT NULL THEN wv.valuation_currency ELSE gv.valuation_currency END AS valuation_currency,
+               CASE WHEN wv.id IS NOT NULL THEN wv.valuation_source ELSE gv.valuation_source END AS valuation_source,
                CASE WHEN wr.id IS NOT NULL AND wr.selected_low IS NOT NULL THEN wr.source_currency ELSE cp.currency END AS source_currency,
                {_WISHLIST_MATCHED_SQL} AS matched
           {_WISHLIST_FROM}
