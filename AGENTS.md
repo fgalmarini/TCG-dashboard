@@ -120,6 +120,16 @@ workarounds or new scrapers.
 - Do not remove legacy CardTrader/provider code until callers and migration safety are
   explicitly audited.
 
+## Error Registry
+
+- `docs/errors/error_registry.yaml` is the canonical error/regression registry.
+- Validate it with `python3 backend/scripts/verify_error_registry.py`.
+- Use only typed checks; never add shell commands to the registry.
+- Keep causes `UNKNOWN` unless offline evidence in tracked files or local Git
+  confirms them. `RESOLVED` does not imply `PROTECTED`.
+- FBK-specific DB hashes, diff allowlists and baseline state are temporary
+  closeout gates, not permanent registry invariants.
+
 ## Definition Of Done
 
 A change is done only when:

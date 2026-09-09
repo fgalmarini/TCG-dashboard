@@ -1,5 +1,15 @@
 # Current State
 
+## FBK-001 Error Feedback & Regression System (`2026-09-09`)
+
+- Registry YAML and its offline verifier are implemented under `docs/errors/` and
+  `backend/scripts/`.
+- Historical IDs `API-001`, `CFG-001`, `API-002` and `VAL-001`–`VAL-005` are
+  registered conservatively; causes remain `UNKNOWN` where the current repository
+  has no explicit ID linkage.
+- The registry verifier is permanent and does not enforce a transient HEAD, DB
+  hash or working-tree allowlist. Those checks remain FBK-001 closeout gates.
+
 ## Phase
 
 Current phase: Phase 7.

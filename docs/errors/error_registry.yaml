@@ -1,0 +1,177 @@
+schema_version: 1
+registry:
+  name: error_feedback_and_regression
+  owner: tcg-dashboard
+  errors:
+    - id: API-001
+      title: Historical API error identifier without repository linkage
+      status: UNKNOWN
+      cause: UNKNOWN
+      cause_status: UNKNOWN
+      regression_status: UNKNOWN
+      observed_behavior: The historical identifier is required for backfill, but no current repository artifact links it to a specific symptom or cause.
+      evidence:
+        - type: file
+          path: docs/CURRENT_STATE.md
+          note: Current API behavior and historical validation results.
+        - type: commit
+          sha: 53fe74d5f99684c6b13f40d90ffdf655064bc880
+          note: FBK-001 baseline commit.
+      discrepancy: The ID is not named in the current repository, so no cause or resolution is promoted to confirmed.
+      checks:
+        - type: file_exists
+          path: docs/CURRENT_STATE.md
+        - type: pytest_node
+          path: backend/api/test_queries.py
+          node_id: test_latest_price_snapshot_picks_max_observed_at
+
+    - id: CFG-001
+      title: Historical configuration error identifier without repository linkage
+      status: UNKNOWN
+      cause: UNKNOWN
+      cause_status: UNKNOWN
+      regression_status: UNKNOWN
+      observed_behavior: The historical identifier is required for backfill, but no current repository artifact links it to a specific symptom or cause.
+      evidence:
+        - type: file
+          path: docs/DATA_SOURCES.md
+          note: Current provider and authentication contract.
+        - type: commit
+          sha: 67765a7
+          note: External provider integration foundation.
+      discrepancy: The ID is not named in the current repository, so configuration behavior cannot be attributed to this ID as confirmed fact.
+      checks:
+        - type: file_exists
+          path: docs/DATA_SOURCES.md
+        - type: git_commit_exists
+          sha: 67765a7
+
+    - id: API-002
+      title: Historical API retry error identifier without repository linkage
+      status: UNKNOWN
+      cause: UNKNOWN
+      cause_status: UNKNOWN
+      regression_status: UNKNOWN
+      observed_behavior: The repository contains a transient read retry change, but does not associate it with this historical identifier.
+      evidence:
+        - type: file
+          path: frontend/src/lib/api.ts
+          note: Current transient read retry implementation.
+        - type: commit
+          sha: 83ca30c
+          note: Retry transient read API failures once.
+      discrepancy: The commit documents a behavior change but not the API-002 identifier or a confirmed root cause.
+      checks:
+        - type: file_exists
+          path: frontend/src/lib/api.ts
+        - type: git_commit_exists
+          sha: 83ca30c
+        - type: external_diagnostic
+          reference: repository-history
+          description: Historical ID linkage is unavailable in the current repository.
+
+    - id: VAL-001
+      title: Historical valuation error identifier without repository linkage
+      status: UNKNOWN
+      cause: UNKNOWN
+      cause_status: UNKNOWN
+      regression_status: UNKNOWN
+      observed_behavior: Avg30 valuation contracts and reports exist, but this historical identifier is not linked to a specific failure.
+      evidence:
+        - type: file
+          path: docs/plans/VAL-AVG30-005-valuation-model.md
+          note: Additive valuation contract.
+        - type: file
+          path: reports/valuation/avg30_resolver/2026-09-08/summary.md
+          note: Resolver evidence and coverage.
+      discrepancy: The ID is not present in the cited contract or report; no cause is confirmed.
+      checks:
+        - type: file_exists
+          path: docs/plans/VAL-AVG30-005-valuation-model.md
+        - type: file_exists
+          path: reports/valuation/avg30_resolver/2026-09-08/summary.md
+
+    - id: VAL-002
+      title: Historical valuation error identifier without repository linkage
+      status: UNKNOWN
+      cause: UNKNOWN
+      cause_status: UNKNOWN
+      regression_status: UNKNOWN
+      observed_behavior: Avg30 resolver evidence is available, but this historical identifier is not linked to a specific failure.
+      evidence:
+        - type: file
+          path: docs/plans/VAL-AVG30-006-valuation-resolver-dry-run.md
+          note: Read-only resolver contract.
+        - type: file
+          path: reports/valuation/avg30_resolver/2026-09-08/readiness_closeout.md
+          note: Readiness closeout and blocking reasons.
+      discrepancy: The ID is not present in the cited contract or report; no cause is confirmed.
+      checks:
+        - type: file_exists
+          path: docs/plans/VAL-AVG30-006-valuation-resolver-dry-run.md
+        - type: file_exists
+          path: reports/valuation/avg30_resolver/2026-09-08/readiness_closeout.md
+
+    - id: VAL-003
+      title: Historical valuation error identifier without repository linkage
+      status: UNKNOWN
+      cause: UNKNOWN
+      cause_status: UNKNOWN
+      regression_status: UNKNOWN
+      observed_behavior: Guarded valuation backfill evidence is available, but this historical identifier is not linked to a specific failure.
+      evidence:
+        - type: file
+          path: docs/plans/VAL-AVG30-007-guarded-partial-backfill.md
+          note: Backfill safety contract.
+        - type: file
+          path: reports/valuation/avg30_backfill/2026-09-09/apply_summary.md
+          note: Manifest-only apply result.
+      discrepancy: The ID is not present in the cited contract or report; no cause is confirmed.
+      checks:
+        - type: file_exists
+          path: docs/plans/VAL-AVG30-007-guarded-partial-backfill.md
+        - type: file_exists
+          path: reports/valuation/avg30_backfill/2026-09-09/apply_summary.md
+
+    - id: VAL-004
+      title: Historical valuation error identifier without repository linkage
+      status: UNKNOWN
+      cause: UNKNOWN
+      cause_status: UNKNOWN
+      regression_status: UNKNOWN
+      observed_behavior: Global valuation consumption is documented, but this historical identifier is not linked to a specific failure.
+      evidence:
+        - type: file
+          path: reports/valuation/avg30_consumption/2026-09-09/summary.md
+          note: Read-only consumption report.
+        - type: file
+          path: docs/CURRENT_STATE.md
+          note: Current valuation closeout state.
+      discrepancy: The ID is not present in the cited report or current-state entry; no cause is confirmed.
+      checks:
+        - type: file_exists
+          path: reports/valuation/avg30_consumption/2026-09-09/summary.md
+        - type: text_contains
+          path: docs/CURRENT_STATE.md
+          text: VAL-AVG30-008 Global Valuation Consumption
+
+    - id: VAL-005
+      title: Historical valuation error identifier without repository linkage
+      status: UNKNOWN
+      cause: UNKNOWN
+      cause_status: UNKNOWN
+      regression_status: UNKNOWN
+      observed_behavior: Historical pricing and valuation audit evidence is available, but this identifier is not linked to a specific failure.
+      evidence:
+        - type: file
+          path: reports/pricing_audit/2026-08-30/collection-post-apply/collection_post_apply_audit.md
+          note: Post-apply audit with explicit reporting discrepancies.
+        - type: file
+          path: docs/ARCHITECTURE.md
+          note: Current valuation and historical-price invariants.
+      discrepancy: The ID is not present in the cited audit or architecture document; no cause is confirmed.
+      checks:
+        - type: file_exists
+          path: reports/pricing_audit/2026-08-30/collection-post-apply/collection_post_apply_audit.md
+        - type: file_exists
+          path: docs/ARCHITECTURE.md

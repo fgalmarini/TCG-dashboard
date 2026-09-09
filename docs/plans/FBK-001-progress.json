@@ -1,0 +1,39 @@
+{
+  "contract_id": "FBK-001",
+  "status": "COMPLETE",
+  "baseline": {
+    "head": "53fe74d5f99684c6b13f40d90ffdf655064bc880",
+    "origin_main": "53fe74d5f99684c6b13f40d90ffdf655064bc880",
+    "working_tree_at_start": "clean"
+  },
+  "tasks": {
+    "error_readme": "complete",
+    "error_registry": "complete",
+    "script_requirements": "complete",
+    "verifier": "complete",
+    "verifier_tests": "complete",
+    "agents_update": "complete",
+    "current_state_update": "complete"
+  },
+  "validation": {
+    "verifier": "PASS",
+    "targeted_tests": "PASS (13 passed)",
+    "full_tests": "PASS (272 passed, 6 subtests passed)",
+    "diff_check": "PASS",
+    "allowlist": "PASS",
+    "no_temporaries": "PASS"
+  },
+  "changed_files": [
+    "AGENTS.md",
+    "backend/scripts/requirements.txt",
+    "backend/scripts/test_verify_error_registry.py",
+    "backend/scripts/verify_error_registry.py",
+    "docs/CURRENT_STATE.md",
+    "docs/errors/README.md",
+    "docs/errors/error_registry.yaml",
+    "docs/plans/FBK-001-progress.json"
+  ],
+  "db_sha_before": "d667fdf63b66a71a4dedbbd1893ca00f5bd357cf1fe42d0d57caef2b43295607",
+  "db_sha_after": "d667fdf63b66a71a4dedbbd1893ca00f5bd357cf1fe42d0d57caef2b43295607",
+  "next_start": "docs/errors/README.md -> docs/errors/error_registry.yaml -> python3 backend/scripts/verify_error_registry.py"
+}
