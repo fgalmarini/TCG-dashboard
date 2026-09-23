@@ -16,7 +16,7 @@ export function NavBar() {
     <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
         <span className="text-base font-semibold">TCG Dashboard</span>
-        <nav className="flex items-center gap-1">
+        <nav className="flex flex-wrap items-center gap-1">
           <NavLink to="/" end className={({ isActive }) => navLinkClass(isActive)}>
             Overview
           </NavLink>
@@ -28,6 +28,9 @@ export function NavBar() {
           </NavLink>
           <NavLink to="/wishlist" className={({ isActive }) => navLinkClass(isActive)}>
             Wishlist
+          </NavLink>
+          <NavLink to="/events/cardmadness-2026" className={({ isActive }) => navLinkClass(isActive)}>
+            CARDMADNESS EVENT
           </NavLink>
         </nav>
         <Button variant="ghost" size="icon" onClick={() => setIsDark(!isDark)} aria-label="Toggle theme">

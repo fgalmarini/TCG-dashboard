@@ -343,6 +343,17 @@ export interface WishlistListResponse {
   summary: WishlistSummary
 }
 
+export interface EventWishlistEntry {
+  wishlist_item: WishlistItem
+  target_prices: Record<string, number>
+  traditional_foil: { card_id: number; card_number: string | null; low: number | null } | null
+}
+
+export interface EventWishlistResponse {
+  event_code: string
+  items: EventWishlistEntry[]
+}
+
 export interface WishlistQueryParams {
   status?: 'wanted' | 'acquired' | 'removed' | 'all'
   priority?: string

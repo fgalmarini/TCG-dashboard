@@ -84,6 +84,46 @@ def ensure_pricing_columns(conn: sqlite3.Connection) -> None:
     conn.execute("CREATE INDEX IF NOT EXISTS idx_market_price_observations_snapshot ON market_price_observations(snapshot_key, provider, market)")
 
 
+def ensure_event_schema(conn: sqlite3.Connection) -> None:
+    """Add reusable event links and allow sets without Cardmarket expansion IDs."""
+    columns = {row[1]: row for row in conn.execute("PRAGMA table_info(expansions)")}
+    if columns.get("cardmarket_id_expansion") and columns["cardmarket_id_expansion"][3]:
+        conn.execute("PRAGMA foreign_keys=OFF")
+        conn.executescript("""
+            CREATE TABLE expansions_nullable_cm (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                game_id INTEGER NOT NULL REFERENCES games(id),
+                cardmarket_id_expansion INTEGER UNIQUE,
+                name TEXT,
+                set_code TEXT,
+                release_date TEXT,
+                set_id INTEGER REFERENCES sets(id)
+            );
+            INSERT INTO expansions_nullable_cm SELECT * FROM expansions;
+            DROP TABLE expansions;
+            ALTER TABLE expansions_nullable_cm RENAME TO expansions;
+        """)
+        conn.execute("PRAGMA foreign_keys=ON")
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code TEXT NOT NULL UNIQUE,
+            name TEXT NOT NULL,
+            starts_at TEXT,
+            ends_at TEXT,
+            status TEXT NOT NULL DEFAULT 'planned',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS event_wishlist_items (
+            event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+            wishlist_item_id INTEGER NOT NULL REFERENCES wishlist_items(id) ON DELETE CASCADE,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(event_id, wishlist_item_id)
+        );
+    """)
+
+
 def ensure_canonical_only_cardmarket_scopes(conn: sqlite3.Connection) -> None:
     """Allow a canonical Cardmarket mapping without inferring a physical finish.
 
@@ -138,6 +178,7 @@ def init_db(db_path: Path) -> None:
         conn.executescript(schema_sql)
         conn.executescript(seed_sql)
         ensure_pricing_columns(conn)
+        ensure_event_schema(conn)
         conn.commit()
         ensure_canonical_only_cardmarket_scopes(conn)
         conn.commit()

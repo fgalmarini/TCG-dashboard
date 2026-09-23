@@ -29,6 +29,8 @@ EXPECTED_TABLES = {
     "set_external_ids",
     "printing_relations",
     "printing_price_resolutions",
+    "events",
+    "event_wishlist_items",
 }
 
 
@@ -48,6 +50,10 @@ class SchemaTest(unittest.TestCase):
         ).fetchall()
         table_names = {r[0] for r in rows}
         self.assertTrue(EXPECTED_TABLES.issubset(table_names))
+
+    def test_cardmarket_expansion_id_is_optional_for_manual_catalogs(self):
+        cur = self.conn.execute("INSERT INTO sets(game_id,code,name) VALUES(3,'hob','The Hobbit')")
+        self.conn.execute("INSERT INTO expansions(game_id,cardmarket_id_expansion,name,set_code,set_id) VALUES(3,NULL,'The Hobbit','hob',?)", (cur.lastrowid,))
 
     def test_valuation_fields_are_additive(self):
         columns = {row[1] for row in self.conn.execute("PRAGMA table_info(printing_price_resolutions)")}

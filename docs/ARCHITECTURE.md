@@ -57,6 +57,10 @@ provider, market and source variant. These observations preserve their source cu
 and remain secondary display data; they never enter Cardmarket valuation or portfolio
 calculations.
 
+The curated HOB/HOC manual Cardmarket snapshot is stored only in
+`market_price_observations` with fixed provenance and snapshot key. Event comparison
+may read those metrics; current-price and portfolio valuation paths do not.
+
 ## Multi-TCG Domain
 
 `cards.id` is the stable internal identity of a physical printing. A provider ID never
@@ -91,6 +95,10 @@ Wishlist timestamps are state invariants: `wanted` has both timestamps NULL,
 `acquired` has only `acquired_at`, and `removed` has only `removed_at`. Restoring a
 historical row to `wanted` clears both timestamps. `target_price` and `max_price` are
 optional and, when both exist, `target_price <= max_price` is enforced by the database.
+
+Generic `events` link existing Wishlist rows through `event_wishlist_items`; links do
+not own status, quantity or purchase targets. Wishlist transitions remain authoritative.
+CARDMADNESS-001 uses this foundation for `cardmadness-2026`.
 
 Catalog prices are nullable. One Piece resolution is exact Cardmarket printing and
 language, then exact CardTrader Blueprint and language, then null. Mixed Cardmarket

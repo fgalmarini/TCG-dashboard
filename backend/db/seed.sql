@@ -14,3 +14,6 @@ INSERT OR IGNORE INTO languages (id, code, name) VALUES
 -- id=2), so Japanese must be keyed by its stable code rather than a fixed integer.
 INSERT OR IGNORE INTO languages (code, name) VALUES
     ('jp', 'Japanese');
+
+INSERT OR IGNORE INTO events (code, name) VALUES
+    ('cardmadness-2026', 'CARDMADNESS EVENT');

@@ -4,7 +4,6 @@ import { CardArt } from '@/components/collection/CardImage'
 import { ErrorState } from '@/components/shared/ErrorState'
 import { LoadingState } from '@/components/shared/LoadingState'
 import { MarketPrice } from '@/components/shared/MarketPrice'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -18,6 +17,12 @@ import { SecondaryMarketPrice } from '@/components/shared/SecondaryMarketPrice'
 import { cardImageUrl, formatSetCode } from '@/lib/format'
 
 const ALL = '__all__'
+
+function formatMetadataValue(value: string): string {
+  const normalized = value.trim().toLowerCase()
+  if (normalized === 'nonfoil') return 'Non-Foil'
+  return normalized.replace(/[_-]+/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
+}
 
 export function CatalogPage() {
   const [game, setGame] = useState('magic')
@@ -137,13 +142,13 @@ export function CatalogPage() {
                         <p className="mt-1 truncate text-xs text-muted-foreground">{[formatSetCode(item.set_code), item.card_number, item.language?.toUpperCase()].filter(Boolean).join(' · ') || '—'}</p>
                       </CardIdentity>
                       <CardMetadata>
-                      <div className="flex flex-wrap gap-1">
-                        {item.treatment && <Badge variant="secondary" className="text-[10px]">{item.treatment}</Badge>}
-                        {item.finish && <Badge variant="outline" className="text-[10px]">{item.finish}</Badge>}
-                        {item.art_kind && <Badge variant="secondary" className="text-[10px]">{item.art_kind}</Badge>}
-                        {item.reprint_count > 0 && <Badge variant="secondary" className="text-[10px]">Reprints: {item.reprint_count}</Badge>}
-                        <Badge variant="outline" className="text-[10px]">{item.ownership_status}</Badge>
-                      </div>
+                        <dl className="grid grid-cols-1 gap-x-2 gap-y-1 text-[10px] leading-tight sm:grid-cols-2">
+                          {item.treatment && <div className="min-w-0"><dt className="text-muted-foreground">Treatment</dt><dd className="truncate font-medium" title={formatMetadataValue(item.treatment)}>{formatMetadataValue(item.treatment)}</dd></div>}
+                          {item.finish && <div className="min-w-0"><dt className="text-muted-foreground">Finish</dt><dd className="truncate font-medium" title={formatMetadataValue(item.finish)}>{formatMetadataValue(item.finish)}</dd></div>}
+                          {item.art_kind && item.art_kind !== 'unknown' && <div className="min-w-0"><dt className="text-muted-foreground">Variant</dt><dd className="truncate font-medium" title={formatMetadataValue(item.art_kind)}>{formatMetadataValue(item.art_kind)}</dd></div>}
+                          {item.reprint_count > 0 && <div className="min-w-0"><dt className="text-muted-foreground">Reprints</dt><dd className="font-medium">{item.reprint_count}</dd></div>}
+                          {item.ownership_status !== 'none' && <div className="min-w-0"><dt className="text-muted-foreground">Ownership</dt><dd className="truncate font-medium">{formatMetadataValue(item.ownership_status)}</dd></div>}
+                        </dl>
                       </CardMetadata>
                       <CardPrice>
                         <MarketPrice value={item.current_price} currency={item.price_currency} />

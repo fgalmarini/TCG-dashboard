@@ -8,7 +8,7 @@ protected. The resolver manual de matches de catálogo is a separate operation.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import catalog, collection, overview, wishlist
+from .routers import catalog, collection, events, overview, wishlist
 
 app = FastAPI(
     title="TCG Dashboard API",
@@ -28,6 +28,7 @@ app.include_router(overview.router)
 app.include_router(collection.router)
 app.include_router(catalog.router)
 app.include_router(wishlist.router)
+app.include_router(events.router)
 
 
 @app.get("/health")

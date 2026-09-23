@@ -1,0 +1,24 @@
+physical_object_id,set,collector_number_front,front_identity,collector_number_back,back_identity,language,finish,treatment,physical_object_type,evidence
+THOB-DS-01,THOB,1,Bird Soldier,10,Axe,English,nonfoil,Full-art token,double_sided_token,TCGplayer catalog #1//10; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-01,THOB,1,Bird Soldier,10,Axe,English,traditional_foil,Full-art token,double_sided_token,TCGplayer catalog #1//10; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-02,THOB,2,Human Soldier,12,Treasure,English,nonfoil,Full-art token,double_sided_token,TCGplayer catalog #2//12; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-02,THOB,2,Human Soldier,12,Treasure,English,traditional_foil,Full-art token,double_sided_token,TCGplayer catalog #2//12; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-03,THOB,2,Human Soldier,13,Treasure,English,traditional_foil,Full-art token,double_sided_token,TCGplayer product #710503 explicitly exposes Foil only; product number 2//13
+THOB-DS-04,THOB,2,Human Soldier,4,Goblin Army,English,nonfoil,Full-art token,double_sided_token,TCGplayer catalog #2//4; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-04,THOB,2,Human Soldier,4,Goblin Army,English,traditional_foil,Full-art token,double_sided_token,TCGplayer catalog #2//4; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-05,THOB,2,Human Soldier,6,Dwarf,English,nonfoil,Full-art token,double_sided_token,TCGplayer catalog #2//6; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-05,THOB,2,Human Soldier,6,Dwarf,English,traditional_foil,Full-art token,double_sided_token,TCGplayer catalog #2//6; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-06,THOB,3,Goblin Army,12,Treasure,English,nonfoil,Full-art token,double_sided_token,TCGplayer catalog #3//12; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-06,THOB,3,Goblin Army,12,Treasure,English,traditional_foil,Full-art token,double_sided_token,TCGplayer catalog #3//12; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-07,THOB,3,Goblin Army,9,Wolf,English,nonfoil,Full-art token,double_sided_token,TCGplayer catalog #3//9; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-07,THOB,3,Goblin Army,9,Wolf,English,traditional_foil,Full-art token,double_sided_token,TCGplayer catalog #3//9; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-08,THOB,5,Dragon,11,Stone Boulder,English,nonfoil,Full-art token,double_sided_token,Retailer product catalog #5//11; nonfoil/foil listing; Wizards token finish collation
+THOB-DS-08,THOB,5,Dragon,11,Stone Boulder,English,traditional_foil,Full-art token,double_sided_token,Retailer product catalog #5//11; nonfoil/foil listing; Wizards token finish collation
+THOB-DS-09,THOB,6,Dwarf,14,Enduring Story,English,nonfoil,Token + helper card,double_sided_token,TCGplayer catalog #6//14; Normal only; helper absent from Collector Boosters
+THOB-DS-10,THOB,6,Dwarf,8,Elf,English,traditional_foil,Full-art token,double_sided_token,TCGplayer catalog #8//6 confirms physical pairing; foil product catalog; collector-number order is #8//6
+THOB-DS-11,THOB,7,Bear,11,Stone Boulder,English,nonfoil,Full-art token,double_sided_token,TCGplayer catalog #7//11; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-11,THOB,7,Bear,11,Stone Boulder,English,traditional_foil,Full-art token,double_sided_token,TCGplayer catalog #7//11; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-12,THOB,8,Elf,13,Treasure,English,nonfoil,Full-art token,double_sided_token,TCGplayer catalog #8//13; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-12,THOB,8,Elf,13,Treasure,English,traditional_foil,Full-art token,double_sided_token,TCGplayer catalog #8//13; nonfoil/foil selector; Wizards token finish collation
+THOB-DS-13,THOB,2,Human Soldier,15,On an Adventure,English,nonfoil,Token + helper card,double_sided_token,TCGplayer catalog #2//15; Normal only; helper absent from Collector Boosters
+THOB-DS-14,THOB,15,On an Adventure,14,Enduring Story,English,nonfoil,Helper card + helper card,double_sided_token,TCGplayer product #711056 explicitly numbers it 15//14; helpers absent from Collector Boosters

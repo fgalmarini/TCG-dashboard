@@ -1,0 +1,5269 @@
+{
+  "source": "Scryfall API search unique=prints include_extras/include_variations; pulled 2026-09-22 UTC",
+  "filters": "game=magic (set membership); paper in games; digital=false; lang=en. HOC dw excluded.",
+  "counts": {
+    "HOB": {
+      "english_physical_source_records": 321,
+      "distinct_collector_numbers": 321,
+      "nonfoil_rows": 280,
+      "foil_rows": 321,
+      "expanded_identity_finish_treatment_rows": 601
+    },
+    "HOC": {
+      "english_physical_source_records": 153,
+      "distinct_collector_numbers": 153,
+      "nonfoil_rows": 113,
+      "foil_rows": 92,
+      "expanded_identity_finish_treatment_rows": 205
+    },
+    "THOB": {
+      "english_physical_source_records": 15,
+      "distinct_collector_numbers": 15,
+      "nonfoil_rows": 15,
+      "foil_rows": 13,
+      "expanded_identity_finish_treatment_rows": 28,
+      "token_face_identities": 13,
+      "helper_card_identities": 2
+    },
+    "ART_SERIES": {
+      "numbered_art_card_identities": 54,
+      "standard_nonfoil": 54,
+      "gold_stamped_nonfoil_treatment_variants": 54,
+      "scene_art_card_identities": 12,
+      "total_art_card_variants": 120
+    },
+    "TOTAL": {
+      "english_physical_source_records": 489,
+      "distinct_collector_numbers": 489,
+      "nonfoil_rows": 408,
+      "foil_rows": 426,
+      "expanded_identity_finish_treatment_rows": 834
+    }
+  },
+  "aggregates": {
+    "set": [
+      {
+        "dimension": "HOB",
+        "count": 601
+      },
+      {
+        "dimension": "HOC",
+        "count": 205
+      },
+      {
+        "dimension": "THOB",
+        "count": 28
+      }
+    ],
+    "collector_number": [
+      {
+        "dimension": "('HOB', '1')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '10')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '100')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '101')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '102')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '103')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '104')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '105')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '106')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '107')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '108')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '109')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '11')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '110')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '111')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '112')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '113')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '114')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '115')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '116')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '117')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '118')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '119')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '12')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '120')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '121')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '122')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '123')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '124')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '125')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '126')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '127')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '128')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '129')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '13')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '130')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '131')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '132')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '133')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '134')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '135')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '136')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '137')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '138')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '139')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '14')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '140')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '141')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '142')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '143')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '144')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '145')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '146')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '147')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '148')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '149')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '15')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '150')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '151')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '152')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '153')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '154')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '155')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '156')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '157')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '158')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '159')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '16')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '160')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '161')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '162')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '163')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '164')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '165')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '166')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '167')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '168')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '169')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '17')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '170')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '171')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '172')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '173')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '174')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '175')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '176')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '177')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '178')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '179')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '18')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '180')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '181')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '182')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '183')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '184')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '185')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '186')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '187')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '188')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '189')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '19')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '190')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '191')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '192')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '193')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '194')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '195')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '196')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '197')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '198')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '199')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '2')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '20')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '200')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '201')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '202')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '203')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '204')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '205')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '206')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '207')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '208')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '209')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '21')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '210')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '211')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '212')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '213')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '214')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '215')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '216')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '217')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '218')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '219')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '22')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '220')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '221')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '222')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '223')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '224')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '225')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '226')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '227')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '228')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '229')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '23')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '230')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '231')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '232')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '233')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '234')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '235')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '236')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '237')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '238')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '239')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '24')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '240')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '241')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '242')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '243')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '244')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '245')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '246')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '247')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '248')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '249')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '25')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '250')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '251')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '252')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '253')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '254')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '255')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '256')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '257')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '258')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '259')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '26')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '260')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '261')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '262')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '263')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '264')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '265')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '266')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '267')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '268')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '269')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '27')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '270')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '271')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '272')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '273')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '274')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '275')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '276')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '277')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '278')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '279')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '28')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '280')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '281')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '282')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '283')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '284')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '285')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '286')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '287')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '288')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '289')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '29')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '290')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '291')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '292')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '293')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '294')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '295')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '296')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '297')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '298')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '299')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '3')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '30')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '300')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '301')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '302')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '303')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '304')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '305')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '306')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '307')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '308')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '309')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '31')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '310')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '311')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '312')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '313')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '314')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '315')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '316')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '317')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '318')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '319')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '32')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '320')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '321')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOB', '33')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '34')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '35')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '36')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '37')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '38')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '39')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '4')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '40')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '41')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '42')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '43')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '44')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '45')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '46')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '47')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '48')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '49')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '5')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '50')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '51')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '52')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '53')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '54')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '55')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '56')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '57')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '58')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '59')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '6')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '60')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '61')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '62')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '63')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '64')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '65')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '66')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '67')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '68')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '69')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '7')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '70')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '71')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '72')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '73')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '74')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '75')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '76')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '77')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '78')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '79')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '8')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '80')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '81')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '82')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '83')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '84')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '85')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '86')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '87')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '88')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '89')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '9')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '90')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '91')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '92')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '93')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '94')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '95')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '96')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '97')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '98')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOB', '99')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '1')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '10')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '100')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '101')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '102')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '103')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '104')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '105')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '106')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '11')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '12')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '13')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '14')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '15')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '16')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '161')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '162')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '163')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '164')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '165')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '166')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '167')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '168')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '169')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '17')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '170')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '171')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '172')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '173')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '174')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '175')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '176')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '177')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '178')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '179')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '18')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '180')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '181')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '182')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '183')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '184')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '185')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '186')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '187')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '188')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '189')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '19')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '190')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '191')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '192')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '193')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '194')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '195')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '196')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '197')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '198')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '199')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '2')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '20')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '200')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '201')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '202')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '203')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '204')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '205')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '206')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '207')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '208')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '209')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '21')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '210')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '211')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '212')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '22')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '23')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '24')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '25')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '26')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '27')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '28')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '29')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '3')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '30')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '31')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '32')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '33')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '34')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '35')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '36')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '37')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '38')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '39')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '4')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '40')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '41')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '42')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '43')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '44')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '45')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '46')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '47')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '48')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '49')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '5')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '50')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '51')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '52')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '53')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '54')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '55')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '56')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '57')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '58')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '59')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '6')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '60')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '61')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '62')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '63')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '64')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '65')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '66')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '67')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '68')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '69')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '7')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '70')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '71')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '72')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '73')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '74')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '75')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '76')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '77')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '78')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '79')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '8')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '80')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '81')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '82')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '83')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '84')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '85')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '86')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '87')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '88')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '89')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '9')",
+        "count": 2
+      },
+      {
+        "dimension": "('HOC', '90')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '91')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '92')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '98')",
+        "count": 1
+      },
+      {
+        "dimension": "('HOC', '99')",
+        "count": 1
+      },
+      {
+        "dimension": "('THOB', '1')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '10')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '11')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '12')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '13')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '14')",
+        "count": 1
+      },
+      {
+        "dimension": "('THOB', '15')",
+        "count": 1
+      },
+      {
+        "dimension": "('THOB', '2')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '3')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '4')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '5')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '6')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '7')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '8')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', '9')",
+        "count": 2
+      }
+    ],
+    "finish": [
+      {
+        "dimension": "('HOB', 'foil')",
+        "count": 321
+      },
+      {
+        "dimension": "('HOB', 'nonfoil')",
+        "count": 280
+      },
+      {
+        "dimension": "('HOC', 'foil')",
+        "count": 92
+      },
+      {
+        "dimension": "('HOC', 'nonfoil')",
+        "count": 113
+      },
+      {
+        "dimension": "('THOB', 'foil')",
+        "count": 13
+      },
+      {
+        "dimension": "('THOB', 'nonfoil')",
+        "count": 15
+      }
+    ],
+    "treatment": [
+      {
+        "dimension": "('HOB', 'Default')",
+        "count": 405
+      },
+      {
+        "dimension": "('HOB', 'Dragon Hoard Poster')",
+        "count": 21
+      },
+      {
+        "dimension": "('HOB', 'Extended Art')",
+        "count": 56
+      },
+      {
+        "dimension": "('HOB', 'Middle-earth Classic Artist')",
+        "count": 30
+      },
+      {
+        "dimension": "('HOB', 'Showcase')",
+        "count": 50
+      },
+      {
+        "dimension": "('HOB', 'Surge Foil')",
+        "count": 39
+      },
+      {
+        "dimension": "('HOC', 'Default')",
+        "count": 52
+      },
+      {
+        "dimension": "('HOC', 'Extended Art')",
+        "count": 9
+      },
+      {
+        "dimension": "('HOC', 'Middle-earth Classic Artist')",
+        "count": 104
+      },
+      {
+        "dimension": "('HOC', 'Surge Foil')",
+        "count": 40
+      },
+      {
+        "dimension": "('THOB', 'Full-art token')",
+        "count": 26
+      },
+      {
+        "dimension": "('THOB', 'Helper card')",
+        "count": 2
+      }
+    ],
+    "language": [
+      {
+        "dimension": "('HOB', 'English')",
+        "count": 601
+      },
+      {
+        "dimension": "('HOC', 'English')",
+        "count": 205
+      },
+      {
+        "dimension": "('THOB', 'English')",
+        "count": 28
+      }
+    ],
+    "object_type": [
+      {
+        "dimension": "('HOB', 'card')",
+        "count": 601
+      },
+      {
+        "dimension": "('HOC', 'card')",
+        "count": 205
+      },
+      {
+        "dimension": "('THOB', 'helper_card')",
+        "count": 2
+      },
+      {
+        "dimension": "('THOB', 'token_face')",
+        "count": 26
+      }
+    ],
+    "counts_by_collector_number": [
+      {
+        "set": "HOB",
+        "dimension": "1",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "10",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "100",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "101",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "102",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "103",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "104",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "105",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "106",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "107",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "108",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "109",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "11",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "110",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "111",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "112",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "113",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "114",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "115",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "116",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "117",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "118",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "119",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "12",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "120",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "121",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "122",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "123",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "124",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "125",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "126",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "127",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "128",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "129",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "13",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "130",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "131",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "132",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "133",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "134",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "135",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "136",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "137",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "138",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "139",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "14",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "140",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "141",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "142",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "143",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "144",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "145",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "146",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "147",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "148",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "149",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "15",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "150",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "151",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "152",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "153",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "154",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "155",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "156",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "157",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "158",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "159",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "16",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "160",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "161",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "162",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "163",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "164",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "165",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "166",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "167",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "168",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "169",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "17",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "170",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "171",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "172",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "173",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "174",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "175",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "176",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "177",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "178",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "179",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "18",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "180",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "181",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "182",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "183",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "184",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "185",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "186",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "187",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "188",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "189",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "19",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "190",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "191",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "192",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "193",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "194",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "195",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "196",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "197",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "198",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "199",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "2",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "20",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "200",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "201",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "202",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "203",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "204",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "205",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "206",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "207",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "208",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "209",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "21",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "210",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "211",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "212",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "213",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "214",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "215",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "216",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "217",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "218",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "219",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "22",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "220",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "221",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "222",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "223",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "224",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "225",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "226",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "227",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "228",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "229",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "23",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "230",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "231",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "232",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "233",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "234",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "235",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "236",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "237",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "238",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "239",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "24",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "240",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "241",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "242",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "243",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "244",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "245",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "246",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "247",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "248",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "249",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "25",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "250",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "251",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "252",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "253",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "254",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "255",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "256",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "257",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "258",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "259",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "26",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "260",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "261",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "262",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "263",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "264",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "265",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "266",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "267",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "268",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "269",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "27",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "270",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "271",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "272",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "273",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "274",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "275",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "276",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "277",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "278",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "279",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "28",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "280",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "281",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "282",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "283",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "284",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "285",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "286",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "287",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "288",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "289",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "29",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "290",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "291",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "292",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "293",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "294",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "295",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "296",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "297",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "298",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "299",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "3",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "30",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "300",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "301",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "302",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "303",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "304",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "305",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "306",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "307",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "308",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "309",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "31",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "310",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "311",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "312",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "313",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "314",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "315",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "316",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "317",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "318",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "319",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "32",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "320",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "321",
+        "count": 1
+      },
+      {
+        "set": "HOB",
+        "dimension": "33",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "34",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "35",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "36",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "37",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "38",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "39",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "4",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "40",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "41",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "42",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "43",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "44",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "45",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "46",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "47",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "48",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "49",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "5",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "50",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "51",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "52",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "53",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "54",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "55",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "56",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "57",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "58",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "59",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "6",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "60",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "61",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "62",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "63",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "64",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "65",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "66",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "67",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "68",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "69",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "7",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "70",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "71",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "72",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "73",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "74",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "75",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "76",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "77",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "78",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "79",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "8",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "80",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "81",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "82",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "83",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "84",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "85",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "86",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "87",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "88",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "89",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "9",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "90",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "91",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "92",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "93",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "94",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "95",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "96",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "97",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "98",
+        "count": 2
+      },
+      {
+        "set": "HOB",
+        "dimension": "99",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "1",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "10",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "100",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "101",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "102",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "103",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "104",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "105",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "106",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "11",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "12",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "13",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "14",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "15",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "16",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "161",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "162",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "163",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "164",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "165",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "166",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "167",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "168",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "169",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "17",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "170",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "171",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "172",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "173",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "174",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "175",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "176",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "177",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "178",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "179",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "18",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "180",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "181",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "182",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "183",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "184",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "185",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "186",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "187",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "188",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "189",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "19",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "190",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "191",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "192",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "193",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "194",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "195",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "196",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "197",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "198",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "199",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "2",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "20",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "200",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "201",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "202",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "203",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "204",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "205",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "206",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "207",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "208",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "209",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "21",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "210",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "211",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "212",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "22",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "23",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "24",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "25",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "26",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "27",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "28",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "29",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "3",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "30",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "31",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "32",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "33",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "34",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "35",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "36",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "37",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "38",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "39",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "4",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "40",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "41",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "42",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "43",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "44",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "45",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "46",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "47",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "48",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "49",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "5",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "50",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "51",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "52",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "53",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "54",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "55",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "56",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "57",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "58",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "59",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "6",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "60",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "61",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "62",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "63",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "64",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "65",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "66",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "67",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "68",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "69",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "7",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "70",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "71",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "72",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "73",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "74",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "75",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "76",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "77",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "78",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "79",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "8",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "80",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "81",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "82",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "83",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "84",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "85",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "86",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "87",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "88",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "89",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "9",
+        "count": 2
+      },
+      {
+        "set": "HOC",
+        "dimension": "90",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "91",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "92",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "98",
+        "count": 1
+      },
+      {
+        "set": "HOC",
+        "dimension": "99",
+        "count": 1
+      },
+      {
+        "set": "THOB",
+        "dimension": "1",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "10",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "11",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "12",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "13",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "14",
+        "count": 1
+      },
+      {
+        "set": "THOB",
+        "dimension": "15",
+        "count": 1
+      },
+      {
+        "set": "THOB",
+        "dimension": "2",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "3",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "4",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "5",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "6",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "7",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "8",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "9",
+        "count": 2
+      }
+    ],
+    "counts_by_finish": [
+      {
+        "set": "HOB",
+        "dimension": "foil",
+        "count": 321
+      },
+      {
+        "set": "HOB",
+        "dimension": "nonfoil",
+        "count": 280
+      },
+      {
+        "set": "HOC",
+        "dimension": "foil",
+        "count": 92
+      },
+      {
+        "set": "HOC",
+        "dimension": "nonfoil",
+        "count": 113
+      },
+      {
+        "set": "THOB",
+        "dimension": "foil",
+        "count": 13
+      },
+      {
+        "set": "THOB",
+        "dimension": "nonfoil",
+        "count": 15
+      }
+    ],
+    "counts_by_treatment": [
+      {
+        "set": "HOB",
+        "dimension": "Default",
+        "count": 405
+      },
+      {
+        "set": "HOB",
+        "dimension": "Dragon Hoard Poster",
+        "count": 21
+      },
+      {
+        "set": "HOB",
+        "dimension": "Extended Art",
+        "count": 56
+      },
+      {
+        "set": "HOB",
+        "dimension": "Middle-earth Classic Artist",
+        "count": 30
+      },
+      {
+        "set": "HOB",
+        "dimension": "Showcase",
+        "count": 50
+      },
+      {
+        "set": "HOB",
+        "dimension": "Surge Foil",
+        "count": 39
+      },
+      {
+        "set": "HOC",
+        "dimension": "Default",
+        "count": 52
+      },
+      {
+        "set": "HOC",
+        "dimension": "Extended Art",
+        "count": 9
+      },
+      {
+        "set": "HOC",
+        "dimension": "Middle-earth Classic Artist",
+        "count": 104
+      },
+      {
+        "set": "HOC",
+        "dimension": "Surge Foil",
+        "count": 40
+      },
+      {
+        "set": "THOB",
+        "dimension": "Default",
+        "count": 26
+      },
+      {
+        "set": "THOB",
+        "dimension": "Middle-earth Classic Artist",
+        "count": 2
+      }
+    ],
+    "counts_by_language": [
+      {
+        "set": "HOB",
+        "dimension": "English",
+        "count": 601
+      },
+      {
+        "set": "HOC",
+        "dimension": "English",
+        "count": 205
+      },
+      {
+        "set": "THOB",
+        "dimension": "English",
+        "count": 28
+      }
+    ],
+    "counts_by_object_type": [
+      {
+        "set": "HOB",
+        "dimension": "card",
+        "count": 601
+      },
+      {
+        "set": "HOC",
+        "dimension": "card",
+        "count": 205
+      },
+      {
+        "set": "THOB",
+        "dimension": "helper_card",
+        "count": 2
+      },
+      {
+        "set": "THOB",
+        "dimension": "token_face",
+        "count": 26
+      }
+    ],
+    "art_series_treatment_counts": [
+      {
+        "dimension": "Gold-Stamped",
+        "count": 54
+      },
+      {
+        "dimension": "Scene Art Card",
+        "count": 12
+      },
+      {
+        "dimension": "Standard Art Card",
+        "count": 54
+      }
+    ],
+    "art_series_object_type_counts": [
+      {
+        "dimension": "art_card",
+        "count": 120
+      }
+    ],
+    "thob_physical_pairs": [
+      {
+        "physical_object_id": "THOB-DS-01",
+        "front": "Bird Soldier (1)",
+        "back": "Axe (10)",
+        "finish_count": 2,
+        "finishes": [
+          "nonfoil",
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-02",
+        "front": "Human Soldier (2)",
+        "back": "Treasure (12)",
+        "finish_count": 2,
+        "finishes": [
+          "nonfoil",
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-03",
+        "front": "Human Soldier (2)",
+        "back": "Treasure (13)",
+        "finish_count": 1,
+        "finishes": [
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-04",
+        "front": "Human Soldier (2)",
+        "back": "Goblin Army (4)",
+        "finish_count": 2,
+        "finishes": [
+          "nonfoil",
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-05",
+        "front": "Human Soldier (2)",
+        "back": "Dwarf (6)",
+        "finish_count": 2,
+        "finishes": [
+          "nonfoil",
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-06",
+        "front": "Goblin Army (3)",
+        "back": "Treasure (12)",
+        "finish_count": 2,
+        "finishes": [
+          "nonfoil",
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-07",
+        "front": "Goblin Army (3)",
+        "back": "Wolf (9)",
+        "finish_count": 2,
+        "finishes": [
+          "nonfoil",
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-08",
+        "front": "Dragon (5)",
+        "back": "Stone Boulder (11)",
+        "finish_count": 2,
+        "finishes": [
+          "nonfoil",
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-09",
+        "front": "Dwarf (6)",
+        "back": "Enduring Story (14)",
+        "finish_count": 1,
+        "finishes": [
+          "nonfoil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-10",
+        "front": "Dwarf (6)",
+        "back": "Elf (8)",
+        "finish_count": 1,
+        "finishes": [
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-11",
+        "front": "Bear (7)",
+        "back": "Stone Boulder (11)",
+        "finish_count": 2,
+        "finishes": [
+          "nonfoil",
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-12",
+        "front": "Elf (8)",
+        "back": "Treasure (13)",
+        "finish_count": 2,
+        "finishes": [
+          "nonfoil",
+          "traditional_foil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-13",
+        "front": "Human Soldier (2)",
+        "back": "On an Adventure (15)",
+        "finish_count": 1,
+        "finishes": [
+          "nonfoil"
+        ]
+      },
+      {
+        "physical_object_id": "THOB-DS-14",
+        "front": "On an Adventure (15)",
+        "back": "Enduring Story (14)",
+        "finish_count": 1,
+        "finishes": [
+          "nonfoil"
+        ]
+      }
+    ],
+    "art_series_by_set": [
+      {
+        "dimension": "ART SERIES",
+        "count": 108
+      },
+      {
+        "dimension": "ART SERIES SCENE",
+        "count": 12
+      }
+    ],
+    "art_series_by_collector_number": [
+      {
+        "set": "ART SERIES",
+        "dimension": "1",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "10",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "11",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "12",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "13",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "14",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "15",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "16",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "17",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "18",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "19",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "2",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "20",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "21",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "22",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "23",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "24",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "25",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "26",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "27",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "28",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "29",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "3",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "30",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "31",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "32",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "33",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "34",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "35",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "36",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "37",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "38",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "39",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "4",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "40",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "41",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "42",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "43",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "44",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "45",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "46",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "47",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "48",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "49",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "5",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "50",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "51",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "52",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "53",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "54",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "6",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "7",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "8",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES",
+        "dimension": "9",
+        "count": 2
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-01",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-02",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-03",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-04",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-05",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-06",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-07",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-08",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-09",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-10",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-11",
+        "count": 1
+      },
+      {
+        "set": "ART SERIES SCENE",
+        "dimension": "SCENE-12",
+        "count": 1
+      }
+    ],
+    "art_series_by_finish": [
+      {
+        "dimension": "nonfoil",
+        "count": 120
+      }
+    ],
+    "art_series_by_treatment": [
+      {
+        "dimension": "Gold-Stamped",
+        "count": 54
+      },
+      {
+        "dimension": "Scene Art Card",
+        "count": 12
+      },
+      {
+        "dimension": "Standard Art Card",
+        "count": 54
+      }
+    ],
+    "art_series_by_language": [
+      {
+        "dimension": "English",
+        "count": 120
+      }
+    ],
+    "art_series_by_object_type": [
+      {
+        "dimension": "art_card",
+        "count": 120
+      }
+    ]
+  },
+  "reconciliation": {
+    "HOC_Dwarvish_excluded": 5,
+    "Cardmarket_Extras_partition": "Product type rule established: Cardmarket Extras rows prefixed Art Series are art-card collectibles (including standard/gold-stamped V.1/V.2 variants as separately listed), while entries naming game cards are alternate product versions resolving to HOB collector identities+treatments and never new playable identities. Art Series cross-reference is by exact artwork/card name and checklist number when known. Full Cardmarket row/product-ID join is not verified because Cardmarket blocks structured page access (HTTP 403); no IDs are guessed.",
+    "THOB": "TCGplayer product records and retailer catalogs identify 14 double-sided collector-number pairings. Cardmarket’s visible 12 product names do not expose all pair-level distinctions; #2//13 and #8//6 are independently present in TCGplayer. Explicit catalog order is retained, including #15//14. Product finish counts: 9 token/token pairings both nonfoil and traditional foil, 2 token/token pairings foil-only, 3 helper-containing pairings nonfoil-only; total 23 product/finish rows. Scryfall face scope remains 28 rows; face finish presence must not be conflated with pairing-product finish. All supported product-pair evidence and finish notes are stored in thob_physical_products.csv.",
+    "Art_Series": "Wizards official gallery lists 54 numbered core art cards with standard and gold-stamped copies and 12 separate scene-box art cards. The Art Series object is separate from the matching playable HOB card even when artwork/name matches. Cardmarket Extras labels these as Art Series V.1/V.2 by Cardmarket version; exact V.1/V.2-to-unstamped/gold-stamped correspondence has not been verified and remains unassigned."
+  },
+  "cardmarket_source": "https://www.cardmarket.com/en/Magic/Spoilers/The-Hobbit-Extras (accessed 2026-09-22); listing identifies XHOB extras; scraped names must be reconciled by V.1/V.2 (Art Series) versus named HOB alternate versions.",
+  "regression": {
+    "ltr_active_ex_art_series": 1544,
+    "ltc_active": 761,
+    "collection_rows": 125,
+    "collection_quantity": 128,
+    "wishlist_rows": 39,
+    "wishlist_quantity": 39,
+    "market_price_history_rows": 977,
+    "market_price_observations_rows": 1676,
+    "printing_price_resolutions_rows": 38780,
+    "cardmarket_mappings_rows": 13171,
+    "hobbit_db_rows": 0
+  },
+  "db_writes": 0,
+  "art_series_report": "art_series_scope.csv",
+  "thob_products_report": "thob_physical_products.csv",
+  "finish_dimension": "finish stores nonfoil/foil per Scryfall; finish_detail distinguishes surge foil when promo_types explicitly marks surgefoil; foil otherwise is traditional/unspecified. Actual finish-specific availability follows Scryfall record, constrained by Wizards collation: nonfoil Play token and traditional foil Collector token; no surge foil.",
+  "thob_physical_product_counts": {
+    "double_sided_token_designs": 14,
+    "product_finish_rows": 23,
+    "both_finish_token_token_pairings": 9,
+    "foil_only_token_token_pairings": 2,
+    "nonfoil_only_helper_containing_pairings": 3,
+    "surge_foil_products": 0,
+    "helpers": 2
+  }
+}

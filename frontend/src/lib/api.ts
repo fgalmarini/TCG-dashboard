@@ -14,6 +14,7 @@ import type {
   WishlistQueryParams,
   CollectionMatchContext,
   CollectionItemUpdatePayload,
+  EventWishlistResponse,
 } from './types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? window.location.origin
@@ -106,6 +107,10 @@ export function fetchCatalogItem(id: number): Promise<CatalogDetailResponse> {
 
 export function fetchWishlist(params: WishlistQueryParams = {}): Promise<WishlistListResponse> {
   return request<WishlistListResponse>('/api/wishlist', params as Record<string, string | number | boolean | undefined>)
+}
+
+export function fetchEventWishlist(code: string): Promise<EventWishlistResponse> {
+  return request<EventWishlistResponse>(`/api/events/${encodeURIComponent(code)}/wishlist`)
 }
 
 async function mutate<T>(path: string, method: string, body?: unknown): Promise<T> {

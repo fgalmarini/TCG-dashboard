@@ -6,6 +6,7 @@ import { CatalogPage } from '@/pages/CatalogPage'
 import { CatalogDetailPage } from '@/pages/CatalogDetailPage'
 import { OverviewPage } from '@/pages/OverviewPage'
 import { WishlistPage } from '@/pages/WishlistPage'
+import { CardmadnessEventPage } from '@/pages/CardmadnessEventPage'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="catalog" element={<CatalogPage />} />
           <Route path="catalog/:id" element={<CatalogDetailPage />} />
           <Route path="wishlist" element={<WishlistPage />} />
+          <Route path="events/cardmadness-2026" element={<CardmadnessEventPage />} />
         </Route>
       </Routes>
     </Router>

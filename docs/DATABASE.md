@@ -16,6 +16,7 @@ all existing primary keys and historical price rows.
 | `card_images` | Exact/fallback remote image metadata | printing + provider + requested language + face |
 | `printing_price_resolutions` | Historical selected/null pricing decision | printing + language + timestamp + method |
 | `market_price_observations` | Source-neutral secondary/future market metrics | printing + provider + market + metric + currency + snapshot |
+| `events` / `event_wishlist_items` | Event metadata and links to existing Wishlist rows | event code; event + wishlist item |
 
 One Piece commercial identity is canonical card + release + source variant/art kind +
 language. It is an audit identity, not a replacement primary key. A collision keeps
@@ -57,6 +58,16 @@ uniqueness key includes `snapshot_key`, so repeated imports are idempotent while
 changed source snapshots remain historical evidence. Pokémon 151 TCGplayer rows use
 `provider=pokemon_tcg_api`, `market=tcgplayer` and `currency=USD`; no API valuation
 query reads this table.
+
+`events` and `event_wishlist_items` add reusable event scoping without copying
+Wishlist fields. Wishlist remains the source of status, priority, quantity and price
+targets. `expansions.cardmarket_id_expansion` is nullable for curated/manual sets
+without a verified Cardmarket mapping; synthetic provider IDs are not created.
+
+CARDMADNESS-001 adds 116 curated HOB/HOC canonical identities and 191 English foil
+printings. Its 86 manual Cardmarket observations dated 2026-09-23 are stored only in
+`market_price_observations` under `cardmadness-2026-09-23`; they do not affect
+`current_price` or portfolio valuation.
 
 ## Safe Maintenance
 

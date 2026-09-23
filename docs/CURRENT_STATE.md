@@ -1,5 +1,42 @@
 # Current State
 
+## CARDMADNESS-001 (`2026-09-23`)
+
+- Implemented curated HOB/HOC catalog import from `CARDMADNESS_HOB_HOC.csv`: 50 HOB
+  and 66 HOC logical identities, 116 Traditional Foil plus 75 Surge Foil printings,
+  English only. This is a curated subset, not full-set coverage; no Non-Foil rows.
+- Imported the manual Cardmarket snapshot dated 2026-09-23 as 86 secondary observations
+  (`cardmadness-2026-09-23`). These observations do not feed global portfolio valuation.
+- Added reusable event-to-Wishlist links and `cardmadness-2026` / `CARDMADNESS EVENT`.
+  Wishlist remains the source of status, targets, quantity and priority.
+- Added the mobile-first `/events/cardmadness-2026` comparison view. Next population
+  route: create items through `/api/wishlist`, then link IDs with
+  `POST /api/events/cardmadness-2026/wishlist`.
+- The generic Catalog cards present Treatment, Finish and Variant with humanized
+  values; an empty `ownership_status` is omitted.
+
+## CARDMADNESS-002 (`2026-09-23`)
+
+- Reconciled all 191 curated rows against their CSV set, collector number, English
+  language and treatment. The catalog was correct; the earlier closeout report
+  misallocated ten Surge printings between HOB and HOC. Correct counts: HOB 50
+  Traditional + 35 Surge = 85; HOC 66 Traditional + 40 Surge = 106.
+- Stored 186 exact Scryfall images (HOB 85/85, HOC 101/106); 0 ambiguous. HOC
+  Traditional Foil #093–097 remain missing because Scryfall has no exact English
+  records. Image metadata is served through existing generic Catalog/Wishlist paths.
+- No pricing, Wishlist, event associations or valuation data changed. See
+  `docs/plans/CARDMADNESS-002.md` for regression cases, unresolved printings and
+  database verification.
+
+## Catalog metadata presentation (`2026-09-23`)
+
+- Catalog cards label Treatment, Finish and Variant, humanize stored values, and omit
+  an empty ownership status. No Serialized field is rendered.
+- `traditional_foil`, `surge_foil` and `foil` render as Traditional Foil, Surge Foil
+  and Foil; `art_kind` is presented as Variant in the generic Catalog card.
+- On mobile, metadata fields stack within each card so Treatment values remain fully
+  legible at a 390px viewport.
+
 ## FBK-001 Error Feedback & Regression System (`2026-09-09`)
 
 - Registry YAML and its offline verifier are implemented under `docs/errors/` and

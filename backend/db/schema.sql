@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS cardmarket_categories (
 CREATE TABLE IF NOT EXISTS expansions (
     id                      INTEGER PRIMARY KEY AUTOINCREMENT,
     game_id                 INTEGER NOT NULL REFERENCES games (id),
-    cardmarket_id_expansion INTEGER NOT NULL UNIQUE,
+    cardmarket_id_expansion INTEGER UNIQUE,
     name                    TEXT,
     set_code                TEXT,
     release_date            TEXT,
@@ -301,6 +301,24 @@ CREATE TABLE IF NOT EXISTS market_price_observations (
     source_variant      TEXT,
     created_at          TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (card_id, provider, market, metric, currency, snapshot_key)
+);
+
+CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    code TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    starts_at TEXT,
+    ends_at TEXT,
+    status TEXT NOT NULL DEFAULT 'planned',
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS event_wishlist_items (
+    event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+    wishlist_item_id INTEGER NOT NULL REFERENCES wishlist_items(id) ON DELETE CASCADE,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(event_id, wishlist_item_id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_market_price_observations_card_source
