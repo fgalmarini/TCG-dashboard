@@ -44,14 +44,14 @@ vi.mock('@/components/shared/SecondaryMarketPrice', () => ({
 describe('CatalogPage metadata', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  it('labels and formats treatment, finish, and variant without empty ownership state', () => {
+  it('shows treatment-specific finish labels and variant without a Treatment row', () => {
     render(<MemoryRouter><CatalogPage /></MemoryRouter>)
 
     expect(screen.getAllByText('Traditional Foil')).toHaveLength(2)
     expect(screen.getAllByText('Surge Foil')).toHaveLength(2)
-    expect(screen.getAllByText('Foil')).toHaveLength(4)
+    expect(screen.queryByText('Foil')).not.toBeInTheDocument()
     expect(screen.getAllByText('Parallel')).toHaveLength(4)
-    expect(screen.getAllByText('Treatment')).toHaveLength(4)
+    expect(screen.queryByText('Treatment')).not.toBeInTheDocument()
     expect(screen.getAllByText('Finish')).toHaveLength(4)
     expect(screen.getAllByText('Variant')).toHaveLength(4)
     expect(screen.queryByText('Serialized')).not.toBeInTheDocument()

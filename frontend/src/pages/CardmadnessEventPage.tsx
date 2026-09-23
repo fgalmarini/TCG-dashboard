@@ -14,13 +14,28 @@ const EVENT_CODE = 'cardmadness-2026'
 const dash = (value: number | null | undefined) => value == null ? '—' : formatCurrency(value, 'EUR')
 const humanize = (value: string) => value.replace(/[_-]+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase())
 
+function normalizedNumber(value: string | null | undefined): string | null {
+  if (!value || !/^\d+$/.test(value)) return null
+  return value.replace(/^0+(?=\d)/, '')
+}
+
+function matchesEventSearch(query: string, name: string, targetNumber?: string | null, alternativeNumber?: string | null): boolean {
+  const normalizedQuery = query.trim().toLocaleLowerCase()
+  if (!normalizedQuery) return true
+  const textualValues = [name, targetNumber ?? '', alternativeNumber ?? '']
+  if (textualValues.some(value => value.toLocaleLowerCase().includes(normalizedQuery))) return true
+  const queryNumber = normalizedNumber(normalizedQuery)
+  return queryNumber !== null && [targetNumber, alternativeNumber]
+    .some(value => normalizedNumber(value) === queryNumber)
+}
+
 export function CardmadnessEventPage() {
   const { data, error, loading, reload } = useApi(() => fetchEventWishlist(EVENT_CODE), [EVENT_CODE])
   const [search, setSearch] = useState('')
   const [set, setSet] = useState('all')
   const [status, setStatus] = useState('all')
-  const filtered = useMemo(() => (data?.items ?? []).filter(({ wishlist_item: item }) =>
-    item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) &&
+  const filtered = useMemo(() => (data?.items ?? []).filter(({ wishlist_item: item, traditional_foil: alternative }) =>
+    matchesEventSearch(search, item.name, item.card_number, alternative?.card_number) &&
     (set === 'all' || item.set_code?.toUpperCase() === set) && (status === 'all' || item.status === status)), [data, search, set, status])
 
   if (loading && !data) return <LoadingState />
@@ -28,7 +43,7 @@ export function CardmadnessEventPage() {
   return <main className="mx-auto max-w-6xl space-y-5 px-4 py-6">
     <div><h1 className="text-2xl font-semibold">CARDMADNESS EVENT</h1><p className="text-sm text-muted-foreground">Event wishlist · {filtered.length} cards</p></div>
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-      <Input aria-label="Search cards" placeholder="Search by name" value={search} onChange={e => setSearch(e.target.value)} />
+      <Input aria-label="Search cards" placeholder="Search by name or number..." value={search} onChange={e => setSearch(e.target.value)} />
       <Select value={set} onValueChange={setSet}><SelectTrigger aria-label="Filter by set"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">All sets</SelectItem><SelectItem value="HOB">HOB</SelectItem><SelectItem value="HOC">HOC</SelectItem></SelectContent></Select>
       <Select value={status} onValueChange={setStatus}><SelectTrigger aria-label="Filter by status"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">All statuses</SelectItem><SelectItem value="wanted">Wanted</SelectItem><SelectItem value="acquired">Acquired</SelectItem><SelectItem value="removed">Removed</SelectItem></SelectContent></Select>
     </div>

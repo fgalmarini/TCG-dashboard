@@ -24,6 +24,14 @@ function formatMetadataValue(value: string): string {
   return normalized.replace(/[_-]+/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
 }
 
+function formatFinishValue(treatment?: string | null, finish?: string | null): string | null {
+  const normalizedTreatment = treatment?.trim().toLowerCase()
+  if (normalizedTreatment === 'traditional_foil' || normalizedTreatment === 'surge_foil') {
+    return formatMetadataValue(normalizedTreatment)
+  }
+  return finish ? formatMetadataValue(finish) : null
+}
+
 export function CatalogPage() {
   const [game, setGame] = useState('magic')
   const [language, setLanguage] = useState('')
@@ -143,8 +151,7 @@ export function CatalogPage() {
                       </CardIdentity>
                       <CardMetadata>
                         <dl className="grid grid-cols-1 gap-x-2 gap-y-1 text-[10px] leading-tight sm:grid-cols-2">
-                          {item.treatment && <div className="min-w-0"><dt className="text-muted-foreground">Treatment</dt><dd className="truncate font-medium" title={formatMetadataValue(item.treatment)}>{formatMetadataValue(item.treatment)}</dd></div>}
-                          {item.finish && <div className="min-w-0"><dt className="text-muted-foreground">Finish</dt><dd className="truncate font-medium" title={formatMetadataValue(item.finish)}>{formatMetadataValue(item.finish)}</dd></div>}
+                          {formatFinishValue(item.treatment, item.finish) && <div className="min-w-0"><dt className="text-muted-foreground">Finish</dt><dd className="truncate font-medium" title={formatFinishValue(item.treatment, item.finish) ?? undefined}>{formatFinishValue(item.treatment, item.finish)}</dd></div>}
                           {item.art_kind && item.art_kind !== 'unknown' && <div className="min-w-0"><dt className="text-muted-foreground">Variant</dt><dd className="truncate font-medium" title={formatMetadataValue(item.art_kind)}>{formatMetadataValue(item.art_kind)}</dd></div>}
                           {item.reprint_count > 0 && <div className="min-w-0"><dt className="text-muted-foreground">Reprints</dt><dd className="font-medium">{item.reprint_count}</dd></div>}
                           {item.ownership_status !== 'none' && <div className="min-w-0"><dt className="text-muted-foreground">Ownership</dt><dd className="truncate font-medium">{formatMetadataValue(item.ownership_status)}</dd></div>}
