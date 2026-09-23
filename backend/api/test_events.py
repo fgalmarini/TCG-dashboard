@@ -43,5 +43,39 @@ class EventWishlistApiTest(unittest.TestCase):
         self.assertEqual(db.execute('SELECT count(*) FROM event_wishlist_items').fetchone()[0],0)
         db.close()
 
+    def test_surged_wishlist_item_returns_manual_prices_and_structured_traditional_alternative(self):
+        db=connect(self.db)
+        language_id=db.execute("SELECT id FROM languages WHERE code='en'").fetchone()[0]
+        set_id=db.execute(
+            "INSERT INTO sets(game_id,code,name,release_status) VALUES (3,'hob','The Hobbit','released')"
+        ).lastrowid
+        canonical_id=db.execute(
+            "INSERT INTO canonical_cards(game_id,identity_key,name) VALUES (3,'hob:test-card','Test Card A')"
+        ).lastrowid
+        db.execute("""UPDATE cards SET set_code='hob',set_id=?,card_number='250',language_id=?,
+                         treatment='surge_foil',finish='foil',canonical_card_id=?,catalog_status='active'
+                      WHERE id=?""",(set_id,language_id,canonical_id,self.ids['card_a_id']))
+        db.execute("""UPDATE cards SET set_code='hob',set_id=?,card_number='214',language_id=?,
+                         treatment='traditional_foil',finish='foil',canonical_card_id=?,catalog_status='active'
+                      WHERE id=?""",(set_id,language_id,canonical_id,self.ids['card_b_id']))
+        for card_id,metric,value in [
+            (self.ids['card_a_id'],'low',8.25),
+            (self.ids['card_a_id'],'avg30',7.75),
+            (self.ids['card_b_id'],'low',3.5),
+        ]:
+            db.execute("""INSERT INTO market_price_observations
+                (card_id,provider,market,metric,value,currency,observed_at,snapshot_key,provenance)
+                VALUES (?,'cardmarket_manual','cardmarket',?,?,'EUR','2026-09-23T00:00:00Z',
+                        'cardmadness-2026-09-23','test fixture')""",(card_id,metric,value))
+        db.commit(); db.close()
+
+        target=self.client.post('/api/wishlist',json={'card_id':self.ids['card_a_id']}).json()
+        path='/api/events/cardmadness-2026/wishlist'
+        self.assertEqual(self.client.post(path,json={'wishlist_item_id':target['id']}).status_code,204)
+        item=self.client.get(path).json()['items'][0]
+        self.assertEqual(item['wishlist_item']['treatment'],'surge_foil')
+        self.assertEqual(item['target_prices'],{'low':8.25,'avg30':7.75})
+        self.assertEqual(item['traditional_foil'],{'card_id':self.ids['card_b_id'],'card_number':'214','low':3.5})
+
 
 if __name__=='__main__': unittest.main()

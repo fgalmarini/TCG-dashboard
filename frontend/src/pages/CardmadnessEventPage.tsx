@@ -12,6 +12,7 @@ import { useApi } from '@/lib/useApi'
 
 const EVENT_CODE = 'cardmadness-2026'
 const dash = (value: number | null | undefined) => value == null ? '—' : formatCurrency(value, 'EUR')
+const humanize = (value: string) => value.replace(/[_-]+/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase())
 
 export function CardmadnessEventPage() {
   const { data, error, loading, reload } = useApi(() => fetchEventWishlist(EVENT_CODE), [EVENT_CODE])
@@ -37,12 +38,13 @@ export function CardmadnessEventPage() {
           <CardThumbnail image={item.image} alt={item.name} />
           <div className="min-w-0 flex-1 space-y-3">
             <div className="flex flex-wrap items-center gap-2"><h2 className="font-semibold">{item.name}</h2><Badge variant="outline">{item.status}</Badge><Badge variant="secondary">{item.priority}</Badge></div>
-            <p className="text-sm text-muted-foreground">{formatSetCode(item.set_code)} · #{item.card_number ?? '—'} · {item.treatment ?? item.finish ?? '—'}</p>
+            <p className="text-sm text-muted-foreground">{formatSetCode(item.set_code)} · #{item.card_number ?? '—'} · {humanize(item.treatment ?? item.finish ?? '—')}</p>
             <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm"><span>Target: {dash(item.target_price)}</span><span>Max: {dash(item.max_price)}</span><span>Language: {item.language?.toUpperCase() ?? '—'}</span></div>
-            {item.treatment === 'surge_foil' && ['hob', 'hoc'].includes((item.set_code ?? '').toLowerCase()) && <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {['hob', 'hoc'].includes((item.set_code ?? '').toLowerCase()) && item.treatment === 'surge_foil' && <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <section className="rounded-md border border-primary/40 bg-primary/5 p-3"><h3 className="mb-2 text-xs font-semibold uppercase tracking-wide">Surge Foil · Target</h3><div className="flex flex-wrap gap-x-4 gap-y-1 text-sm"><span>Low: {dash(prices.low)}</span><span>Avg30: {dash(prices.avg30)}</span></div></section>
               <section className="rounded-md border p-3"><h3 className="mb-2 text-xs font-semibold uppercase tracking-wide">Traditional Foil · Alternative</h3>{alternative ? <span className="text-sm">#{alternative.card_number} · Low: {dash(alternative.low)}</span> : <span className="text-sm text-muted-foreground">Unavailable · —</span>}</section>
             </div>}
+            {['hob', 'hoc'].includes((item.set_code ?? '').toLowerCase()) && item.treatment === 'traditional_foil' && <section className="rounded-md border border-primary/40 bg-primary/5 p-3"><h3 className="mb-2 text-xs font-semibold uppercase tracking-wide">Traditional Foil · Target</h3><div className="flex flex-wrap gap-x-4 gap-y-1 text-sm"><span>Low: {dash(prices.low)}</span><span>Avg30: {dash(prices.avg30)}</span></div></section>}
           </div>
         </CardContent>
       </Card>)}

@@ -9,9 +9,8 @@
   (`cardmadness-2026-09-23`). These observations do not feed global portfolio valuation.
 - Added reusable event-to-Wishlist links and `cardmadness-2026` / `CARDMADNESS EVENT`.
   Wishlist remains the source of status, targets, quantity and priority.
-- Added the mobile-first `/events/cardmadness-2026` comparison view. Next population
-  route: create items through `/api/wishlist`, then link IDs with
-  `POST /api/events/cardmadness-2026/wishlist`.
+- Added the mobile-first `/events/cardmadness-2026` comparison view. CARDMADNESS-003
+  populated it with one Wishlist item per curated canonical identity.
 - The generic Catalog cards present Treatment, Finish and Variant with humanized
   values; an empty `ownership_status` is omitted.
 
@@ -27,6 +26,26 @@
 - No pricing, Wishlist, event associations or valuation data changed. See
   `docs/plans/CARDMADNESS-002.md` for regression cases, unresolved printings and
   database verification.
+
+## CARDMADNESS-003 (`2026-09-23`)
+
+- Created exactly 116 existing-model Wishlist rows from the curated HOB/HOC CSV: one
+  per canonical identity. Surge Foil is the target for 75 identities; Traditional Foil
+  is the target for the other 41. Traditional is only a comparison alternative when
+  Surge exists. Non-Foil is excluded.
+- Associated all 116 rows with `cardmadness-2026`. The 39 prior Wishlist rows remain
+  unchanged (18 wanted, 2 acquired, 19 removed); the new rows use the existing API
+  defaults: quantity 1, medium priority, EUR currency and null price targets.
+- `/events/cardmadness-2026` shows Surge Low/Avg30 and its exact Traditional Low
+  alternative, or the Traditional target's own Low/Avg30 when Surge is unavailable.
+  Missing prices render as `—`; the five unresolved HOC images retain the existing
+  missing-image placeholder. A second apply created 0 Wishlist rows and 0 links.
+- DB SHA256: `1569c5af44a71b1b1053ac85f08874671130427b8913f2818307fef54715c253` →
+  `e75e042ae476441fa8cef98d55ee5bf80ca1161a9052618793b5f251c2cfae74`;
+  `integrity_check=ok`, `foreign_key_check=0`.
+- Verification: backend 274 tests + 6 subtests, frontend 13 tests, build, error
+  registry and `git diff --check` passed. Event UI was checked at desktop and 390×844.
+- Next start: wait for the next explicit task; no further CARDMADNESS sprint is selected.
 
 ## Catalog metadata presentation (`2026-09-23`)
 
